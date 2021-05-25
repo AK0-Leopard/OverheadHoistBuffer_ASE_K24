@@ -101,7 +101,103 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return int.MaxValue;
             }
         }
+        public ASEGMENT OpenSegment(string strSegCode, ASEGMENT.DisableType disableType)
+        {
+            ASEGMENT seg_vo = null;
+            ASEGMENT seg_do = null;
+            try
+            {
+                seg_vo = scApp.SegmentBLL.cache.GetSegment(strSegCode);
+                lock (seg_vo)
+                {
+                    seg_do = scApp.MapBLL.EnableSegment(strSegCode, disableType);
+                    //unbanRouteTwoDirect(strSegCode);
+                    unbanRouteOneDirect(strSegCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+            return seg_do;
+        }
+        public ASEGMENT CloseSegment(string strSegCode, ASEGMENT.DisableType disableType)
+        {
+            ASEGMENT seg_vo = null;
+            ASEGMENT seg_do = null;
+            try
+            {
+                seg_vo = scApp.SegmentBLL.cache.GetSegment(strSegCode);
+                lock (seg_vo)
+                {
+                    seg_do = scApp.MapBLL.DisableSegment(strSegCode, disableType);
+                    //banRouteTwoDirect(strSegCode);
+                    banRouteOneDirect(strSegCode);
 
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+            return seg_do;
+        }
+        public ASEGMENT banRouteTwoDirect(string segmentID)
+        {
+            ASEGMENT segment = null;
+            ASEGMENT segment_vo = scApp.SegmentBLL.cache.GetSegment(segmentID);
+            if (segment_vo != null)
+            {
+                foreach (var sec in segment_vo.Sections)
+                    scApp.NewRouteGuide.banRouteTwoDirect(sec.SEC_ID);
+            }
+            segment = scApp.MapBLL.DisableSegment(segmentID);
+            return segment;
+        }
+        public ASEGMENT banRouteOneDirect(string segmentID)
+        {
+            ASEGMENT segment = null;
+            ASEGMENT segment_vo = scApp.SegmentBLL.cache.GetSegment(segmentID);
+            if (segment_vo != null)
+            {
+                foreach (var sec in segment_vo.Sections)
+                {
+                    int.TryParse(sec.FROM_ADR_ID, out int ifrom);
+                    int.TryParse(sec.TO_ADR_ID, out int ito);
+                    scApp.NewRouteGuide.banRouteOneDirect(ifrom, ito);
+                }
+            }
+            segment = scApp.MapBLL.DisableSegment(segmentID);
+            return segment;
+        }
+        public ASEGMENT unbanRouteTwoDirect(string segmentID)
+        {
+            ASEGMENT segment_do = null;
+            ASEGMENT segment_vo = scApp.SegmentBLL.cache.GetSegment(segmentID);
+            if (segment_vo != null)
+            {
+                foreach (var sec in segment_vo.Sections)
+                    scApp.NewRouteGuide.unbanRouteTwoDirect(sec.SEC_ID);
+            }
+            segment_do = scApp.MapBLL.EnableSegment(segmentID);
+            return segment_do;
+        }
+        public ASEGMENT unbanRouteOneDirect(string segmentID)
+        {
+            ASEGMENT segment_do = null;
+            ASEGMENT segment_vo = scApp.SegmentBLL.cache.GetSegment(segmentID);
+            if (segment_vo != null)
+            {
+                foreach (var sec in segment_vo.Sections)
+                {
+                    int.TryParse(sec.FROM_ADR_ID, out int ifrom);
+                    int.TryParse(sec.TO_ADR_ID, out int ito);
+                    scApp.NewRouteGuide.unbanRouteOneDirect(ifrom, ito);
+                }
+            }
+            segment_do = scApp.MapBLL.EnableSegment(segmentID);
+            return segment_do;
+        }
     }
 
 }

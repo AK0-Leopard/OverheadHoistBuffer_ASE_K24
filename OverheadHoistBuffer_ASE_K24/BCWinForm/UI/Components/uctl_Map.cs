@@ -140,6 +140,14 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
                 defaultMaxScale = 10;
                 trackBar_scale.SmallChange = 2;
             }
+            else if(BCFUtility.isMatche(mainForm.BCApp.SCApplication.BC_ID, SCAppConstants.WorkVersion.VERSION_NAME_Hsinchu_2F))
+            {
+                space_Height_m = 10000;
+                space_Width_m = 50000;
+                zoon_Factor = 70;
+                defaultMaxScale = 10;
+                trackBar_scale.SmallChange = 2;
+            }
             else
             {
                 space_Height_m = 14000;

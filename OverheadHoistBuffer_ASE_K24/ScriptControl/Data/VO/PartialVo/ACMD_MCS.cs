@@ -51,6 +51,24 @@ namespace com.mirle.ibg3k0.sc
             set { _distanceFromVehicleToHostSource = value; }
         }
 
+        public bool isLoading
+        {
+            get
+            {
+                COMMANDSTATE = COMMANDSTATE & 252;
+                return COMMANDSTATE == COMMAND_STATUS_BIT_INDEX_LOADING;
+            }
+        }
+        public bool isUnloading
+        {
+
+            get
+            {
+                COMMANDSTATE = COMMANDSTATE & 224;
+                return COMMANDSTATE == COMMAND_STATUS_BIT_INDEX_UNLOADING;
+            }
+        }
+
         public enum CmdType
         {
             MCS,

@@ -408,6 +408,7 @@ namespace com.mirle.ibg3k0.sc.App
             public const string VERSION_NAME_ASE_LOOP = "ASE_LOOP";
             public const string VERSION_NAME_ASE_LINE3 = "ASE_LINE3";
             public const string VERSION_NAME_ASE_TEST = "ASE_TEST";
+            public const string VERSION_NAME_Hsinchu_2F = "Hsinchu_2F";
         }
 
         #endregion current work version

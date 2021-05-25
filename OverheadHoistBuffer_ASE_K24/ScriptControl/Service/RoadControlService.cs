@@ -156,10 +156,12 @@ namespace com.mirle.ibg3k0.sc.Service
                             switch (status)
                             {
                                 case E_PORT_STATUS.InService:
-                                    seg_do = RouteGuide.OpenSegment(segment_id, disableType);
+                                    //seg_do = RouteGuide.OpenSegment(segment_id, disableType);
+                                    seg_do = app.GuideBLL.OpenSegment(segment_id, disableType);
                                     break;
                                 case E_PORT_STATUS.OutOfService:
-                                    seg_do = RouteGuide.CloseSegment(segment_id, disableType);
+                                    //seg_do = RouteGuide.CloseSegment(segment_id, disableType);
+                                    seg_do = app.GuideBLL.CloseSegment(segment_id, disableType);
                                     break;
                             }
                             is_status_change = seg_vo.STATUS != seg_do.STATUS;

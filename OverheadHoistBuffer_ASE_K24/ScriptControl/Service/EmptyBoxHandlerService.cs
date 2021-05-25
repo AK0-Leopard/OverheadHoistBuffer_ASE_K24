@@ -57,11 +57,11 @@ namespace com.mirle.ibg3k0.sc.Service
             cassette_dataBLL = _app.CassetteDataBLL;
             shelfDefBLL = _app.ShelfDefBLL;
             zoneBLL = _app.ZoneDefBLL;
-            var zoneInfo = zoneBLL.loadZoneData();
-            if (zoneInfo.FirstOrDefault().ZoneName.Contains("LOOP"))
-            {
-                emergencyWaterLevel = 0.6;
-            }
+            //var zoneInfo = zoneBLL.loadZoneData();
+            //if (zoneInfo.FirstOrDefault().ZoneName.Contains("LOOP"))
+            //{
+            //    emergencyWaterLevel = 0.6;
+            //}
         }
 
         #region Use for check the empty box number and transport for empty box

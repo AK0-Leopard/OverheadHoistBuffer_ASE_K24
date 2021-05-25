@@ -772,7 +772,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 //cmd_mcs_obj_to_show = mainform.BCApp.SCApplication.CMDBLL.loadACMD_MCSIsUnfinishedObjToShow();
                 cmsMCS_bindingSource.DataSource = cmd_mcs_obj_to_show;
                 dgv_TransferCommand.Refresh();
-        }
+            }
         }
 
 
@@ -1084,7 +1084,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             }
         }
         string[] preSelectionSec = null;
-        private void setSpecifyRail(string[] spacifyPath)
+        public void setSpecifyRail(string[] spacifyPath)
         {
             if (spacifyPath == null)
                 return;

@@ -821,6 +821,7 @@ namespace com.mirle.ibg3k0.sc.App
             bool importMapFlag = routeGuide.ImportMap();
             //            startBLL();
             initialFloydAlgorithm();
+            initialRouteBan();
 
             initBackgroundWork();               //A0.03
             initScheduler();
@@ -847,6 +848,27 @@ namespace com.mirle.ibg3k0.sc.App
 
         }
 
+        private void initialRouteBan()
+        {
+            var segments = SegmentBLL.cache.GetSegments();
+            NewRouteGuide.resetBanRoute();
+            foreach (ASEGMENT seg in segments)
+            {
+                if (seg.STATUS == E_SEG_STATUS.Closed)
+                {
+                    foreach (var sec in seg.Sections)
+                        NewRouteGuide.banRouteTwoDirect(sec.SEC_ID);
+                }
+            }
+            //如果是僅有一個方向的道路時，就要把 From>To的路線關閉
+            var section = sectinoBLL.cache.GetSections();
+            foreach (var sec in section)
+            {
+                int.TryParse(sec.FROM_ADR_ID, out int ifrom);
+                int.TryParse(sec.TO_ADR_ID, out int ito);
+                NewRouteGuide.banRouteOneDirect(ito, ifrom);
+            }
+        }
         //A0.01
         private void initialReserveSectionAPI()
         {

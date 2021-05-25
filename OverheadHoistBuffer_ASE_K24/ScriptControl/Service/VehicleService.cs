@@ -2282,8 +2282,175 @@ namespace com.mirle.ibg3k0.sc.Service
                     //TranEventReportPathReserveReq(bcfApp, eqpt, seq_num, reserveInfos);
                     TranEventReportPathReserveReqNew(bcfApp, eqpt, seq_num, reserveInfos);
                     break;
+                case EventType.Initial:
+                    TransferReportInitial(bcfApp, eqpt, seq_num, eventType, carrier_id);
+                    break;
             }
         }
+        const string CST_ID_ERROR_RENAME_SYMBOL = "UNKF";
+        const string CST_ID_ERROR_SYMBOL = "ERR";
+        public Logger TransferServiceLogger = NLog.LogManager.GetLogger("TransferServiceLogger");
+        private void TransferReportInitial(BCFApplication bcfApp, AVEHICLE eqpt, int seq_num, EventType eventType, string cstID)
+        {
+            string final_cst_id = cstID;
+            try
+            {
+                TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} current cst ID:{cstID}, 開始 initial 流程...");
+
+                bool is_cmd_excute = !SCUtility.isEmpty(eqpt.OHTC_CMD);
+                bool has_cst_on_vh = !SCUtility.isEmpty(cstID);
+                bool is_bcr_read_fail = cstID != null && cstID.ToUpper().Contains(CST_ID_ERROR_SYMBOL);
+                if (is_cmd_excute)
+                {
+                    TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} 有命令在執行中，ohtc cmd id:{eqpt.OHTC_CMD},mcs cmd id:{eqpt.MCS_CMD}");
+
+                    ACMD_OHTC cmd_ohtc = scApp.CMDBLL.getCMD_OHTCByID(eqpt.OHTC_CMD);
+                    if (cmd_ohtc.IsTransferCmdByMCS)
+                    {
+                        ACMD_MCS cmd_mcs = scApp.CMDBLL.getCMD_MCSByID(cmd_ohtc.CMD_ID_MCS);
+                        CassetteData cmdOHT_CSTdata = scApp.CassetteDataBLL.loadCassetteDataByBoxID(cmd_mcs.BOX_ID);
+                        if (has_cst_on_vh)
+                        {
+                            if (is_bcr_read_fail)
+                            {
+                                final_cst_id = cmdOHT_CSTdata.BOXID;
+                                cmdOHT_CSTdata.Carrier_LOC = eqpt.VEHICLE_ID;
+                                scApp.CassetteDataBLL.UpdateCSTLoc(cmdOHT_CSTdata.BOXID, cmdOHT_CSTdata.Carrier_LOC, 1);
+                                scApp.CassetteDataBLL.UpdateCSTState(cmdOHT_CSTdata.BOXID, (int)E_CSTState.Installed);
+                                scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial");
+                                TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，cst id 讀取失敗，使用原本的cst id回復OHT");
+                            }
+                            else
+                            {
+                                CassetteData nowOHT_CSTdata = new CassetteData();
+                                //nowOHT_CSTdata.CSTID = "ERROR1";
+                                nowOHT_CSTdata.CSTID = "";
+                                nowOHT_CSTdata.BOXID = cstID;
+                                nowOHT_CSTdata.Carrier_LOC = eqpt.VEHICLE_ID;
+                                final_cst_id = nowOHT_CSTdata.BOXID;
+                                if (cmdOHT_CSTdata != null)
+                                {
+                                    if (!SCUtility.isMatche(cstID, cmdOHT_CSTdata.BOXID))
+                                    {
+                                        cmdOHT_CSTdata.Carrier_LOC = eqpt.VEHICLE_ID;
+                                        scApp.TransferService.ForceDeleteCstAndCmd(cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial", ACMD_MCS.ResultCode.IDmismatch);
+                                        scApp.TransferService.OHBC_InsertCassette(nowOHT_CSTdata.CSTID, nowOHT_CSTdata.BOXID, nowOHT_CSTdata.Carrier_LOC, "TransferReportInitial");
+                                        TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，發生mismatch initial cst id:{cstID},命令cst id:{cmdOHT_CSTdata.BOXID}");
+
+                                    }
+                                    else
+                                    {
+                                        cmdOHT_CSTdata.Carrier_LOC = eqpt.VEHICLE_ID;
+                                        scApp.CassetteDataBLL.UpdateCSTLoc(cmdOHT_CSTdata.BOXID, cmdOHT_CSTdata.Carrier_LOC, 1);
+                                        scApp.CassetteDataBLL.UpdateCSTState(cmdOHT_CSTdata.BOXID, (int)E_CSTState.Installed);
+                                        scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial");
+                                        TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，強制將 cst id:{cmdOHT_CSTdata.BOXID}過帳至車上");
+                                    }
+                                }
+                                else
+                                {
+                                    scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, null, "TransferReportInitial");
+                                    scApp.TransferService.OHBC_InsertCassette(nowOHT_CSTdata.CSTID, nowOHT_CSTdata.BOXID, nowOHT_CSTdata.Carrier_LOC, "TransferReportInitial");
+                                    TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，cst id:{cstID} 並無帳料於系統中，進行強制建帳");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (cmd_mcs.isLoading)
+                            {
+                                cmdOHT_CSTdata.Carrier_LOC = cmd_mcs.HOSTSOURCE;
+                                scApp.CassetteDataBLL.UpdateCSTLoc(cmdOHT_CSTdata.BOXID, cmdOHT_CSTdata.Carrier_LOC, 1);
+                                scApp.CassetteDataBLL.UpdateCSTState(cmdOHT_CSTdata.BOXID, (int)E_CSTState.WaitIn);
+                                scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial");
+                                TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，命令在進行Loading中，但cst 不再車上 將帳料強制更新回source port");
+                            }
+                            else if (cmd_mcs.isUnloading)
+                            {
+                                cmdOHT_CSTdata.Carrier_LOC = cmd_mcs.HOSTDESTINATION;
+                                scApp.CassetteDataBLL.UpdateCSTLoc(cmdOHT_CSTdata.BOXID, cmdOHT_CSTdata.Carrier_LOC, 1);
+                                scApp.CassetteDataBLL.UpdateCSTState(cmdOHT_CSTdata.BOXID, (int)E_CSTState.Completed);
+                                scApp.TransferService.ForceFinishMCSCmd
+                                    (cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial", ACMD_MCS.ResultCode.Successful);
+                                TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，命令在進行Unloading中，但cst 不再車上 將帳料強制更新回desc port");
+                            }
+                            else
+                            {
+                                scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial");
+                                TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，但cst 不再車上 將命令強制結束");
+                            }
+                        }
+                    }
+                    finishOHTCCmd(eqpt, eqpt.OHTC_CMD, CompleteStatus.CmpStatusVehicleAbort);
+                    replyTranEventReport(bcfApp, eventType, eqpt, seq_num,
+                        renameCarrierID: final_cst_id);
+                }
+                else
+                {
+                    if (has_cst_on_vh)
+                    {
+
+                        if (is_bcr_read_fail)
+                        {
+                            var carrier_data = scApp.CassetteDataBLL.loadCassetteDataByLoc(eqpt.VEHICLE_ID);
+                            if (carrier_data != null)
+                            {
+                                final_cst_id = carrier_data.BOXID;
+                            }
+                        }
+                        else
+                        {
+                            string new_carrier_id =
+                              $"UNKF{eqpt.Real_ID.Trim()}{DateTime.Now.ToString(SCAppConstants.TimestampFormat_12)}";
+                            final_cst_id = new_carrier_id;
+                            scApp.TransferService.OHBC_InsertCassette("", new_carrier_id, eqpt.VEHICLE_ID, "TransferReportInitial");
+                        }
+                    }
+                    else
+                    {
+                        var carrier_data = scApp.CassetteDataBLL.loadCassetteDataByLoc(eqpt.VEHICLE_ID);
+                        if (carrier_data != null)
+                        {
+                            scApp.TransferService.ForceDeleteCst(carrier_data.BOXID, "TransferReportInitial");
+                        }
+                    }
+                    replyTranEventReport(bcfApp, eventType, eqpt, seq_num,
+                        renameCarrierID: final_cst_id);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                replyTranEventReport(bcfApp, eventType, eqpt, seq_num,
+                    renameCarrierID: final_cst_id);
+            }
+        }
+        private bool finishOHTCCmd(AVEHICLE eqpt, string cmd_id, CompleteStatus completeStatus)
+        {
+            bool isSuccess = true;
+            using (TransactionScope tx = SCUtility.getTransactionScope())
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    isSuccess &= scApp.VehicleBLL.doTransferCommandFinish(eqpt.VEHICLE_ID, cmd_id, completeStatus);
+                    E_CMD_STATUS ohtc_cmd_status = scApp.VehicleBLL.CompleteStatusToCmdStatus(completeStatus);
+                    isSuccess &= scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd_id, ohtc_cmd_status);
+                    isSuccess &= scApp.VIDBLL.initialVIDCommandInfo(eqpt.VEHICLE_ID);
+
+                    if (isSuccess)
+                    {
+                        tx.Complete();
+                    }
+                    else
+                    {
+                        //return;
+                    }
+                }
+            }
+
+            return isSuccess;
+        }
+
 
         object reserve_lock = new object();
         private void TranEventReportPathReserveReqNew(BCFApplication bcfApp, AVEHICLE eqpt, int seqNum, RepeatedField<ReserveInfo> reserveInfos)

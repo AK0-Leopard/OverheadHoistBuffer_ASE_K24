@@ -559,234 +559,58 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Config\ASE\CSV\ALARMMAP.csv">
+    <None Include="Config\Hsinchu_2F\AddressBaseDefs_simple.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_TEST\AddressBaseDefs_simple.config">
-      <SubType>Designer</SubType>
+    <None Include="Config\Hsinchu_2F\App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_TEST\App.config">
-      <SubType>Designer</SubType>
+    <None Include="Config\Hsinchu_2F\AppSettings_simple.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="Config\ASE_TEST\AppSettings_simple.config">
-      <SubType>Designer</SubType>
+    <None Include="Config\Hsinchu_2F\CSTTranSchedule.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="Config\ASE_TEST\CSTTranSchedule.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\CSV\ALARMMAP.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\CSV\APSETTING.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\CSV\ECDATAMAP.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\CSV\EQPTLOCATIONINFO.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\CSV\MapInfo\AADDRESS.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\CSV\MapInfo\ASECTION.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\CSV\RESERVEENHANCEINFO.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\CSV\RETURNCODEMAP.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\DataCollectionSetting.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\EQMapToValueEvent.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\EquipmentDefs_simple.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\MPLCConnectionSetting.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\SECSConnectionSetting.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_TEST\TcpIpConnectionSetting.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\AddressBaseDefs_simple.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\App.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Content Include="Config\ASE\AppSettings_simple.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="Config\ASE\CSTTranSchedule.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\CSV\APSETTING.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\CSV\ECDATAMAP.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\CSV\EQPTLOCATIONINFO.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\CSV\MapInfo\AADDRESS.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\CSV\MapInfo\ASECTION.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\CSV\RESERVEENHANCEINFO.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\CSV\RETURNCODEMAP.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\DataCollectionSetting.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\EQMapToValueEvent.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\EquipmentDefs_simple.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\MPLCConnectionSetting.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\SECSConnectionSetting.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE\TcpIpConnectionSetting.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\AddressBaseDefs_simple.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\App.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\AppSettings_simple.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\CSTTranSchedule.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\CSV\ALARMMAP.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\CSV\APSETTING.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\CSV\ECDATAMAP.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\CSV\EQPTLOCATIONINFO.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\CSV\MapInfo\AADDRESS.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\CSV\MapInfo\ASECTION.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\CSV\RESERVEENHANCEINFO.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\CSV\RETURNCODEMAP.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\DataCollectionSetting.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\EQMapToValueEvent.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\EquipmentDefs_simple.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\MPLCConnectionSetting.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\SECSConnectionSetting.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE2\TcpIpConnectionSetting.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE3\AddressBaseDefs_simple.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE3\App.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE3\AppSettings_simple.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\ASE_LINE3\CSTTranSchedule.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\CSV\ALARMMAP.csv">
+    <None Include="Config\Hsinchu_2F\CSV\ALARMMAP.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\CSV\APSETTING.csv">
+    <None Include="Config\Hsinchu_2F\CSV\APSETTING.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\CSV\ECDATAMAP.csv">
+    <None Include="Config\Hsinchu_2F\CSV\ECDATAMAP.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\CSV\EQPTLOCATIONINFO.csv">
+    <None Include="Config\Hsinchu_2F\CSV\EQPTLOCATIONINFO.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\CSV\MapInfo\AADDRESS.csv">
+    <None Include="Config\Hsinchu_2F\CSV\MapInfo\AADDRESS.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\CSV\MapInfo\ASECTION.csv">
+    <None Include="Config\Hsinchu_2F\CSV\MapInfo\ASECTION.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\CSV\RESERVEENHANCEINFO.csv">
+    <None Include="Config\Hsinchu_2F\CSV\RESERVEENHANCEINFO.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\CSV\RETURNCODEMAP.csv">
+    <None Include="Config\Hsinchu_2F\CSV\RETURNCODEMAP.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\DataCollectionSetting.config">
+    <None Include="Config\Hsinchu_2F\DataCollectionSetting.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\EQMapToValueEvent.config">
+    <None Include="Config\Hsinchu_2F\EQMapToValueEvent.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\EquipmentDefs_simple.config">
+    <None Include="Config\Hsinchu_2F\EquipmentDefs_simple.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\MPLCConnectionSetting.config">
+    <None Include="Config\Hsinchu_2F\MPLCConnectionSetting.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\SECSConnectionSetting.config">
+    <None Include="Config\Hsinchu_2F\SECSConnectionSetting.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_LINE3\TcpIpConnectionSetting.config">
+    <None Include="Config\Hsinchu_2F\TcpIpConnectionSetting.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Config\ASE_LOOP\AddressBaseDefs_simple.config">

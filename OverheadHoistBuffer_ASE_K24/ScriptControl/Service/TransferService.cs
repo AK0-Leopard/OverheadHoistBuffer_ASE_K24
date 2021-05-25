@@ -6272,7 +6272,85 @@ namespace com.mirle.ibg3k0.sc.Service
                 return "失敗";
             }
         }
+        public string ForceDeleteCst(string boxID, string cmdSource)
+        {
+            TransferServiceLogger.Info
+            (
+                DateTime.Now.ToString("HH:mm:ss.fff ") +
+                "OHB >> DB|ForceDeleteCst： boxID:" + boxID + "  誰呼叫:" + cmdSource
+            );
 
+
+            if (reportBLL.ReportCarrierRemovedCompleted("", boxID))
+            {
+                TransferServiceLogger.Info
+                (
+                    DateTime.Now.ToString("HH:mm:ss.fff ") +
+                    "OHB >> DB|ForceDeleteCst:刪帳成功"
+                );
+                return "OK";
+            }
+            else
+            {
+                TransferServiceLogger.Info
+                (
+                    DateTime.Now.ToString("HH:mm:ss.fff ") +
+                    "Manual >> OHB|ForceDeleteCst:刪帳失敗"
+                );
+                return "失敗";
+            }
+        }
+        public string ForceDeleteCstAndCmd(ACMD_MCS cmdMCS, CassetteData cassetteData, string cmdSource, string result = ResultCode.OtherErrors)
+        {
+            TransferServiceLogger.Info
+            (
+                DateTime.Now.ToString("HH:mm:ss.fff ") +
+                "OHB >> DB|ForceDeleteCst：cmd ID:" + cmdMCS.CMD_ID + "    boxID:" + cassetteData.BOXID + "  誰呼叫:" + cmdSource
+            );
+
+
+            if (cmdMCS != null)
+            {
+                reportBLL.ReportTransferCompleted(cmdMCS, cassetteData, result);
+                cmdBLL.updateCMD_MCS_TranStatus(cmdMCS.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+            }
+
+            if (reportBLL.ReportCarrierRemovedCompleted("", cassetteData.BOXID))
+            {
+                TransferServiceLogger.Info
+                (
+                    DateTime.Now.ToString("HH:mm:ss.fff ") +
+                    "OHB >> DB|ForceDeleteCst:刪帳成功"
+                );
+                return "OK";
+            }
+            else
+            {
+                TransferServiceLogger.Info
+                (
+                    DateTime.Now.ToString("HH:mm:ss.fff ") +
+                    "Manual >> OHB|ForceDeleteCst:刪帳失敗"
+                );
+                return "失敗";
+            }
+        }
+        public string ForceFinishMCSCmd(ACMD_MCS cmdMCS, CassetteData cassetteData, string cmdSource, string result = ResultCode.OtherErrors)
+        {
+            TransferServiceLogger.Info
+            (
+                DateTime.Now.ToString("HH:mm:ss.fff ") +
+                "OHB >> DB|ForceFinishMCSCmd：cmd ID:" + cmdMCS.CMD_ID + "    boxID:" + cassetteData.BOXID + "  誰呼叫:" + cmdSource
+            );
+
+
+            if (cmdMCS != null)
+            {
+                reportBLL.ReportTransferCompleted(cmdMCS, cassetteData, result);
+                cmdBLL.updateCMD_MCS_TranStatus(cmdMCS.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                return "OK";
+            }
+            return "失敗";
+        }
         #endregion
 
         #endregion
