@@ -2923,7 +2923,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 lock (vh.DoCreatTransferCommand_Sync)
                 {
                     string vh_current_adr = vh.CUR_ADR_ID;
-                    string vh_current_section = vh.CUR_SEC_ID;
                     if (cmd_type == E_CMD_TYPE.MTLHome ||
                        cmd_type == E_CMD_TYPE.MoveToMTL ||
                        cmd_type == E_CMD_TYPE.SystemOut ||

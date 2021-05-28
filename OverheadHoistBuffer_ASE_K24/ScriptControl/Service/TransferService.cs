@@ -1844,6 +1844,10 @@ namespace com.mirle.ibg3k0.sc.Service
                         }
                     }
                 }
+                else
+                {
+                    sourcePortType = true;
+                }
                 #endregion
 
                 if (sourcePortType == false)
@@ -2014,6 +2018,10 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         destState = destState + " shelfData = Null";
                     }
+                }
+                else
+                {
+                    destPortType = true;
                 }
                 #endregion
 

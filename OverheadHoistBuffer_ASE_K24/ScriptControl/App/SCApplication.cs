@@ -651,8 +651,8 @@ namespace com.mirle.ibg3k0.sc.App
         /// </summary>
         /// <value>The background work sample.</value>
         public BackgroundWorkDriver BackgroundWorkSample { get; private set; }              //A0.03
-
-
+        public BackgroundWorkDriver BackgroundWorkBlockQueue { get; private set; } //A0.01
+        public BackgroundWorkDriver BackgroundWorkProcVehiclePosition { get; private set; }              //A0.03
         public IScheduler Scheduler { get; private set; }
 
 
@@ -1101,9 +1101,11 @@ namespace com.mirle.ibg3k0.sc.App
         private void initBackgroundWork()
         {
             BackgroundWorkSample = new BackgroundWorkDriver(new BackgroundWorkSample());            //A0.03
+            BackgroundWorkBlockQueue = new BackgroundWorkDriver(new BackgroundWorkBlockQueue());            //A0.01
+            BackgroundWorkProcVehiclePosition = new BackgroundWorkDriver(new BackgroundWorkProcVehiclePosition());            //A0.01
         }
         private void initScheduler()
-          {
+        {
             Scheduler = StdSchedulerFactory.GetDefaultScheduler();
 
             //IJobDetail zabbix_data_collection = JobBuilder.Create<ZabbixDataCollectionScheduler>().Build();

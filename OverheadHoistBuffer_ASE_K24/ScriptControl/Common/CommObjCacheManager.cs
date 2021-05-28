@@ -43,6 +43,7 @@ namespace com.mirle.ibg3k0.sc.Common
         private List<PortDef> PortDefs;
         private List<ReserveEnhanceInfo> ReserveEnhanceInfos;
         private CommonInfo CommonInfo;
+        private List<ABLOCKZONEMASTER> BlockZoneMasters;
 
         private CommObjCacheManager() { }
         public static CommObjCacheManager getInstance()
@@ -68,6 +69,8 @@ namespace com.mirle.ibg3k0.sc.Common
 
             Segments = scApp.MapBLL.loadAllSegments();
             Sections = scApp.MapBLL.loadAllSection();
+            BlockZoneMasters = scApp.MapBLL.loadAllBlockZoneMaster();
+
             ReserveEnhanceInfos = scApp.ReserveEnhanceInfoDao.loadReserveInfos(scApp);
             foreach (ASEGMENT segment in Segments)
             {
@@ -136,6 +139,10 @@ namespace com.mirle.ibg3k0.sc.Common
         private void setValueToPropety<T>(ref T sourceObj, ref T destinationObj)
         {
             BCFUtility.setValueToPropety(ref sourceObj, ref destinationObj);
+        }
+        public List<ABLOCKZONEMASTER> getBlockMasterZone()
+        {
+            return BlockZoneMasters;
         }
 
         #region 將最新物件資料，放置入Cache的方法

@@ -119,7 +119,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void cb_FroceReservePass_CheckedChanged(object sender, EventArgs e)
         {
-            DebugParameter.isForcedPassReserve = cb_FroceReservePass.Checked;
+            DebugParameter.isForcedPassBlockControl = cb_FroceReservePass.Checked;
         }
 
 
@@ -435,7 +435,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void cb_FroceReserveReject_CheckedChanged(object sender, EventArgs e)
         {
-            DebugParameter.isForcedRejectReserve = cb_FroceReserveReject.Checked;
+            DebugParameter.isForcedRejectBlockControl = cb_FroceReserveReject.Checked;
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -995,7 +995,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 btn_refresh_vh_order_in_seg.Enabled = false;
                 string seg_id = cmb_refresh_vh_order_in_seg_id.Text;
                 var seg_obj = bcApp.SCApplication.SegmentBLL.cache.GetSegment(seg_id);
-                await Task.Run(() => seg_obj.RefreshVhOrder(bcApp.SCApplication.VehicleBLL, bcApp.SCApplication.SectionBLL));
+                //await Task.Run(() => seg_obj.RefreshVhOrder(bcApp.SCApplication.VehicleBLL, bcApp.SCApplication.SectionBLL));
                 RefreshVehicleOrderInSegment(seg_id);
             }
             finally

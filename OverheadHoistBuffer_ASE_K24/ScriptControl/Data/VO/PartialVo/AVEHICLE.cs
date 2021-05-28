@@ -231,6 +231,8 @@ namespace com.mirle.ibg3k0.sc
         public virtual string ObsVehicleID { get; set; }
         [JsonIgnore]
         public virtual List<string> Alarms { get; set; }
+        [JsonIgnore]
+        public virtual string PRE_SEC_ID { get; set; }
 
 
 
@@ -258,6 +260,9 @@ namespace com.mirle.ibg3k0.sc
         [JsonIgnore]
         [BaseElement(NonChangeFromOtherVO = true)]
         public Stopwatch PositionRefreshTimer = new Stopwatch();
+
+        [BaseElement(NonChangeFromOtherVO = true)]
+        public Stopwatch LastBlockRequestFailInterval = new Stopwatch();
 
         public int Pixel_Loaction_X = 0;
         public int Pixel_Loaction_Y = 0;
@@ -506,6 +511,23 @@ namespace com.mirle.ibg3k0.sc
             set { }
         }
         public virtual string NODE_ID { get; set; }
+        public bool IsOnAdr
+        {
+            get
+            {
+                return SCUtility.isEmpty(CUR_SEC_ID);
+            }
+        }
+        public string getVIEW_SEC_ID(BLL.SectionBLL sectionBLL)
+        {
+            string start_sec_id = SCUtility.Trim(CUR_SEC_ID, true);
+            ASECTION sec_by_cur_adr = sectionBLL.cache.GetSectionsByToAddress(CUR_ADR_ID).FirstOrDefault();
+            if (sec_by_cur_adr != null)
+            {
+                start_sec_id = SCUtility.Trim(sec_by_cur_adr.SEC_ID);
+            }
+            return start_sec_id;
+        }
 
         //public ACMD_OHTC currentExcuteCmd = null;
         [JsonIgnore]
