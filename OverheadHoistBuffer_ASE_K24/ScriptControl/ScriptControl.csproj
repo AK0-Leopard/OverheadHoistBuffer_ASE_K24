@@ -520,6 +520,8 @@
     <Compile Include="CONTROL_DATA.cs">
       <DependentUpon>OHTCContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\BackgroundWorkBlockQueue.cs" />
+    <Compile Include="Data\BackgroundWorkProcVehiclePosition.cs" />
     <Compile Include="Data\BackgroundWorkSample.cs" />
     <Compile Include="Data\DAO\191204Test\CassetteDataDao.cs" />
     <Compile Include="Data\DAO\191204Test\ShelfDefDao.cs" />
@@ -590,6 +592,8 @@
     <Compile Include="Data\DAO\MCSReportQueueDao.cs" />
     <Compile Include="Data\DAO\HIDZoneMasterDao.cs" />
     <Compile Include="Data\DBConnection_EF.cs" />
+    <Compile Include="Data\PLC_Functions\MGV\OHxCToMGV_Status.cs" />
+    <Compile Include="Data\PLC_Functions\MGV\MGVToOHxC_Alive.cs" />
     <Compile Include="Data\PLC_Functions\OHxCToPLC_SetSystemInfo.cs" />
     <Compile Include="Data\PLC_Functions\HIDToOHxC_TempAlarm.cs" />
     <Compile Include="Data\PLC_Functions\HIDToOHxC_PowerAlarm.cs" />
@@ -800,6 +804,7 @@
     <Compile Include="Data\TimerAction\TaskCommandTimerAction.cs" />
     <Compile Include="Data\TimerAction\DBTableWatcherTimerAction.cs" />
     <Compile Include="Data\ValueDefMapAction\ASEMCSDefaultMapAction.cs" />
+    <Compile Include="Data\ValueDefMapAction\MGVDefaultValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\SimpleMTLValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\OHCVValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\HIDValueDefMapAction.cs" />
@@ -820,6 +825,7 @@
     <Compile Include="Data\VO\MaintainSpace.cs" />
     <Compile Include="Data\VO\MaintainLift.cs" />
     <Compile Include="Data\VO\PartialVo\AADDRESS.cs" />
+    <Compile Include="Data\VO\PartialVo\ABLOCKZONEMASTER.cs" />
     <Compile Include="Data\VO\PartialVo\ACMD_OHTC.cs" />
     <Compile Include="Data\VO\PartialVo\ASECTION.cs" />
     <Compile Include="Data\VO\PartialVo\ASEGMENT.cs" />
