@@ -469,6 +469,7 @@
     <Compile Include="BLL\GuideBLL.cs" />
     <Compile Include="BLL\HIDBLL.cs" />
     <Compile Include="BLL\EventBLL.cs" />
+    <Compile Include="BLL\Interface\IMGVBLL.cs" />
     <Compile Include="BLL\LineBLL.cs" />
     <Compile Include="BLL\MapBLL.cs" />
     <Compile Include="BLL\ParkBLL.cs" />
@@ -701,6 +702,7 @@
     <Compile Include="Data\SECS\CSOT\S6F11.cs" />
     <Compile Include="Data\SECS\CSOT\S6F12.cs" />
     <Compile Include="Data\SECS\CSOT\SECSConst.cs" />
+    <Compile Include="Data\SECS\Interface\IMGVReport.cs" />
     <Compile Include="Data\SECS\S1F0.cs" />
     <Compile Include="Data\SECS\S1F13.cs" />
     <Compile Include="Data\SECS\S1F14.cs" />
