@@ -5306,24 +5306,10 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (BLL.VehicleBLL.BlockedByTheErrorVehicleException blockedExecption)
             {
                 logger.Warn(blockedExecption, "BlockedByTheErrorVehicleException:");
-                VehicleBlockedByTheErrorVehicle();
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception:");
-            }
-        }
-        private void VehicleBlockedByTheErrorVehicle()
-        {
-            ALARM alarm = scApp.AlarmBLL.setAlarmReport(SCAppConstants.System_ID, SCAppConstants.System_ID, MainAlarmCode.OHxC_BOLCKED_BY_THE_ERROR_VEHICLE_0_1, null);
-            if (alarm != null)
-            {
-                //scApp.AlarmBLL.onMainAlarm(SCAppConstants.MainAlarmCode.OHxC_BOLCKED_BY_THE_ERROR_VEHICLE_0_1,
-                //                           vh_id,
-                //                           ohxc_cmd_id);
-                List<AMCSREPORTQUEUE> reportqueues = null;
-                //scApp.ReportBLL.ReportAlarmHappend(alarm.EQPT_ID, alarm.ALAM_STAT, alarm.ALAM_CODE, alarm.ALAM_DESC, out reportqueues);
-                scApp.LineBLL.updateHostControlState(LineHostControlState.HostControlState.On_Line_Local);
             }
         }
         #endregion Vehicle Change The Path

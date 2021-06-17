@@ -140,6 +140,7 @@ namespace com.mirle.ibg3k0.sc.Service
         ZONE,
         AGVZONE,
         LINE,
+        EQ
     }
     public class OHT_BOXID_MismatchData
     {
@@ -1844,6 +1845,10 @@ namespace com.mirle.ibg3k0.sc.Service
                         }
                     }
                 }
+                else if (isUnitType(sourceName, UnitType.EQ))
+                {
+                    sourcePortType = true;
+                }
                 else
                 {
                     sourcePortType = true;
@@ -2018,6 +2023,10 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         destState = destState + " shelfData = Null";
                     }
+                }
+                else if (isUnitType(destName, UnitType.EQ))
+                {
+                    destPortType = true;
                 }
                 else
                 {
@@ -2796,7 +2805,9 @@ namespace com.mirle.ibg3k0.sc.Service
                         unLoadCstData.Carrier_LOC = GetPositionName(unLoadCstData.Carrier_LOC, 1);
                         cassette_dataBLL.UpdateCSTLoc(unLoadCstData.BOXID, unLoadCstData.Carrier_LOC, 1);
                     }
-                    else if (isUnitType(dest, UnitType.SHELF))
+                    else if (isUnitType(dest, UnitType.SHELF) ||
+                             isUnitType(dest, UnitType.EQ))
+
                     {
                         cassette_dataBLL.UpdateCSTLoc(unLoadCstData.BOXID, dest, 1);
                         cassette_dataBLL.UpdateCSTState(unLoadCstData.BOXID, (int)E_CSTState.Completed);
@@ -2848,6 +2859,13 @@ namespace com.mirle.ibg3k0.sc.Service
                                 OHBC_InsertCassette(addCassetteData.CSTID, addCassetteData.BOXID, addCassetteData.Carrier_LOC, addCassetteData.Carrier_LOC + " OHT_UnLoadCompleted CST、BOXID讀不到");
                             }
                             QueryLotID(unLoadCstData);
+                        }
+                        else if (isUnitType(dest, UnitType.EQ))
+                        {
+                            reportBLL.ReportCarrierWaitOut(unLoadCstData, "1");
+                            reportBLL.ReportCarrierRemovedCompleted(unLoadCstData.CSTID, unLoadCstData.BOXID);
+                            //cassette_dataBLL.DeleteCSTbyBoxId(unLoadCstData.BOXID);
+                            TransferServiceLogger.Info($"{DateTime.Now.ToString("HH:mm:ss.fff")} OHT_UnLoadCompleted 位置在:{dest}, 故直接將其移除");
                         }
                         else
                         {
@@ -6681,6 +6699,26 @@ namespace com.mirle.ibg3k0.sc.Service
                 return false;
             }
         }
+        public bool isEQPort(string portName)
+        {
+            try
+            {
+                portName = portName.Trim();
+                if (portINIData[portName].UnitType == UnitType.EQ.ToString())
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "isCVPort    portName:" + portName);
+                return false;
+            }
+        }
         public bool isShelfPort(string portName)
         {
             return isUnitType(portName, UnitType.SHELF);
@@ -6932,7 +6970,12 @@ namespace com.mirle.ibg3k0.sc.Service
                 + "    ing: " + ing
             );
         }
+
         public void OHBC_AlarmSet(string _eqName, string errCode)
+        {
+            OHBC_AlarmSet(_eqName, errCode, "");
+        }
+        public void OHBC_AlarmSet(string _eqName, string errCode, string desc)
         {
             try
             {
@@ -6967,6 +7010,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     "OHT >> OHB|AlarmSet:"
                     + "    EQ_Name:" + eqName.Trim()
                     + "    OHT_AlarmID:" + errCode
+                    + "    OHT_AlarmDesc:" + desc
                 );
 
                 if (errCode == "0")
@@ -6985,7 +7029,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 ACMD_MCS mcsCmdData = cmdBLL.getCMD_ByOHTName(eqName).FirstOrDefault();
 
-                ALARM alarm = scApp.AlarmBLL.setAlarmReport(null, eqName, errCode, mcsCmdData);
+                ALARM alarm = scApp.AlarmBLL.setAlarmReport(null, eqName, errCode, mcsCmdData, desc);
 
                 if (alarm != null)
                 {

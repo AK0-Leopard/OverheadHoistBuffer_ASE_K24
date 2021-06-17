@@ -426,7 +426,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
                         if (isHostReady())
                         {
-                            s2f50.HCACK = scApp.CMDBLL.doCheckMCSCommand(cmdID, priority, cstID, boxID, lotID, ref source, ref dest, out rtnStr, out isFromVh);
+                            s2f50.HCACK = scApp.CMDBLL.doCheckMCSCommand
+                                (scApp, cmdID, priority, cstID, boxID, lotID, ref source, ref dest, out rtnStr, out isFromVh);
                         }
                         else
                         {
@@ -1716,16 +1717,21 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         }
         private S6F11.RPTINFO.RPTITEM.VIDITEM_350_SV buildCurrentEqPortStatusVIDItem()
         {
+            string ohbName = scApp.getEQObjCacheManager().getLine().LINE_ID;
+            List<PortDef> port_station = scApp.PortDefBLL.GetOHB_CVPortData(ohbName);
+            port_station = port_station.Where(p => SCUtility.isMatche(p.UnitType, "EQ")).ToList();
+            int port_count = port_station.Count;
+
             S6F11.RPTINFO.RPTITEM.VIDITEM_350_SV viditem_350 = new S6F11.RPTINFO.RPTITEM.VIDITEM_350_SV();
-            viditem_350.EQ_PORT_INFO_OBJ = new S6F11.RPTINFO.RPTITEM.VIDITEM_356_SV[0];
-            //for(int i = 0;i < viditem_350.EQ_PORT_INFO_OBJ.Length;i++)
-            //{
-            //    viditem_350.EQ_PORT_INFO_OBJ[i] = new S6F11.RPTINFO.RPTITEM.VIDITEM_356_SV();
-            //    viditem_350.EQ_PORT_INFO_OBJ[i].PORT_ID_OBJ.PORT_ID = "123123";
-            //    viditem_350.EQ_PORT_INFO_OBJ[i].PORT_TRANSFTER_STATE_OBJ.PORT_TRANSFER_STATE = "1";
-            //    viditem_350.EQ_PORT_INFO_OBJ[i].EQ_REQ_SATUS_OBJ.EQ_REQ_STATUS = "1";
-            //    viditem_350.EQ_PORT_INFO_OBJ[i].EQ_PRESENCE_STATUS_OBJ.EQ_PRESENCE_STATUS = "1";
-            //}
+            viditem_350.EQ_PORT_INFO_OBJ = new S6F11.RPTINFO.RPTITEM.VIDITEM_356_SV[port_count];
+            for (int i = 0; i < viditem_350.EQ_PORT_INFO_OBJ.Length; i++)
+            {
+                viditem_350.EQ_PORT_INFO_OBJ[i] = new S6F11.RPTINFO.RPTITEM.VIDITEM_356_SV();
+                viditem_350.EQ_PORT_INFO_OBJ[i].PORT_ID_OBJ.PORT_ID = port_station[i].PLCPortID;
+                viditem_350.EQ_PORT_INFO_OBJ[i].PORT_TRANSFTER_STATE_OBJ.PORT_TRANSFER_STATE = ((int)port_station[i].State).ToString();
+                viditem_350.EQ_PORT_INFO_OBJ[i].EQ_REQ_SATUS_OBJ.EQ_REQ_STATUS = "1";
+                viditem_350.EQ_PORT_INFO_OBJ[i].EQ_PRESENCE_STATUS_OBJ.EQ_PRESENCE_STATUS = "s";
+            }
             return viditem_350;
         }
         private S6F11.RPTINFO.RPTITEM.VIDITEM_351_SV buildCurrentPortTypesVIDItem()
@@ -1733,7 +1739,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             string ohbName = scApp.getEQObjCacheManager().getLine().LINE_ID;
             //List<PortDef> port_station = scApp.PortDefBLL.GetOHB_PortData(ohbName);
             List<PortDef> port_station = scApp.PortDefBLL.GetOHB_CVPortData(ohbName);
-
+            port_station = port_station.Where(p => !SCUtility.isMatche(p.UnitType, "EQ")).ToList();
             int port_count = port_station.Count;
 
             string control_state = SCAppConstants.LineHostControlState.convert2MES(line.Host_Control_State);

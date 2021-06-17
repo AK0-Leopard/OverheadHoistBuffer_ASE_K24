@@ -130,14 +130,14 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 isSuccess = isSuccess && reportBLL.ReportEquiptmentOffLine();
             }
-            
-            isSuccess = isSuccess && lineBLL.updateHostControlState(SCAppConstants.LineHostControlState.HostControlState.EQ_Off_line);            
+
+            isSuccess = isSuccess && lineBLL.updateHostControlState(SCAppConstants.LineHostControlState.HostControlState.EQ_Off_line);
         }
         public void OfflineWithHostByHost()
         {
             bool isSuccess = true;
             isSuccess = isSuccess && reportBLL.ReportEquiptmentOffLine();
-            isSuccess = isSuccess && lineBLL.updateHostControlState(SCAppConstants.LineHostControlState.HostControlState.EQ_Off_line);            
+            isSuccess = isSuccess && lineBLL.updateHostControlState(SCAppConstants.LineHostControlState.HostControlState.EQ_Off_line);
         }
 
         public bool canOnlineWithHost()
@@ -302,7 +302,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         case ErrorStatus.ErrSet:
                             //將設備上報的Alarm填入資料庫。
-                            alarm = scApp.AlarmBLL.setAlarmReport(node_id, eq_id, err_code, null);
+                            alarm = scApp.AlarmBLL.setAlarmReport(node_id, eq_id, err_code, null, "");
                             //將其更新至Redis，保存目前所發生的Alarm
                             scApp.AlarmBLL.setAlarmReport2Redis(alarm);
                             alarms = new List<ALARM>() { alarm };

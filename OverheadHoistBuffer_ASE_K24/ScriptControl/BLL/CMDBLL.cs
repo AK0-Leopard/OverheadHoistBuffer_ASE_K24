@@ -300,7 +300,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
-        public string doCheckMCSCommand(string command_id, string Priority, string cstID, string box_id, string lotID,
+        public string doCheckMCSCommand(SCApplication app, string command_id, string Priority, string cstID, string box_id, string lotID,
                                         ref string HostSource, ref string HostDestination,
                                         out string check_result, out bool isFromVh)
         {
@@ -336,8 +336,29 @@ namespace com.mirle.ibg3k0.sc.BLL
 
                 if (cstData == null)
                 {
-                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: BOXID: " + box_id + " 不存在");
-                    return SECSConst.HCACK_Obj_Not_Exist;
+                    //TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: BOXID: " + box_id + " 不存在");
+                    //return SECSConst.HCACK_Obj_Not_Exist;
+                    if (scApp.TransferService.isEQPort(HostSource))
+                    {
+                        CassetteData cstData_FromS2F49 = new CassetteData();
+                        cstData_FromS2F49.BOXID = box_id.Trim(); //填BOXID
+                        cstData_FromS2F49.CSTID = ""; // 填入空白即可
+                        cstData_FromS2F49.Carrier_LOC = HostSource.Trim();  //填PortID
+                        cstData_FromS2F49.CSTState = E_CSTState.Installed;
+                        cstData_FromS2F49.StockerID = "1";
+                        cstData_FromS2F49.CSTInDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
+                        cstData_FromS2F49.ReadStatus = ((int)ACMD_MCS.IDreadStatus.successful).ToString();
+                        cstData_FromS2F49.Stage = 1;
+                        TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F49: BOXID: " + box_id + " 不存在, 但由於是EQ Port 自動建帳 PTI用");
+                        app.CassetteDataBLL.insertCassetteData(cstData_FromS2F49);
+                        cstData = cstData_FromS2F49;
+                    }
+                    else
+                    {
+                        check_result = DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: BOXID: " + box_id + " 不存在";
+                        TransferServiceLogger.Info(check_result);
+                        return SECSConst.HCACK_Obj_Not_Exist;
+                    }
                 }
                 #endregion
                 #region 確認命令ID是否重複 

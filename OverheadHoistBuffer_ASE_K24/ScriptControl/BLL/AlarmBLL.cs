@@ -114,7 +114,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
 
         object lock_obj_alarm = new object();
-        public ALARM setAlarmReport(string node_id, string eq_id, string error_code, ACMD_MCS mcsCmdData)
+        public ALARM setAlarmReport(string node_id, string eq_id, string error_code, ACMD_MCS mcsCmdData,string desc)
         {
             lock (lock_obj_alarm)
             {
@@ -161,8 +161,9 @@ namespace com.mirle.ibg3k0.sc.BLL
                     //eq_id = eq_id.Remove(0, 12);
                 }
 
-                AlarmMap alarmMap = alarmMapDao.getAlarmMap(alarmUnitType, error_code);
 
+                AlarmMap alarmMap = alarmMapDao.getAlarmMap(alarmUnitType, error_code);
+                string alam_desc = "";
                 if(alarmMap == null)
                 {
                     scApp.TransferService.TransferServiceLogger.Info
@@ -172,6 +173,18 @@ namespace com.mirle.ibg3k0.sc.BLL
                         + "    EQ_Name:" + eq_id
                         + "    Error_code:" + error_code
                     );
+                    if(SCUtility.isEmpty(desc))
+                    {
+                        alam_desc = $"unknow alarm code:{error_code}";
+                    }
+                    else
+                    {
+                        alam_desc = desc;
+                    }
+                }
+                else
+                {
+                    alam_desc = $"{eq_id} {alarmMap.ALARM_DESC}(error code:{error_code})";
                 }
 
                 string strNow = BCFUtility.formatDateTime(DateTime.Now, SCAppConstants.TimestampFormat_19);
@@ -183,7 +196,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                     ALAM_CODE = error_code,
                     ALAM_LVL = alarmMap == null ? E_ALARM_LVL.Warn : alarmMap.ALARM_LVL,
                     ALAM_STAT = ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
-                    ALAM_DESC = alarmMap == null ? $"unknow alarm code:{error_code}" : $"{eq_id} {alarmMap.ALARM_DESC}(error code:{error_code})",
+                    //ALAM_DESC = alarmMap == null ? $"unknow alarm code:{error_code}" : $"{eq_id} {alarmMap.ALARM_DESC}(error code:{error_code})",
+                    ALAM_DESC = alam_desc,
                     ERROR_ID = error_code,  //alarmMap?.ALARM_ID ?? "0",
                     UnitID = eq_id,
                     UnitState = "3",
