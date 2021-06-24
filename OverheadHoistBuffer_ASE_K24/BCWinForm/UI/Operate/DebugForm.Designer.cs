@@ -352,6 +352,7 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
+            this.btn_block_test = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -692,7 +693,7 @@
             // label76
             // 
             this.label76.AutoSize = true;
-            this.label76.Location = new System.Drawing.Point(810, 705);
+            this.label76.Location = new System.Drawing.Point(810, 689);
             this.label76.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label76.Name = "label76";
             this.label76.Size = new System.Drawing.Size(20, 22);
@@ -706,7 +707,7 @@
             0,
             0,
             0});
-            this.num_vh_y.Location = new System.Drawing.Point(834, 703);
+            this.num_vh_y.Location = new System.Drawing.Point(834, 686);
             this.num_vh_y.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -720,7 +721,7 @@
             // label75
             // 
             this.label75.AutoSize = true;
-            this.label75.Location = new System.Drawing.Point(810, 666);
+            this.label75.Location = new System.Drawing.Point(810, 650);
             this.label75.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label75.Name = "label75";
             this.label75.Size = new System.Drawing.Size(20, 22);
@@ -734,7 +735,7 @@
             0,
             0,
             0});
-            this.num_vh_x.Location = new System.Drawing.Point(834, 664);
+            this.num_vh_x.Location = new System.Drawing.Point(834, 647);
             this.num_vh_x.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -758,7 +759,7 @@
             // 
             // txt_current_sec_id
             // 
-            this.txt_current_sec_id.Location = new System.Drawing.Point(834, 564);
+            this.txt_current_sec_id.Location = new System.Drawing.Point(834, 551);
             this.txt_current_sec_id.Name = "txt_current_sec_id";
             this.txt_current_sec_id.Size = new System.Drawing.Size(172, 30);
             this.txt_current_sec_id.TabIndex = 55;
@@ -770,7 +771,7 @@
             0,
             0,
             0});
-            this.num_section_dis.Location = new System.Drawing.Point(834, 609);
+            this.num_section_dis.Location = new System.Drawing.Point(834, 592);
             this.num_section_dis.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -784,7 +785,7 @@
             // ck_retry
             // 
             this.ck_retry.AutoSize = true;
-            this.ck_retry.Location = new System.Drawing.Point(834, 528);
+            this.ck_retry.Location = new System.Drawing.Point(834, 515);
             this.ck_retry.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ck_retry.Name = "ck_retry";
             this.ck_retry.Size = new System.Drawing.Size(119, 26);
@@ -1477,6 +1478,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.btn_block_test);
             this.groupBox6.Controls.Add(this.btn_blocked_sec_refresh);
             this.groupBox6.Controls.Add(this.btn_release_block);
             this.groupBox6.Controls.Add(this.lbl_BlockedVh);
@@ -1485,7 +1487,7 @@
             this.groupBox6.Controls.Add(this.cb_block_section);
             this.groupBox6.Location = new System.Drawing.Point(1100, 196);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(284, 230);
+            this.groupBox6.Size = new System.Drawing.Size(349, 230);
             this.groupBox6.TabIndex = 24;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Block Manager";
@@ -2678,7 +2680,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(207, 3);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(207, 8);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -4301,6 +4303,16 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
+            // btn_block_test
+            // 
+            this.btn_block_test.Location = new System.Drawing.Point(177, 180);
+            this.btn_block_test.Name = "btn_block_test";
+            this.btn_block_test.Size = new System.Drawing.Size(135, 39);
+            this.btn_block_test.TabIndex = 60;
+            this.btn_block_test.Text = "Block Test";
+            this.btn_block_test.UseVisualStyleBackColor = true;
+            this.btn_block_test.Click += new System.EventHandler(this.btn_block_test_Click);
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -4711,5 +4723,6 @@
         private System.Windows.Forms.Label label77;
         private System.Windows.Forms.Label label78;
         private System.Windows.Forms.NumericUpDown num_preStageWatingTime;
+        private Components.uctlButton btn_block_test;
     }
 }

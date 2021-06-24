@@ -29,6 +29,8 @@ namespace com.mirle.ibg3k0.sc.Service
         Logger logger = LogManager.GetCurrentClassLogger();
         MapBLL mapBLL = null;
         SectionBLL sectionBLL = null;
+        BlockControlBLL blockControlBLL = null;
+        ReserveBLL reserveBLL = null;
 
         VehicleService vehicleService = null;
         public BlockControlService()
@@ -40,10 +42,34 @@ namespace com.mirle.ibg3k0.sc.Service
             mapBLL = app.MapBLL;
             sectionBLL = app.SectionBLL;
             vehicleService = app.VehicleService;
+            blockControlBLL = app.BlockControlBLL;
+            reserveBLL = app.ReserveBLL;
 
             RegisterReleaseAddressOfKeySection();
+            RegisterBlockLeaveEventForBlockRelease();
 
         }
+        private void RegisterBlockLeaveEventForBlockRelease()
+        {
+            List<ABLOCKZONEMASTER> block_zone_masters = blockControlBLL.cache.loadAllBlockZoneMaster();
+            foreach (var block_zone in block_zone_masters)
+            {
+                block_zone.VehicleLeave += Block_zone_VehicleLeave;
+            }
+        }
+        private void Block_zone_VehicleLeave(object sender, string vhID)
+        {
+            string vh_id = vhID;
+            ABLOCKZONEMASTER block_master = sender as ABLOCKZONEMASTER;
+            var block_detail = block_master.GetBlockZoneDetailSectionIDs();
+            foreach (string block_detail_sec_id in block_detail)
+            {
+                string sec_id = SCUtility.Trim(block_detail_sec_id);
+                reserveBLL.RemoveManyReservedSectionsByVIDSID(vh_id, sec_id);
+            }
+        }
+
+
 
         /// <summary>
         /// 用來註冊可能可以釋放Block的Section路段

@@ -2863,7 +2863,9 @@ namespace com.mirle.ibg3k0.sc.Service
                         else if (isUnitType(dest, UnitType.EQ))
                         {
                             reportBLL.ReportCarrierWaitOut(unLoadCstData, "1");
-                            reportBLL.ReportCarrierRemovedCompleted(unLoadCstData.CSTID, unLoadCstData.BOXID);
+                            //reportBLL.ReportCarrierRemovedCompleted(unLoadCstData.CSTID, unLoadCstData.BOXID);
+                            reportBLL.ReportCarrierRemovedFromPort(unLoadCstData, "");
+                            cassette_dataBLL.DeleteCSTbyCstBoxID(unLoadCstData.CSTID, unLoadCstData.BOXID);
                             //cassette_dataBLL.DeleteCSTbyBoxId(unLoadCstData.BOXID);
                             TransferServiceLogger.Info($"{DateTime.Now.ToString("HH:mm:ss.fff")} OHT_UnLoadCompleted 位置在:{dest}, 故直接將其移除");
                         }

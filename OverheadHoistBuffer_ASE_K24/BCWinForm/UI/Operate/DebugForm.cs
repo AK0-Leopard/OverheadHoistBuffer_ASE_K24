@@ -473,8 +473,10 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_block_section.Text = "";
             blocked_queues = bcApp.SCApplication.MapBLL.loadAllUsingBlockQueue();
 
-            cb_block_section.DataSource = blocked_queues;
-            cb_block_section.DisplayMember = "DisplayMember";
+            var block_master = bcApp.SCApplication.BlockControlBLL.cache.loadAllBlockZoneMaster();
+
+            cb_block_section.DataSource = block_master;
+            cb_block_section.DisplayMember = "ENTRY_SEC_ID";
         }
 
         private void btn_release_block_Click(object sender, EventArgs e)
@@ -1319,6 +1321,14 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             int pre_stage_wating_time = (int)num_preStageWatingTime.Value;
             sc.App.SystemParameter.setPreStageWatingTime_ms(pre_stage_wating_time);
+        }
+
+        private void btn_block_test_Click(object sender, EventArgs e)
+        {
+            string entry_section = cb_block_section.Text;
+
+            bool can_block_pass = bcApp.SCApplication.VehicleService.ProcessBlockReqByReserveModule(null, noticeCar, entry_section);
+
         }
     }
 }

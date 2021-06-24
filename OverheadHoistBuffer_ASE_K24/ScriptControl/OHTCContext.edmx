@@ -1569,7 +1569,7 @@
             <PropertyRef Name="SEC_ID" />
             <PropertyRef Name="ENTRY_SEC_ID" />
           </Key>
-          <Property Type="String" Name="ENTRY_SEC_ID" Nullable="false" MaxLength="5" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="ENTRY_SEC_ID" Nullable="false" MaxLength="6" FixedLength="true" Unicode="true" />
           <Property Name="SEC_ID" Type="String" Nullable="false" MaxLength="5" Unicode="true" FixedLength="true" />
         </EntityType>
         <EntityType Name="AGROUPRAILS">
@@ -1706,7 +1706,7 @@
           <Key>
             <PropertyRef Name="ENTRY_SEC_ID" />
           </Key>
-          <Property Type="String" Name="ENTRY_SEC_ID" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="ENTRY_SEC_ID" Nullable="false" MaxLength="6" FixedLength="true" Unicode="false" />
           <Property Type="OHTC_DevModel.E_BLOCK_ZONE_TYPE" Name="BLOCK_ZONE_TYPE" Nullable="false" />
           <Property Type="String" Name="LEAVE_ADR_ID_1" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="LEAVE_ADR_ID_2" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />

@@ -77,6 +77,12 @@ namespace com.mirle.ibg3k0.sc.Common
                 segment.SetSectionList(scApp.SectionBLL);
             }
 
+            foreach (ABLOCKZONEMASTER block_zone_master in BlockZoneMasters)
+            {
+                block_zone_master.SetBlockDetailList(scApp.MapBLL);
+            }
+
+
             CommonInfo = new CommonInfo();
         }
 
