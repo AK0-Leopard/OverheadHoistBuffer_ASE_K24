@@ -988,12 +988,10 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 if (noticeCar.IsPause)
                 {
                     scApp.VehicleService.PauseRequest(vh_id, PauseEvent.Continue, SCAppConstants.OHxCPauseType.Normal);
-                    //noticeCar.sned_Str39(PauseEvent.Continue, PauseType.OhxC);
                 }
                 else
                 {
-                    //scApp.VehicleBLL.noticeVhPass(vh_id);
-                    scApp.VehicleService.noticeVhPass(vh_id);
+                    scApp.VehicleService.PauseRequest(vh_id, PauseEvent.Continue, SCAppConstants.OHxCPauseType.Block);
                 }
             });
         }

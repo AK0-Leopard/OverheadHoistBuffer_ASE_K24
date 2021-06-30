@@ -1138,7 +1138,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 else
                 {
                     //scApp.VehicleBLL.noticeVhPass(vh_id);
-                    scApp.VehicleService.noticeVhPass(vh_id);
+                    scApp.VehicleService.PauseRequest(vh_id, PauseEvent.Continue, SCAppConstants.OHxCPauseType.Block);
                 }
             });
         }

@@ -1572,8 +1572,6 @@ namespace com.mirle.ibg3k0.sc.BLL
         public void doLoadArrivals(string eq_id, string current_adr_id, string current_sec_id)
         {
             scApp.CMDBLL.update_CMD_Detail_LoadStartTime(eq_id, current_adr_id, current_sec_id);
-            //scApp.VIDBLL.upDateVIDPortID(eq_id, current_adr_id);
-            //mcsDefaultMapAction.sendS6F11_common(SECSConst.CEID_Vehicle_Arrived, eq_id);
 
             AVEHICLE vh = scApp.VehicleBLL.getVehicleByID(eq_id);
             if (!SCUtility.isEmpty(vh.MCS_CMD))
@@ -1581,13 +1579,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 scApp.SysExcuteQualityBLL.updateSysExecQity_ArrivalSourcePort(vh.MCS_CMD);
             }
             vh.VehicleArrive();
-            //NetworkQualityTest(eq_id, current_adr_id, current_sec_id, 0);
         }
         public void doLoading(string eq_id)
         {
             AVEHICLE vh = scApp.VehicleBLL.getVehicleByID(eq_id);
             vh.VehicleAcquireStart();
-            //mcsDefaultMapAction.sendS6F11_common(SECSConst.CEID_Vehicle_Acquire_Started, eq_id);
         }
         public void doLoadComplete(string eq_id, string current_adr_id, string current_sec_id, string cst_id)
         {
@@ -1646,19 +1642,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             AVEHICLE vh = scApp.VehicleBLL.getVehicleByID(eq_id);
             vh.VehicleDepositComplete();
 
-            //VIDCollection vids = null;
-            //if (scApp.VIDBLL.tryGetVIOInfoVIDCollectionByEQID(eq_id, out vids))
-            //{
-            //    string dest_port = vids.VID_60_DestinationPort.DESTINATION_PORT.Trim();
-            //    string cst_id_test = vids.VID_54_CarrierID.CARRIER_ID.Trim();
-            //    if (dest_port.Length < 10) return;
-            //    string ToDevice = dest_port.Substring(0, 9);
-            //    logger.Trace($"Start Send waitin To STK,ToDevice:{ToDevice},Dest Port:{dest_port},CST ID:{cst_id_test}");
-            //    Task.Run(() => scApp.webClientManager.postInfo2Stock($"{ToDevice}.mirle.com.tw", dest_port, cst_id_test, "waitin"));
-            //    logger.Trace($"End Send waitin To STK,ToDevice:{ToDevice},Dest Port:{dest_port},CST ID:{cst_id_test}");
-            //}
         }
-        //public void doTransferCommandFinish(Equipment eqpt)
         public bool doTransferCommandFinish(string vh_id, string cmd_id, CompleteStatus completeStatus)
         {
             bool isSuccess = true;
@@ -1666,11 +1650,8 @@ namespace com.mirle.ibg3k0.sc.BLL
             try
             {
                 scApp.VehicleBLL.getAndProcPositionReportFromRedis(vh_id);
-                //TODO 再Update沒有成功這件事情要分成兩個部分，1.沒有找到該筆Command (要回復VH)2.發生Exection(不回復VH)。
                 AVEHICLE vh = scApp.VehicleBLL.getVehicleByID(vh_id);
                 string mcs_cmd_id = vh.MCS_CMD;
-
-                //vh.startAdr = null;
                 vh.FromAdr = null;
                 vh.ToAdr = null;
                 vh.CMD_CST_ID = null;
@@ -1686,28 +1667,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 vh.VehicleUnassign();
                 vh.Stop();
 
-                E_CMD_STATUS ohtc_cmd_status = CompleteStatusToCmdStatus(completeStatus);
-
-                ////isSuccess &= scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd_id, E_CMD_STATUS.NormalEnd);
-                //isSuccess &= scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd_id, ohtc_cmd_status);
-
-                if (!SCUtility.isEmpty(mcs_cmd_id))
-                {
-                    //E_TRAN_STATUS mcs_cmd_tran_status = CompleteStatusToETransferStatus(completeStatus);
-                    //isSuccess &= scApp.SysExcuteQualityBLL.updateSysExecQity_CmdFinish(vh.MCS_CMD);
-                    //isSuccess &= scApp.CMDBLL.updateCMD_MCS_TranStatus2Complete(vh.MCS_CMD);
-                    ASYSEXCUTEQUALITY quality = null;
-                    scApp.SysExcuteQualityBLL.updateSysExecQity_CmdFinish(mcs_cmd_id, ohtc_cmd_status, completeStatus, out quality);
-                    //scApp.CMDBLL.updateCMD_MCS_TranStatus2Complete(mcs_cmd_id, E_TRAN_STATUS.Complete);
-                    //scApp.CMDBLL.updateCMD_MCS_TranStatus2Complete(mcs_cmd_id, mcs_cmd_tran_status);
-                    if (quality != null)
-                    {
-                        SCUtility.TrimAllParameter(quality);
-                        LogManager.GetLogger("SysExcuteQuality").Info(quality.ToString());
-                    }
-                }
-                //isSuccess &= scApp.CMDBLL.updateCommand_OHTC_StatusByVhID(vh_id, E_CMD_STATUS.NormalEnd);
-                //updateVehicleExcuteCMD(vh_id, string.Empty, string.Empty);
                 vh.NotifyVhExcuteCMDStatusChange();
             }
             catch (Exception ex)
@@ -1716,40 +1675,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 isSuccess = false;
             }
             return isSuccess;
-            //2.
-            //bool isParkAdr = scApp.ParkBLL.isInPrckAddress(vh.CUR_ADR_ID, vh.VEHICLE_TYPE);
-            //if (isParkAdr)
-            //{
-            //    scApp.VehicleBLL.setVhIsParkingOnWay(eq_id, vh.CUR_ADR_ID);
-            //    scApp.ParkBLL.checkAndUpdateVhEntryParkingAdr(eq_id, vh.CUR_ADR_ID);
-            //}
-            ////bool needMoveToIdle = vh.VEHICLE_TYPE == E_VH_TYPE.Dirty
-            ////                   || scApp.CMDBLL.getCMD_MCSisQueueCount() == 0;
-            //else
-            //{
-            //    Task.Run(() =>
-            //    {
-            //        bool isCmdInQueue = scApp.CMDBLL.isCMD_OHTCQueueByVh(eq_id);
-            //        if (!isCmdInQueue)
-            //        {
-            //            bool isParking = false;
-            //            bool isCycleRun = false;
-            //            isParking = scApp.ParkBLL.checkAndUpdateVhEntryParkingAdr(eq_id, vh.CUR_ADR_ID);
-            //            if (!isParking)
-            //            {
-            //                isCycleRun = scApp.CycleBLL.checkAndUpdateVhEntryCycleRunAdr(eq_id, vh.CUR_ADR_ID);
-            //                if (!isCycleRun)
-            //                {
-            //                    FindParkZoneOrCycleRunZoneNew(vh);
-            //                }
-            //            }
-            //        }
-            //    });
-            //}
-            //3.
-            //mcsDefaultMapAction.sendS6F11_common(SECSConst.CEID_Vehicle_Unassigned, eq_id);
-            //mcsDefaultMapAction.sendS6F11_common(SECSConst.CEID_Transfer_Completed, eq_id);
-            //scApp.VIDBLL.initialVIDCommandInfo(eq_id);
+
         }
         public E_CMD_STATUS CompleteStatusToCmdStatus(CompleteStatus completeStatus)
         {

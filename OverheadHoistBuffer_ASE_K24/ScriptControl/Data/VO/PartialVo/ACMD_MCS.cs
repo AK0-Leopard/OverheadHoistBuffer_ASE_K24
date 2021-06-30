@@ -6,6 +6,7 @@
 // 2020/06/09    Jason Wu       N/A            A20.06.09.0 修改判定部分(新增判定來源目的地是非shelf的優先)   
 //**********************************************************************************
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc
 {
+
     public partial class ACMD_MCS
     {
 

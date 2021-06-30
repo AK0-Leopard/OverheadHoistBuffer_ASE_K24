@@ -190,7 +190,8 @@ namespace com.mirle.ibg3k0.sc.Service
         int ohtIdleTimeOut = 0;
         int cmdIdleTimeOut = 30;    //秒鐘
 
-        public int cstIdle = 120;   //秒鐘，卡匣停在 Port上或車上，超過設定沒搬，自動搬往儲位
+        //public int cstIdle = 120;   //秒鐘，卡匣停在 Port上或車上，超過設定沒搬，自動搬往儲位
+        public int cstIdle = 600;   //秒鐘，卡匣停在 Port上或車上，超過設定沒搬，自動搬往儲位
         public int queueCmdTimeOut = 1200;  //秒鐘
         public int agvHasCmdsAccessTimeOut = 300;   ///秒鐘
         public int portWaitOutTimeOut = 10; //分鐘，Port WaitOut 過久，報異常
@@ -1647,7 +1648,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                         TransferServiceLogger.Info
                                         (
                                             DateTime.Now.ToString("HH:mm:ss.fff ")
-                                            + "OHB >> OHB| 卡匣停留 " + cstTimeOut + " 秒，尚未搬走，產生自動搬走命令 " + GetCstLog(cst)
+                                            + "OHB >> OHB| 卡匣停留 " + cstTimeOut + " 秒，60命令 " + GetCstLog(cst)
                                         );
 
                                         string cmdSource = cst.Carrier_LOC.Trim();
@@ -2865,7 +2866,8 @@ namespace com.mirle.ibg3k0.sc.Service
                             reportBLL.ReportCarrierWaitOut(unLoadCstData, "1");
                             //reportBLL.ReportCarrierRemovedCompleted(unLoadCstData.CSTID, unLoadCstData.BOXID);
                             reportBLL.ReportCarrierRemovedFromPort(unLoadCstData, "");
-                            cassette_dataBLL.DeleteCSTbyCstBoxID(unLoadCstData.CSTID, unLoadCstData.BOXID);
+                            if (!DebugParameter.CanAutoRandomGeneratesCommand)
+                                cassette_dataBLL.DeleteCSTbyCstBoxID(unLoadCstData.CSTID, unLoadCstData.BOXID);
                             //cassette_dataBLL.DeleteCSTbyBoxId(unLoadCstData.BOXID);
                             TransferServiceLogger.Info($"{DateTime.Now.ToString("HH:mm:ss.fff")} OHT_UnLoadCompleted 位置在:{dest}, 故直接將其移除");
                         }

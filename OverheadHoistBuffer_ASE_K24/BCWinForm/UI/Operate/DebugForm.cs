@@ -483,7 +483,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             int index = cb_block_section.SelectedIndex;
             BLOCKZONEQUEUE queue = blocked_queues[index];
-            Task.Run(() => bcApp.SCApplication.VehicleService.reCheckBlockControl(queue));
         }
 
         private void cb_block_section_SelectedIndexChanged(object sender, EventArgs e)

@@ -863,7 +863,6 @@ namespace com.mirle.ibg3k0.sc.WebAPI
 									break;
 
 								case "btn_release_block":
-									scApp.VehicleService.reCheckBlockControl(blockzoneQueue);
 									break;
 
 								case "btn_refresh_vh_order_in_seg":
