@@ -42,6 +42,7 @@ namespace com.mirle.ibg3k0.sc
         public const int COMMAND_STATUS_BIT_INDEX_EMPTY_RETRIEVAL = 512;    //空取、異常流程
         public const int COMMAND_STATUS_BIT_INDEX_InterlockError = 1024;    //交握異常
         public const int COMMAND_STATUS_BIT_INDEX_VEHICLE_ABORT = 2048;     //車子異常結束
+        public const int COMMAND_STATUS_BIT_INDEX_CST_TYPE_MISMATCH = 4096;     //CST Type Mismatch異常流程
 
         public const string Successful = "1";
 
@@ -91,6 +92,7 @@ namespace com.mirle.ibg3k0.sc
             public const string IDReadFailed = "5";
             public const string BoxID_ReadFailed = "6";
             public const string BoxID_Mismatch = "7";
+            public const string CarrierTypeMismatch = "8";
             public const string InterlockError = "64";
         }
 

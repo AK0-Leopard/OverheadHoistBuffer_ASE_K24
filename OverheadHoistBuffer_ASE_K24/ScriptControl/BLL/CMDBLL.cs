@@ -54,6 +54,8 @@ namespace com.mirle.ibg3k0.sc.BLL
         ParkZoneTypeDao parkZoneTypeDao = null;
         private SCApplication scApp = null;
 
+        public Cache cache { get; private set; }
+
 
 
         ALINE line
@@ -79,7 +81,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             hcmd_mcsDao = scApp.HCMD_MCSDao;
             hcmd_ohtcDao = scApp.HCMD_OHTCDao;
-
+            cache = new Cache(scApp);
 
             initialByPassSegment();
         }
@@ -300,7 +302,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
-        public string doCheckMCSCommand(SCApplication app, string command_id, string Priority, string cstID, string box_id, string lotID,
+        public string doCheckMCSCommand(SCApplication app, string command_id, string Priority, string cstID, string box_id, string lotID, string cstType,
                                         ref string HostSource, ref string HostDestination,
                                         out string check_result, out bool isFromVh)
         {
@@ -349,6 +351,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         cstData_FromS2F49.CSTInDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
                         cstData_FromS2F49.ReadStatus = ((int)ACMD_MCS.IDreadStatus.successful).ToString();
                         cstData_FromS2F49.Stage = 1;
+                        cstData_FromS2F49.CSTType = cstType;
                         TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F49: BOXID: " + box_id + " 不存在, 但由於是EQ Port 自動建帳 PTI用");
                         app.CassetteDataBLL.insertCassetteData(cstData_FromS2F49);
                         cstData = cstData_FromS2F49;
@@ -1975,7 +1978,25 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
-                    return cmd_mcsDao.getCMD_MCSIsUnfinishedCountByCarrierID(con, carrier_id);
+                    int count = cmd_mcsDao.getCMD_MCSIsUnfinishedCountByCarrierID(con, carrier_id);
+                    return count;
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return 0;
+            }
+
+        }
+        public int getCMD_MCSIsUnfinishedCountByBoxID(string box_id)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    int count = cmd_mcsDao.getCMD_MCSIsUnfinishedCountByBoxID(con, box_id);
+                    return count;
                 }
             }
             catch (Exception ex)
@@ -1989,7 +2010,8 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
             {
-                return cmd_mcsDao.getCMD_MCSIsUnfinishedCountByPortID(con, portID);
+                int count = cmd_mcsDao.getCMD_MCSIsUnfinishedCountByPortID(con, portID);
+                return count;
             }
         }
 
@@ -5177,6 +5199,21 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         #endregion HCMD_OHTC
 
+
+
+        public class Cache
+        {
+            SCApplication app = null;
+            //public Cache(ALINE _line)
+            public Cache(SCApplication _app)
+            {
+                app = _app;
+            }
+            public ACMD_OHTC getExcuteCmd(string cmdID)
+            {
+                return new ACMD_OHTC();
+            }
+        }
 
     }
 }

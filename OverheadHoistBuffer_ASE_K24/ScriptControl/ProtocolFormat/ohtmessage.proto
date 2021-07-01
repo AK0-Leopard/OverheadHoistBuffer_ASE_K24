@@ -477,6 +477,8 @@ message Timestamp {
 	string RenameLOTID = 7;
 	CMDCancelType ReplyActiveType = 8;
 	int32 ReplyCode = 9;				  
+
+	EventType EventType = 99;
   }
 
   message ID_37_TRANS_CANCEL_REQUEST {

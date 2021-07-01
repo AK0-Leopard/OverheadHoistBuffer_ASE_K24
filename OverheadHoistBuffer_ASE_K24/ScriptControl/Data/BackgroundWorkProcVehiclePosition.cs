@@ -69,7 +69,7 @@ namespace com.mirle.ibg3k0.sc.Data
                 App.SCApplication scapp = item.Param[0] as App.SCApplication;
                 AVEHICLE vh = item.Param[1] as AVEHICLE;
                 ProtocolFormat.OHTMessage.ID_134_TRANS_EVENT_REP recive_str = item.Param[2] as ProtocolFormat.OHTMessage.ID_134_TRANS_EVENT_REP;
-
+                LogHelper.RecordReportInfo(scapp.CMDBLL, vh, recive_str, 0);
                 //Do something.
                 EventType eventType = recive_str.EventType;
                 string current_adr_id = SCUtility.isEmpty(recive_str.CurrentAdrID) ? string.Empty : recive_str.CurrentAdrID;

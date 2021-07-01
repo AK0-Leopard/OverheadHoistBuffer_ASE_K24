@@ -441,9 +441,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     TransCancelReq = stSend
                 };
 
-                SCUtility.RecodeReportInfo(eqpt.VEHICLE_ID, 0, stSend);
+                LogHelper.RecordReportInfo(scApp.CMDBLL, eqpt, stSend, 0);
                 com.mirle.iibg3k0.ttc.Common.TrxTcpIp.ReturnCode result = snedRecv(wrapper, out stRecv, out rtnMsg);
-                SCUtility.RecodeReportInfo(eqpt.VEHICLE_ID, 0, stRecv, result.ToString());
+                LogHelper.RecordReportInfo(scApp.CMDBLL, eqpt, stRecv, 0);
                 if (result == TrxTcpIp.ReturnCode.Normal)
                 {
                     if (stRecv.ReplyCode == 0)

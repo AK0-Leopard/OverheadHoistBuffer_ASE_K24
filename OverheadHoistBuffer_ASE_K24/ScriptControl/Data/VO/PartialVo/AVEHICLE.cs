@@ -44,7 +44,7 @@ namespace com.mirle.ibg3k0.sc
         }
     }
 
-    public partial class AVEHICLE : BaseEQObject, IConnectionStatusChange
+    public partial class AVEHICLE : BaseEQObject, IConnectionStatusChange, IFormatProvider
     {
         public VehicleStateMachine vhStateMachine;
         public const string DEVICE_NAME_OHx = "OHx";
@@ -104,6 +104,11 @@ namespace com.mirle.ibg3k0.sc
             ErrorStatusChange?.Invoke(this, vhStopSingle);
         }
 
+        public object GetFormat(Type formatType)
+        {
+            //throw new NotImplementedException();
+            return this;
+        }
 
         public AVEHICLE()
         {

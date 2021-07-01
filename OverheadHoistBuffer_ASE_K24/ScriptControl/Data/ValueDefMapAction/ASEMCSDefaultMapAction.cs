@@ -393,6 +393,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         string cmdID = s2f49_transfer.REPITEMS.COMMINFO.COMMAINFO.COMMANDIDINFO.CommandID;
                         string priority = s2f49_transfer.REPITEMS.COMMINFO.COMMAINFO.PRIORITY.CPVAL;
                         string cstID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.CARRIERIDINFO.CarrierID;
+                        //string cstType = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.CARRIERTYPEINFO.CarrierType;
+                        string cstType = "";
                         string boxID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.BOXIDINFO.BoxID;
                         string source = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.SOUINFO.Source;
                         string dest = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.DESTINFO.Dest;
@@ -413,6 +415,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                             + "cmdID:" + cmdID
                             + "    priority:" + priority
                             + "    cstID:" + cstID
+                            + "    cstType:" + cstType
                             + "    boxID:" + boxID
                             + "    source:" + source
                             + "    dest:" + dest
@@ -427,7 +430,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         if (isHostReady())
                         {
                             s2f50.HCACK = scApp.CMDBLL.doCheckMCSCommand
-                                (scApp, cmdID, priority, cstID, boxID, lotID, ref source, ref dest, out rtnStr, out isFromVh);
+                                (scApp, cmdID, priority, cstID, boxID, lotID, cstType,
+                                ref source, ref dest, out rtnStr, out isFromVh);
                         }
                         else
                         {
@@ -1805,6 +1809,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 viditem_51.ENHANCED_CARRIER_INFO[i].INSTALL_TIME_OBJ.INSTALLTIME = DateTime.Parse(cassettedata[i].CSTInDT).ToString("yyyyMMddHHmmss");
                 viditem_51.ENHANCED_CARRIER_INFO[i].CARRIER_STATE.Carrier_State = ((int)cassettedata[i].CSTState).ToString();
                 viditem_51.ENHANCED_CARRIER_INFO[i].BOX_ID_OBJ.BOX_ID = cassettedata[i].BOXID;
+                viditem_51.ENHANCED_CARRIER_INFO[i].CARRIER_TYPE_OBJ.CarrierType = cassettedata[i].CSTType;
             }
             return viditem_51;
         }
@@ -3595,6 +3600,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 Vids.VIDITEM_179_DVVAL_BOXID.BOX_ID = cst.BOXID;
                 Vids.VIDITEM_56_DVVAL_CarrierLoc.CARRIER_LOC = cst.Carrier_LOC;
                 Vids.VIDITEM_67_DVVAL_IDreadStatus.Carrier_ID_Read_Status = IDreadStatus;
+                Vids.VIDITEM_204_DVVAL_CarrierType.CarrierType = cst.CSTType;
 
                 AMCSREPORTQUEUE mcs_queue = S6F11BulibMessage(SECSConst.CEID_Carrier_ID_Read, Vids);
                 scApp.ReportBLL.insertMCSReport(mcs_queue);

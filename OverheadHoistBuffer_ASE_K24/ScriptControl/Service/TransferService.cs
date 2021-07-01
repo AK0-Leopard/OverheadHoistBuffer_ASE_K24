@@ -2491,6 +2491,29 @@ namespace com.mirle.ibg3k0.sc.Service
                         cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                         EmptyShelf();
                         break;
+                    case COMMAND_STATUS_BIT_INDEX_CST_TYPE_MISMATCH:
+                        reportBLL.ReportCraneIdle(ohtName, cmd.CMD_ID);
+                        reportBLL.ReportTransferCompleted(cmd, null, ResultCode.CarrierTypeMismatch);   //  20/04/13 MCS 反應說不要報 1 ，改報64
+                        cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+
+                        TransferServiceLogger.Info
+                        (
+                            DateTime.Now.ToString("HH:mm:ss.fff ")
+                            + "OHT >> OHB|OHT_CSTTypeMismatch 位置： " + ohtCmd.SOURCE.Trim() + " 找不到卡匣資料"
+                        );
+
+                        CassetteData cst_type_Data = cassette_dataBLL.loadCassetteDataByLoc(ohtCmd.SOURCE.Trim());
+                        reportBLL.ReportCarrierRemovedCompleted(cst_type_Data.CSTID, cst_type_Data.BOXID);
+
+                        string cst_type_mismatch_cstID = "";
+                        string cst_type_mismatch_boxID = CarrierTypeMisMatch(cst_type_Data.BOXID);
+                        string cst_type_mismatch_loc = ohtCmd.DESTINATION;
+
+                        OHBC_InsertCassette(cst_type_mismatch_cstID, cst_type_mismatch_boxID, cst_type_mismatch_loc, "CarrierTypeMismatch");
+
+                        cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+
+                        break;
                     #endregion
                     default:
                         break;
@@ -5576,6 +5599,10 @@ namespace com.mirle.ibg3k0.sc.Service
         #region 命令、卡匣處理
 
         #region 命名規則
+        public string CarrierTypeMisMatch(string carrierID)   //Cst Type Mismatch
+        {
+            return "UNKT" + carrierID + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+        }
         public string CarrierDouble(string loc)   //二重格
         {
             return "UNKS" + loc + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
@@ -6132,6 +6159,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 datainfo.CSTInDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
                 datainfo.TrnDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
                 datainfo.Stage = 1;
+                //datainfo.CSTType = cstType;
 
                 string portName = datainfo.Carrier_LOC;
 
@@ -6225,7 +6253,6 @@ namespace com.mirle.ibg3k0.sc.Service
 
                     scApp.VehicleBLL.updataVehicleBOXID(vehicle.VEHICLE_ID, datainfo.BOXID); //Hsinyu Chang 20200312 AVEHICLE上也有存放box ID，要一起更新
                 }
-
                 return "OK";
             }
             catch (Exception ex)

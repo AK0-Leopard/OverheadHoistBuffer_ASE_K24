@@ -217,6 +217,13 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
                         [SecsElement(Index = 2, ListElementType = SecsElement.SecsElementType.TYPE_ASCII, Length = 64)] //Modify Length 1 > 10 By Kevin
                         public string CarrierID;
                     }
+                    public class CARRIERTYPE : SXFY
+                    {
+                        [SecsElement(Index = 1, ListElementType = SecsElement.SecsElementType.TYPE_ASCII, Length = 40)]
+                        public string CARRIERTYPE1;
+                        [SecsElement(Index = 2, ListElementType = SecsElement.SecsElementType.TYPE_ASCII, Length = 64)] //Modify Length 1 > 10 By Kevin
+                        public string CarrierType;
+                    }
                     public class BOXID : SXFY
                     {
                         [SecsElement(Index = 1, ListElementType = SecsElement.SecsElementType.TYPE_ASCII, Length = 40)]

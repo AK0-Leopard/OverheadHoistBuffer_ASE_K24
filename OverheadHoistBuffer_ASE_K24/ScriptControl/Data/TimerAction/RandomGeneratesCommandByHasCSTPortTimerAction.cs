@@ -178,7 +178,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             if (unfinished_cmd_count < vh_count)
             {
                 bool is_find = false;
-                if (!dicTranTaskSchedule_Clear_Dirty.ContainsKey(find_task_type)) return;
+                //if (!dicTranTaskSchedule_Clear_Dirty.ContainsKey(find_task_type)) return;
                 var task_list_clean = dicTranTaskSchedule_Clear_Dirty[find_task_type].ToList();
                 do
                 {
@@ -191,7 +191,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     CassetteData destData = scApp.CassetteDataBLL.loadCassetteDataByLoc(tranTask.DestinationPort);
 
                     if ((source_port_station != null && sourceData != null) &&
-                        scApp.CMDBLL.getCMD_MCSIsUnfinishedCountByCarrierID(sourceData.CSTID) == 0 &&
+                        scApp.CMDBLL.getCMD_MCSIsUnfinishedCountByBoxID(sourceData.BOXID) == 0 &&
                         (destination_port_station != null && destData == null) &&
                         scApp.CMDBLL.getCMD_MCSIsUnfinishedCountByPortID(destination_port_station.PORT_ID) == 0)
                     {

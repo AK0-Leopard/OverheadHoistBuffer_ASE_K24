@@ -219,6 +219,8 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
                     public VIDITEM_203_DVVAL CARRIER_STATE;
                     [SecsElement(Index = 6, ListSpreadOut = true)]
                     public VIDITEM_179_DVVAL BOX_ID_OBJ;
+                    [SecsElement(Index = 6, ListSpreadOut = true)]
+                    public VIDITEM_204_DVVAL CARRIER_TYPE_OBJ;
 
                     public VIDITEM_10_SV()
                     {
@@ -228,6 +230,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
                         INSTALL_TIME_OBJ = new VIDITEM_12_DVVAL();
                         CARRIER_STATE = new VIDITEM_203_DVVAL();
                         BOX_ID_OBJ = new VIDITEM_179_DVVAL();
+                        CARRIER_TYPE_OBJ = new VIDITEM_204_DVVAL();
                     }
                 }
 
@@ -1072,7 +1075,16 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
                         Carrier_State = string.Empty;
                     }
                 }
-
+                [Serializable]
+                public class VIDITEM_204_DVVAL : SXFY
+                {
+                    [SecsElement(Index = 1, ListSpreadOut = true, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 64)]
+                    public string CarrierType;
+                    public VIDITEM_204_DVVAL()
+                    {
+                        CarrierType = string.Empty;
+                    }
+                }
                 //[Serializable]
                 //public class VIDITEM_204_DVVAL : SXFY
                 //{
@@ -1768,6 +1780,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
             VIDITEM_179_DVVAL_BOXID = new S6F11.RPTINFO.RPTITEM.VIDITEM_179_DVVAL();
 
             VIDITEM_203_DVVAL_CarrierState = new S6F11.RPTINFO.RPTITEM.VIDITEM_203_DVVAL();
+            VIDITEM_204_DVVAL_CarrierType = new S6F11.RPTINFO.RPTITEM.VIDITEM_204_DVVAL();
 
             VIDITEM_352_DVVAL_EqReqSatus = new S6F11.RPTINFO.RPTITEM.VIDITEM_352_DVVAL();
             VIDITEM_353_DVVAL_EqPresenceStatus = new S6F11.RPTINFO.RPTITEM.VIDITEM_353_DVVAL();
@@ -1860,6 +1873,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
         public com.mirle.ibg3k0.sc.Data.SECS.ASE.S6F11.RPTINFO.RPTITEM.VIDITEM_179_DVVAL VIDITEM_179_DVVAL_BOXID;
 
         public com.mirle.ibg3k0.sc.Data.SECS.ASE.S6F11.RPTINFO.RPTITEM.VIDITEM_203_DVVAL VIDITEM_203_DVVAL_CarrierState;
+        public com.mirle.ibg3k0.sc.Data.SECS.ASE.S6F11.RPTINFO.RPTITEM.VIDITEM_204_DVVAL VIDITEM_204_DVVAL_CarrierType;
 
         public com.mirle.ibg3k0.sc.Data.SECS.ASE.S6F11.RPTINFO.RPTITEM.VIDITEM_352_DVVAL VIDITEM_352_DVVAL_EqReqSatus;
         public com.mirle.ibg3k0.sc.Data.SECS.ASE.S6F11.RPTINFO.RPTITEM.VIDITEM_353_DVVAL VIDITEM_353_DVVAL_EqPresenceStatus;

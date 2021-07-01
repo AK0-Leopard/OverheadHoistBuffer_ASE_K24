@@ -269,6 +269,15 @@ namespace com.mirle.ibg3k0.sc.Data.DAO.EntityFramework
                         select cmd;
             return query.Count();
         }
+        public int getCMD_MCSIsUnfinishedCountByBoxID(DBConnection_EF con, string box_id)
+        {
+            var query = from cmd in con.ACMD_MCS
+                        where cmd.BOX_ID.Trim() == box_id.Trim() &&
+                        cmd.TRANSFERSTATE >= E_TRAN_STATUS.Queue
+                        && cmd.TRANSFERSTATE < E_TRAN_STATUS.Canceling
+                        select cmd;
+            return query.Count();
+        }
         public int getCMD_MCSIsUnfinishedCountByPortID(DBConnection_EF con, string portID)
         {
             var query = from cmd in con.ACMD_MCS

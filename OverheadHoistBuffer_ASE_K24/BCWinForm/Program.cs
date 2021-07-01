@@ -122,6 +122,9 @@ namespace com.mirle.ibg3k0.bc.winform
                 //    }
                 //    return;
                 //}
+                NLog.LayoutRenderers.LayoutRenderer.Register<sc.Common.LayOutRenderer.VhSecIDLayoutRenderer>("vehicle_sec_id");
+                NLog.LayoutRenderers.LayoutRenderer.Register<sc.Common.LayOutRenderer.VhAdrIDLayoutRenderer>("vehicle_adr_id");
+
                 AppDomain currentDomain = AppDomain.CurrentDomain;                                  //A0.12
                 currentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);  //A0.12
                 Application.ThreadException += Application_ThreadException;
