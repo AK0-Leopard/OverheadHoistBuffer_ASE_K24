@@ -1038,7 +1038,9 @@
     <Compile Include="Service\BlockControlService.cs" />
     <Compile Include="Service\EmptyBoxHandlerService.cs" />
     <Compile Include="Service\FailOverService.cs" />
+    <Compile Include="Service\Interface\IManualPortService.cs" />
     <Compile Include="Service\LineService.cs" />
+    <Compile Include="Service\ManualPortService.cs" />
     <Compile Include="Service\OHCVService.cs" />
     <Compile Include="Service\MTLService.cs" />
     <Compile Include="Service\RoadControlService.cs" />
