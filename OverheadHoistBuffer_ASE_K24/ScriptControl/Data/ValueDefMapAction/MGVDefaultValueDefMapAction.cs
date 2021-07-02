@@ -88,6 +88,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 {
                     vr.afterValueChange += (_sender, _e) => MGV_Status_Change_RUN(_sender, _e);
                 }
+
                 if (bcfApp.tryGetReadValueEventstring(eqpt.EqptObjectCate, eqpt.EQPT_ID, "MGV_TO_OHxC_DOWN", out ValueRead vr2))
                 {
                     vr2.afterValueChange += (_sender, _e) => MGV_Status_Change_DOWN(_sender, _e);
@@ -106,6 +107,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 //1.建立各個Function物件
                 function.Read(bcfApp, eqpt.EqptObjectCate, eqpt.EQPT_ID);
+
                 //2.read log
                 NLog.LogManager.GetCurrentClassLogger().Info(function.ToString());
             }

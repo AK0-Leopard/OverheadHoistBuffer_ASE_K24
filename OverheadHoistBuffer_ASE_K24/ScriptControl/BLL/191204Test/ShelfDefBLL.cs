@@ -10,16 +10,18 @@ using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.App;
 using System.Transactions;
 using com.mirle.ibg3k0.sc.Service;
+using com.mirle.ibg3k0.sc.BLL.Interface;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
-    public class ShelfDefBLL
+    public class ShelfDefBLL : IShelfDefBLL
     {
-        SCApplication scApp = null;
-        ShelfDefDao shelfdefDao = null;
-        ZoneDefDao zonedefDao = null;
-        CassetteDataDao cassetteDataDao = null;
+        private SCApplication scApp = null;
+        private ShelfDefDao shelfdefDao = null;
+        private ZoneDefDao zonedefDao = null;
+        private CassetteDataDao cassetteDataDao = null;
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public void start(SCApplication scApp)
         {
             this.scApp = scApp;
@@ -43,6 +45,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public List<ShelfDef> LoadShelf()
         {
             try
@@ -57,8 +60,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
+
         public List<ShelfDef> LoadEnableShelf()
         {
             try
@@ -73,7 +76,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
 
         public bool UpdateEnableByID(string shelfid, bool enable)
@@ -140,11 +142,11 @@ namespace com.mirle.ibg3k0.sc.BLL
             return true;
         }
 
-		internal bool updateRemark(string shelf_id, string remark)
-		{
+        internal bool updateRemark(string shelf_id, string remark)
+        {
             try
             {
-                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
                     var shelf_def = con.ShelfDef.Where(x => x.ShelfID == shelf_id).FirstOrDefault();
                     shelf_def.Remark = remark;
@@ -183,10 +185,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                     + " status: " + status
                 );
 
-                if(status == ShelfDef.E_ShelfState.EmptyShelf)
+                if (status == ShelfDef.E_ShelfState.EmptyShelf)
                 {
                     scApp.TransferService.OHBC_AlarmCleared(scApp.getEQObjCacheManager().getLine().LINE_ID, ((int)AlarmLst.LINE_NotEmptyShelf).ToString());
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -286,6 +288,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return true;
         }
+
         public List<ShelfDef> GetEmptyAndEnableShelf()
         {
             try
@@ -301,6 +304,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public List<ShelfDef> GetEmptyAndEnableShelfByZone(string zoneID)
         {
             try
@@ -331,7 +335,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
 
         public int GetDistance(string shelfID, string targetAddress)
