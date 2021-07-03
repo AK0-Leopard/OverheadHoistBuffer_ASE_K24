@@ -22,7 +22,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         TrnDT,
     }
 
-    public class CassetteDataBLL : ICassetteDataBLL
+    public class CassetteDataBLL
     {
         private SCApplication scApp = null;
         private CassetteDataDao cassettedataDao = null;

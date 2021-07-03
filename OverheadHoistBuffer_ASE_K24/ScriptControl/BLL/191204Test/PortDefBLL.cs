@@ -25,7 +25,7 @@ using com.mirle.ibg3k0.sc.BLL.Interface;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
-    public class PortDefBLL : IPortDefBLL
+    public class PortDefBLL
     {
         private SCApplication scApp = null;
         private PortDefDao portdefDao = null;

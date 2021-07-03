@@ -33,7 +33,7 @@ namespace com.mirle.ibg3k0.sc.BLL
     /// <summary>
     /// Class AlarmBLL.
     /// </summary>
-    public class AlarmBLL : IAlarmBLL
+    public class AlarmBLL
     {
         /// <summary>
         /// The sc application

@@ -14,7 +14,7 @@ using com.mirle.ibg3k0.sc.BLL.Interface;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
-    public class ShelfDefBLL : IShelfDefBLL
+    public class ShelfDefBLL
     {
         private SCApplication scApp = null;
         private ShelfDefDao shelfdefDao = null;

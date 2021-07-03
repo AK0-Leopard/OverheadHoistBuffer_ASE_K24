@@ -37,7 +37,7 @@ namespace com.mirle.ibg3k0.sc.BLL
     /// <summary>
     /// Class ReportBLL.
     /// </summary>
-    public class ReportBLL : IReportBLL
+    public class ReportBLL
     {
         /// <summary>
         /// The sc application

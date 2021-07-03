@@ -35,7 +35,7 @@ using static com.mirle.ibg3k0.sc.ShelfDef; //A20.05.15
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
-    public class CMDBLL : ICMDBLL
+    public class CMDBLL
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private CMD_OHTCDao cmd_ohtcDAO = null;
