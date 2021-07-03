@@ -640,6 +640,7 @@
     <Compile Include="Data\DAO\HIDZoneMasterDao.cs" />
     <Compile Include="Data\DBConnection_EF.cs" />
     <Compile Include="Data\PLC_Functions\MGV\Enums\CstType.cs" />
+    <Compile Include="Data\PLC_Functions\MGV\Enums\DirectionType.cs" />
     <Compile Include="Data\PLC_Functions\MGV\ManualPortPLCInfo.cs" />
     <Compile Include="Data\PLC_Functions\MGV\OHxCToMGV_Status.cs" />
     <Compile Include="Data\PLC_Functions\MGV\MGVToOHxC_Alive.cs" />

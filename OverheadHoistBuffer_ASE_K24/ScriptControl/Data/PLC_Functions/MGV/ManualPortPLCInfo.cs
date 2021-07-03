@@ -80,6 +80,8 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV
         [PLCElement(ValueName = "MGV_TO_OHxC_CSTTYPE")]
         public UInt16 CstTypes;
 
+        public DirectionType Direction { get => IsInMode && IsOutMode == false ? DirectionType.InMode : DirectionType.OutMode; }
+
         public CstType CarrierType { get => GetCstType(); }
 
         private CstType GetCstType()

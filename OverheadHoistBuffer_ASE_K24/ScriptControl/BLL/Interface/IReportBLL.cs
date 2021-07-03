@@ -2,5 +2,8 @@
 {
     public interface IReportBLL
     {
+        bool ReportCarrierWaitIn(CassetteData cassetteData);
+
+        bool ReportForcedRemoveCarrier(CassetteData cassetteData);
     }
 }

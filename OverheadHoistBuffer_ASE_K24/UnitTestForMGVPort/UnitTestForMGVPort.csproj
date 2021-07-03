@@ -38,26 +38,38 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BlockControlFramework">
+      <HintPath>..\ScriptControl\DLL\BlockControlFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="StubObjects\MockCassetteDataBLL.cs" />
+    <Compile Include="StubObjects\MockReportBLL.cs" />
+    <Compile Include="StubObjects\NStubObject.cs" />
+    <Compile Include="TestWaitInProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MSTest.TestAdapter">
-      <Version>2.1.2</Version>
-    </PackageReference>
-    <PackageReference Include="MSTest.TestFramework">
-      <Version>2.1.2</Version>
-    </PackageReference>
     <PackageReference Include="NSubstitute">
       <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="NSubstitute.Analyzers.CSharp">
       <Version>1.0.14</Version>
     </PackageReference>
+    <PackageReference Include="NUnit">
+      <Version>3.13.2</Version>
+    </PackageReference>
+    <PackageReference Include="NUnit3TestAdapter">
+      <Version>4.0.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScriptControl\ScriptControl.csproj">
+      <Project>{34F0D133-FC32-4219-BCA9-9D0BC9A74AD6}</Project>
+      <Name>ScriptControl</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

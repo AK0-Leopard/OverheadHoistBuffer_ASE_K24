@@ -8,5 +8,6 @@ namespace com.mirle.ibg3k0.sc.BLL.Interface
 {
     public interface ICMDBLL
     {
+        bool GetCommandByBoxId(string carrierId, out ACMD_MCS command);
     }
 }
