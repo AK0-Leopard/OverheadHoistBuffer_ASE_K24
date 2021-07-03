@@ -1,14 +1,26 @@
 ﻿using com.mirle.ibg3k0.bcf.Data.ValueDefMapAction;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events.ManualPortEvents;
 
 namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface
 {
     public interface IManualPortValueDefMapAction : IValueDefMapAction
     {
-        event EventHandler OnWaitIn;
+        event ManualPortEventHandler OnWaitIn;
+
+        event ManualPortEventHandler OnWaitOut;
+
+        event ManualPortEventHandler OnDirectionChanged;
+
+        event ManualPortEventHandler OnInServiceChanged;
+
+        event ManualPortEventHandler OnBcrReadDone;
+
+        event ManualPortEventHandler OnCstRemoved;
+
+        event ManualPortEventHandler OnLoadPresenceChanged;
+
+        event ManualPortEventHandler OnAlarmHappen;
+
+        event ManualPortEventHandler OnAlarmClear;
     }
 }

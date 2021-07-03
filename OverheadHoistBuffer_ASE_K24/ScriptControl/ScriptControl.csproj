@@ -639,6 +639,8 @@
     <Compile Include="Data\DAO\MCSReportQueueDao.cs" />
     <Compile Include="Data\DAO\HIDZoneMasterDao.cs" />
     <Compile Include="Data\DBConnection_EF.cs" />
+    <Compile Include="Data\PLC_Functions\MGV\Enums\CstType.cs" />
+    <Compile Include="Data\PLC_Functions\MGV\ManualPortPLCInfo.cs" />
     <Compile Include="Data\PLC_Functions\MGV\OHxCToMGV_Status.cs" />
     <Compile Include="Data\PLC_Functions\MGV\MGVToOHxC_Alive.cs" />
     <Compile Include="Data\PLC_Functions\OHxCToPLC_SetSystemInfo.cs" />
@@ -853,6 +855,8 @@
     <Compile Include="Data\TimerAction\TaskCommandTimerAction.cs" />
     <Compile Include="Data\TimerAction\DBTableWatcherTimerAction.cs" />
     <Compile Include="Data\ValueDefMapAction\ASEMCSDefaultMapAction.cs" />
+    <Compile Include="Data\ValueDefMapAction\Events\ManualPortEventArgs.cs" />
+    <Compile Include="Data\ValueDefMapAction\Events\ManualPortEvents.cs" />
     <Compile Include="Data\ValueDefMapAction\Interface\IManualPortValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\MGVDefaultValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\SimpleMTLValueDefMapAction.cs" />
