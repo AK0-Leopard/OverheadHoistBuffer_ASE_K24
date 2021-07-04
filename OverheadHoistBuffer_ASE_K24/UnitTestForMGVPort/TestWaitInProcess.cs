@@ -94,7 +94,7 @@ namespace UnitTestForMGVPort
         public void 沒有發生Duplicate__上報MCS()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             stub.CassetteDataBLL.GetCarrierByBoxId(carrierId, out var _).Returns(false);
@@ -109,7 +109,7 @@ namespace UnitTestForMGVPort
         public void 沒有發生Duplicate__資料庫建帳於Port()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             stub.CassetteDataBLL.GetCarrierByBoxId(carrierId, out var _).Returns(false);
@@ -125,7 +125,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             stub.CassetteDataBLL.GetCarrierByBoxId(carrierId, out var _).Returns(false);
@@ -146,7 +146,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
@@ -165,7 +165,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
@@ -183,7 +183,7 @@ namespace UnitTestForMGVPort
         public void 發生Duplicate_Duplicate的卡匣在儲位目前沒命令__資料庫刪除Duplicate的卡匣()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
@@ -200,7 +200,7 @@ namespace UnitTestForMGVPort
         public void 發生Duplicate_Duplicate的卡匣在儲位目前沒命令__資料庫建帳於Port()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
@@ -218,7 +218,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
@@ -237,7 +237,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockCassetteDataBLL = new MockCassetteDataBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, mockCassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, mockCassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
@@ -255,7 +255,7 @@ namespace UnitTestForMGVPort
         public void 發生Duplicate_Duplicate的卡匣在儲位目前有命令__資料庫不會刪除Duplicate的卡匣()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
@@ -277,7 +277,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
@@ -296,7 +296,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
@@ -314,7 +314,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
@@ -332,7 +332,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
@@ -351,7 +351,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
@@ -373,7 +373,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var residueCarrierID = "B";
             var info = GetWaitInInfo(carrierId);
@@ -392,7 +392,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var residueCarrierID = "B";
             var info = GetWaitInInfo(carrierId);
@@ -412,7 +412,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var residueCarrierID = "B";
             var info = GetWaitInInfo(carrierId);

@@ -100,7 +100,7 @@ namespace UnitTestForMGVPort
         public void 無殘帳時轉成InMode___資料庫的PortDef資料表需轉成InMode()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
             stub.PortDefBLL.ChangeDirectionToInMode(_portName).Returns(true);
@@ -115,7 +115,7 @@ namespace UnitTestForMGVPort
         public void 無殘帳時轉成InMode___上報MCS轉成InMode()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
 
@@ -128,7 +128,7 @@ namespace UnitTestForMGVPort
         public void 有殘帳時轉成InMode__上報MCS轉成InMode()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
             var residueCarrierID = "B";
             var carrierOnPort = GetCarrierOnThisManualPort(residueCarrierID);
@@ -144,7 +144,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
             var residueCarrierID = "B";
             var carrierOnPort = GetCarrierOnThisManualPort(residueCarrierID);
@@ -159,7 +159,7 @@ namespace UnitTestForMGVPort
         public void 有殘帳時轉成InMode__資料庫刪除殘帳()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
             var residueCarrierID = "B";
             var carrierOnPort = GetCarrierOnThisManualPort(residueCarrierID);
@@ -174,7 +174,7 @@ namespace UnitTestForMGVPort
         public void 有殘帳且殘留命令時轉成InMode__資料庫刪除殘帳()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
             var residueCarrierID = "B";
             var carrierOnPort = GetCarrierOnThisManualPort(residueCarrierID);
@@ -190,7 +190,7 @@ namespace UnitTestForMGVPort
         public void 有殘帳且殘留命令時轉成InMode__資料庫刪除殘帳的命令()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
             var residueCarrierID = "B";
             var carrierOnPort = GetCarrierOnThisManualPort(residueCarrierID);
@@ -210,7 +210,7 @@ namespace UnitTestForMGVPort
         public void 無殘帳時轉成OutMode___資料庫的PortDef資料表需轉成OutMode()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
             stub.PortDefBLL.ChangeDirectionToOutMode(_portName).Returns(true);
@@ -225,7 +225,7 @@ namespace UnitTestForMGVPort
         public void 無殘帳時轉成OutMode__上報MCS轉成OutMode()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
 
@@ -238,7 +238,7 @@ namespace UnitTestForMGVPort
         public void 有殘帳時轉成OutMode__上報MCS轉成OutMode()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
             var residueCarrierID = "B";
             var carrierOnPort = GetCarrierOnThisManualPort(residueCarrierID);
@@ -254,7 +254,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
             var residueCarrierID = "B";
             var carrierOnPort = GetCarrierOnThisManualPort(residueCarrierID);
@@ -269,7 +269,7 @@ namespace UnitTestForMGVPort
         public void 有殘帳時轉成OutMode__資料庫刪除殘帳()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
             var residueCarrierID = "B";
             var carrierOnPort = GetCarrierOnThisManualPort(residueCarrierID);
@@ -284,7 +284,7 @@ namespace UnitTestForMGVPort
         public void 有殘帳且殘留命令時轉成OutMode__資料庫刪除殘帳()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
             var residueCarrierID = "B";
             var carrierOnPort = GetCarrierOnThisManualPort(residueCarrierID);
@@ -300,7 +300,7 @@ namespace UnitTestForMGVPort
         public void 有殘帳且殘留命令時轉成OutMode__資料庫刪除殘帳的命令()
         {
             var stub = GetStubObject();
-            IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
             var residueCarrierID = "B";
             var carrierOnPort = GetCarrierOnThisManualPort(residueCarrierID);

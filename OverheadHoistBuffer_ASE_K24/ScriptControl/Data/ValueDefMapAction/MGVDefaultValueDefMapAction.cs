@@ -15,10 +15,12 @@ using com.mirle.ibg3k0.bcf.Controller;
 using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 using NLog;
 using System;
+using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 {
@@ -52,6 +54,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         private BCFApplication bcfApp = null;
 
         protected String[] recipeIDNodes = null;
+
+        public string PortName { get => eqpt.EQPT_ID; }
 
         public MGVDefaultValueDefMapAction()
             : base()
@@ -459,6 +463,131 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 scApp.putFunBaseObj<ManualPortPLCInfo>(function);
             }
+        }
+
+        #region Control
+
+        public Task SetMoveBackReasonAsync(MoveBackReasons reason)
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(eqpt.EQPT_ID) as ManualPortPLCControl;
+                function.MoveBackReason = (ushort)reason;
+                CommitChange(function);
+            });
+        }
+
+        public Task ChangeToInModeAsync()
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(eqpt.EQPT_ID) as ManualPortPLCControl;
+                function.IsChangeToInMode = true;
+                CommitChange(function);
+            });
+        }
+
+        public Task ChangeToOutModeAsync()
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(eqpt.EQPT_ID) as ManualPortPLCControl;
+                function.IsChangeToOutMode = true;
+                CommitChange(function);
+            });
+        }
+
+        public Task MoveBackAsync()
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(eqpt.EQPT_ID) as ManualPortPLCControl;
+                function.IsMoveBack = true;
+                CommitChange(function);
+            });
+        }
+
+        public Task ResetAlarmAsync()
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(eqpt.EQPT_ID) as ManualPortPLCControl;
+                function.IsResetOn = true;
+                CommitChange(function);
+            });
+        }
+
+        public Task StopBuzzerAsync()
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(eqpt.EQPT_ID) as ManualPortPLCControl;
+                function.IsBuzzerStop = true;
+                CommitChange(function);
+            });
+        }
+
+        public Task SetRunAsync()
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(eqpt.EQPT_ID) as ManualPortPLCControl;
+                function.IsSetRun = true;
+                CommitChange(function);
+            });
+        }
+
+        public Task SetStopAsync()
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(eqpt.EQPT_ID) as ManualPortPLCControl;
+                function.IsSetStop = true;
+                CommitChange(function);
+            });
+        }
+
+        public Task SetCommandingAsync(bool setOn)
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(eqpt.EQPT_ID) as ManualPortPLCControl;
+                function.IsCommanding = setOn;
+                CommitChange(function);
+            });
+        }
+
+        public Task SetControllerErrorIndexAsync(int newIndex)
+        {
+            return Task.Run(() =>
+            {
+                throw new NotImplementedException();
+            });
+        }
+
+        private void CommitChange(ManualPortPLCControl function)
+        {
+            try
+            {
+                function.Write(bcfApp, eqpt.EqptObjectCate, eqpt.EQPT_ID);
+
+                LogManager.GetCurrentClassLogger().Info(function.ToString());
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+            finally
+            {
+                scApp.putFunBaseObj<ManualPortPLCControl>(function);
+            }
+        }
+
+        #endregion Control
+
+        public ManualPortPLCInfo GetPortState()
+        {
+            return scApp.getFunBaseObj<ManualPortPLCInfo>(eqpt.EQPT_ID) as ManualPortPLCInfo;
         }
     }
 }

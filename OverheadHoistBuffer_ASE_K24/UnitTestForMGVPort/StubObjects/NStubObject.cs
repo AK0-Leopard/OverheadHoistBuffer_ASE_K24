@@ -1,5 +1,6 @@
 ﻿using com.mirle.ibg3k0.sc.BLL.Interface;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
+using System.Collections.Generic;
 
 namespace UnitTestForMGVPort.StubObjects
 {
@@ -20,7 +21,12 @@ namespace UnitTestForMGVPort.StubObjects
             CassetteDataBLL = cassetteDataBLL;
             CommandBLL = cMDBLL;
             AlarmBLL = alarmBLL;
+
+            ManualPortValueDefMapActions = new List<IManualPortValueDefMapAction>();
+            ManualPortValueDefMapActions.Add(manualPortValueDefMapAction);
         }
+
+        public List<IManualPortValueDefMapAction> ManualPortValueDefMapActions { get; private set; }
 
         public IManualPortValueDefMapAction ManualPortValueDefMapAction { get; }
 

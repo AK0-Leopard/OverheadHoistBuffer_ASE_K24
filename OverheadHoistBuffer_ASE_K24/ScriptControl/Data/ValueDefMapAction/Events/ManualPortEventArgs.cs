@@ -10,6 +10,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events
             ManualPortPLCInfo = manualPortPLCInfo;
         }
 
+        public string PortName { get => ManualPortPLCInfo.EQ_ID; }
+
         public ManualPortPLCInfo ManualPortPLCInfo { get; }
     }
 }

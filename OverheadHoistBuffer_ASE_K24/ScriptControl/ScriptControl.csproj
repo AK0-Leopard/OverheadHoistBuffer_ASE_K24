@@ -641,6 +641,8 @@
     <Compile Include="Data\DBConnection_EF.cs" />
     <Compile Include="Data\PLC_Functions\MGV\Enums\CstType.cs" />
     <Compile Include="Data\PLC_Functions\MGV\Enums\DirectionType.cs" />
+    <Compile Include="Data\PLC_Functions\MGV\Enums\MoveBackReasons.cs" />
+    <Compile Include="Data\PLC_Functions\MGV\ManualPortPLCControl.cs" />
     <Compile Include="Data\PLC_Functions\MGV\ManualPortPLCInfo.cs" />
     <Compile Include="Data\PLC_Functions\MGV\OHxCToMGV_Status.cs" />
     <Compile Include="Data\PLC_Functions\MGV\MGVToOHxC_Alive.cs" />
@@ -1043,9 +1045,11 @@
     <Compile Include="Service\BlockControlService.cs" />
     <Compile Include="Service\EmptyBoxHandlerService.cs" />
     <Compile Include="Service\FailOverService.cs" />
-    <Compile Include="Service\Interface\IManualPortService.cs" />
+    <Compile Include="Service\Interface\IManualPortControlService.cs" />
+    <Compile Include="Service\Interface\IManualPortEventService.cs" />
     <Compile Include="Service\LineService.cs" />
-    <Compile Include="Service\ManualPortService.cs" />
+    <Compile Include="Service\ManualPortControlService.cs" />
+    <Compile Include="Service\ManualPortEventService.cs" />
     <Compile Include="Service\OHCVService.cs" />
     <Compile Include="Service\MTLService.cs" />
     <Compile Include="Service\RoadControlService.cs" />
