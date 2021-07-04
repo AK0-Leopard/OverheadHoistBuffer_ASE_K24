@@ -28,12 +28,12 @@ namespace UnitTestForMGVPort
         private NStubObject GetStubObject()
         {
             var stubManualPortValueDefMapAction = Substitute.For<IManualPortValueDefMapAction>();
-            var reportBll = Substitute.For<IReportBLL>();
-            var portBll = Substitute.For<IPortDefBLL>();
-            var shelfBll = Substitute.For<IShelfDefBLL>();
-            var cassetteDataBll = Substitute.For<ICassetteDataBLL>();
-            var commandBll = Substitute.For<ICMDBLL>();
-            var alarmBLL = Substitute.For<IAlarmBLL>();
+            var reportBll = Substitute.For<IManualPortReportBLL>();
+            var portBll = Substitute.For<IManualPortDefBLL>();
+            var shelfBll = Substitute.For<IManualPortShelfDefBLL>();
+            var cassetteDataBll = Substitute.For<IManualPortCassetteDataBLL>();
+            var commandBll = Substitute.For<IManualPortCMDBLL>();
+            var alarmBLL = Substitute.For<IManualPortAlarmBLL>();
 
             return new NStubObject(stubManualPortValueDefMapAction, reportBll, portBll, shelfBll, cassetteDataBll, commandBll, alarmBLL);
         }
@@ -102,7 +102,7 @@ namespace UnitTestForMGVPort
 
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
-            stub.ReportBLL.ReceivedWithAnyArgs().ReportCarrierWaitIn(new CassetteData());
+            stub.ReportBLL.ReceivedWithAnyArgs().ReportCarrierWaitIn(new CassetteData(), isDuplicate: false);
         }
 
         [Test]
@@ -134,6 +134,7 @@ namespace UnitTestForMGVPort
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
             Assert.IsTrue(mockReportBLL.WaitInCassetteData.BOXID == carrierId);
+            Assert.IsFalse(mockReportBLL.IsWaitInIdReadDuplicate);
         }
 
         #endregion 正常 Wait In
@@ -156,6 +157,7 @@ namespace UnitTestForMGVPort
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
             Assert.IsTrue(mockReportBLL.WaitInCassetteData.BOXID == carrierId);
+            Assert.IsTrue(mockReportBLL.IsWaitInIdReadDuplicate);
         }
 
         [Test]
@@ -174,6 +176,7 @@ namespace UnitTestForMGVPort
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
             Assert.IsTrue(mockReportBLL.ForcedRemoveCassetteData.BOXID == carrierId);
+            Assert.IsTrue(mockReportBLL.IsWaitInIdReadDuplicate);
         }
 
         [Test]
@@ -226,6 +229,7 @@ namespace UnitTestForMGVPort
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
             Assert.IsTrue(mockReportBLL.WaitInCassetteData.BOXID.StartsWith(_duplicateCarrierId));
+            Assert.IsTrue(mockReportBLL.IsWaitInIdReadDuplicate);
         }
 
         [Test]
@@ -284,6 +288,7 @@ namespace UnitTestForMGVPort
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
             Assert.IsTrue(mockReportBLL.WaitInCassetteData.BOXID == carrierId);
+            Assert.IsTrue(mockReportBLL.IsWaitInIdReadDuplicate);
         }
 
         [Test]
@@ -338,6 +343,7 @@ namespace UnitTestForMGVPort
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
             Assert.IsTrue(mockReportBLL.WaitInCassetteData.BOXID.StartsWith(_duplicateCarrierId));
+            Assert.IsTrue(mockReportBLL.IsWaitInIdReadDuplicate);
         }
 
         [Test]
@@ -398,6 +404,7 @@ namespace UnitTestForMGVPort
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
             Assert.IsTrue(mockReportBLL.ForcedRemoveCassetteData.BOXID == residueCarrierID);
+            Assert.IsFalse(mockReportBLL.IsWaitInIdReadDuplicate);
         }
 
         [Test]
@@ -417,6 +424,7 @@ namespace UnitTestForMGVPort
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
             Assert.IsTrue(mockReportBLL.WaitInCassetteData.BOXID == carrierId);
+            Assert.IsFalse(mockReportBLL.IsWaitInIdReadDuplicate);
         }
 
         #endregion ManualPort 上有殘帳

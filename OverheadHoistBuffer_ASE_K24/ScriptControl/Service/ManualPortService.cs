@@ -9,20 +9,20 @@ namespace com.mirle.ibg3k0.sc.Service
     public class ManualPortService : IManualPortService
     {
         private readonly IManualPortValueDefMapAction manualPortValueDefMapAction;
-        private readonly IReportBLL reportBll;
-        private readonly IPortDefBLL portDefBLL;
-        private readonly IShelfDefBLL shelfDefBLL;
-        private readonly ICassetteDataBLL cassetteDataBLL;
-        private readonly ICMDBLL commandBLL;
-        private readonly IAlarmBLL alarmBLL;
+        private readonly IManualPortReportBLL reportBll;
+        private readonly IManualPortCMDBLL commandBLL;
+        private readonly IManualPortAlarmBLL alarmBLL;
+        private readonly IManualPortDefBLL portDefBLL;
+        private readonly IManualPortShelfDefBLL shelfDefBLL;
+        private readonly IManualPortCassetteDataBLL cassetteDataBLL;
 
         public ManualPortService(IManualPortValueDefMapAction manualPortValueDefMapAction,
-                                 IReportBLL reportBll,
-                                 IPortDefBLL portDefBLL,
-                                 IShelfDefBLL shelfDefBLL,
-                                 ICassetteDataBLL cassetteDataBLL,
-                                 ICMDBLL commandBLL,
-                                 IAlarmBLL alarmBLL)
+                                 IManualPortReportBLL reportBll,
+                                 IManualPortDefBLL portDefBLL,
+                                 IManualPortShelfDefBLL shelfDefBLL,
+                                 IManualPortCassetteDataBLL cassetteDataBLL,
+                                 IManualPortCMDBLL commandBLL,
+                                 IManualPortAlarmBLL alarmBLL)
         {
             this.manualPortValueDefMapAction = manualPortValueDefMapAction;
             this.reportBll = reportBll;
@@ -64,7 +64,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
             var cassetteData = new CassetteData();
             cassetteData.BOXID = info.CarrierIdOfStage1;
-            reportBll.ReportCarrierWaitIn(cassetteData);
+            reportBll.ReportCarrierWaitIn(cassetteData, isDuplicate: false);
         }
 
         private void ManualPortValueDefMapAction_OnBcrReadDone(object sender, ManualPortEventArgs args)

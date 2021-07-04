@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace UnitTestForMGVPort.StubObjects
 {
-    public class MockCassetteDataBLL : ICassetteDataBLL
+    public class MockCassetteDataBLL : IManualPortCassetteDataBLL
     {
         public string InstalledCarrierId { get; private set; }
         public string InstalledCarrierLocation { get; private set; }

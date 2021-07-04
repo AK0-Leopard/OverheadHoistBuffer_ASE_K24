@@ -48,6 +48,10 @@
     <Compile Include="StubObjects\MockCassetteDataBLL.cs" />
     <Compile Include="StubObjects\MockReportBLL.cs" />
     <Compile Include="StubObjects\NStubObject.cs" />
+    <Compile Include="TestAlarmProcess.cs" />
+    <Compile Include="TestDirectionChangeProcess.cs" />
+    <Compile Include="TestInServiceChangedProcess.cs" />
+    <Compile Include="TestStageLoadPresenceChangedProcess.cs" />
     <Compile Include="TestWaitInProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

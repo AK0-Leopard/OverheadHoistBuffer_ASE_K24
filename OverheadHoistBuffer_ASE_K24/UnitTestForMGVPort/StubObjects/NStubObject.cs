@@ -6,12 +6,12 @@ namespace UnitTestForMGVPort.StubObjects
     public class NStubObject
     {
         public NStubObject(IManualPortValueDefMapAction manualPortValueDefMapAction,
-            IReportBLL reportBLL,
-            IPortDefBLL portDefBLL,
-            IShelfDefBLL shelfDefBLL,
-            ICassetteDataBLL cassetteDataBLL,
-            ICMDBLL cMDBLL,
-            IAlarmBLL alarmBLL)
+            IManualPortReportBLL reportBLL,
+            IManualPortDefBLL portDefBLL,
+            IManualPortShelfDefBLL shelfDefBLL,
+            IManualPortCassetteDataBLL cassetteDataBLL,
+            IManualPortCMDBLL cMDBLL,
+            IManualPortAlarmBLL alarmBLL)
         {
             ManualPortValueDefMapAction = manualPortValueDefMapAction;
             ReportBLL = reportBLL;
@@ -24,16 +24,16 @@ namespace UnitTestForMGVPort.StubObjects
 
         public IManualPortValueDefMapAction ManualPortValueDefMapAction { get; }
 
-        public IReportBLL ReportBLL { get; }
+        public IManualPortReportBLL ReportBLL { get; }
 
-        public IPortDefBLL PortDefBLL { get; }
+        public IManualPortDefBLL PortDefBLL { get; }
 
-        public IShelfDefBLL ShelfDefBLL { get; }
+        public IManualPortShelfDefBLL ShelfDefBLL { get; }
 
-        public ICassetteDataBLL CassetteDataBLL { get; }
+        public IManualPortCassetteDataBLL CassetteDataBLL { get; }
 
-        public ICMDBLL CommandBLL { get; }
+        public IManualPortCMDBLL CommandBLL { get; }
 
-        public IAlarmBLL AlarmBLL { get; }
+        public IManualPortAlarmBLL AlarmBLL { get; }
     }
 }
