@@ -284,7 +284,7 @@ namespace UnitTestForMGVPort
             IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var portInfo = GetNormalInModePortInfo(carrierId: "");
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
-            var alarmInfo = GetAlarmSetInfo(E_ALARM_LVL.Error, _alarmCode, commandId: "");
+            var alarmInfo = GetAlarmClearInfo(E_ALARM_LVL.Error, _alarmCode, commandId: "");
             stub.AlarmBLL.GetAlarmReport(_portName, _alarmCode, out Arg.Any<ALARM>()).Returns(a => { a[2] = alarmInfo; return true; });
 
             stub.ManualPortValueDefMapAction.OnAlarmClear += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(portInfo));
@@ -300,7 +300,7 @@ namespace UnitTestForMGVPort
             IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var portInfo = GetNormalOutModePortInfo(carrierId: "");
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
-            var alarmInfo = GetAlarmSetInfo(E_ALARM_LVL.Error, _alarmCode, commandId: "");
+            var alarmInfo = GetAlarmClearInfo(E_ALARM_LVL.Error, _alarmCode, commandId: "");
             stub.AlarmBLL.GetAlarmReport(_portName, _alarmCode, out Arg.Any<ALARM>()).Returns(a => { a[2] = alarmInfo; return true; });
 
             stub.ManualPortValueDefMapAction.OnAlarmClear += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(portInfo));
@@ -356,7 +356,7 @@ namespace UnitTestForMGVPort
             IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var portInfo = GetNormalInModePortInfo(carrierId: "");
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
-            var alarmInfo = GetAlarmSetInfo(E_ALARM_LVL.Warn, _alarmCode, commandId: "");
+            var alarmInfo = GetAlarmClearInfo(E_ALARM_LVL.Warn, _alarmCode, commandId: "");
             stub.AlarmBLL.GetAlarmReport(_portName, _alarmCode, out Arg.Any<ALARM>()).Returns(a => { a[2] = alarmInfo; return true; });
 
             stub.ManualPortValueDefMapAction.OnAlarmClear += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(portInfo));
@@ -372,7 +372,7 @@ namespace UnitTestForMGVPort
             IManualPortService manualPortService = new ManualPortService(stub.ManualPortValueDefMapAction, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var portInfo = GetNormalOutModePortInfo(carrierId: "");
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
-            var alarmInfo = GetAlarmSetInfo(E_ALARM_LVL.Warn, _alarmCode, commandId: "");
+            var alarmInfo = GetAlarmClearInfo(E_ALARM_LVL.Warn, _alarmCode, commandId: "");
             stub.AlarmBLL.GetAlarmReport(_portName, _alarmCode, out Arg.Any<ALARM>()).Returns(a => { a[2] = alarmInfo; return true; });
 
             stub.ManualPortValueDefMapAction.OnAlarmClear += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(portInfo));
