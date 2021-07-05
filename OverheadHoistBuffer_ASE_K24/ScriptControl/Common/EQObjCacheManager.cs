@@ -548,9 +548,11 @@ namespace com.mirle.ibg3k0.sc.Common
                                 ULD_VH_TYPE = unload_vh_type,
                                 PORT_STATUS = E_PORT_STATUS.InService
                             });
-                            _lockPortDefDic.Add(port_id, new object()) ;
-                            portDefList.Add(getPortDefObj(line.LINE_ID, zone_id, portStationConfig));
+                            _lockPortDefDic.Add(port_id, new object());
 
+                            portDefList.Add(getPortDefObj(line.LINE_ID, eqpt_id, portStationConfig, eqptType));
+                            if (eqptType == SCAppConstants.EqptType.Buffer)
+                                shelfDefList.Add(getShelfDefObj(eqpt_id, portStationConfig));
                         }
                     }
                     int vh_nmu = 1;
@@ -603,11 +605,12 @@ namespace com.mirle.ibg3k0.sc.Common
             };
         }
 
-        private PortDef getPortDefObj(string lineID, string zoneName, PortStationConfigSection portStationConfig)
+        private PortDef getPortDefObj(string lineID, string zoneName, PortStationConfigSection portStationConfig, SCAppConstants.EqptType eqptType)
         {
             return new PortDef()
             {
                 PLCPortID = portStationConfig.Port_ID,
+                UnitType = getPortDefUnitType(eqptType),
                 OHBName = lineID,
                 State = E_PORT_STATUS.OutOfService,
                 Stage = 1,
@@ -641,6 +644,32 @@ namespace com.mirle.ibg3k0.sc.Common
                 PRIORITY = 0
 
             };
+        }
+        private string getPortDefUnitType(SCAppConstants.EqptType eqptType)
+        {
+            switch (eqptType)
+            {
+                case SCAppConstants.EqptType.OHCV:
+                    return Service.UnitType.OHCV.ToString();
+                case SCAppConstants.EqptType.AGV:
+                    return Service.UnitType.AGV.ToString();
+                case SCAppConstants.EqptType.NTB:
+                    return Service.UnitType.NTB.ToString();
+                case SCAppConstants.EqptType.Buffer:
+                    return Service.UnitType.SHELF.ToString();
+                case SCAppConstants.EqptType.Stock:
+                    return Service.UnitType.STK.ToString();
+                case SCAppConstants.EqptType.CRANE:
+                    return Service.UnitType.CRANE.ToString();
+                case SCAppConstants.EqptType.AGVZONE:
+                    return Service.UnitType.AGVZONE.ToString();
+                case SCAppConstants.EqptType.LINE:
+                    return Service.UnitType.LINE.ToString();
+                case SCAppConstants.EqptType.Equipment:
+                    return Service.UnitType.EQ.ToString();
+                default:
+                    return Service.UnitType.EQ.ToString();
+            }
         }
 
         private string getVhRealID(string vhID)
@@ -1309,6 +1338,10 @@ namespace com.mirle.ibg3k0.sc.Common
         public APORT getPortByPortID(string port_id)
         {
             return portList.Where(p => p.PORT_ID.Trim() == port_id.Trim()).SingleOrDefault();
+        }
+        public APORTSTATION getPortStationByPortID(string port_id)
+        {
+            return portStationList.Where(p => p.PORT_ID.Trim() == port_id.Trim()).SingleOrDefault();
         }
 
         /// <summary>

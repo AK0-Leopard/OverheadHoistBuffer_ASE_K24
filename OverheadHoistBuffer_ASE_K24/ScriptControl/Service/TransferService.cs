@@ -2323,7 +2323,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             if (isCVPort(ohtCmd.DESTINATION) && isAGVZone(ohtCmd.DESTINATION) == false)
                             {
                                 //2020/2/18 Hsinyu Chang: 搬出到port，要通知port準備搬出哪一筆帳
-                                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(ohtCmd.DESTINATION).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(ohtCmd.DESTINATION).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
                                 portValueDefMapAction.Port_WriteBoxCstID(ohtToPort);
 
                                 TransferServiceLogger.Info
@@ -5250,7 +5250,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     return true;
                 }
 
-                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                 if (mode == E_PortType.In)
                 {
@@ -5320,14 +5320,14 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         foreach (var v in GetAGVPort(portID))
                         {
-                            PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(v.PortName).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                            PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(v.PortName).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                             portValueDefMapAction.Port_OHCV_Commanding(Commanding);
                         }
                     }
                     else
                     {
-                        PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                        PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                         portValueDefMapAction.Port_OHCV_Commanding(Commanding);
                     }
@@ -5347,7 +5347,7 @@ namespace com.mirle.ibg3k0.sc.Service
             try
             {
                 portID = portID.Trim();
-                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                 return portValueDefMapAction.GetPortValue();
             }
@@ -5383,7 +5383,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 if (isUnitType(portID, UnitType.AGV))
                 {
-                    PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                    PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                     portValueDefMapAction.Port_ChangeToAGVMode();
                 }
@@ -5413,7 +5413,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 if (isUnitType(portID, UnitType.AGV))
                 {
-                    PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                    PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                     portValueDefMapAction.Port_ChangeToMGVMode();
                 }
@@ -5440,7 +5440,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     + "    portID:" + portID
                 );
 
-                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                 portValueDefMapAction.Port_RUN();
                 return true;
@@ -5462,7 +5462,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     + "    portID:" + portID
                 );
 
-                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                 portValueDefMapAction.Port_STOP();
                 return true;
@@ -5484,7 +5484,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     + "    portID:" + portID
                 );
 
-                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                 portValueDefMapAction.Port_PortAlarrmReset(true);
                 Thread.Sleep(500);
@@ -5509,7 +5509,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     + " 誰呼叫:" + sourceCmd
                 );
 
-                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                 portValueDefMapAction.Port_ToggleBoxCover(true);
                 Thread.Sleep(500);
@@ -5533,7 +5533,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     + "    portID:" + portID
                 );
 
-                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                 portValueDefMapAction.Port_BCR_Read(true);
                 Thread.Sleep(500);
@@ -5557,7 +5557,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     + "    portID:" + portID
                 );
 
-                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                 portValueDefMapAction.Port_BCR_Read(false);
                 return true;
@@ -5581,7 +5581,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     + "    Enable:" + enable
                 );
 
-                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
+                PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
 
                 portValueDefMapAction.Port_BCR_Enable(enable);
                 return true;

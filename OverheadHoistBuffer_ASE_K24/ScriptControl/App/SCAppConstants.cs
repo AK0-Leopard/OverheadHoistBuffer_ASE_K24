@@ -358,6 +358,8 @@ namespace com.mirle.ibg3k0.sc.App
         /// The eqp t_ objec t_ cat e_ buffer
         /// </summary>
         public static readonly string EQPT_OBJECT_CATE_BUFFER = "BufferPort";
+        public static readonly string EQPT_OBJECT_PORT_STATION = "PortStation";
+
         /***************************************************/
         #endregion EQPT Object Cate
         /////////////////////////////////Config Use End//////////////////////////////////////////
@@ -1078,7 +1080,13 @@ namespace com.mirle.ibg3k0.sc.App
             MTS = 5,
             OHCV = 6,
             HID = 7,
-            MGV = 8
+            MGV = 8,
+            AGV = 9,
+            NTB = 10,
+            CRANE = 11,
+            ZONE = 12,
+            AGVZONE = 13,
+            LINE = 14
         }
         #endregion Eqpt Type
 

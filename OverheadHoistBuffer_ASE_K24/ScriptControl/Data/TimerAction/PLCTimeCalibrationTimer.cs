@@ -39,7 +39,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             {
                 try
                 {
-                    systemInfoMapAction = scApp.getEQObjCacheManager().getPortByPortID("MASTER_PLC")
+                    systemInfoMapAction = scApp.getEQObjCacheManager().getPortStationByPortID("MASTER_PLC")
                         .getMapActionByIdentityKey(typeof(PLCSystemInfoMapAction).Name) as PLCSystemInfoMapAction;
                     if (systemInfoMapAction == null) return;
 

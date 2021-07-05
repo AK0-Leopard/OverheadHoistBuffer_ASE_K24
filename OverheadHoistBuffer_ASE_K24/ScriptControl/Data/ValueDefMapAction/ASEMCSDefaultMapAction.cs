@@ -4610,7 +4610,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 }
 
                 //與設備同步
-                PLCSystemInfoMapAction systemTimeMapAction = scApp.getEQObjCacheManager().getPortByPortID("MASTER_PLC")
+                PLCSystemInfoMapAction systemTimeMapAction = scApp.getEQObjCacheManager().getPortStationByPortID("MASTER_PLC")
                     .getMapActionByIdentityKey(typeof(PLCSystemInfoMapAction).Name) as PLCSystemInfoMapAction;
                 systemTimeMapAction.PLC_SetSystemTime();
                 systemTimeMapAction.PLC_FinishTimeCalibration();

@@ -1854,6 +1854,12 @@ namespace com.mirle.ibg3k0.sc.App
                                 BaseEQObject buff = eqObjCacheManager.getBuffByBuffID(buff_id);
                                 injectValueDefMapAction(buffConfig, ref buff);
                             }
+                            foreach (PortStationConfigSection portStationConfig in eqptConfig.PortStationConfigList)
+                            {
+                                string port_id = portStationConfig.Port_ID;
+                                BaseEQObject port_station = eqObjCacheManager.getPortStationByPortID(port_id);
+                                injectValueDefMapAction(portStationConfig, ref port_station);
+                            }
                             //BaseEQObject vh = eqObjCacheManager.getVehicletByVHID(eqpt_id);
                             //injectValueDefMapAction(eqptConfig, ref vh);
                         }
