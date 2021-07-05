@@ -132,14 +132,14 @@ namespace UnitTestForMGVPort
 
             stub.ManualPortValueDefMapAction.OnLoadPresenceChanged += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
-            stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportCarrierWaitIn(new CassetteData(), isDuplicate: false);
+            stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportCarrierWaitIn(new CassetteData());
             stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportForcedRemoveCarrier(new CassetteData());
             stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportPortDirectionChanged(_portName, false);
             stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportPortInServiceChanged(_portName, false);
         }
 
         [Test]
-        public void OutMode時StagePresenceON___不上報MCS任何事件()
+        public void OutMode時StagePresenceON___除了WaitOut其他不上報MCS()
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
@@ -148,10 +148,23 @@ namespace UnitTestForMGVPort
 
             stub.ManualPortValueDefMapAction.OnLoadPresenceChanged += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
-            stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportCarrierWaitIn(new CassetteData(), isDuplicate: false);
+            stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportCarrierWaitIn(new CassetteData());
             stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportForcedRemoveCarrier(new CassetteData());
             stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportPortDirectionChanged(_portName, false);
             stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportPortInServiceChanged(_portName, false);
+        }
+
+        [Test]
+        public void OutMode時StagePresenceON___需要上報WaitOut()
+        {
+            var stub = GetStubObject();
+            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            var carrierId = "A";
+            var info = GetOutModePortHasCarrierInfo(carrierId);
+
+            stub.ManualPortValueDefMapAction.OnLoadPresenceChanged += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
+
+            stub.ReportBLL.ReceivedWithAnyArgs().ReportCarrierWaitOut(new CassetteData());
         }
 
         #endregion Port 變成有物
@@ -167,7 +180,7 @@ namespace UnitTestForMGVPort
 
             stub.ManualPortValueDefMapAction.OnLoadPresenceChanged += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
-            stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportCarrierWaitIn(new CassetteData(), isDuplicate: false);
+            stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportCarrierWaitIn(new CassetteData());
             stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportForcedRemoveCarrier(new CassetteData());
             stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportPortDirectionChanged(_portName, false);
             stub.ReportBLL.DidNotReceiveWithAnyArgs().ReportPortInServiceChanged(_portName, false);

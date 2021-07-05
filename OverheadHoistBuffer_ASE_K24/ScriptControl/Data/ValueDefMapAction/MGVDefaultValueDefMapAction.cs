@@ -49,7 +49,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         #endregion Implement
 
         private Logger logger = LogManager.GetCurrentClassLogger();
-        protected APORTSTATION port = null;
+        protected MGV_PORTSTATION port = null;
         private SCApplication scApp = null;
         private BCFApplication bcfApp = null;
 
@@ -71,7 +71,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
         public void setContext(BaseEQObject baseEQ)
         {
-            this.port = baseEQ as APORTSTATION;
+            this.port = baseEQ as MGV_PORTSTATION;
         }
 
         public void unRegisterEvent()

@@ -1865,7 +1865,22 @@ namespace com.mirle.ibg3k0.sc.BLL
             return isSuccsess;
         }
 
-        public bool ReportCarrierWaitIn(CassetteData cassetteData, bool isDuplicate)
+        private const string IDReadStatus_success = "0";
+        private const string IDReadStatus_duplicate = "2";
+
+        public bool ReportCarrierIDRead(CassetteData cassetteData, bool isDuplicate)
+        {
+            bool isSuccsess = true;
+
+            if (isDuplicate)
+                isSuccsess = isSuccsess && iBSEMDriver.S6F11SendCarrierIDRead(cassetteData, IDReadStatus_duplicate);
+            else
+                isSuccsess = isSuccsess && iBSEMDriver.S6F11SendCarrierIDRead(cassetteData, IDReadStatus_success);
+
+            return isSuccsess;
+        }
+
+        public bool ReportCarrierWaitIn(CassetteData cassetteData)
         {
             bool isSuccsess = true;
             isSuccsess = isSuccsess && iBSEMDriver.S6F11SendCarrierWaitIn(cassetteData, null);
@@ -1910,6 +1925,14 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             bool isSuccsess = true;
             isSuccsess = isSuccsess && iBSEMDriver.S6F11SendUnitAlarmSet(alarm.UnitID, alarm.ALAM_CODE, alarm.ALAM_DESC, null);
+            return isSuccsess;
+        }
+
+        public bool ReportCarrierWaitOut(CassetteData cassetteData)
+        {
+            bool isSuccsess = true;
+            var outMode = "1";
+            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendCarrierWaitOut(cassetteData, outMode);
             return isSuccsess;
         }
     }

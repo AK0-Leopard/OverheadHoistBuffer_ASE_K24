@@ -102,7 +102,8 @@ namespace UnitTestForMGVPort
 
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
-            stub.ReportBLL.ReceivedWithAnyArgs().ReportCarrierWaitIn(new CassetteData(), isDuplicate: false);
+            stub.ReportBLL.ReceivedWithAnyArgs().ReportCarrierIDRead(new CassetteData(), isDuplicate: false);
+            stub.ReportBLL.ReceivedWithAnyArgs().ReportCarrierWaitIn(new CassetteData());
         }
 
         [Test]
