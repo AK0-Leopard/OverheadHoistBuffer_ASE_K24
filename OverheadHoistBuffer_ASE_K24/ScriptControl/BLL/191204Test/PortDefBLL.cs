@@ -44,8 +44,9 @@ namespace com.mirle.ibg3k0.sc.BLL
             cache = new Cache(scApp, scApp.getCommObjCacheManager());
             //line = scApp.getEQObjCacheManager().getLine();
         }
-        public void setPortDef(PortDef port)
+        public bool setPortDef(PortDef port)
         {
+            bool is_success = true;
             try
             {
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -56,7 +57,9 @@ namespace com.mirle.ibg3k0.sc.BLL
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception");
+                is_success = false;
             }
+            return is_success;
         }
         public bool UpdataPortType(string portID, E_PortType portType) //更新流向
         {

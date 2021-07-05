@@ -2433,7 +2433,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
                     if (mcs_cmd.CMD_ID.StartsWith("SCAN-"))
                     {
-                        ShelfDef targetShelf = scApp.ShelfDefBLL.loadShelfDataByID(mcs_cmd.HOSTSOURCE);
+                        ShelfDef targetShelf = scApp.ShelfDefBLL.GetShelfDataByID(mcs_cmd.HOSTSOURCE);
 
                         scApp.MapBLL.getAddressID(hostsource, out from_adr, out vh_type);
                         bestSuitableVh = scApp.VehicleBLL.findBestSuitableVhStepByNearest(from_adr, vh_type);

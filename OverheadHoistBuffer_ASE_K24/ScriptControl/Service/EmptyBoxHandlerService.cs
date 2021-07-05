@@ -355,7 +355,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-                ShelfDef shelfData = shelfDefBLL.loadShelfDataByID(shelfID);
+                ShelfDef shelfData = shelfDefBLL.GetShelfDataByID(shelfID);
                 return shelfData.ZoneID == zoneID;
             }
             catch (Exception ex)

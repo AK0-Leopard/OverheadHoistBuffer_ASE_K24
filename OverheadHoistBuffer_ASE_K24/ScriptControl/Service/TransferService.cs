@@ -2008,7 +2008,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else if (isUnitType(destName, UnitType.SHELF))
                 {
-                    ShelfDef shelfData = shelfDefBLL.loadShelfDataByID(destName);
+                    ShelfDef shelfData = shelfDefBLL.GetShelfDataByID(destName);
                     if (shelfData != null)
                     {
                         if (shelfData.Enable == "Y")
@@ -7757,7 +7757,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (isShelfPort(loc))
             {
-                ShelfDef shelfData = shelfDefBLL.loadShelfDataByID(loc);
+                ShelfDef shelfData = shelfDefBLL.GetShelfDataByID(loc);
                 if (shelfData != null)
                 {
                     if (shelfData.Enable != "Y")
@@ -7913,7 +7913,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-                ShelfDef shelf = shelfDefBLL.loadShelfDataByID(shelfID);
+                ShelfDef shelf = shelfDefBLL.GetShelfDataByID(shelfID);
                 shelfDefBLL.UpdateEnableByID(shelfID, enable);
                 ZoneDef zone = zoneBLL.loadZoneDataByID(shelf.ZoneID);
                 reportBLL.ReportShelfStatusChange(zone);

@@ -753,7 +753,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             else
             {
                 //2020/06/02 Hsinyu Chang: not a port, try to query shelf
-                ShelfDef shelf = scApp.ShelfDefBLL.loadShelfDataByID(adr_port_id);
+                ShelfDef shelf = scApp.ShelfDefBLL.GetShelfDataByID(adr_port_id);
                 if (shelf != null)
                 {
                     adr = shelf.ADR_ID.Trim();

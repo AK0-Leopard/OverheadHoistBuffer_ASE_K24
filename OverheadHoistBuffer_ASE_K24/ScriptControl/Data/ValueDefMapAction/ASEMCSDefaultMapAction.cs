@@ -913,7 +913,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
             if (scApp.TransferService.isShelfPort(loc))  //SCAN 只能針對儲位
             {
-                ShelfDef shelfData = scApp.ShelfDefBLL.loadShelfDataByID(loc);
+                ShelfDef shelfData = scApp.ShelfDefBLL.GetShelfDataByID(loc);
 
                 if (shelfData != null)
                 {
@@ -1266,7 +1266,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 ShelfID = shelf_id_item.CPVAL;
 
-                ShelfDef shelf = scApp.ShelfDefBLL.loadShelfDataByID(ShelfID);
+                ShelfDef shelf = scApp.ShelfDefBLL.GetShelfDataByID(ShelfID);
                 if (shelf == null)
                 {
                     check_result = SECSConst.HCACK_Obj_Not_Exist;
@@ -1291,7 +1291,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
             if (shelf_id_item != null)
             {
-                ShelfDef shelf = scApp.ShelfDefBLL.loadShelfDataByID(ShelfID);
+                ShelfDef shelf = scApp.ShelfDefBLL.GetShelfDataByID(ShelfID);
                 if (shelf == null)
                 {
                     check_result = SECSConst.HCACK_Obj_Not_Exist;
@@ -3627,7 +3627,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 VIDCollection Vids = new VIDCollection();
 
-                ShelfDef targetShelf = scApp.ShelfDefBLL.loadShelfDataByID(loc);
+                ShelfDef targetShelf = scApp.ShelfDefBLL.GetShelfDataByID(loc);
                 ZoneDef zone = scApp.ZoneDefBLL.loadZoneDataByID(targetShelf.ZoneID);
 
                 int capacity = scApp.ZoneDefBLL.GetZoneCapacity(zone.ZoneID);

@@ -124,6 +124,10 @@ namespace com.mirle.ibg3k0.sc.Common
         private List<APORT> portList = new List<APORT>();
         private Dictionary<string, Object> _lockPorStationtDic = new Dictionary<string, object>();
         private List<APORTSTATION> portStationList = new List<APORTSTATION>();
+        private Dictionary<string, Object> _lockPortDefDic = new Dictionary<string, object>();
+        private List<PortDef> portDefList = new List<PortDef>();
+        private Dictionary<string, Object> _lockShelfDefDic = new Dictionary<string, object>();
+        private List<ShelfDef> shelfDefList = new List<ShelfDef>();
         /// <summary>
         /// The _lock port dic
         /// </summary>
@@ -284,6 +288,10 @@ namespace com.mirle.ibg3k0.sc.Common
             _lockBuffDic.Clear();
             portStationList.Clear();
             _lockPorStationtDic.Clear();
+            _lockPortDefDic.Clear();
+            portDefList.Clear();
+            _lockShelfDefDic.Clear();
+            shelfDefList.Clear();
         }
 
         /// <summary>
@@ -531,6 +539,7 @@ namespace com.mirle.ibg3k0.sc.Common
                             _lockPorStationtDic.Add(port_id, new Object());
                             E_VH_TYPE load_vh_type = (E_VH_TYPE)portStationConfig.Load_Vh_Type;
                             E_VH_TYPE unload_vh_type = (E_VH_TYPE)portStationConfig.Unload_Vh_Type;
+                            string type = portStationConfig.Type;
                             portStationList.Add(new APORTSTATION()
                             {
                                 EQPT_ID = eqpt_id,
@@ -539,8 +548,15 @@ namespace com.mirle.ibg3k0.sc.Common
                                 LD_VH_TYPE = load_vh_type,
                                 ULD_VH_TYPE = unload_vh_type,
                                 PORT_STATUS = E_PORT_STATUS.InService
-
                             });
+                            _lockPortDefDic.Add(port_id, new object()) ;
+                            portDefList.Add(getPortDefObj(line.LINE_ID, zone_id, portStationConfig));
+
+                            if (SCUtility.isMatche(com.mirle.ibg3k0.sc.Service.UnitType.SHELF.ToString(), type))
+                            {
+                                _lockShelfDefDic.Add(port_id, new object());
+                                shelfDefList.Add(getShelfDefObj(zone_id, portStationConfig));
+                            }
                         }
                     }
                     int vh_nmu = 1;
@@ -563,6 +579,76 @@ namespace com.mirle.ibg3k0.sc.Common
             }
         }
 
+        private ShelfDef getShelfDefObj(string zoneID, PortStationConfigSection portStationConfig)
+        {
+            return new ShelfDef()
+            {
+                StockerID = "1",
+                ShelfID = portStationConfig.Port_ID,
+                Stage = 2,
+                Bank_X = "2",
+                Bay_Y = "2",
+                Level_Z = "2",
+                LocateCraneNo = 2,
+                ShelfType = 2,
+                ShelfState = "N",
+                ZoneID = zoneID,
+                Enable = "Y",
+                OldEnableSts = "1",
+                EmptyBlockFlag = "1",
+                HoldState = 1,
+                BCRReadFlag = "1",
+                TransferTimes = 1,
+                ChargeLoc = "1",
+                SelectPriority = 1,
+                Remark = "1",
+                TrnDT = "1",
+                HandoffDirection = null,
+                ADR_ID = portStationConfig.Address_ID
+
+            };
+        }
+
+        private PortDef getPortDefObj(string lineID, string zoneName, PortStationConfigSection portStationConfig)
+        {
+            return new PortDef()
+            {
+                PLCPortID = portStationConfig.Port_ID,
+                OHBName = lineID,
+                State = E_PORT_STATUS.OutOfService,
+                Stage = 1,
+                AGVState = E_PORT_STATUS.NoDefinition,
+                UnitType = portStationConfig.Type,
+                HostEQPortID = null,
+                ShelfID = null,
+                PortType = 0,
+                PortTypeDef = 0,
+                PortLocationType = 0,
+                PortTypeIndex = null,
+                SourceWeighted = 0,
+                DestWeighted = 0,
+                Direction = 0,
+                Color = null,
+                TimeOutForAutoInZone = "",
+                AlternateToZone = "",
+                Vehicles = 1,
+                Floor = 0,
+                IgnoreModeChange = "N",
+                ReportMCSFlag = "Y",
+                ReportStage = 0,
+                NetHStnNo = 0,
+                AreaSensorStnNo = 0,
+                Presenton_InsCST = "N",
+                Presentoff_DelCST = "N",
+                ToEQ = null,
+                TrnDT = null,
+                AlarmType = 3,
+                ADR_ID = portStationConfig.Address_ID,
+                ZoneName = zoneName,
+                PRIORITY = 0
+
+            };
+        }
 
         private string getVhRealID(string vhID)
         {
@@ -809,6 +895,36 @@ namespace com.mirle.ibg3k0.sc.Common
                             {
                                 put(tmpPortStation);
                             }
+                        }
+                    }
+                    foreach (PortDef port_def in portDefList)
+                    {
+                        PortDef tmpPortDef = scApp.PortDefBLL.GetPortData(port_def.PLCPortID);
+                        if (tmpPortDef == null)
+                        {
+                            if (!scApp.PortDefBLL.setPortDef(port_def))
+                            {
+                                logger.Error("insert PortDef[{0}] Failed.", port_def.PLCPortID);
+                            }
+                        }
+                        else
+                        {
+                            put(tmpPortDef);
+                        }
+                    }
+                    foreach (ShelfDef shelf in shelfDefList)
+                    {
+                        ShelfDef shelfDef = scApp.ShelfDefBLL.GetShelfDataByID(shelf.ShelfID);
+                        if (shelfDef == null)
+                        {
+                            if (!scApp.ShelfDefBLL.addShelfData(shelf))
+                            {
+                                logger.Error("insert shelf[{0}] Failed.", shelf.ShelfID);
+                            }
+                        }
+                        else
+                        {
+                            put(shelfDef);
                         }
                     }
                 }
@@ -1203,53 +1319,6 @@ namespace com.mirle.ibg3k0.sc.Common
         }
 
         /// <summary>
-        /// Gets the port by unit number.
-        /// </summary>
-        /// <param name="eqpt_id">The eqpt_id.</param>
-        /// <param name="unit_num">The unit_num.</param>
-        /// <returns>Port.</returns>
-        public APORT getPortByUnitNumber(string eqpt_id, int unit_num)
-        {
-            return portList.Where(p => p.EQPT_ID.Trim() == eqpt_id.Trim() && p.UNIT_NUM == unit_num).SingleOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the port by port number.
-        /// </summary>
-        /// <param name="eqpt_id">The eqpt_id.</param>
-        /// <param name="port_num">The port_num.</param>
-        /// <returns>Port.</returns>
-        public APORT getPortByPortNumber(string eqpt_id, int port_num)
-        {
-            return portList.Where(p => p.EQPT_ID.Trim() == eqpt_id.Trim() && p.PORT_NUM == port_num).SingleOrDefault();
-        }
-
-
-        /// <summary>
-        /// Gets the port by cstid.
-        /// </summary>
-        /// <param name="eqpt_id">The eqpt_id.</param>
-        /// <param name="cst_id">The cst_id.</param>
-        /// <returns>Port.</returns>
-        public APORT getPortByCSTID(string eqpt_id, string cst_id)
-        {
-            return portList.Where(p => p.EQPT_ID.Trim() == eqpt_id.Trim()
-                && SCUtility.Trim(p.CassetteLoader.CassetteItem.CST_ID) == cst_id.Trim()).SingleOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the port by lot identifier.
-        /// </summary>
-        /// <param name="eqpt_id">The eqpt_id.</param>
-        /// <param name="lot_id">The lot_id.</param>
-        /// <returns>Port.</returns>
-        public APORT getPortByLotID(string eqpt_id, string lot_id)
-        {
-            return portList.Where(p => p.EQPT_ID.Trim() == eqpt_id.Trim()
-                && SCUtility.Trim(p.CassetteLoader.LotItem.LOT_ID) == lot_id.Trim()).SingleOrDefault();
-        }
-
-        /// <summary>
         /// Gets the port list by equipment.
         /// </summary>
         /// <param name="eqpt_id">The eqpt_id.</param>
@@ -1262,6 +1331,14 @@ namespace com.mirle.ibg3k0.sc.Common
         public APORTSTATION getPortStation(string port_id)
         {
             return portStationList.Where(p => p.PORT_ID.Trim() == port_id.Trim()).SingleOrDefault();
+        }
+        public PortDef getPortDef(string port_id)
+        {
+            return portDefList.Where(p => SCUtility.isMatche(p.PLCPortID, port_id)).SingleOrDefault();
+        }
+        public ShelfDef getShelfDef(string shelfID)
+        {
+            return shelfDefList.Where(p => SCUtility.isMatche(p.ShelfID, shelfID)).SingleOrDefault();
         }
         public APORTSTATION getPortStationByAdrID(string adrID)
         {
@@ -1376,6 +1453,7 @@ namespace com.mirle.ibg3k0.sc.Common
                 setValueToPropety<ALINE>(ref source_line, ref line);
             }
         }
+
 
         /// <summary>
         /// Puts the specified source_zone.
@@ -1577,6 +1655,26 @@ namespace com.mirle.ibg3k0.sc.Common
             lock (_lockPorStationtDic[port_station.PORT_ID])
             {
                 setValueToPropety<APORTSTATION>(ref portStation, ref port_station);
+            }
+        }
+        public void put(PortDef portDef)
+        {
+            if (portDef == null) { return; }
+            PortDef port_def = getPortDef(portDef.PLCPortID);
+            if (port_def == null) { return; }
+            lock (_lockPortDefDic[port_def.PLCPortID])
+            {
+                setValueToPropety<PortDef>(ref portDef, ref port_def);
+            }
+        }
+        public void put(ShelfDef sheltDef)
+        {
+            if (sheltDef == null) { return; }
+            ShelfDef shelf = getShelfDef(sheltDef.ShelfID);
+            if (shelf == null) { return; }
+            lock (_lockShelfDefDic[shelf.ShelfID])
+            {
+                setValueToPropety<ShelfDef>(ref sheltDef, ref shelf);
             }
         }
 

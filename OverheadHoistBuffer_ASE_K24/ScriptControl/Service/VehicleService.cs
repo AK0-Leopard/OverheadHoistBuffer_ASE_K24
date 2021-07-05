@@ -1403,7 +1403,7 @@ namespace com.mirle.ibg3k0.sc.Service
         public bool doChgEnableShelfCommand(string shelf_id, bool enable)
         {
             bool is_success = true;
-            ShelfDef shelf = scApp.ShelfDefBLL.loadShelfDataByID(shelf_id);
+            ShelfDef shelf = scApp.ShelfDefBLL.GetShelfDataByID(shelf_id);
             is_success &= scApp.ShelfDefBLL.UpdateEnableByID(shelf_id, enable);
             ZoneDef zone = scApp.ZoneDefBLL.loadZoneDataByID(shelf.ZoneID);
             scApp.ReportBLL.ReportShelfStatusChange(zone);

@@ -148,7 +148,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             }
         }
 
-        public ShelfDef LoadShelfByID(DBConnection_EF conn, string shelfid)
+        public ShelfDef GetShelfByID(DBConnection_EF conn, string shelfid)
         {
             try
             {
