@@ -10,16 +10,18 @@ using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.App;
 using System.Transactions;
 using com.mirle.ibg3k0.sc.Service;
+using com.mirle.ibg3k0.sc.BLL.Interface;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
     public class ShelfDefBLL
     {
-        SCApplication scApp = null;
-        ShelfDefDao shelfdefDao = null;
-        ZoneDefDao zonedefDao = null;
-        CassetteDataDao cassetteDataDao = null;
+        private SCApplication scApp = null;
+        private ShelfDefDao shelfdefDao = null;
+        private ZoneDefDao zonedefDao = null;
+        private CassetteDataDao cassetteDataDao = null;
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public void start(SCApplication scApp)
         {
             this.scApp = scApp;
@@ -62,6 +64,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public List<ShelfDef> LoadShelf()
         {
             try
@@ -76,8 +79,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
+
         public List<ShelfDef> LoadEnableShelf()
         {
             try
@@ -92,7 +95,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
 
         public bool UpdateEnableByID(string shelfid, bool enable)
@@ -305,6 +307,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return true;
         }
+
         public List<ShelfDef> GetEmptyAndEnableShelf()
         {
             try
@@ -320,6 +323,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public List<ShelfDef> GetEmptyAndEnableShelfByZone(string zoneID)
         {
             try
@@ -350,7 +354,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
 
         public int GetDistance(string shelfID, string targetAddress)

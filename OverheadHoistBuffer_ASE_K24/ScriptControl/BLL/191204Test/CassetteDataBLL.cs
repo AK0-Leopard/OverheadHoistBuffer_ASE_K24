@@ -10,6 +10,7 @@ using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Service;
+using com.mirle.ibg3k0.sc.BLL.Interface;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
@@ -23,15 +24,13 @@ namespace com.mirle.ibg3k0.sc.BLL
 
     public class CassetteDataBLL
     {
-        SCApplication scApp = null;
-        CassetteDataDao cassettedataDao = null;
-        ZoneDefDao zonedefDao = null;
-        ShelfDefDao shelfdefDao = null;
+        private SCApplication scApp = null;
+        private CassetteDataDao cassettedataDao = null;
+        private ZoneDefDao zonedefDao = null;
+        private ShelfDefDao shelfdefDao = null;
         public Redis redis = null;
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private static Logger TransferServiceLogger = LogManager.GetLogger("TransferServiceLogger");
-
-
 
         public void start(SCApplication scApp)
         {
@@ -41,6 +40,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             shelfdefDao = scApp.ShelfDefDao;
             redis = new Redis(scApp.getRedisCacheManager());
         }
+
         public bool insertCassetteData(CassetteData datainfo)
         {
             bool isSuccess = true;
@@ -80,6 +80,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool UpdateCSTState(string boxid, int state)
         {
             bool isSuccess = true;
@@ -100,6 +101,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool UpdateCSTDataByID(string cstid, string boxid, string locid)
         {
             bool isSuccess = true;
@@ -120,6 +122,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool DeleteCSTDataByID(string cstid, string boxid)
         {
             bool isSuccess = true;
@@ -140,6 +143,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool UpdateCSTLoc(string boxid, string loc, int stage)
         {
             bool isSuccess = true;
@@ -223,6 +227,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool UpdateCSTID(string loc, string boxid, string cstid, string lotID)
         {
             bool isSuccess = true;
@@ -243,6 +248,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool UpdateCST_DateTime(string boxid, UpdateCassetteTimeType timeType)
         {
             boxid = boxid.Trim();
@@ -258,12 +264,15 @@ namespace com.mirle.ibg3k0.sc.BLL
                         case UpdateCassetteTimeType.StoreDT:
                             cassettedataDao.LoadCassetteDataByBoxID(con, boxid).StoreDT = time;
                             break;
+
                         case UpdateCassetteTimeType.WaitOutOPDT:
                             cassettedataDao.LoadCassetteDataByBoxID(con, boxid).WaitOutOPDT = time;
                             break;
+
                         case UpdateCassetteTimeType.WaitOutLPDT:
                             cassettedataDao.LoadCassetteDataByBoxID(con, boxid).WaitOutLPDT = time;
                             break;
+
                         case UpdateCassetteTimeType.TrnDT:
                             cassettedataDao.LoadCassetteDataByBoxID(con, boxid).TrnDT = time;
                             break;
@@ -281,6 +290,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public List<CassetteData> loadCassetteData()
         {
             try
@@ -329,6 +339,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         /// <summary>
         /// 找出是UNK 但不是UNKU且在shelf 上的CST
         /// </summary>
@@ -349,6 +360,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public List<CassetteData> LoadCassetteDataByNotCompleted()
         {
             try
@@ -380,6 +392,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public List<CassetteData> loadCassetteDataIsUnfinished()
         {
             try
@@ -410,9 +423,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
-        
+
         public CassetteData loadCassetteDataByLoc(string portName)
         {
             try
@@ -444,6 +456,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public CassetteData loadCassetteDataByCSTID(string cstid)
         {
             try
@@ -459,6 +472,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public CassetteData loadCassetteDataByBoxID(string boxid)
         {
             try
@@ -475,6 +489,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public CassetteData loadCassetteDataByDU_CstID(CassetteData cstData)
         {
             try
@@ -491,6 +506,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public CassetteData loadCassetteDataByDU_BoxID(CassetteData cstData)
         {
             try
@@ -522,7 +538,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
 
         public CassetteData GetEmptyBox(string ohtName)   //取得空BOX，oht
@@ -540,7 +555,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
             //using (DBConnection_EF con = new DBConnection_EF())
-
         }
 
         public string GetZoneName(string shiefid)
@@ -561,8 +575,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return "ex";
             }
-
         }
+
         public string GetCassetteLocByBoxID(string boxid)
         {
             string cstLoc = "";
@@ -586,6 +600,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return cstLoc;
             }
         }
+
         public bool DeleteCSTbyBoxId(string boxid)
         {
             bool isSuccsess = true;
@@ -615,7 +630,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
                     csidData = con.CassetteData.Where(data => data.CSTID.Trim() == cstid.Trim() && data.BOXID.Trim() == boxid.Trim()).First();
-                    
+
                     cassettedataDao.DeleteCassetteData(con, csidData);
                 }
 
@@ -667,12 +682,15 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public class Redis
         {
-            RedisCacheManager redisCacheManager = null;
+            private RedisCacheManager redisCacheManager = null;
+
             public Redis(RedisCacheManager _redisCacheManager)
             {
                 redisCacheManager = _redisCacheManager;
             }
-            TimeSpan BOXID_WITH_CSTID_OF_TIME_OUT = new TimeSpan(0, 30, 0);
+
+            private TimeSpan BOXID_WITH_CSTID_OF_TIME_OUT = new TimeSpan(0, 30, 0);
+
             public void setBoxIDWithCSTID(string boxID, string cstID)
             {
                 try
@@ -698,6 +716,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     return (false, "");
                 }
             }
+
             public void deleteCSTIDByBoxID(string boxID)
             {
                 try

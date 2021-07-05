@@ -26,6 +26,7 @@ using com.mirle.ibg3k0.sc.Data;
 using Newtonsoft.Json;
 using com.mirle.ibg3k0.sc.Service;
 using com.mirle.ibg3k0.sc.Data.DAO.EntityFramework;
+using com.mirle.ibg3k0.sc.BLL.Interface;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
@@ -34,11 +35,11 @@ namespace com.mirle.ibg3k0.sc.BLL
     /// </summary>
     public class AlarmBLL
     {
-
         /// <summary>
         /// The sc application
         /// </summary>
         private SCApplication scApp = null;
+
         /// <summary>
         /// The logger
         /// </summary>
@@ -50,25 +51,29 @@ namespace com.mirle.ibg3k0.sc.BLL
         private AlarmDao alarmDao = null;
 
         private CMD_MCSDao cmd_mcsDao = null;
+
         /// <summary>
         /// The line DAO
         /// </summary>
         private LineDao lineDao = null;
+
         /// <summary>
         /// The alarm RPT cond DAO
         /// </summary>
         private AlarmRptCondDao alarmRptCondDao = null;
+
         /// <summary>
         /// The alarm map DAO
         /// </summary>
         private AlarmMapDao alarmMapDao = null;
+
         private MainAlarmDao mainAlarmDao = null;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AlarmBLL"/> class.
         /// </summary>
         public AlarmBLL()
         {
-
         }
 
         /// <summary>
@@ -87,6 +92,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
 
         #region Alarm Map
+
         //public AlarmMap getAlarmMap(string eqpt_real_id, string alarm_id)
         //{
         //    DBConnection conn = null;
@@ -109,12 +115,12 @@ namespace com.mirle.ibg3k0.sc.BLL
             AlarmMap alarmMap = alarmMapDao.getAlarmMap(eq_id, error_code);
             return alarmMap;
         }
+
         #endregion Alarm Map
 
+        private object lock_obj_alarm = new object();
 
-
-        object lock_obj_alarm = new object();
-        public ALARM setAlarmReport(string node_id, string eq_id, string error_code, ACMD_MCS mcsCmdData,string desc)
+        public ALARM setAlarmReport(string node_id, string eq_id, string error_code, ACMD_MCS mcsCmdData, string desc)
         {
             lock (lock_obj_alarm)
             {
@@ -145,7 +151,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     int stage = scApp.TransferService.portINIData[eq_id].Stage;
 
-                    if(stage == 7)
+                    if (stage == 7)
                     {
                         alarmUnitType = "OHCV_7";
                     }
@@ -161,10 +167,9 @@ namespace com.mirle.ibg3k0.sc.BLL
                     //eq_id = eq_id.Remove(0, 12);
                 }
 
-
                 AlarmMap alarmMap = alarmMapDao.getAlarmMap(alarmUnitType, error_code);
                 string alam_desc = "";
-                if(alarmMap == null)
+                if (alarmMap == null)
                 {
                     scApp.TransferService.TransferServiceLogger.Info
                     (
@@ -173,7 +178,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         + "    EQ_Name:" + eq_id
                         + "    Error_code:" + error_code
                     );
-                    if(SCUtility.isEmpty(desc))
+                    if (SCUtility.isEmpty(desc))
                     {
                         alam_desc = $"unknow alarm code:{error_code}";
                     }
@@ -188,7 +193,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
 
                 string strNow = BCFUtility.formatDateTime(DateTime.Now, SCAppConstants.TimestampFormat_19);
-                
+
                 ALARM alarm = new ALARM()
                 {
                     EQPT_ID = eq_id,
@@ -267,7 +272,6 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public bool hasAlarmErrorExist()
         {
-
             //var redis_values_alarms = scApp.getRedisCacheManager().HashValuesAsync(SCAppConstants.REDIS_KEY_CURRENT_ALARM).Result;
             //if (redis_values_alarms.Count() > 0)
             //{
@@ -345,6 +349,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             var vh_all_alarm = current_all_alarm.Where(redisKey => ((string)redisKey).Contains(vh_id)).ToArray();
             scApp.getRedisCacheManager().HashDeleteAsync(SCAppConstants.REDIS_KEY_CURRENT_ALARM, vh_all_alarm);
         }
+
         private bool IsAlarmExist(string eq_id, string code)
         {
             bool isExist = false;
@@ -354,6 +359,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isExist;
         }
+
         public bool IsReportToHost(string code)
         {
             return true;
@@ -434,7 +440,8 @@ namespace com.mirle.ibg3k0.sc.BLL
             return msg;
         }
 
-        object lock_obj_alarm_happen = new object();
+        private object lock_obj_alarm_happen = new object();
+
         public void CheckSetAlarm()
         {
             lock (lock_obj_alarm_happen)
@@ -444,16 +451,18 @@ namespace com.mirle.ibg3k0.sc.BLL
                     ALINE line = scApp.getEQObjCacheManager().getLine();
                     List<ALARM> alarmLst = alarmDao.loadSetAlarm(con);
 
-                    if(alarmLst != null && alarmLst.Count > 0)
+                    if (alarmLst != null && alarmLst.Count > 0)
                     {
                         line.IsAlarmHappened = true;
-                    }else
+                    }
+                    else
                     {
                         line.IsAlarmHappened = false;
                     }
                 }
             }
         }
+
         public List<ALARM> loadAllAlarmList()
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -469,6 +478,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return alarmDao.loadSetAlarm(con);
             }
         }
+
         public List<ALARM> loadSetAlarmListByError()
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -476,6 +486,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return alarmDao.loadSetAlarmByError(con);
             }
         }
+
         public List<ALARM> loadSetAlarmListByWarn()
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -483,6 +494,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return alarmDao.loadSetAlarmByWarn(con);
             }
         }
+
         public List<ALARM> loadSetAlarmListByEqName(string eqName)
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -490,6 +502,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return alarmDao.loadSetAlarmByEqName(con, eqName);
             }
         }
+
         public ALARM loadAlarmByAlarmID(string eqid, string alarmId)
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -509,10 +522,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                         .Where(data => data.ALAM_CODE == alarmId)
                         .FirstOrDefault();
 
-                    if(quary != null)
+                    if (quary != null)
                     {
                         alarmDao.DeleteAlarmByAlarmID(con, quary);
-                    }                    
+                    }
                 }
             }
             catch

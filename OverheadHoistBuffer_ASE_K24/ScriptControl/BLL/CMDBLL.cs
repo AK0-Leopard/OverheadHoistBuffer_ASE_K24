@@ -11,6 +11,7 @@
 //**********************************************************************************
 using com.mirle.ibg3k0.bcf.App;
 using com.mirle.ibg3k0.sc.App;
+using com.mirle.ibg3k0.sc.BLL.Interface;
 using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.Data.DAO;
@@ -37,36 +38,34 @@ namespace com.mirle.ibg3k0.sc.BLL
     public class CMDBLL
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        CMD_OHTCDao cmd_ohtcDAO = null;
-        CMD_OHTC_DetailDao cmd_ohtc_detailDAO = null;
-        CMD_MCSDao cmd_mcsDao = null;
-        TestTranTaskDao testTranTaskDao = null;
-        ReturnCodeMapDao return_code_mapDao = null;
-        ShelfDefDao shelfdefDao = null;
-        CassetteDataDao cassettedataDao = null;
-        HCMD_MCSDao hcmd_mcsDao = null;
-        HCMD_OHTCDao hcmd_ohtcDao = null;
+        private CMD_OHTCDao cmd_ohtcDAO = null;
+        private CMD_OHTC_DetailDao cmd_ohtc_detailDAO = null;
+        private CMD_MCSDao cmd_mcsDao = null;
+        private TestTranTaskDao testTranTaskDao = null;
+        private ReturnCodeMapDao return_code_mapDao = null;
+        private ShelfDefDao shelfdefDao = null;
+        private CassetteDataDao cassettedataDao = null;
+        private HCMD_MCSDao hcmd_mcsDao = null;
+        private HCMD_OHTCDao hcmd_ohtcDao = null;
 
         protected static Logger logger_VhRouteLog = LogManager.GetLogger("VhRoute");
-        NLog.Logger TransferServiceLogger = NLog.LogManager.GetLogger("TransferServiceLogger");
+        private NLog.Logger TransferServiceLogger = NLog.LogManager.GetLogger("TransferServiceLogger");
 
         private string[] ByPassSegment = null;
-        ParkZoneTypeDao parkZoneTypeDao = null;
+        private ParkZoneTypeDao parkZoneTypeDao = null;
         private SCApplication scApp = null;
 
         public Cache cache { get; private set; }
 
-
-
-        ALINE line
+        private ALINE line
         {
             get => scApp.getEQObjCacheManager().getLine();
         }
 
         public CMDBLL()
         {
-
         }
+
         public void start(SCApplication app)
         {
             scApp = app;
@@ -102,9 +101,9 @@ namespace com.mirle.ibg3k0.sc.BLL
             //}
             ByPassSegment = new string[] { };
         }
+
         public void initialMapAction()
         {
-
         }
 
         public bool SourceDestExist(string existName)   //確認來源目的是否存在
@@ -119,6 +118,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
 
         #region CMD_MCS
+
         public List<ACMD_MCS> LoadCmdData()
         {
             //using (DBConnection_EF con = new DBConnection_EF())
@@ -142,6 +142,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return cmd_mcsDao.LoadAllCmdData(con);
             }
         }
+
         public List<ACMD_MCS> LoadCmdDataByStartEnd(DateTime startTime, DateTime endTime)  //歷史紀錄
         {
             //using (DBConnection_EF con = new DBConnection_EF())
@@ -150,6 +151,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return cmd_mcsDao.LoadCmdDataByStartEnd(con, startTime, endTime);
             }
         }
+
         public ACMD_MCS GetCmdIDFromCmd(string cmdid)   //取得有此CmdID的命令
         {
             try
@@ -164,7 +166,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
 
         public ACMD_MCS GetBoxFromCmd(string boxid) //取得有此BOXID的命令
@@ -183,6 +184,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public ACMD_MCS GetCarrierFromCmd(string carrierID) //CarrierID的命令
         {
             try
@@ -252,6 +254,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public List<ACMD_MCS> GetCmdDataByDestAndByPassManaul(string portName) //取得目的為AGV Port的命令
         {
             try
@@ -271,7 +274,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-
         public ACMD_MCS GetCmdDataByAGVtoSHELF(string SourcePortName)  //取得退BOX的命令
         {
             try
@@ -287,6 +289,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public ACMD_MCS GetCmdDataBySHELFtoAGV(string DestPortName)  //取得補BOX的命令
         {
             try
@@ -302,6 +305,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public string doCheckMCSCommand(SCApplication app, string command_id, string Priority, string cstID, string box_id, string lotID, string cstType,
                                         ref string HostSource, ref string HostDestination,
                                         out string check_result, out bool isFromVh)
@@ -334,6 +338,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 //}
 
                 #region 卡匣是否存在
+
                 CassetteData cstData = scApp.CassetteDataBLL.loadCassetteDataByBoxID(box_id);
 
                 if (cstData == null)
@@ -363,8 +368,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                         return SECSConst.HCACK_Obj_Not_Exist;
                     }
                 }
-                #endregion
-                #region 確認命令ID是否重複 
+
+                #endregion 卡匣是否存在
+
+                #region 確認命令ID是否重複
+
                 var cmd_obj = scApp.CMDBLL.getCMD_MCSByID(command_id);
                 if (cmd_obj != null)
                 {
@@ -409,10 +417,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                         }
                     }
                 }
-                #endregion
+
+                #endregion 確認命令ID是否重複
+
                 #region 來源目的是否存在
 
-                if (string.IsNullOrWhiteSpace(HostSource))   //沒給來源就尋找卡匣在哪 
+                if (string.IsNullOrWhiteSpace(HostSource))   //沒給來源就尋找卡匣在哪
                 {
                     HostSource = cstData.Carrier_LOC;
                 }
@@ -436,13 +446,18 @@ namespace com.mirle.ibg3k0.sc.BLL
                     TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: 目的Port: " + HostDestination + " 不存在");
                     return SECSConst.HCACK_Obj_Not_Exist;
                 }
-                #endregion
+
+                #endregion 來源目的是否存在
+
                 #region 判斷來源目的是不是Zone
+
                 if (isZone(HostSource)) //來源
                 {
                     HostSource = cstData.Carrier_LOC;
                 }
+
                 #region 目的是Zone，判斷Zone有沒有空的的Shelf
+
                 //if (isZone(HostDestination))
                 //{
                 //    string zoneID = HostDestination;
@@ -468,8 +483,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 //        }
                 //    }
                 //}
-                #endregion
-                #endregion
+
+                #endregion 目的是Zone，判斷Zone有沒有空的的Shelf
+
+                #endregion 判斷來源目的是不是Zone
+
                 bool isSuccess = true;
                 if (isSuccess)
                 {
@@ -599,6 +617,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return SECSConst.HCACK_Rejected;
             }
         }
+
         //*************************************************
         //A20.05.27
         public string CombineShelfLogData(List<ShelfDef> shelfData)
@@ -611,6 +630,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return shelfSort;
         }
+
         //*************************************************
         //A20.05.27
         //A20.06.09.0
@@ -643,7 +663,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             //                , replace);
             //}
 
-
             //ACMD_MCS mcs_com = creatCommand_MCS(command_id, ipriority, carrier_id, HostSource, HostDestination, checkcode);
 
             creatCommand_MCS(command_id, ipriority, ireplace, carrier_id, HostSource, HostDestination, Box_ID, LOT_ID, box_Loc, checkcode, isFromVh);
@@ -665,7 +684,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             //}
 
             return isSuccess;
-
         }
 
         public ACMD_MCS creatCommand_MCS(string command_id, int Priority, int replace, string carrier_id, string HostSource, string HostDestination, string Box_ID, string LOT_ID, string carrier_Loc, string checkcode, bool isFromVh)
@@ -729,6 +747,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public bool creatCommand_MCS(ACMD_MCS cmd_mcs)
         {
             bool isSuccess = true;
@@ -765,6 +784,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         //*************************************************
         //A20.05.15 此目的為得出一個以source到各shelf的距離大小的升冪list，讓原邏輯可以直接接續使用。
         //  doSortShelfDataByDistanceFromHostSource()
@@ -791,17 +811,22 @@ namespace com.mirle.ibg3k0.sc.BLL
 
                 string hostSourceAdr = "";
                 scApp.MapBLL.getAddressID(hostSource, out hostSourceAdr);
+
                 #region Deep clone the origin list to the new list
+
                 //A20.05.15     O(N)
-                //  1. 先 deep clone 出一份新的list   
+                //  1. 先 deep clone 出一份新的list
                 //  p.s  partial 的那一份 shelfDef.cs 中已有 Clone 但不確定其使用結果，目前是土法煉鋼使用它
                 List<ShelfDef> sortedShelfData = new List<ShelfDef>();
                 foreach (var elementt in originShelfData)
                 {
                     sortedShelfData.Add((ShelfDef)elementt.Clone());
                 }
-                #endregion
+
+                #endregion Deep clone the origin list to the new list
+
                 #region Calculate the distance from hostSource to each shelf by address num, and store the distance in remark for sort.
+
                 //A20.05.15      O(N)
                 // 2. 再來將各shelf到hostSource的距離計算完後，先填入目前未使用的distanceFromHostSource欄位中，以讓接下來的sort可以運行。
                 // 目前不須額外讀取資料庫的想法是使用目前的shelf ID的中3位進行與host取絕對值(因為第一位是方向，2 3 4 位是shelf 順序編號，5 6 位是高度但目前並未使用)
@@ -810,14 +835,17 @@ namespace com.mirle.ibg3k0.sc.BLL
                     int roughltyDistance = CalculateRoughlyDistance(elementt.ADR_ID, hostSourceAdr);
                     elementt.distanceFromHostSource = roughltyDistance;
                 }
-                #endregion
+
+                #endregion Calculate the distance from hostSource to each shelf by address num, and store the distance in remark for sort.
+
                 #region Sort this new shelfData
+
                 //A20.05.15      O(N^2) 根據MSDN 的 list sort
                 // 3. 再來呼叫list的sort 去處理此list
                 // 此處之處理方式指定在partial ShelfDef.cs 中的 IComparer
                 sortedShelfData.Sort(new ShelfDefCompareByAddressDistance());
-                #endregion
 
+                #endregion Sort this new shelfData
 
                 shelfSort = scApp.CMDBLL.CombineShelfLogData(sortedShelfData);
                 TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "OHB >> DB|可用儲位排序後 前 5 筆: " + shelfSort);
@@ -831,7 +859,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return originShelfData;
             }
-
         }
 
         //*************************************************
@@ -856,8 +883,9 @@ namespace com.mirle.ibg3k0.sc.BLL
         //   先確認哪台車為no command 後，以該車到基準點的值及各命令的source到基準點的值加上priority 去計算出每一命令的distance的值，
         //   再以此值對 MCS cmd 的 list 進行sort。
 
-        string oldBeforeSortingLog = "";
-        string oldAfterSortingLog = "";
+        private string oldBeforeSortingLog = "";
+        private string oldAfterSortingLog = "";
+
         public List<ACMD_MCS> doSortMCSCmdDataByDistanceFromHostSourceToVehicle(List<ACMD_MCS> originMCSCmdData, List<AVEHICLE> vehicleData)
         {
             try
@@ -874,18 +902,21 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
 
                 #region Deep clone the origin list to the new list
+
                 //List<ACMD_MCS> sortedMCSData = new List<ACMD_MCS>();
                 //2020/05/28 Hsinyu Chang: 這行就可以deep clone list
                 List<ACMD_MCS> sortedMCSData = new List<ACMD_MCS>(originMCSCmdData);
-                ////A20.05.21    
+                ////A20.05.21
                 ////先clone 出一個新的list
                 //foreach (var elementt in originMCSCmdData)
                 //{
                 //    sortedMCSData.Add((ACMD_MCS)elementt.Clone()); // 此處是否會有問題？
                 //}
-                #endregion
+
+                #endregion Deep clone the origin list to the new list
 
                 #region Get the no command vehicle
+
                 //A20.05.21
                 //找出沒有命令的車輛
                 //2020/06/02 Hsinyu Chang: 這邊不需要了
@@ -900,10 +931,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                 //        break;
                 //    }
                 //}
-                #endregion
+
+                #endregion Get the no command vehicle
 
                 #region Sort the new list of MCS cmd by the distance of vehicle to the host source of the mcs cmd.
-                //A20.05.21    
+
+                //A20.05.21
                 //用車子到命令起始點距離的長度來排序目前的MCS cmd list
                 //foreach (var cmdMCS in sortedMCSData)
                 //{
@@ -944,7 +977,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "OHB >> DB|MCS排序因有命令之Priority >= 99 ");
                 }
-                #endregion
+
+                #endregion Sort the new list of MCS cmd by the distance of vehicle to the host source of the mcs cmd.
 
                 cmdMCSSort = scApp.CMDBLL.CombineMCSLogData(sortedMCSData);
 
@@ -965,6 +999,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return originMCSCmdData;
             }
         }
+
         public int MCSCmdCompare_MoreThan1(ACMD_MCS MCSCmd1, ACMD_MCS MCSCmd2)
         {
             //A20.06.09.0
@@ -1024,6 +1059,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return 0;
         }
+
         public int MCSCmdCompare_LessThan2(ACMD_MCS MCSCmd1, ACMD_MCS MCSCmd2)
         {
             //A20.08.04
@@ -1104,6 +1140,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return 0;
         }
+
         private static bool IsAGVCmdNumMoreThanOne(List<ACMD_MCS> originMCSCmdData)
         {
             bool _checkAGVCmdNumMoreThan1 = false;
@@ -1124,7 +1161,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
 
         //*************************************************
-        //A20.05.21    
+        //A20.05.21
         //計算車子到命令起始點距離
         public int calculateDistanceFromVehicleToMCSHostSource(AVEHICLE vehicle_DB, string source)
         {
@@ -1178,6 +1215,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 cmd_mcsDao.DeleteCmdData(con, cmd);
             }
         }
+
         public void DeleteLog(int deleteMonths)
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -1187,6 +1225,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 //cmd_mcsDao.DeleteLOG_ByACMD_AMCSREPORTQUEUE(con, deleteMonths);
             }
         }
+
         public bool updateCMD_MCS_CmdStatus(string cmd_id, int status)
         {
             bool isSuccess = true;
@@ -1209,6 +1248,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         public bool updateCMD_MCS_TranStatus(string cmd_id, E_TRAN_STATUS status)
         {
             bool isSuccess = true;
@@ -1257,6 +1297,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         public void CheckCmdShelfStatus(ACMD_MCS cmd)
         {
             CheckShelfStatus(cmd.HOSTSOURCE, cmd.CMD_ID);
@@ -1268,6 +1309,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             CheckShelfStatus(cmd.HOSTDESTINATION, cmd.CMD_ID);
         }
+
         public void CheckShelfStatus(string ShelfName, string cmdID)
         {
             if (scApp.TransferService.isUnitType(ShelfName, Service.UnitType.SHELF))
@@ -1287,6 +1329,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
             }
         }
+
         public bool updateCMD_MCS_CRANE(string cmd_id, string craneName)
         {
             bool isSuccess = true;
@@ -1314,6 +1357,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         public bool updateCMD_MCS_RelayStation(string cmd_id, string relayStation)
         {
             bool isSuccess = true;
@@ -1335,6 +1379,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         public bool updateCMD_MCS_Source(string cmd_id, string Source)
         {
             bool isSuccess = true;
@@ -1356,6 +1401,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         public bool updateCMD_MCS_Dest(string cmd_id, string Dest)
         {
             bool isSuccess = true;
@@ -1377,6 +1423,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         public bool updateCMD_MCS_TimePriority(string cmd_id, int priority)
         {
             bool isSuccess = true;
@@ -1399,6 +1446,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         public bool updateCMD_MCS_PortPriority(string cmd_id, int priority)
         {
             bool isSuccess = true;
@@ -1421,6 +1469,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         public bool updateCMD_MCS_sumPriority(string cmd_id)
         {
             bool isSuccess = true;
@@ -1442,6 +1491,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         public bool updateCMD_MCS_TranStatus2Initial(string cmd_id)
         {
             bool isSuccess = true;
@@ -1464,6 +1514,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool updateCMD_MCS_TranStatus2PreInitial(string cmd_id)
         {
             bool isSuccess = true;
@@ -1484,6 +1535,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool updateCMD_MCS_TranStatus2Paused(string cmd_id)
         {
             bool isSuccess = true;
@@ -1524,9 +1576,9 @@ namespace com.mirle.ibg3k0.sc.BLL
                 isSuccess = false;
             }
 
-
             return isSuccess;
         }
+
         //public bool updateCMD_MCS_TranStatus2Complete(string cmd_id, E_TRAN_STATUS tran_status)
         //{
         //    bool isSuccess = true;
@@ -1578,6 +1630,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public void remoteCMD_MCSByBatch(List<ACMD_MCS> mcs_cmds)
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -1606,6 +1659,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool updateCMD_MCS_TimePriority(ACMD_MCS mcs_cmd, int time_priority)
         {
             bool isSuccess = true;
@@ -1626,6 +1680,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool updateCMD_MCS_CmdStatus2LoadArrivals(string cmdID)
         {
             bool isSuccess = true;
@@ -1645,6 +1700,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool updateCMD_MCS_CmdStatus2Loading(string cmdID)
         {
             bool isSuccess = true;
@@ -1664,6 +1720,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool updateCMD_MCS_CmdStatus2LoadComplete(string cmdID)
         {
             bool isSuccess = true;
@@ -1683,6 +1740,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool updateCMD_MCS_CmdStatus2UnloadArrive(string cmdID)
         {
             bool isSuccess = true;
@@ -1702,6 +1760,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool updateCMD_MCS_CmdStatus2Unloading(string cmdID)
         {
             bool isSuccess = true;
@@ -1721,6 +1780,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool updateCMD_MCS_CmdStatus2UnloadComplete(string cmdID)
         {
             bool isSuccess = true;
@@ -1740,6 +1800,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool updateCMD_MCS_BCROnCrane(string cmdID, string barcodeOnCrane)
         {
             bool isSuccess = true;
@@ -1759,6 +1820,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public ACMD_MCS getCMD_MCSByExcuteCmd()
         {
             ACMD_MCS cmd_mcs = null;
@@ -1778,6 +1840,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return cmd_mcs;
         }
+
         public ACMD_MCS getCMD_MCSByID(string cmd_id)
         {
             ACMD_MCS cmd_mcs = null;
@@ -1796,6 +1859,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return cmd_mcs;
         }
+
         public ACMD_MCS getNowCMD_MCSByID(string cmd_id)
         {
             ACMD_MCS cmd_mcs = null;
@@ -1814,6 +1878,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return cmd_mcs;
         }
+
         public ACMD_MCS getCMD_ByBoxID(string box_id)
         {
             ACMD_MCS cmd_mcs = null;
@@ -1832,6 +1897,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return cmd_mcs;
         }
+
         public ACMD_MCS getByCstBoxID(string cst_id, string box_id)
         {
             ACMD_MCS cmd_mcs = null;
@@ -1850,6 +1916,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return cmd_mcs;
         }
+
         public List<ACMD_MCS> getCMD_ByOHTName(string ohtName)
         {
             List<ACMD_MCS> cmd_mcs = null;
@@ -1869,6 +1936,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return cmd_mcs;
         }
+
         public int getCMD_MCSIsQueueCount()
         {
             try
@@ -1883,8 +1951,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return 0;
             }
-
-
         }
 
         public bool IsCMD_MCSInQueue()
@@ -1924,7 +1990,6 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public int getCMD_MCSIsRunningCount()
         {
-
             try
             {
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -1937,9 +2002,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return 0;
             }
-
-
         }
+
         public int getCMD_MCSIsRunningCount(DateTime befor_time)
         {
             try
@@ -1954,8 +2018,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return 0;
             }
-
         }
+
         public int getCMD_MCSIsUnfinishedCount(List<string> port_ids)
         {
             try
@@ -1970,8 +2034,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return 0;
             }
-
         }
+
         public int getCMD_MCSIsUnfinishedCountByCarrierID(string carrier_id)
         {
             try
@@ -1987,8 +2051,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return 0;
             }
-
         }
+
         public int getCMD_MCSIsUnfinishedCountByBoxID(string box_id)
         {
             try
@@ -2004,8 +2068,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return 0;
             }
-
         }
+
         public int getCMD_MCSIsUnfinishedCountByPortID(string portID)
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -2031,9 +2095,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
-
         }
+
         public List<ACMD_MCS> loadFinishCMD_MCS()
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -2041,7 +2104,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return cmd_mcsDao.loadFinishCMD_MCS(con);
             }
         }
-
 
         public List<ACMD_MCS> loadMcsCmd_ByTransferring()
         {
@@ -2058,6 +2120,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public List<ACMD_MCS> loadMCS_Command_Queue()
         {
             try
@@ -2072,6 +2135,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         private List<ACMD_MCS> list()
         {
             try
@@ -2090,6 +2154,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         private List<ACMD_MCS> Sort(List<ACMD_MCS> list_cmd_mcs)
         {
             try
@@ -2104,10 +2169,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
-
-
         }
+
         public int getCMD_MCSInserCountLastHour(int hours)
         {
             try
@@ -2122,8 +2185,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return 0;
             }
-
         }
+
         public int getCMD_MCSFinishCountLastHour(int hours)
         {
             try
@@ -2141,6 +2204,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
 
         private long syncTranCmdPoint = 0;
+
         public void checkMCS_TransferCommand()
         {
             try
@@ -2213,7 +2277,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                             {
                                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                                 {
-
                                     bool isSuccess = true;
                                     isSuccess &= scApp.CMDBLL.doCreatTransferCommand(assignedCrane, waitting_excute_mcs_cmd.CMD_ID, waitting_excute_mcs_cmd.CARRIER_ID,
                                                         cmd_type,
@@ -2357,7 +2420,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                                 {
                                     using (DBConnection_EF con = DBConnection_EF.GetUContext())
                                     {
-
                                         bool isSuccess = true;
                                         isSuccess &= scApp.CMDBLL.doCreatTransferCommand(best_suitable_vehicle_id, waitting_excute_mcs_cmd.CMD_ID, waitting_excute_mcs_cmd.CARRIER_ID,
                                                             cmd_type,
@@ -2417,7 +2479,9 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
             }
         }
+
         private long syncTranOHTCommandPoint = 0;
+
         public bool generateOHTCommand(ACMD_MCS mcs_cmd)
         {
             if (Interlocked.Exchange(ref syncTranOHTCommandPoint, 1) == 0)
@@ -2633,7 +2697,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                         {
                             using (DBConnection_EF con = DBConnection_EF.GetUContext())
                             {
-
                                 bool isSuccess = true;
                                 int total_priority = ACMD_MCS.PRIORITY + ACMD_MCS.TIME_PRIORITY + ACMD_MCS.PORT_PRIORITY;
                                 isSuccess &= scApp.CMDBLL.doCreatTransferCommand(vehicleId, ACMD_MCS.CMD_ID, ACMD_MCS.CARRIER_ID,
@@ -2717,17 +2780,13 @@ namespace com.mirle.ibg3k0.sc.BLL
                     scApp.MapBLL.getAddressID(hostdest, out to_adr);
                     if (vh != null)
                     {
-
                         string vehicleId = vh.VEHICLE_ID.Trim();
-
-
 
                         List<AMCSREPORTQUEUE> reportqueues = null;
                         using (TransactionScope tx = SCUtility.getTransactionScope())
                         {
                             using (DBConnection_EF con = DBConnection_EF.GetUContext())
                             {
-
                                 bool isSuccess = true;
                                 int total_priority = ACMD_MCS.PRIORITY + ACMD_MCS.TIME_PRIORITY + ACMD_MCS.PORT_PRIORITY;
                                 isSuccess &= scApp.CMDBLL.doCreatTransferCommand(vehicleId, ACMD_MCS.CMD_ID, ACMD_MCS.CARRIER_ID,
@@ -2740,7 +2799,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                                     //isSuccess &= scApp.CMDBLL.updateCMD_MCS_TranStatus2Initial(waitting_excute_mcs_cmd.CMD_ID);
                                     //isSuccess &= scApp.ReportBLL.newReportTransferInitial(waitting_excute_mcs_cmd.CMD_ID, reportqueues);
                                     isSuccess &= scApp.CMDBLL.updateCMD_MCS_TranStatus2PreInitial(ACMD_MCS.CMD_ID);
-
                                 }
                                 if (isSuccess && !SCUtility.isEmpty(vh.OHTC_CMD))
                                 {
@@ -2843,7 +2901,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                     result = $"Transfer command:[{mcs_id}] cancel failed.";
                     return false;
                 }
-
             }
             catch (Exception ex)
             {
@@ -2857,7 +2914,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-
         public List<TranTask> loadTranTasks()
         {
             try
@@ -2869,7 +2925,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
 
         public Dictionary<int, List<TranTask>> loadTranTaskSchedule_24Hour()
@@ -2891,6 +2946,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public Dictionary<string, List<TranTask>> loadTranTaskSchedule_Clear_Dirty()
         {
             try
@@ -2914,7 +2970,9 @@ namespace com.mirle.ibg3k0.sc.BLL
         #endregion CMD_MCS
 
         #region CMD_OHTC
+
         public const string CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT = "OHTC_CMD_CHECK_RESULT";
+
         public class OHTCCommandCheckResult
         {
             public OHTCCommandCheckResult()
@@ -2922,9 +2980,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 Num = DateTime.Now.ToString(SCAppConstants.TimestampFormat_19);
                 IsSuccess = true;
             }
+
             public string Num { get; private set; }
             public bool IsSuccess = false;
             public StringBuilder Result = new StringBuilder();
+
             public override string ToString()
             {
                 string message = "Alarm No.:" + Num + Environment.NewLine + Environment.NewLine + Result.ToString();
@@ -2942,6 +3002,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                                     source, destination, priority, estimated_time, gen_cmd_type,
                                     box_id, lot_id, source_address, destination_address);
         }
+
         public bool doCreatTransferCommand(string vhID, out ACMD_OHTC cmd_obj, string cmd_id_mcs = "", string cst_id = "", E_CMD_TYPE cmd_type = E_CMD_TYPE.Move,
                                        string source = "", string destination = "", int priority = 0, int estimated_time = 0,
                                        SCAppConstants.GenOHxCCommandType gen_cmd_type = SCAppConstants.GenOHxCCommandType.Auto,
@@ -3107,11 +3168,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return false;
             }
-
         }
-
-
-
 
         private bool IsCommandWalkable(string vh_id, E_CMD_TYPE cmd_type, string vh_current_adr, string source, string destination, out string result)
         {
@@ -3138,6 +3195,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                             result = "";
                         }
                         break;
+
                     case E_CMD_TYPE.Scan:
                     case E_CMD_TYPE.Load:
                         if (!scApp.GuideBLL.IsRoadWalkable(vh_current_adr, source).isSuccess)
@@ -3150,6 +3208,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                             result = "";
                         }
                         break;
+
                     case E_CMD_TYPE.LoadUnload:
                         if (!scApp.GuideBLL.IsRoadWalkable(vh_current_adr, source).isSuccess)
                         {
@@ -3166,6 +3225,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                             result = "";
                         }
                         break;
+
                     default:
                         result = $"Incorrect of command type:{cmd_type}";
                         is_walk_able = false;
@@ -3181,13 +3241,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-
-
         public ACMD_OHTC doCreatTransferCommandObj(string vh_id, string cmd_id_mcs, string cst_id, E_CMD_TYPE cmd_type,
                                     string source, string destination, int priority, int estimated_time, SCAppConstants.GenOHxCCommandType gen_cmd_type,
                                     string box_id, string lot_id, string source_address, string destination_address)
         {
-
             try
             {
                 if (SCUtility.isEmpty(vh_id))
@@ -3196,7 +3253,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
                 else if (SCUtility.isEmpty(cmd_id_mcs))
                 {
-
                     if (isCMD_OHTCExcuteByVh(vh_id))
                     {
                         return null;
@@ -3221,10 +3277,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
-
-
 
         private bool creatCommand_OHTC(string vh_id, string cmd_id_mcs, string cst_id, E_CMD_TYPE cmd_type,
                                         string source, string destination, int priority, int estimated_time,
@@ -3265,7 +3318,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 cmd_ohtc = null;
                 return false;
             }
-
         }
 
         public List<ACMD_OHTC> GetOHTCmd()
@@ -3282,8 +3334,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
-
         }
 
         public void DeleteOHTCmd(string cmdid)
@@ -3300,7 +3350,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 logger.Error(ex, "Exception");
             }
-
         }
 
         public bool creatCommand_OHTC(ACMD_OHTC cmd)
@@ -3376,6 +3425,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         /// <summary>
         /// 根據Command ID更新OHTC的Command狀態
         /// </summary>
@@ -3408,7 +3458,6 @@ namespace com.mirle.ibg3k0.sc.BLL
 
                         if (status >= E_CMD_STATUS.NormalEnd)
                             scApp.VehicleBLL.updateVehicleExcuteCMD(cmd.VH_ID, string.Empty, string.Empty);
-
                     }
                     isSuccess = true;
                 }
@@ -3419,9 +3468,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return false;
             }
-
         }
-
 
         public bool updateCMD_OHxC_Status2ReadyToReWirte(string cmd_id, out ACMD_OHTC cmd_ohtc)
         {
@@ -3450,9 +3497,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 cmd_ohtc = null;
                 return false;
             }
-
         }
-
 
         public List<ACMD_OHTC> loadCMD_OHTCMDStatusIsQueue()
         {
@@ -3472,9 +3517,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
-
         }
+
         public List<ACMD_OHTC> loadFinishCMD_OHTC()
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -3482,6 +3526,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return cmd_ohtcDAO.loadFinishCMD_OHT(con);
             }
         }
+
         public void remoteCMD_OHTCByBatch(List<ACMD_OHTC> cmds)
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -3506,9 +3551,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
-
         }
+
         public ACMD_OHTC getCMD_OHTCByVehicleID(string vh_id)
         {
             ACMD_OHTC cmd_ohtc = null;
@@ -3527,6 +3571,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return cmd_ohtc;
         }
+
         public ACMD_OHTC getExcuteCMD_OHTCByCmdID(string cmd_id)
         {
             ACMD_OHTC cmd_ohtc = null;
@@ -3543,8 +3588,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
+
         public ACMD_OHTC getCMD_OHTCByID(string cmdID)
         {
             ACMD_OHTC cmd_ohtc = null;
@@ -3562,7 +3607,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
 
         public ACMD_OHTC getCMD_OHTCByMCScmdID(string mcs_cmd_id)
@@ -3581,8 +3625,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
+
         public ACMD_OHTC getCMD_OHTCByMCScmdID_And_NotFinishByDest(string mcs_cmd_id, string dest)
         {
             try
@@ -3598,6 +3642,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public ACMD_OHTC getCMD_OHTCByMCScmdID_And_NotFinishBySource(string mcs_cmd_id, string source)
         {
             try
@@ -3613,6 +3658,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public bool isCMD_OHTCQueueByVh(string vh_id)
         {
             int count = 0;
@@ -3632,7 +3678,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return false;
             }
-
         }
 
         public bool isCMD_OHTCExcuteByVh(string vh_id)
@@ -3653,7 +3698,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return false;
             }
-
         }
 
         public bool hasExcuteCMDFromToAdrIsParkInSpecifyParkZoneID(string park_zone_id, out int ready_come_to_count)
@@ -3695,9 +3739,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return false;
             }
-
         }
-
 
         public (bool has, ACMD_OHTC cmd_ohtc) hasCMD_OHTCInQueue(string vhID)
         {
@@ -3734,6 +3776,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return false;
             }
         }
+
         public bool hasExcuteCMDByBoxID(string boxID)
         {
             int count = 0;
@@ -3751,6 +3794,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return false;
             }
         }
+
         public bool hasExcuteCMDWantToParkAdr(string adr_id)
         {
             int count = 0;
@@ -3767,7 +3811,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return false;
             }
-
         }
 
         public bool forceUpdataCmdStatus2FnishByVhID(string vh_id)
@@ -3815,7 +3858,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return false;
             }
-
         }
 
         public bool isCMCD_OHTCFinish(string cmdID)
@@ -3835,10 +3877,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return false;
             }
-
         }
 
         private long ohxc_cmd_SyncPoint = 0;
+
         public void checkOHxC_TransferCommand()
         {
             if (System.Threading.Interlocked.Exchange(ref ohxc_cmd_SyncPoint, 1) == 0)
@@ -3906,6 +3948,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             System.Runtime.Remoting.Messaging.CallContext.SetData(key, obj);
             return (T)obj;
         }
+
         public static T getCallContext<T>(string key)
         {
             object obj = System.Runtime.Remoting.Messaging.CallContext.GetData(key);
@@ -3915,6 +3958,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return (T)obj;
         }
+
         public static void setCallContext<T>(string key, T obj)
         {
             if (obj != null)
@@ -3926,6 +3970,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         #endregion CMD_OHTC
 
         #region CMD_OHTC_DETAIL
+
         public bool tryGenerateCmd_OHTC_Details(ACMD_OHTC acmd_ohtc, out ActiveType active_type, out string[] route_sections, out string[] cycle_run_sections
                                                                                             , out string[] minRouteSec_Vh2From, out string[] minRouteSec_From2To
                                                                                             , out string[] minRouteAdr_Vh2From, out string[] minRouteAdr_From2To)
@@ -4036,7 +4081,6 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             try
             {
-
                 string[] FitRouteSec = null;
                 //try
                 //{
@@ -4121,7 +4165,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
 
         //public string[] findBestFitRoute(string vh_crt_sec, string[] AllRouteInfo, string targetAdr)
@@ -4222,7 +4265,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 logger.Error(ex, "Exception");
             }
-
         }
 
         private void filterByPassSec_VhAlreadyOnSec(string vh_crt_sec, List<string> crtByPassSeg)
@@ -4284,7 +4326,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 _vhCatchObject.PredictSectionsStartToLoad = guideSectionStartToLoad;
                 _vhCatchObject.PredictSectionsToDesination = guideSectionToDestination;
 
-
                 //_vhCatchObject.WillPassSectionID = min_route_seq.ToList();
                 if (guideSectionStartToLoad != null && guideSectionStartToLoad.Count > 0)
                 {
@@ -4305,7 +4346,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 logger.Error(ex, "Exception");
             }
-
         }
 
         public void setWillPassSectionInfo(string vhID, List<string> willPassSection)
@@ -4321,6 +4361,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             if (vh != null)
                 vh.WillPassSectionID = null;
         }
+
         public void removePassSection(string vhID, string passSection)
         {
             AVEHICLE vh = scApp.getEQObjCacheManager().getVehicletByVHID(vhID);
@@ -4349,7 +4390,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 logger.Error(ex, "Exception");
             }
-
         }
 
         private static ActiveType convert_E_CMD_TYPE2ActiveType(ACMD_OHTC acmd_ohtc)
@@ -4362,30 +4402,39 @@ namespace com.mirle.ibg3k0.sc.BLL
                 case E_CMD_TYPE.Move_MTPort:
                     activeType = ActiveType.Move;
                     break;
+
                 case E_CMD_TYPE.MoveToMTL:
                     activeType = ActiveType.Movetomtl;
                     break;
+
                 case E_CMD_TYPE.SystemIn:
                     activeType = ActiveType.Systemin;
                     break;
+
                 case E_CMD_TYPE.SystemOut:
                     activeType = ActiveType.Systemout;
                     break;
+
                 case E_CMD_TYPE.Scan:
                     activeType = ActiveType.Scan;
                     break;
+
                 case E_CMD_TYPE.Load:
                     activeType = ActiveType.Load;
                     break;
+
                 case E_CMD_TYPE.Unload:
                     activeType = ActiveType.Unload;
                     break;
+
                 case E_CMD_TYPE.LoadUnload:
                     activeType = ActiveType.Loadunload;
                     break;
+
                 case E_CMD_TYPE.Teaching:
                     activeType = ActiveType.Home;
                     break;
+
                 case E_CMD_TYPE.MTLHome:
                     activeType = ActiveType.Mtlhome;
                     break;
@@ -4402,7 +4451,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return activeType;
         }
-
 
         //private void findTransferRoute(ACMD_OHTC acmd_ohtc, AVEHICLE vehicle, ref string[] ReutrnVh2FromAdr, ref string[] ReutrnFromAdr2ToAdr, bool isIgnoreSegStatus)
         //{
@@ -4552,6 +4600,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                             }
                         }
                         break;
+
                     case ActiveType.Load:
                         if (!SCUtility.isMatche(vh_current_address, source_adr))
                         {
@@ -4563,6 +4612,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                             isSuccess = true; //如果相同 代表是在同一個點上
                         }
                         break;
+
                     case ActiveType.Scan:
                         if (!SCUtility.isMatche(vh_current_address, source_adr))
                         {
@@ -4574,6 +4624,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                             isSuccess = true; //如果相同 代表是在同一個點上
                         }
                         break;
+
                     case ActiveType.Unload:
                         if (!SCUtility.isMatche(vh_current_address, dest_adr))
                         {
@@ -4585,6 +4636,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                             isSuccess = true;//如果相同 代表是在同一個點上
                         }
                         break;
+
                     case ActiveType.Move:
                         if (!SCUtility.isMatche(vh_current_address, dest_adr))
                         {
@@ -4604,8 +4656,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return (isSuccess, total_cost, guide_start_to_from_section_ids, guide_start_to_from_address_ids, guide_to_dest_section_ids, guide_to_dest_address_ids);
             }
-
-
         }
 
         private bool needVh2FromAddressOfGuide(ACMD_OHTC acmd_ohtc, AVEHICLE vehicle)
@@ -4649,9 +4699,9 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return false;
             }
         }
+
         //private bool isVhInSectionStartingPoint(AVEHICLE vh)
         //{
-
         //}
 
         public bool creatCmd_OHTC_Details(string cmd_id, List<string> sec_ids)
@@ -4746,7 +4796,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                         ESTIMATED_TIME = 0
                     };
                     cmd_details.Add(cmd_detail);
-
                 }
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
@@ -4759,8 +4808,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return false;
             }
-
-
         }
 
         public bool update_CMD_DetailEntryTime(string cmd_id,
@@ -4786,7 +4833,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                         isSuccess = true;
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -4795,6 +4841,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool update_CMD_DetailLeaveTime(string cmd_id,
                                               string add_id,
                                               string sec_id)
@@ -4869,6 +4916,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         public bool update_CMD_Detail_LoadEndTime(string vh_id,
                                          string add_id,
                                          string sec_id)
@@ -4907,6 +4955,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         public bool update_CMD_Detail_UnloadStartTime(string vh_id,
                                        string add_id,
                                        string sec_id)
@@ -4943,7 +4992,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             return isSuccess;
         }
 
-
         public bool update_CMD_Detail_UnloadEndTime(string vh_id)
         {
             bool isSuccess = true;
@@ -4979,7 +5027,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 isSuccess = false;
             }
-
 
             return isSuccess;
         }
@@ -5043,6 +5090,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+
         public int getAndUpdateVhCMDProgress(string vh_id, out List<string> willPassSecID)
         {
             int procProgress_percen = 0;
@@ -5078,7 +5126,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return 0;
             }
-
         }
 
         public bool HasCmdWillPassSegment(string segment_num, out List<string> will_pass_cmd_id)
@@ -5122,6 +5169,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         #endregion CMD_OHTC_DETAIL
 
         #region Return Code Map
+
         public ReturnCodeMap getReturnCodeMap(string eq_id, string return_code)
         {
             try
@@ -5134,9 +5182,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         #endregion Return Code Map
 
         #region HCMD_MCS
+
         public List<HCMD_MCS> LoadHMCSCmdDataByStartEnd(DateTime startTime, DateTime endTime)  //歷史紀錄
         {
             //using (DBConnection_EF con = new DBConnection_EF())
@@ -5153,6 +5203,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 hcmd_mcsDao.AddByBatch(con, HCMD_MCS);
             }
         }
+
         public List<HCMD_MCS> loadHCMD_MCSBefore6Months()
         {
             List<HCMD_MCS> AMCSREPORTQUEUEs;
@@ -5170,8 +5221,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 hcmd_mcsDao.RemoteByBatch(con, hCmdMcs);
             }
         }
+
         #endregion HCMD_MCS
+
         #region HCMD_OHTC
+
         public void CreatHCMD_OHTCs(List<HCMD_OHTC> HCMD_OHTC)
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -5179,6 +5233,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 hcmd_ohtcDao.AddByBatch(con, HCMD_OHTC);
             }
         }
+
         public List<HCMD_OHTC> loadHCMD_OHTCBefore6Months()
         {
             List<HCMD_OHTC> hcmd_ohtc;
@@ -5199,21 +5254,20 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         #endregion HCMD_OHTC
 
-
-
         public class Cache
         {
-            SCApplication app = null;
+            private SCApplication app = null;
+
             //public Cache(ALINE _line)
             public Cache(SCApplication _app)
             {
                 app = _app;
             }
+
             public ACMD_OHTC getExcuteCmd(string cmdID)
             {
                 return new ACMD_OHTC();
             }
         }
-
     }
 }
