@@ -137,6 +137,21 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
+        public PortDef GetPortData(DBConnection_EF conn, string PortID)
+        {
+            try
+            {
+                var port = from a in conn.PortDef
+                           where a.PLCPortID.Trim() == PortID.Trim() 
+                           select a;
+                return port.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex);
+                throw;
+            }
+        }
 
         public IQueryable getQueryAllSQL(DBConnection_EF conn)
         {

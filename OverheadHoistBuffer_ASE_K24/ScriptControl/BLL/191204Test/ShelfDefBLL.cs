@@ -14,7 +14,7 @@ using com.mirle.ibg3k0.sc.BLL.Interface;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
-    public class ShelfDefBLL
+    public partial class ShelfDefBLL
     {
         private SCApplication scApp = null;
         private ShelfDefDao shelfdefDao = null;
@@ -361,5 +361,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             ShelfDef targetShelf = GetShelfDataByID(shelfID);
             return scApp.GuideBLL.GetDistance(targetShelf.ADR_ID, targetAddress);
         }
+    }
+
+    public partial class ShelfDefBLL: IManualPortShelfDefBLL
+    {
+
     }
 }

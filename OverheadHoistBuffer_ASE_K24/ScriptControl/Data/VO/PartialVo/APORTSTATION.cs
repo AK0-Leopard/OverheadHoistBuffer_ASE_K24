@@ -24,7 +24,6 @@ namespace com.mirle.ibg3k0.sc
         {
             return $"{PORT_ID} ({ADR_ID})";
         }
-
     }
 
 }

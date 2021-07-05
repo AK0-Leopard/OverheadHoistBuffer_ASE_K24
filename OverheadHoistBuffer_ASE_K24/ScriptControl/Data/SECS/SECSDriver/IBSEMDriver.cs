@@ -18,12 +18,12 @@ namespace com.mirle.ibg3k0.sc.Data.SECSDriver
         public abstract bool S6F11SendTransferAbortCompleted(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendTransferAbortFailed(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendTransferAbortInitiated(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
-        public abstract bool S6F11SendTransferCancelCompleted(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);       
+        public abstract bool S6F11SendTransferCancelCompleted(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendTransferCancelFailed(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendTransferCancelInitial(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendTransferCompleted(ACMD_MCS cmd, CassetteData cassette, string result_code, List<AMCSREPORTQUEUE> reportQueues = null);
-        public abstract bool S6F11SendTransferInitiated(string cmd_id,  List<AMCSREPORTQUEUE> reportQueues = null);
-        public abstract bool S6F11SendTransferPaused(string cmd_id,  List<AMCSREPORTQUEUE> reportQueues = null);
+        public abstract bool S6F11SendTransferInitiated(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
+        public abstract bool S6F11SendTransferPaused(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendTransferResume(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendCarrierTransferring(ACMD_MCS cmd, CassetteData cassette, string ohtName, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendCarrierRemovedCompleted(string cst_id, string box_id, List<AMCSREPORTQUEUE> reportQueues = null);
@@ -109,6 +109,8 @@ namespace com.mirle.ibg3k0.sc.Data.SECSDriver
         #endregion TSC State Transition Event
         public abstract bool S6F11SendAlarmCleared(ACMD_MCS CMD_MCS, ALARM ALARM, string unitid, string unitstate);
         public abstract bool S6F11SendAlarmSet(ACMD_MCS CMD_MCS, ALARM ALARM, string unitid, string unitstate, string RecoveryOption);
+        public abstract bool S6F11SendCarrierRemovedCompleted(CassetteData cassette, List<AMCSREPORTQUEUE> reportQueues = null);
+
         #endregion Send
 
     }
@@ -183,7 +185,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECSDriver
         {
             return true;
         }
-        
+
         public override AMCSREPORTQUEUE S6F11BulibMessage(string ceid, object Vids)
         {
             return null;
@@ -494,6 +496,11 @@ namespace com.mirle.ibg3k0.sc.Data.SECSDriver
 
         protected override void S2F49ReceiveEnhancedRemoteCommandExtension(object sender, SECSEventArgs e)
         {
+        }
+
+        public override bool S6F11SendCarrierRemovedCompleted(CassetteData cassette, List<AMCSREPORTQUEUE> reportQueues = null)
+        {
+            return true;
         }
     }
 }

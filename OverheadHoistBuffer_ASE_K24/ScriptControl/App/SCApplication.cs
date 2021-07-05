@@ -33,6 +33,7 @@ using com.mirle.ibg3k0.sc.MQTT;
 using com.mirle.ibg3k0.sc.RouteKit;
 using com.mirle.ibg3k0.sc.Scheduler;
 using com.mirle.ibg3k0.sc.Service;
+using com.mirle.ibg3k0.sc.Service.Interface;
 using com.mirle.ibg3k0.sc.WIF;
 using com.mirle.ibg3k0.stc.Common.SECS;
 using ExcelDataReader;
@@ -580,15 +581,19 @@ namespace com.mirle.ibg3k0.sc.App
         private ShelfService shelfService = null;
         public ShelfService ShelfService { get => shelfService; }
 
-        private OHCVService ohcvService = null;
-        public OHCVService OHCVService { get { return ohcvService; } }
-
         private EmptyBoxHandlerService emptyBoxHandlerService = null;
         public EmptyBoxHandlerService EmptyBoxHandlerService { get { return emptyBoxHandlerService; } }
 
+        private IManualPortControlService manualPortControlService = null;
+        public IManualPortControlService ManualPortControlService { get { return manualPortControlService; } }
+        private IManualPortEventService manualPortEventService = null;
+        public IManualPortEventService ManualPortEventService { get { return manualPortEventService; } }
+
+
+
+
         private DataSyncBLL datasynBLL = null;
         public DataSyncBLL DataSyncBLL { get { return datasynBLL; } }
-
 
         private HIDBLL hidBLL = null;
         public HIDBLL HIDBLL { get { return hidBLL; } }
@@ -1501,7 +1506,6 @@ namespace com.mirle.ibg3k0.sc.App
             lineService = new LineService();
             failOverService = new FailOverService();
             mtlService = new MTLService();
-            ohcvService = new OHCVService();
             roadControlService = new RoadControlService();
             portStationService = new PortStationService();
             connectionInfoService = new ConnectionInfoService();
@@ -1510,6 +1514,11 @@ namespace com.mirle.ibg3k0.sc.App
             blockControlService = new BlockControlService();
             shelfService = new ShelfService();
             emptyBoxHandlerService = new EmptyBoxHandlerService();
+
+            var manual_port_map_action = PortStationBLL.OperateCatch.loadAllMgvPortStationMapAction();
+            manualPortControlService = new ManualPortControlService(manual_port_map_action);
+            manualPortEventService = new ManualPortEventService(manual_port_map_action,
+                                                                reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL);
         }
 
         /// <summary>
@@ -1562,7 +1571,6 @@ namespace com.mirle.ibg3k0.sc.App
             lineService.start(this);
             failOverService.start(this);
             mtlService.start(this);
-            ohcvService.start(this);
             roadControlService.start(this);
             portStationService.start(this);
             connectionInfoService.start(this);

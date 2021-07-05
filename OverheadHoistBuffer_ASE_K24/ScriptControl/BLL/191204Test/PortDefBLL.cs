@@ -21,10 +21,11 @@ using com.mirle.ibg3k0.bcf.App;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.BLL.Interface;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
-    public class PortDefBLL
+    public partial class PortDefBLL
     {
         SCApplication scApp = null;
         PortDefDao portdefDao = null;
@@ -450,6 +451,46 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return false;
             }
             return true;
+        }
+    }
+    public partial class PortDefBLL : IManualPortDefBLL
+    {
+        public bool ChangeDirectionToInMode(string portName)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    var port = portdefDao.GetPortData(con, portName);
+                    port.PortType = E_PortType.In;
+                    portdefDao.UpdatePortDef(con);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
+        }
+
+        public bool ChangeDirectionToOutMode(string portName)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    var port = portdefDao.GetPortData(con, portName);
+                    port.PortType = E_PortType.Out;
+                    portdefDao.UpdatePortDef(con);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
         }
     }
 }

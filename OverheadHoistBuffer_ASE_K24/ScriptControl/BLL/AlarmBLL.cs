@@ -33,7 +33,7 @@ namespace com.mirle.ibg3k0.sc.BLL
     /// <summary>
     /// Class AlarmBLL.
     /// </summary>
-    public class AlarmBLL
+    public partial class AlarmBLL
     {
         /// <summary>
         /// The sc application
@@ -535,4 +535,46 @@ namespace com.mirle.ibg3k0.sc.BLL
             return isSuccess;
         }
     }
+
+    public partial class AlarmBLL : IManualPortAlarmBLL
+    {
+        public bool GetAlarmReport(string eqId, string alarmCode, out ALARM alarmReport)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    alarmReport = alarmDao.getAlarm(con, eqId, alarmCode);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                alarmReport = null;
+                logger.Error(ex, "Exception");
+                return false;
+            }
+        }
+
+        public bool GetAlarmReport(string eqId, string alarmCode, string commandId, out ALARM alarmReport)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    alarmReport = alarmDao.getAlarm(con, eqId, alarmCode);
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                alarmReport = null;
+                logger.Error(ex, "Exception");
+                return false;
+            }
+        }
+    }
+
+
 }

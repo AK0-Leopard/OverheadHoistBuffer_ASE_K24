@@ -39,7 +39,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
         /// </summary>
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        
+
 
         /// <summary>
         /// Inserts the alarm.
@@ -58,7 +58,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             {
                 logger.Warn(ex);
                 return false;
-                throw;                
+                throw;
             }
         }
 
@@ -109,6 +109,23 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                         where b.ALAM_CODE.Trim() == code.Trim() &&
                          b.EQPT_ID.Trim() == eq_id.Trim() &&
                          b.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrSet
+                        select b;
+            return alarm.FirstOrDefault();
+        }
+        public ALARM getAlarm(DBConnection_EF conn, string eq_id, string code)
+        {
+            var alarm = from b in conn.ALARM
+                        where b.ALAM_CODE.Trim() == code.Trim() &&
+                              b.EQPT_ID.Trim() == eq_id.Trim()
+                        select b;
+            return alarm.FirstOrDefault();
+        }
+        public ALARM getAlarm(DBConnection_EF conn, string eq_id, string cmd_id, string code)
+        {
+            var alarm = from b in conn.ALARM
+                        where b.ALAM_CODE.Trim() == code.Trim() &&
+                              b.EQPT_ID.Trim() == eq_id.Trim() &&
+                              b.CMD_ID.Trim() == cmd_id.Trim()
                         select b;
             return alarm.FirstOrDefault();
         }

@@ -35,7 +35,7 @@ using static com.mirle.ibg3k0.sc.ShelfDef; //A20.05.15
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
-    public class CMDBLL
+    public partial class CMDBLL
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private CMD_OHTCDao cmd_ohtcDAO = null;
@@ -5267,6 +5267,42 @@ namespace com.mirle.ibg3k0.sc.BLL
             public ACMD_OHTC getExcuteCmd(string cmdID)
             {
                 return new ACMD_OHTC();
+            }
+        }
+    }
+    public partial class CMDBLL : IManualPortCMDBLL
+    {
+        public void Delete(string carrierId)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    ACMD_MCS cmd = cmd_mcsDao.getByBoxID(con, carrierId);
+                    cmd_mcsDao.DeleteCmdData(con, cmd);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+        }
+
+        public bool GetCommandByBoxId(string carrierId, out ACMD_MCS command)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    command = cmd_mcsDao.getByBoxID(con, carrierId);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                command = null;
+                return false;
             }
         }
     }

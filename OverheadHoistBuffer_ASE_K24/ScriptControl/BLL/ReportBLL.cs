@@ -37,7 +37,7 @@ namespace com.mirle.ibg3k0.sc.BLL
     /// <summary>
     /// Class ReportBLL.
     /// </summary>
-    public class ReportBLL
+    public partial class ReportBLL
     {
         /// <summary>
         /// The sc application
@@ -1840,5 +1840,77 @@ namespace com.mirle.ibg3k0.sc.BLL
         //}
 
         #endregion Mark
+    }
+
+    public partial class ReportBLL : IManualPortReportBLL
+    {
+        public bool ReportAlarmClear(ALARM alarm)
+        {
+            bool isSuccsess = true;
+            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendAlarmCleared(null, alarm, "", "");
+            return isSuccsess;
+        }
+
+        public bool ReportAlarmSet(ALARM alarm)
+        {
+            bool isSuccsess = true;
+            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendAlarmSet(null, alarm, "", "", "");
+            return isSuccsess;
+        }
+
+        public bool ReportCarrierRemoveFromManualPort(string carrierId)
+        {
+            bool isSuccsess = true;
+            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendCarrierRemovedCompleted("", carrierId, null);
+            return isSuccsess;
+        }
+
+        public bool ReportCarrierWaitIn(CassetteData cassetteData, bool isDuplicate)
+        {
+            bool isSuccsess = true;
+            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendCarrierWaitIn(cassetteData, null);
+            return isSuccsess;
+        }
+
+        public bool ReportForcedRemoveCarrier(CassetteData cassetteData)
+        {
+            bool isSuccsess = true;
+            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendCarrierRemovedCompleted(cassetteData, null);
+            return isSuccsess;
+        }
+
+        public bool ReportPortDirectionChanged(string portName, bool newDirectionIsInMode)
+        {
+            bool isSuccsess = true;
+            if (newDirectionIsInMode)
+                isSuccsess = isSuccsess && iBSEMDriver.S6F11SendPortTypeInput(portName, null);
+            else
+                isSuccsess = isSuccsess && iBSEMDriver.S6F11SendPortTypeOutput(portName, null);
+            return isSuccsess;
+        }
+
+        public bool ReportPortInServiceChanged(string portName, bool newStateIsInService)
+        {
+            bool isSuccsess = true;
+            if (newStateIsInService)
+                isSuccsess = isSuccsess && iBSEMDriver.S6F11SendPortInService(portName, null);
+            else
+                isSuccsess = isSuccsess && iBSEMDriver.S6F11SendPortOutOfService(portName, null);
+            return isSuccsess;
+        }
+
+        public bool ReportUnitAlarmClear(ALARM alarm)
+        {
+            bool isSuccsess = true;
+            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendUnitAlarmCleared(alarm.UnitID, alarm.ALAM_CODE, alarm.ALAM_DESC, null);
+            return isSuccsess;
+        }
+
+        public bool ReportUnitAlarmSet(ALARM alarm)
+        {
+            bool isSuccsess = true;
+            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendUnitAlarmSet(alarm.UnitID, alarm.ALAM_CODE, alarm.ALAM_DESC, null);
+            return isSuccsess;
+        }
     }
 }
