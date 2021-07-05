@@ -539,7 +539,6 @@ namespace com.mirle.ibg3k0.sc.Common
                             _lockPorStationtDic.Add(port_id, new Object());
                             E_VH_TYPE load_vh_type = (E_VH_TYPE)portStationConfig.Load_Vh_Type;
                             E_VH_TYPE unload_vh_type = (E_VH_TYPE)portStationConfig.Unload_Vh_Type;
-                            string type = portStationConfig.Type;
                             portStationList.Add(new APORTSTATION()
                             {
                                 EQPT_ID = eqpt_id,
@@ -552,11 +551,6 @@ namespace com.mirle.ibg3k0.sc.Common
                             _lockPortDefDic.Add(port_id, new object()) ;
                             portDefList.Add(getPortDefObj(line.LINE_ID, zone_id, portStationConfig));
 
-                            if (SCUtility.isMatche(com.mirle.ibg3k0.sc.Service.UnitType.SHELF.ToString(), type))
-                            {
-                                _lockShelfDefDic.Add(port_id, new object());
-                                shelfDefList.Add(getShelfDefObj(zone_id, portStationConfig));
-                            }
                         }
                     }
                     int vh_nmu = 1;
@@ -618,7 +612,6 @@ namespace com.mirle.ibg3k0.sc.Common
                 State = E_PORT_STATUS.OutOfService,
                 Stage = 1,
                 AGVState = E_PORT_STATUS.NoDefinition,
-                UnitType = portStationConfig.Type,
                 HostEQPortID = null,
                 ShelfID = null,
                 PortType = 0,
