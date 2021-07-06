@@ -34,6 +34,7 @@ using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.BLL;
 using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data;
+using com.mirle.ibg3k0.sc.Data.Enum;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions;
 using com.mirle.ibg3k0.sc.Data.SECS.ASE;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction;
@@ -157,20 +158,6 @@ namespace com.mirle.ibg3k0.sc.Service
         Cancel = 0,
         Abort = 1,
         Transfer = 2,
-    }
-
-    public enum UnitType
-    {
-        OHCV,
-        AGV,
-        NTB,
-        SHELF,
-        STK,
-        CRANE,
-        ZONE,
-        AGVZONE,
-        LINE,
-        EQ
     }
 
     public class TransferService
