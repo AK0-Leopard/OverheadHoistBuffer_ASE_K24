@@ -77,16 +77,6 @@ namespace UnitTestForMGVPort
             return cassette;
         }
 
-        private CassetteData GetCarrierOnThisManualPort(string carrierId)
-        {
-            var cassette = new CassetteData();
-            cassette.Carrier_LOC = _portName;
-            cassette.BOXID = carrierId;
-            cassette.CSTState = E_CSTState.Installed;
-            cassette.Stage = 1;
-            return cassette;
-        }
-
         private PortDef GetShelfPortDef(string location)
         {
             var def = new PortDef();
