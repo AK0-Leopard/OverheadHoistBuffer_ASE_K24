@@ -208,6 +208,27 @@ namespace UnitTestForMGVPort
         }
 
         [Test]
+        public void 發生Duplicate_Duplicate的卡匣在儲位目前沒命令__上報MCS在Duplicate的儲位建UNKD的ID()
+        {
+            var stub = GetStubObject();
+            var mockReportBLL = new MockReportBLL();
+            IManualPortEventService manualPortService = new ManualPortEventService();
+            manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            var carrierId = "A";
+            var info = GetWaitInInfo(carrierId);
+            var carrierOnShelf = GetCarrierOnShelf(carrierId);
+            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID);
+            stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
+            var shelfPortDef = GetShelfPortDef(carrierOnShelf.Carrier_LOC);
+            stub.PortDefBLL.GetPortDef(carrierOnShelf.Carrier_LOC, out Arg.Any<PortDef>()).Returns(c => { c[1] = shelfPortDef; return true; });
+
+            stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
+
+            Assert.IsTrue(mockReportBLL.InstallCassetteData.Carrier_LOC == carrierOnShelf.Carrier_LOC);
+            Assert.IsTrue(mockReportBLL.InstallCassetteData.BOXID.StartsWith(_duplicateCarrierId));
+        }
+
+        [Test]
         public void 發生Duplicate_Duplicate的卡匣在儲位目前沒命令__資料庫刪除Duplicate的卡匣()
         {
             var stub = GetStubObject();
@@ -356,7 +377,7 @@ namespace UnitTestForMGVPort
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
             var mockCassetteDataBLL = stub.CassetteDataBLL as MockCassetteDataBLL;
-            Assert.IsTrue(mockCassetteDataBLL.CarrierIdByDelete == null || mockCassetteDataBLL.CarrierIdByDelete == "");
+            Assert.IsTrue(mockCassetteDataBLL.CarrierIdByDelete == carrierId);
         }
 
         [Test]

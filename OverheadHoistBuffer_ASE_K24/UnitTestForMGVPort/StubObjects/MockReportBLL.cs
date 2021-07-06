@@ -15,6 +15,8 @@ namespace UnitTestForMGVPort.StubObjects
 
         public CassetteData ForcedRemoveCassetteData { get; private set; }
 
+        public CassetteData InstallCassetteData { get; private set; }
+
         public bool ReportCarrierIDRead(CassetteData cassetteData, bool isDuplicate)
         {
             IsWaitInIdReadDuplicate = isDuplicate;
@@ -82,6 +84,12 @@ namespace UnitTestForMGVPort.StubObjects
         public bool ReportTransferCompleted(ACMD_MCS cmd, CassetteData cassette, string resultCode)
         {
             throw new System.NotImplementedException();
+        }
+
+        public bool ReportCarrierInstall(CassetteData cassetteData)
+        {
+            InstallCassetteData = cassetteData;
+            return true;
         }
     }
 }
