@@ -2,6 +2,8 @@
 using com.mirle.ibg3k0.bcf.Data.ValueDefMapAction;
 using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.App;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions;
+using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 
 namespace com.mirle.ibg3k0.sc
 {
@@ -23,6 +25,13 @@ namespace com.mirle.ibg3k0.sc
         public override string ToString()
         {
             return $"{PORT_ID} ({ADR_ID})";
+        }
+        public virtual PortPLCInfo getPortPLCInfo()
+        {
+            ICommonPortInfoValueDefMapAction portValueDefMapAction =
+                getMapActionByIdentityKey(typeof(Data.ValueDefMapAction.PortValueDefMapAction).Name) as ICommonPortInfoValueDefMapAction;
+            if (portValueDefMapAction == null) return null;
+            return portValueDefMapAction.GetPortState() as PortPLCInfo;
         }
     }
 

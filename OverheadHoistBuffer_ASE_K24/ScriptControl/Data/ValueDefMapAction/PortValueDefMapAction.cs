@@ -8,6 +8,7 @@ using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.BLL;
 using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions;
+using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 using com.mirle.ibg3k0.sc.Service;
 using NLog;
 using System;
@@ -18,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 {
-    public class PortValueDefMapAction : IValueDefMapAction
+    public class PortValueDefMapAction : ICommonPortInfoValueDefMapAction
     {
         public const string DEVICE_NAME_PORT = "PORT";
         public bool IsInService { get; private set; } = false;
@@ -1559,6 +1560,41 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         }
         #endregion
 
+
+
+        const int OHCV_ALARM_CODE_BCR_READ_FAIL_OVER_TIMES_ON_CV5 = 1570;
+        const int OHCV_ALARM_CODE_BCR_READ_FAIL_OVER_TIMES_ON_CV1 = 370;
+        public void Port_ErrorCodeChange(object sender, ValueChangedEventArgs e)
+        {
+            var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
+            try
+            {
+                //1.建立各個Function物件
+                function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
+
+                if (function.ErrorCode == OHCV_ALARM_CODE_BCR_READ_FAIL_OVER_TIMES_ON_CV1 ||
+                   function.ErrorCode == OHCV_ALARM_CODE_BCR_READ_FAIL_OVER_TIMES_ON_CV5)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: VehicleService.DEVICE_NAME_OHx,
+                       Data: $"Box BCR read fail over times.");
+
+                    scApp.PortStationBLL.web.BOXBCRReadFailOverTimes();
+                }
+
+                NLog.LogManager.GetCurrentClassLogger().Info(function.ToString());
+
+                //3.logical (include db save)
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+            finally
+            {
+                scApp.putFunBaseObj<PortPLCInfo>(function);
+            }
+        }
+        #region OHB >> PLC
         public void Port_WriteBoxCstID(CassetteData cassetteData)
         {
             var function = scApp.getFunBaseObj<PortPLCControl_CSTID_BOXID>(port.PORT_ID) as PortPLCControl_CSTID_BOXID;
@@ -1597,40 +1633,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCControl_CSTID_BOXID>(function);
             }
         }
-
-        const int OHCV_ALARM_CODE_BCR_READ_FAIL_OVER_TIMES_ON_CV5 = 1570;
-        const int OHCV_ALARM_CODE_BCR_READ_FAIL_OVER_TIMES_ON_CV1 = 370;
-        public void Port_ErrorCodeChange(object sender, ValueChangedEventArgs e)
-        {
-            var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
-            try
-            {
-                //1.建立各個Function物件
-                function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
-
-                if (function.ErrorCode == OHCV_ALARM_CODE_BCR_READ_FAIL_OVER_TIMES_ON_CV1 ||
-                   function.ErrorCode == OHCV_ALARM_CODE_BCR_READ_FAIL_OVER_TIMES_ON_CV5)
-                {
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: VehicleService.DEVICE_NAME_OHx,
-                       Data: $"Box BCR read fail over times.");
-
-                    scApp.PortStationBLL.web.BOXBCRReadFailOverTimes();
-                }
-
-                NLog.LogManager.GetCurrentClassLogger().Info(function.ToString());
-
-                //3.logical (include db save)
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Exception");
-            }
-            finally
-            {
-                scApp.putFunBaseObj<PortPLCInfo>(function);
-            }
-        }
-        #region OHB >> PLC
         public void Port_ChangeToInput(bool isInput)
         {
             //var function = scApp.getFunBaseObj<PortPLCControl>(port.PORT_ID) as PortPLCControl;
@@ -1939,6 +1941,51 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 scApp.putFunBaseObj<PortPLCControl_AlarmReset>(function);
             }
+        }
+
+        public object GetPortState()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ChangeToInModeAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ChangeToOutModeAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ResetAlarmAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task StopBuzzerAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetRunAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetStopAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetCommandingAsync(bool setOn)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetControllerErrorIndexAsync(int newIndex)
+        {
+            throw new NotImplementedException();
         }
         #endregion
 
