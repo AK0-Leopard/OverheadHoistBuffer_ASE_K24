@@ -1,6 +1,5 @@
 ﻿using com.mirle.ibg3k0.sc.BLL._191204Test.Extensions;
 using com.mirle.ibg3k0.sc.BLL.Interface;
-using com.mirle.ibg3k0.sc.Data.Enum;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events;
@@ -536,17 +535,21 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-                var newState = "";
-                if (args.ManualPortPLCInfo.IsRun)
-                    newState += "InService";
-                else
-                    newState += "OutOfService";
-
                 var info = args.ManualPortPLCInfo;
+                var logTitle = $"PortName[{args.PortName}] InServiceChanged => ";
 
-                WriteEventLog($"PortName[{args.PortName}] InServiceChanged => Now state is {newState}. IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
+                WriteEventLog($"{logTitle} IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
 
-                throw new NotImplementedException();
+                if (args.ManualPortPLCInfo.IsRun)
+                {
+                    reportBll.ReportPortInServiceChanged(args.PortName, newStateIsInService: true);
+                    WriteEventLog($"{logTitle} Report MCS PortInService");
+                }
+                else
+                {
+                    reportBll.ReportPortInServiceChanged(args.PortName, newStateIsInService: false);
+                    WriteEventLog($"{logTitle} Report MCS PortOutOfService");
+                }
             }
             catch (Exception ex)
             {
