@@ -1,4 +1,5 @@
 ﻿using com.mirle.ibg3k0.sc;
+using com.mirle.ibg3k0.sc.Data.Enum;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions;
 using com.mirle.ibg3k0.sc.Service;
 using System;
@@ -15,13 +16,13 @@ namespace com.mirle.ibg3k0.bc.winform
 {
     public partial class TestGetPortData : Form
     {
-        App.BCApplication BCApp;
-        ALINE line = null;
-        List<PortDef> portList = null;
-        PortPLCInfo portData = new PortPLCInfo();
+        private App.BCApplication BCApp;
+        private ALINE line = null;
+        private List<PortDef> portList = null;
+        private PortPLCInfo portData = new PortPLCInfo();
 
-        TransferService transferService = null;
-        DateTime openTime = new DateTime();
+        private TransferService transferService = null;
+        private DateTime openTime = new DateTime();
 
         public TestGetPortData()
         {
@@ -59,6 +60,7 @@ namespace com.mirle.ibg3k0.bc.winform
             }
 
             #region dataGridView2
+
             dataGridView2.Columns.Add("中文說明", "中文說明");
             dataGridView2.Columns.Add("訊號名稱", "訊號名稱");
             dataGridView2.Columns.Add("狀態", "狀態");
@@ -83,8 +85,11 @@ namespace com.mirle.ibg3k0.bc.winform
 
             dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView2.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-            #endregion
+
+            #endregion dataGridView2
+
             #region dataGridView3
+
             dataGridView3.Columns.Add("中文說明", "中文說明");                 //0
             dataGridView3.Columns.Add("訊號名稱", "訊號名稱");                 //1
             dataGridView3.Columns.Add("狀態", "狀態");                         //2
@@ -94,7 +99,7 @@ namespace com.mirle.ibg3k0.bc.winform
             dataGridView3.Rows.Add("", "", "");                                //1
             dataGridView3.Rows.Add("盒子 BCR 讀取狀態", "BCRReadDone", "");    //2
             dataGridView3.Rows.Add("盒子ID", "BoxID", "");                     //3
-            dataGridView3.Rows.Add("", "", "");                                //4            
+            dataGridView3.Rows.Add("", "", "");                                //4
             dataGridView3.Rows.Add("節數 1 是否有盒子", "LoadPosition1", "");  //5
             dataGridView3.Rows.Add("節數 2 是否有盒子", "LoadPosition2", "");  //6
             dataGridView3.Rows.Add("節數 3 是否有盒子", "LoadPosition3", "");  //7
@@ -105,8 +110,11 @@ namespace com.mirle.ibg3k0.bc.winform
 
             dataGridView3.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView3.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-            #endregion
+
+            #endregion dataGridView3
+
             #region dataGridView4
+
             dataGridView4.Columns.Add("中文說明", "中文說明");                 //0
             dataGridView4.Columns.Add("訊號名稱", "訊號名稱");                 //1
             dataGridView4.Columns.Add("狀態", "狀態");                        //2
@@ -127,11 +135,13 @@ namespace com.mirle.ibg3k0.bc.winform
 
             dataGridView4.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView4.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-            #endregion
+
+            #endregion dataGridView4
 
             GetPortData();
             openTime = DateTime.Now;
         }
+
         public void SetApp(App.BCApplication app)
         {
             BCApp = app;
@@ -140,7 +150,9 @@ namespace com.mirle.ibg3k0.bc.winform
         private void timer1_Tick(object sender, EventArgs e)
         {
             portData = transferService.GetPLC_PortData(comboBox1.Text);
+
             #region dataGridView2
+
             dataGridView2.Rows[0].Cells[2].Value = portData.OpAutoMode.ToString();
             dataGridView2.Rows[1].Cells[2].Value = portData.IsAutoMode.ToString();
             dataGridView2.Rows[2].Cells[2].Value = portData.OpError.ToString();
@@ -158,13 +170,16 @@ namespace com.mirle.ibg3k0.bc.winform
             //dataGridView2.Rows[14].Cells[2].Value = 等待說明;
             dataGridView2.Rows[15].Cells[2].Value = portData.cim_on.ToString();
             dataGridView2.Rows[16].Cells[2].Value = portData.preLoadOK.ToString();
-            #endregion
+
+            #endregion dataGridView2
+
             #region dataGridView3
+
             dataGridView3.Rows[0].Cells[2].Value = portData.CstRemoveCheck.ToString();
             //dataGridView3.Rows[1].Cells[2].Value = portData.IsAutoMode.ToString();
             dataGridView3.Rows[2].Cells[2].Value = portData.BCRReadDone.ToString();
             dataGridView3.Rows[3].Cells[2].Value = portData.BoxID.ToString();
-            //dataGridView3.Rows[4].Cells[2].Value = "";            
+            //dataGridView3.Rows[4].Cells[2].Value = "";
             dataGridView3.Rows[5].Cells[2].Value = portData.LoadPosition1.ToString();
             dataGridView3.Rows[5].Cells[3].Value = portData.LoadPositionBOX1.ToString();
 
@@ -182,27 +197,33 @@ namespace com.mirle.ibg3k0.bc.winform
 
             dataGridView3.Rows[10].Cells[2].Value = portData.LoadPosition6.ToString();
             dataGridView3.Rows[11].Cells[2].Value = portData.LoadPosition7.ToString();
-            #endregion
+
+            #endregion dataGridView3
+
             #region dataGridView4
+
             dataGridView4.Rows[0].Cells[2].Value = transferService.GetAGV_StationStatus(comboBox1.Text);
             dataGridView4.Rows[1].Cells[2].Value = transferService.GetAGV_AutoPortType(comboBox1.Text);
             dataGridView4.Rows[2].Cells[2].Value = portData.IsAGVMode.ToString();
             dataGridView4.Rows[3].Cells[2].Value = portData.IsMGVMode.ToString();
-            //dataGridView4.Rows[4].Cells[2].Value = 
+            //dataGridView4.Rows[4].Cells[2].Value =
             dataGridView4.Rows[5].Cells[2].Value = portData.AGVPortReady.ToString();
             dataGridView4.Rows[6].Cells[2].Value = portData.CSTPresenceMismatch.ToString();
-            //dataGridView4.Rows[7].Cells[2].Value = 
+            //dataGridView4.Rows[7].Cells[2].Value =
             dataGridView4.Rows[8].Cells[2].Value = portData.CanOpenBox.ToString();
             dataGridView4.Rows[9].Cells[2].Value = portData.IsBoxOpen.ToString();
-            //dataGridView4.Rows[10].Cells[2].Value = 
+            //dataGridView4.Rows[10].Cells[2].Value =
             dataGridView4.Rows[11].Cells[2].Value = portData.CassetteID.ToString();
             dataGridView4.Rows[12].Cells[2].Value = portData.IsCSTPresence.ToString();
-            #endregion
+
+            #endregion dataGridView4
+
             #region 待刪除
+
             //label2.Text =
             //    "Port狀態：\n"
             //    + "運轉狀態_RUN: " + portData.OpAutoMode.ToString() + "\n"
-            //    + "自動模式_IsAutoMode: " + portData.IsAutoMode.ToString() + "\n"                
+            //    + "自動模式_IsAutoMode: " + portData.IsAutoMode.ToString() + "\n"
             //    + "異常狀態_ErrorBit: " + portData.OpError.ToString() + "\n"
             //    + "異常代碼_ErrorCode: " + portData.ErrorCode.ToString() + "\n"
             //    ;
@@ -247,7 +268,8 @@ namespace com.mirle.ibg3k0.bc.winform
             //    + "開蓋狀態:                                " + portData.IsBoxOpen.ToString() + "\n"
             //    + "\n"
             //    ;
-            #endregion
+
+            #endregion 待刪除
 
             label6.Text = "關聯實際狀態： " + transferService.agvZone_ConnectedRealAGVPortRunDown.ToString();
             label11.Text = "單取單放狀態： " + transferService.oneInoneOutMethodUse.ToString();
@@ -412,7 +434,7 @@ namespace com.mirle.ibg3k0.bc.winform
         {
             foreach (var v in portList)
             {
-                if (transferService.isUnitType(v.PLCPortID, sc.Service.UnitType.AGV))
+                if (transferService.isUnitType(v.PLCPortID, UnitType.AGV))
                 {
                     transferService.OpenAGV_Station(v.PLCPortID, true, "UI_TestGetPortData");
                 }
@@ -423,7 +445,7 @@ namespace com.mirle.ibg3k0.bc.winform
         {
             foreach (var v in portList)
             {
-                if (transferService.isUnitType(v.PLCPortID, sc.Service.UnitType.AGV))
+                if (transferService.isUnitType(v.PLCPortID, UnitType.AGV))
                 {
                     transferService.OpenAGV_Station(v.PLCPortID, false, "UI_TestGetPortData");
                 }
@@ -454,7 +476,7 @@ namespace com.mirle.ibg3k0.bc.winform
         {
             foreach (var v in portList)
             {
-                if (transferService.isUnitType(v.PLCPortID, sc.Service.UnitType.AGV))
+                if (transferService.isUnitType(v.PLCPortID, UnitType.AGV))
                 {
                     transferService.OpenAGV_AutoPortType(v.PLCPortID, true);
                 }
@@ -465,7 +487,7 @@ namespace com.mirle.ibg3k0.bc.winform
         {
             foreach (var v in portList)
             {
-                if (transferService.isUnitType(v.PLCPortID, sc.Service.UnitType.AGV))
+                if (transferService.isUnitType(v.PLCPortID, UnitType.AGV))
                 {
                     transferService.OpenAGV_AutoPortType(v.PLCPortID, false);
                 }
@@ -569,7 +591,6 @@ namespace com.mirle.ibg3k0.bc.winform
             }
             catch
             {
-
             }
         }
 

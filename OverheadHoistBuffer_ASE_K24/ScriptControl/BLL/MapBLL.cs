@@ -11,6 +11,7 @@ using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.Data.DAO;
 using com.mirle.ibg3k0.sc.Data.DAO.EntityFramework;
+using com.mirle.ibg3k0.sc.Data.Enum;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -27,27 +28,29 @@ namespace com.mirle.ibg3k0.sc.BLL
         private SCApplication scApp = null;
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        RAILDao railDAO = null;
-        ADDRESSDao adrDAO = null;
-        PortDao portDAO = null;
-        POINTDao pointDAO = null;
-        PortIconDao portIconDAO = null;
-        GROUPRAILSDao groupRailDAO = null;
-        SectionDao sectionDAO = null;
-        SegmentDao segmentDAO = null;
-        VehicleDao vehicleDAO = null;
-        BlockZoneMasterDao blockZoneMasterDao = null;
-        BlockZoneDetailDao blockZoneDetaiDao = null;
-        BlockZoneQueueDao blockZoneQueueDao = null;
-        PortDefDao portDefDAO = null;
-        ALINE line
+        private RAILDao railDAO = null;
+        private ADDRESSDao adrDAO = null;
+        private PortDao portDAO = null;
+        private POINTDao pointDAO = null;
+        private PortIconDao portIconDAO = null;
+        private GROUPRAILSDao groupRailDAO = null;
+        private SectionDao sectionDAO = null;
+        private SegmentDao segmentDAO = null;
+        private VehicleDao vehicleDAO = null;
+        private BlockZoneMasterDao blockZoneMasterDao = null;
+        private BlockZoneDetailDao blockZoneDetaiDao = null;
+        private BlockZoneQueueDao blockZoneQueueDao = null;
+        private PortDefDao portDefDAO = null;
+
+        private ALINE line
         {
             get => scApp.getEQObjCacheManager().getLine();
         }
+
         public MapBLL()
         {
-
         }
+
         public void start(SCApplication app)
         {
             scApp = app;
@@ -65,7 +68,9 @@ namespace com.mirle.ibg3k0.sc.BLL
             blockZoneQueueDao = scApp.BlockZoneQueueDao;
             portDefDAO = scApp.PortDefDao;
         }
+
         #region Rail
+
         public List<ARAIL> loadAllRail()
         {
             List<ARAIL> Rails = null;
@@ -75,8 +80,11 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return Rails;
         }
+
         #endregion Rail
+
         #region Point
+
         public List<APOINT> loadAllPoint()
         {
             List<APOINT> points = null;
@@ -96,8 +104,11 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return point;
         }
+
         #endregion Point
+
         #region GROUPRAILS
+
         public AGROUPRAILS getGroupRailsBySectionID(string sec_id)
         {
             AGROUPRAILS groupRails = null;
@@ -107,6 +118,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return groupRails;
         }
+
         public List<AGROUPRAILS> loadAllGroupRail()
         {
             List<AGROUPRAILS> lstGroupRail = null;
@@ -116,6 +128,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return lstGroupRail;
         }
+
         public List<string> loadAllSectionID()
         {
             List<string> sec_ids = null;
@@ -125,6 +138,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return sec_ids;
         }
+
         public void getFirstAndLastRailBySecID(string sec_id, out AGROUPRAILS first_rail, out AGROUPRAILS last_rail)
         {
             using (DBConnection_EF con = new DBConnection_EF())
@@ -133,10 +147,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-
         #endregion GROUPRAILS
 
         #region Address
+
         public List<AADDRESS> loadAllAddress()
         {
             List<AADDRESS> adrs = null;
@@ -146,6 +160,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return adrs;
         }
+
         public AADDRESS getAddressByID(string adr_id)
         {
             AADDRESS adr = null;
@@ -156,6 +171,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return adr;
         }
+
         public AADDRESS getAddressByPortID(string port_id)
         {
             AADDRESS adr = null;
@@ -165,6 +181,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return adr;
         }
+
         public int getCount_AddressCount()
         {
             int count = 0;
@@ -174,9 +191,12 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return count;
         }
+
         #endregion Address
+
         #region Section
-        Dictionary<string, List<ASECTION>> dicNextSection = new Dictionary<string, List<ASECTION>>();
+
+        private Dictionary<string, List<ASECTION>> dicNextSection = new Dictionary<string, List<ASECTION>>();
 
         public ASEGMENT getSegmentBySectionID(string id)
         {
@@ -234,6 +254,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return false;
             }
         }
+
         public bool updateSecDistance(string id, int distance)
         {
             ASECTION section = null;
@@ -255,6 +276,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return false;
             }
         }
+
         public bool resetSecTechingTime(string id)
         {
             ASECTION section = null;
@@ -300,9 +322,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-
-
-
         public List<ASECTION> loadSectionBySecIDs(List<string> section_ids)
         {
             if (section_ids == null || section_ids.Count == 0)
@@ -331,8 +350,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             return sections;
         }
 
-
-
         public ASECTION getSectiontByID(string section_id)
         {
             ASECTION section = null;
@@ -344,6 +361,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return section;
         }
+
         public List<ASECTION> loadAllSection()
         {
             List<ASECTION> sections = null;
@@ -360,12 +378,14 @@ namespace com.mirle.ibg3k0.sc.BLL
             sections = sectionDAO.loadByFromAdr(from_adr);
             return sections;
         }
+
         public List<ASECTION> loadSectionByFromAdrs(List<string> from_adrs)
         {
             List<ASECTION> sections = null;
             sections = sectionDAO.loadByFromAdrs(from_adrs);
             return sections;
         }
+
         public List<ASECTION> loadSectionByToAdrs(List<string> to_adrs)
         {
             List<ASECTION> sections = null;
@@ -376,6 +396,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             sections = sectionDAO.loadByToAdrs(to_adrs);
             return sections;
         }
+
         public string[] loadNextSectionIDBySectionID(String section_id)
         {
             string[] nextSections = null;
@@ -384,7 +405,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 nextSections = sectionDAO.loadNextSectionIDBySectionID(con, section_id);
             }
             return nextSections;
-
         }
 
         public Dictionary<string, int> loadGroupBySecAndThroughTimes()
@@ -396,11 +416,13 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return secAndThroughTimes;
         }
+
         public string getFirstSecIDBySegmentID(string seg_id)
         {
             ASECTION sec = sectionDAO.getFirstSecBySegmentID(seg_id);
             return sec == null ? string.Empty : sec.SEC_ID.Trim();
         }
+
         public List<ASECTION> loadSectionsBySegmentID(string seg_num)
         {
             List<ASECTION> secs = sectionDAO.loadSectionsBySegmentID(seg_num);
@@ -416,8 +438,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                                                       sec.SEC_TYPE != ProtocolFormat.OHTMessage.SectionType.Mtl).Count();
             return not_yet_thaching_count != 0;
         }
+
         #endregion Section
+
         #region Segment
+
         public ASEGMENT getSegmentByID(string segment_id)
         {
             ASEGMENT segment = null;
@@ -427,6 +452,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return segment;
         }
+
         public List<ASEGMENT> loadAllSegments()
         {
             List<ASEGMENT> lstSeg = null;
@@ -436,6 +462,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return lstSeg;
         }
+
         public List<string> loadAllSegmentIDs()
         {
             List<string> lstSeg = null;
@@ -486,6 +513,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return seg;
         }
+
         public ASEGMENT DisableSegment(string seg_num)
         {
             ASEGMENT seg = null;
@@ -510,6 +538,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return seg;
         }
+
         public ASEGMENT DisableSegment(string seg_num, ASEGMENT.DisableType disableType)
         {
             ASEGMENT seg = null;
@@ -527,16 +556,18 @@ namespace com.mirle.ibg3k0.sc.BLL
                             case ASEGMENT.DisableType.User:
                                 seg.DISABLE_FLAG_USER = true;
                                 break;
+
                             case ASEGMENT.DisableType.Safety:
                                 seg.DISABLE_FLAG_SAFETY = true;
                                 break;
+
                             case ASEGMENT.DisableType.HID:
                                 seg.DISABLE_FLAG_HID = true;
                                 break;
+
                             case ASEGMENT.DisableType.System:
                                 seg.DISABLE_FLAG_SYSTEM = true;
                                 break;
-
                         }
                         if (!IsSegmentEnable(seg))
                         {
@@ -553,6 +584,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return seg;
         }
+
         public ASEGMENT EnableSegment(string seg_num)
         {
             ASEGMENT seg = null;
@@ -595,12 +627,15 @@ namespace com.mirle.ibg3k0.sc.BLL
                             case ASEGMENT.DisableType.User:
                                 seg.DISABLE_FLAG_USER = false;
                                 break;
+
                             case ASEGMENT.DisableType.Safety:
                                 seg.DISABLE_FLAG_SAFETY = false;
                                 break;
+
                             case ASEGMENT.DisableType.HID:
                                 seg.DISABLE_FLAG_HID = false;
                                 break;
+
                             case ASEGMENT.DisableType.System:
                                 seg.DISABLE_FLAG_SYSTEM = false;
                                 break;
@@ -620,12 +655,12 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return seg;
         }
+
         private bool IsSegmentEnable(ASEGMENT seg)
         {
             bool is_disable = seg.DISABLE_FLAG_USER || seg.DISABLE_FLAG_SAFETY || seg.DISABLE_FLAG_HID || seg.DISABLE_FLAG_SYSTEM;
             return !is_disable;
         }
-
 
         public bool IsSegmentActive(string seg_num)
         {
@@ -675,8 +710,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             return SegmentInActive;
         }
 
-        #endregion
+        #endregion Segment
+
         #region Port
+
         public APORTSTATION getPortByPortID(string port_id)
         {
             APORTSTATION portTemp = null;
@@ -709,6 +746,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return portTemp;
         }
+
         public List<APORTSTATION> loadAllPort()
         {
             List<APORTSTATION> portTemp = null;
@@ -718,6 +756,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return portTemp;
         }
+
         public List<APORTSTATION> loadAllPortBySegmentID(string segment_id)
         {
             List<APORTSTATION> port_stations = null;
@@ -733,14 +772,12 @@ namespace com.mirle.ibg3k0.sc.BLL
             return port_stations;
         }
 
-
-
-
         public bool getAddressID(string adr_port_id, out string adr)
         {
             E_VH_TYPE vh_type = E_VH_TYPE.None;
             return getAddressID(adr_port_id, out adr, out vh_type);
         }
+
         public bool getAddressID(string adr_port_id, out string adr, out E_VH_TYPE vh_type)
         {
             PortDef port = scApp.MapBLL.getPortByPortDefID(adr_port_id);
@@ -762,7 +799,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 else
                 {
                     //A20.06.09.0
-                    if (scApp.TransferService.isUnitType(adr_port_id, Service.UnitType.CRANE))
+                    if (scApp.TransferService.isUnitType(adr_port_id, UnitType.CRANE))
                     {
                         adr = scApp.VehicleService.GetVehicleDataByVehicleID(adr_port_id).CUR_ADR_ID;
                         return true;
@@ -791,7 +828,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-
         public void updatePortStatus(string port_id, E_PORT_STATUS port_status)
         {
             APORTSTATION portTemp = null;
@@ -803,10 +839,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-
-
         #endregion Port
+
         #region PortIcon
+
         public List<APORTICON> loadAllPortIcon()
         {
             List<APORTICON> portIcons = null;
@@ -816,9 +852,11 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return portIcons;
         }
-        #endregion
+
+        #endregion PortIcon
 
         #region Block Control
+
         public bool doCreatBlockZoneQueueByReqStatus(string car_id, string entry_sec_id, bool canPass, DateTime req_time)
         {
             bool isSeccess = true;
@@ -869,6 +907,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSeccess;
         }
+
         public bool updateBlockZoneQueue_BlockTime(string car_id, string current_sec_id)
         {
             bool isSeccess = true;
@@ -885,6 +924,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSeccess;
         }
+
         //public bool updateBlockZoneQueue_ThrouTime(string car_id, string current_sec_id, out BLOCKZONEQUEUE throu_block_queue)
         public bool updateBlockZoneQueue_ThrouTime(string car_id, out BLOCKZONEQUEUE throu_block_queue)
         {
@@ -901,7 +941,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                     throu_block_queue = blockZoneQueueDao.getThrouTimeNullBlockQueueByCarID(con, car_id);
                     if (throu_block_queue != null)
                     {
-
                         throu_block_queue.THROU_TIME = DateTime.Now;
                         throu_block_queue.STATUS = SCAppConstants.BlockQueueState.Through;
                         con.Entry(throu_block_queue).Property(p => p.THROU_TIME).IsModified = true;
@@ -921,6 +960,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSeccess;
         }
+
         public bool updateBlockZoneQueue_ReleasTime(string car_id, string current_sec_id)
         {
             bool isSeccess = true;
@@ -941,6 +981,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSeccess;
         }
+
         public bool updateBlockZoneQueue_AbnormalEnd(BLOCKZONEQUEUE blockZoneQueue, string status)
         {
             bool isSeccess = true;
@@ -980,6 +1021,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return blockZoneQueue != 0;
         }
+
         public bool isBlockingBlockZoneByVhIDAndCrtBlockSecID(string vh_id, string sec_id)
         {
             int blockZoneQueue = 0;
@@ -990,8 +1032,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 blockZoneQueue = blockZoneQueueDao.getCountBlockingBlockQueueByCarIDSecID(con, vh_id, sec_id);
             }
             return blockZoneQueue != 0;
-
         }
+
         public BLOCKZONEQUEUE getUsingBlockZoneQueueByVhID(string vh_id)
         {
             BLOCKZONEQUEUE blockZoneQueue = null;
@@ -1002,8 +1044,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 blockZoneQueue = blockZoneQueueDao.getUsingBlockQueueByCarID(con, vh_id);
             }
             return blockZoneQueue;
-
         }
+
         public BLOCKZONEQUEUE getBlockQueueInRequestByCarID(string vh_id)
         {
             BLOCKZONEQUEUE blockZoneQueue = null;
@@ -1012,9 +1054,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 blockZoneQueue = blockZoneQueueDao.getBlockQueueInRequestByCarID(con, vh_id);
             }
             return blockZoneQueue;
-
         }
-
 
         public BLOCKZONEQUEUE getReqBlockQueueBySecID(string sec_id)
         {
@@ -1025,7 +1065,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return blockZoneQueue;
         }
-
 
         public bool checkBlockZoneQueueIsBlockingByEntrySecID(List<string> entry_sec_ids)
         {
@@ -1038,6 +1077,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isBlocking;
         }
+
         public bool checkBlockZoneQueueIsBlockingByEntrySecID(List<string> entry_sec_ids, out List<BLOCKZONEQUEUE> queues)
         {
             bool isBlocking = false;
@@ -1063,6 +1103,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return blockZoneQueues;
         }
+
         public List<BLOCKZONEQUEUE> loadAllNonReleaseBlockQueue()
         {
             List<BLOCKZONEQUEUE> blockZoneQueues = null;
@@ -1072,6 +1113,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return blockZoneQueues;
         }
+
         public List<BLOCKZONEQUEUE> loadAllUsingBlockQueue()
         {
             List<BLOCKZONEQUEUE> blockZoneQueues = null;
@@ -1081,6 +1123,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return blockZoneQueues;
         }
+
         public List<BLOCKZONEQUEUE> loadNonReleaseBlockQueueBySecIds(List<string> entry_sections)
         {
             List<BLOCKZONEQUEUE> blockZoneQueues = null;
@@ -1125,7 +1168,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             return lstSecID;
         }
 
-
         public List<ABLOCKZONEMASTER> loadAllBlockZoneMaster()
         {
             List<ABLOCKZONEMASTER> masters = null;
@@ -1135,7 +1177,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return masters;
         }
-
 
         public ABLOCKZONEMASTER getBlockZoneMasterByEntrySecID(string entry_sec_id)
         {
@@ -1147,8 +1188,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 con.Release();
             }
             return block;
-
         }
+
         public ABLOCKZONEMASTER getBlockZoneMasterByAdrID(string adr_id)
         {
             ABLOCKZONEMASTER obj = null;
@@ -1195,15 +1236,12 @@ namespace com.mirle.ibg3k0.sc.BLL
             return lsrbzm;
         }
 
-
-
-
         public BLOCKZONEQUEUE findNextBlockZonePassVh_Branch(List<ABLOCKZONEMASTER> bzms)
         {
             BLOCKZONEQUEUE lstBZQ = null;
 
             //由於有發生deadlock的問題所以改用獨立的connection。
-            //DBConnection_EF con = DBConnection_EF.GetContext(); 
+            //DBConnection_EF con = DBConnection_EF.GetContext();
             //using (TransactionScope tx = new TransactionScope
             //    (TransactionScopeOption.Suppress))
             //{
@@ -1255,7 +1293,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             return next_pass_bzq;
         }
 
-
         public BLOCKZONEQUEUE findNextBlockZonePassVh_Merge(List<ABLOCKZONEMASTER> bzms)
         {
             //1.找出BlockZoneMaster所有正在等待通過的Queue
@@ -1278,6 +1315,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return BZQ;
         }
+
         public BLOCKZONEQUEUE findNextBlockZonePassVh_Merge_New(List<ABLOCKZONEMASTER> bzms)
         {
             List<BLOCKZONEQUEUE> lstBzqs = null;
@@ -1330,6 +1368,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 case E_BLOCK_ZONE_TYPE.Branch:
                     waitblockZoneVH = scApp.MapBLL.findNextBlockZonePassVh_Branch_New(lstBZM);
                     return (waitblockZoneVH != null, waitblockZoneVH);
+
                 case E_BLOCK_ZONE_TYPE.Merge:
                     waitblockZoneVH = scApp.MapBLL.findNextBlockZonePassVh_Merge_New(lstBZM);
                     return (waitblockZoneVH != null, waitblockZoneVH);
@@ -1337,6 +1376,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return (false, null);
         }
+
         // public bool CheckAndNoticeBlockVhPassByAdrID(string leave_adr_id)
         //{
         //    bool isSuccess = true;
@@ -1382,6 +1422,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return (false, null);
         }
+
         //public bool NoticeBlockVhPassByEntrySecID(string entry_sec_id)
         //{
         //    bool isSuccess = true;
@@ -1410,9 +1451,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             return isInBlockZone;
         }
 
-        const string REDIS_BLOCK_CONTROL_KEY_VHID = "BLOCK_CONTROL_{0}";
-        const string REDIS_BLOCK_CONTROL_VALUE_SECID_STATUS = "{0},{1}";
-        TimeSpan timeOut_5min = new TimeSpan(0, 5, 0);
+        private const string REDIS_BLOCK_CONTROL_KEY_VHID = "BLOCK_CONTROL_{0}";
+        private const string REDIS_BLOCK_CONTROL_VALUE_SECID_STATUS = "{0},{1}";
+        private TimeSpan timeOut_5min = new TimeSpan(0, 5, 0);
+
         public void CreatBlockControlKeyWordToRedis(string vh_id, string block_zone_id, bool can_pass, DateTime req_time)
         {
             string status = can_pass ? SCAppConstants.BlockQueueState.Blocking : SCAppConstants.BlockQueueState.Request;
@@ -1423,6 +1465,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 (set_key_word, set_value_word);
             LogCollection.BlockControlLogger.Trace($"creat block zone to redis, vh id:{vh_id},block id:{block_zone_id},block status:{status}");
         }
+
         public void ChangeBlockControlStatus_Blocking(string vh_id)
         {
             string set_key_word = string.Format(REDIS_BLOCK_CONTROL_KEY_VHID, vh_id);
@@ -1441,6 +1484,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 LogCollection.BlockControlLogger.Warn($"vh id[{vh_id}] change redis block zone status to {SCAppConstants.BlockQueueState.Blocking}, but not exists.");
             }
         }
+
         public void ChangeBlockControlStatus_Through(string vh_id)
         {
             AVEHICLE vh_vo = scApp.getEQObjCacheManager().getVehicletByVHID(vh_id);
@@ -1456,6 +1500,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 LogCollection.BlockControlLogger.Trace($"change redis block zone status , vh id:{vh_id},block id:{sec_id},block status:{status} change to {SCAppConstants.BlockQueueState.Through}");
             }
         }
+
         public void DeleteBlockControlKeyWordToRedis(string vh_id, string entry_sec_id)
         {
             string set_key_word = string.Format(REDIS_BLOCK_CONTROL_KEY_VHID, vh_id.Trim());
@@ -1470,6 +1515,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 LogCollection.BlockControlLogger.Trace($"delete redis block zone fail, vh id:{vh_id} zone id:{entry_sec_id}");
             }
         }
+
         public bool HasBlockControlAskedFromRedis(string vh_id, out string block_id, out string block_status)
         {
             bool hasBlockControl = false;
@@ -1509,6 +1555,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             $"is before [{isBefore}],redis block id:{sec_id},redis block status:{status}");
             return isBefore;
         }
+
         public bool IsBlockControlStatus(string vh_id, string queue_status)
         {
             string set_key_word = string.Format(REDIS_BLOCK_CONTROL_KEY_VHID, vh_id);
@@ -1528,6 +1575,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             $"is in stauts [{isInStatus}],redis block id:{sec_id},redis block status:{status}");
             return isInStatus;
         }
+
         public bool tryGetInRequest(string vh_id, out string block_zone_id, out string status)
         {
             bool isSuccess = false;
@@ -1548,6 +1596,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         public bool tryGetBlock(string vh_id, string block_zone_id, out string status)
         {
             bool isSuccess = false;
@@ -1575,12 +1624,13 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+
         //public bool tryGetUsingBlockQueue(string vh_id, out string block_zone_id)
         //{
         //    string get_key_word = string.Concat(REDIS_BLOCK_CONTROL_KEY_WORD_VHID, vh_id);
 
         //}
-        #endregion
 
+        #endregion Block Control
     }
 }

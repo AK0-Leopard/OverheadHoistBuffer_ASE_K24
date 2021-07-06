@@ -25,6 +25,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NLog;
 using System.Security.Policy;
+using com.mirle.ibg3k0.sc.Data.Enum;
 
 namespace com.mirle.ibg3k0.sc.Service
 {
@@ -32,6 +33,7 @@ namespace com.mirle.ibg3k0.sc.Service
     {
         //2020.6.22 每檢查N次高水位，檢查1次低水位
         private const int lowLevelCheckTime = 4;
+
         //2020.06.16 緊急水位設定(以比例計算，占用儲格超過這個比例就是達緊急水位)
         private double emergencyWaterLevel = 0.95;
 
@@ -65,6 +67,7 @@ namespace com.mirle.ibg3k0.sc.Service
         }
 
         #region Use for check the empty box number and transport for empty box
+
         public void CheckTheEmptyBoxStockLevel()
         {
             emptyBoxLogger.Info("[CheckTheEmptyBoxStockLevel]");
@@ -180,7 +183,7 @@ namespace com.mirle.ibg3k0.sc.Service
             int requriedBoxAGV = 0;
             int emptyBoxNum = zoneData.EmptyBoxList.Count();
             var isEnoughEmptyBox = CheckIsEnoughEmptyBox(_emptyBoxList.Count - 1, out requriedBoxAGV);
-            if (emptyBoxNum != 0 && isEnoughEmptyBox.isEnough == true )
+            if (emptyBoxNum != 0 && isEnoughEmptyBox.isEnough == true)
             {
                 recycleBlockID = zoneData.EmptyBoxList.FirstOrDefault();
             }
@@ -275,6 +278,7 @@ namespace com.mirle.ibg3k0.sc.Service
             //怎樣叫做有可執行的MCS命令?
             return result;
         }
+
         //*******************
         //A20.05.28.0 這邊需要志昌幫忙實作跟MCS"要求"空box的流程。 此部分需要想要如何避免重複要empty box 的流程。
         private void DoSendRequireEmptyBoxToMCS(string zoneID, int requireBox)
@@ -296,7 +300,7 @@ namespace com.mirle.ibg3k0.sc.Service
             //紀錄log 因此處為實際執行命令之處
             //此部分需先確認目前沒有可執行的MCS命令，才進行要求退BOX動作。
 
-            if(scApp.TransferService.requireEmptyBox)
+            if (scApp.TransferService.requireEmptyBox)
             {
                 scApp.ReportBLL.ReportEmptyBoxRecycling(boxID);
             }
@@ -309,9 +313,11 @@ namespace com.mirle.ibg3k0.sc.Service
             //紀錄log 因此處為實際執行命令之處
             //針對每一靠近zone之AGV station數量 配置對應數量的空BOX
         }
-        #endregion
+
+        #endregion Use for check the empty box number and transport for empty box
 
         #region calculate waterlevel
+
         //2020/06/01 空箱數量是否低於低水位
         private bool CheckIfBoxNotEnough(ZoneDef zoneData, out int boxCount)
         {
@@ -372,8 +378,8 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 //update water mark settings
                 var zonedata = from zd in zoneDatas
-                              where zd.ZoneID == z.ZoneID
-                              select zd;
+                               where zd.ZoneID == z.ZoneID
+                               select zd;
                 z.LowWaterMark = Decimal.ToInt32((decimal)zonedata.FirstOrDefault().LowWaterMark);
                 z.HighWaterMark = Decimal.ToInt32((decimal)zonedata.FirstOrDefault().HighWaterMark);
 
@@ -398,7 +404,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                  where b.Carrier_LOC == s.ShelfID &&
                                     !string.IsNullOrEmpty(b.CSTID) &&
                                     s.ZoneID == z.ZoneID
-                                 orderby b.StoreDT 
+                                 orderby b.StoreDT
                                  select b.BOXID;
                 z.EmptyBoxList = emptyBoxes.ToList();
                 z.SolidBoxList = solidBoxes.ToList();
@@ -418,6 +424,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
             }
         }
-        #endregion
+
+        #endregion calculate waterlevel
     }
 }

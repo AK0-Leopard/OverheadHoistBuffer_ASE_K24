@@ -40,6 +40,7 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
             fieldInfos = GetPLCElementFields(this.GetType());
             LogIndex = $"Recode{(fieldInfos[0] as MemberInfo).DeclaringType.Name}";
         }
+
         public void initial(string eq_id)
         {
             EQ_ID = eq_id;
@@ -62,7 +63,6 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
                 }
                 else
                 {
-
                 }
             }
             if (listVR.Count > 0)
@@ -86,7 +86,6 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
                 }
                 else
                 {
-
                 }
             }
             if (listVR.Count > 0)
@@ -94,6 +93,7 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
                 BCFUtility.writeEquipmentLog(eq_id, listVR);
             }
         }
+
         public virtual void Write(BCFApplication bcfApp, string eqObjIDCate, string eq_id)
         {
             ValueWrite ve_handshake = null;
@@ -117,7 +117,7 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
                 string value = string.Empty;
                 UInt16[] ivalueArray = null;
                 object valueObj = info.GetValue(this);
-                if (valueObj is Enum)
+                if (valueObj is System.Enum)
                 {
                     value = ((int)valueObj).ToString();
                 }
@@ -166,6 +166,7 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
                 BCFUtility.writeEquipmentLog(eq_id, listVW);
             }
         }
+
         public TrxMPLC.ReturnCode SendRecv(BCFApplication bcfApp, string eqObjIDCate, string eq_id, ValueRead replyMsg)
         {
             ValueWrite ve_handshake = null;
@@ -197,14 +198,12 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
             {
                 if (!bcfApp.tryGetReadValueEventstring(eqObjIDCate, eq_id, HandshakePropName, out vr))
                 {
-
                 }
             }
             else if (!SCUtility.isEmpty(IndexPropName))
             {
                 if (!bcfApp.tryGetReadValueEventstring(eqObjIDCate, eq_id, IndexPropName, out vr))
                 {
-
                 }
             }
 
@@ -293,11 +292,8 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
             }
             return attr;
         }
-
-
-
-
     }
+
     //public class JsBooleanArrayConverter : Newtonsoft.Json.JsonConverter
     //{
     //    public override bool CanConvert(Type objectType)
@@ -395,5 +391,4 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
     //    }
 
     //}
-
 }

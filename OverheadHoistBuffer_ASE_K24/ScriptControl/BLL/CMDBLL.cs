@@ -16,6 +16,7 @@ using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.Data.DAO;
 using com.mirle.ibg3k0.sc.Data.DAO.EntityFramework;
+using com.mirle.ibg3k0.sc.Data.Enum;
 using com.mirle.ibg3k0.sc.Data.SECS;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction;
 using com.mirle.ibg3k0.sc.Data.VO;
@@ -114,7 +115,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         public bool isZone(string zoneid)   //是不是zone
         {
             //return scApp.ZoneDefBLL.IsExist(zoneid);
-            return scApp.TransferService.isUnitType(zoneid, Service.UnitType.ZONE);
+            return scApp.TransferService.isUnitType(zoneid, UnitType.ZONE);
         }
 
         #region CMD_MCS
@@ -1312,7 +1313,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public void CheckShelfStatus(string ShelfName, string cmdID)
         {
-            if (scApp.TransferService.isUnitType(ShelfName, Service.UnitType.SHELF))
+            if (scApp.TransferService.isUnitType(ShelfName, UnitType.SHELF))
             {
                 if (scApp.CassetteDataBLL.loadCassetteDataByLoc(ShelfName) != null)
                 {
@@ -5270,6 +5271,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
     }
+
     public partial class CMDBLL : IManualPortCMDBLL
     {
         public void Delete(string carrierId)

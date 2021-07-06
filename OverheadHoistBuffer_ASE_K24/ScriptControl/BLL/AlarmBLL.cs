@@ -27,6 +27,7 @@ using Newtonsoft.Json;
 using com.mirle.ibg3k0.sc.Service;
 using com.mirle.ibg3k0.sc.Data.DAO.EntityFramework;
 using com.mirle.ibg3k0.sc.BLL.Interface;
+using com.mirle.ibg3k0.sc.Data.Enum;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
@@ -125,7 +126,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             lock (lock_obj_alarm)
             {
                 string alarmEq = eq_id;
-                //if (scApp.TransferService.isUnitType(eq_id, Service.UnitType.AGVZONE))
+                //if (scApp.TransferService.isUnitType(eq_id, UnitType.AGVZONE))
                 //{
                 //    alarmEq = eq_id.Remove(0, 12);
                 //}
@@ -133,20 +134,20 @@ namespace com.mirle.ibg3k0.sc.BLL
                 if (IsAlarmExist(alarmEq, error_code)) return null;
                 string alarmUnitType = "LINE";
 
-                if (scApp.TransferService.isUnitType(eq_id, Service.UnitType.AGV))
+                if (scApp.TransferService.isUnitType(eq_id, UnitType.AGV))
                 {
                     alarmUnitType = "AGV";
                 }
-                else if (scApp.TransferService.isUnitType(eq_id, Service.UnitType.CRANE))
+                else if (scApp.TransferService.isUnitType(eq_id, UnitType.CRANE))
                 {
                     alarmUnitType = "CRANE";
                 }
-                else if (scApp.TransferService.isUnitType(eq_id, Service.UnitType.NTB))
+                else if (scApp.TransferService.isUnitType(eq_id, UnitType.NTB))
                 {
                     alarmUnitType = "NTB";
                 }
-                else if (scApp.TransferService.isUnitType(eq_id, Service.UnitType.OHCV)
-                      || scApp.TransferService.isUnitType(eq_id, Service.UnitType.STK)
+                else if (scApp.TransferService.isUnitType(eq_id, UnitType.OHCV)
+                      || scApp.TransferService.isUnitType(eq_id, UnitType.STK)
                    )
                 {
                     int stage = scApp.TransferService.portINIData[eq_id].Stage;
@@ -160,7 +161,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         alarmUnitType = "OHCV_5";
                     }
                 }
-                else if (scApp.TransferService.isUnitType(eq_id, Service.UnitType.AGVZONE))
+                else if (scApp.TransferService.isUnitType(eq_id, UnitType.AGVZONE))
                 {
                     //B7_OHBLINE1_ST01
                     alarmUnitType = "LINE";
@@ -565,7 +566,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                     alarmReport = alarmDao.getAlarm(con, eqId, alarmCode);
                 }
                 return true;
-
             }
             catch (Exception ex)
             {
@@ -575,6 +575,4 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
     }
-
-
 }

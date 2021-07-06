@@ -20,6 +20,7 @@ using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.BLL;
 using com.mirle.ibg3k0.sc.Common;
+
 //using com.mirle.ibg3k0.sc.Data.SECS.CSOT;
 using com.mirle.ibg3k0.sc.Data.SECSDriver;
 using com.mirle.ibg3k0.sc.Data.VO;
@@ -34,13 +35,14 @@ using System.Transactions;
 using com.mirle.ibg3k0.sc.Data.SECS.ASE;
 using System.Reflection;
 using System.Threading.Tasks;
+using com.mirle.ibg3k0.sc.Data.Enum;
 
 namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 {
     public class ASEMCSDefaultMapAction : IBSEMDriver, IValueDefMapAction
     {
-        const string DEVICE_NAME_MCS = "MCS";
-        const string CALL_CONTEXT_KEY_WORD_SERVICE_ID_MCS = "MCS Service";
+        private const string DEVICE_NAME_MCS = "MCS";
+        private const string CALL_CONTEXT_KEY_WORD_SERVICE_ID_MCS = "MCS Service";
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private static Logger GlassTrnLogger = LogManager.GetLogger("GlassTransferRpt_EAP");
@@ -55,7 +57,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         /// </summary>
         protected bool isOnlineWithMcs = false;
 
-        string log = "";
+        private string log = "";
 
         public virtual string getIdentityKey()
         {
@@ -66,10 +68,11 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             this.line = baseEQ as ALINE;
         }
+
         public virtual void unRegisterEvent()
         {
-
         }
+
         public virtual void doShareMemoryInit(BCFAppConstants.RUN_LEVEL runLevel)
         {
             try
@@ -80,10 +83,13 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         SECSConst.setDicCEIDAndRPTID(scApp.CEIDBLL.loadDicCEIDAndRPTID());
                         SECSConst.setDicRPTIDAndVID(scApp.CEIDBLL.loadDicRPTIDAndVID());
                         break;
+
                     case BCFAppConstants.RUN_LEVEL.ONE:
                         break;
+
                     case BCFAppConstants.RUN_LEVEL.TWO:
                         break;
+
                     case BCFAppConstants.RUN_LEVEL.NINE:
                         break;
                 }
@@ -93,6 +99,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 logger.Error(ex, "Exection:");
             }
         }
+
         public virtual void doInit()
         {
             string eapSecsAgentName = scApp.EAPSecsAgentName;
@@ -133,7 +140,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             ISECSControl.addSECSConnectedHandler(bcfApp, eapSecsAgentName, secsConnected);
             ISECSControl.addSECSDisconnectedHandler(bcfApp, eapSecsAgentName, secsDisconnected);
         }
-        #region Receive 
+
+        #region Receive
 
         //protected override void S2F17ReceiveDateAndTimeRequest(object sender, SECSEventArgs e)
         //{
@@ -156,11 +164,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         //            logger.Warn("Reply EQPT S2F18 Error:{0}", rtnCode);
         //        }
 
-
         //        ////當收到S2F17如果TSC_State是在NONE, 之後再接續進行Auto Initial
         //        //if (line.TSC_state_machine.State == ALINE.TSCState.NONE)
         //        //    scApp.LineService.TSCStateToPause();
-
 
         //    }
         //    catch (Exception ex)
@@ -215,10 +221,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //if (s2f33.RPTITEMS != null && s2f33.RPTITEMS.Length > 0)
                 //    scApp.CEIDBLL.buildReportIDAndVid(s2f33.ToDictionary());
 
-
-
                 //SECSConst.setDicRPTIDAndVID(scApp.CEIDBLL.loadDicRPTIDAndVID());
-
             }
             catch (Exception ex)
             {
@@ -262,10 +265,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //if (s2f33.RPTITEMS != null && s2f33.RPTITEMS.Length > 0)
                 //    scApp.CEIDBLL.buildReportIDAndVid(s2f33.ToDictionary());
 
-
-
                 //SECSConst.setDicRPTIDAndVID(scApp.CEIDBLL.loadDicRPTIDAndVID());
-
             }
             catch (Exception ex)
             {
@@ -275,6 +275,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 logger.Error("MESDefaultMapAction has Error[Line Name:{0}],[Error method:{1}],[Error Message:{2}", line.LINE_ID, "S2F17_Receive_Date_Time_Req", ex.ToString());
             }
         }
+
         protected override void S2F33ReceiveDefineReport(object sender, SECSEventArgs e)
         {
             try
@@ -322,6 +323,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 logger.Error("MESDefaultMapAction has Error[Line Name:{0}],[Error method:{1}],[Error Message:{2}", line.LINE_ID, "S2F17_Receive_Date_Time_Req", ex.ToString());
             }
         }
+
         protected override void S2F35ReceiveLinkEventReport(object sender, SECSEventArgs e)
         {
             try
@@ -356,7 +358,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     scApp.CEIDBLL.buildCEIDAndReportID(s2f35.ToDictionary());
 
                 SECSConst.setDicCEIDAndRPTID(scApp.CEIDBLL.loadDicCEIDAndRPTID());
-
             }
             catch (Exception ex)
             {
@@ -366,6 +367,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 logger.Error("MESDefaultMapAction has Error[Line Name:{0}],[Error method:{1}],[Error Message:{2}", line.LINE_ID, "S2F17_Receive_Date_Time_Req", ex.ToString());
             }
         }
+
         protected override void S2F49ReceiveEnhancedRemoteCommandExtension(object sender, SECSEventArgs e)
         {
             try
@@ -376,7 +378,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //string title = System.Text.ASCIIEncoding.ASCII.GetString((byte[])e.RawData);
 
                 //Modify by Kevin 20200413 S2F49_TRANSFEREXT s2f49 = ((S2F49_TRANSFEREXT)e.secsHandler.Parse<S2F49_TRANSFEREXT>(e));
-                //S2F49 s2f49 = ((S2F49)e.secsHandler.Parse<S2F49>(e));//Modify by Kevin 20200413 
+                //S2F49 s2f49 = ((S2F49)e.secsHandler.Parse<S2F49>(e));//Modify by Kevin 20200413
                 S2F49_TRANSFEREXT s2f49 = ((S2F49_TRANSFEREXT)e.secsHandler.Parse<S2F49_TRANSFEREXT>(e));
                 switch (s2f49.RCMD)
                 {
@@ -537,7 +539,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
         }
 
-
         protected override void S2F41ReceiveHostCommand(object sender, SECSEventArgs e)
         {
             try
@@ -599,7 +600,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 switch (s2f41)
                 {
                     case S2F41_Scan scan:
+
                         #region LogSave
+
                         log += "RCMD:" + scan.RCMD + "  ";
                         log += scan.REPITEMS.CARRIERID.CPNAME + ":";
                         log += scan.REPITEMS.CARRIERID.CPVAL_ASCII + "   ";
@@ -607,7 +610,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         log += scan.REPITEMS.BOXID.CPVAL_ASCII + "   ";
                         log += scan.REPITEMS.CARRIERLOC.CPNAME + ":";
                         log += scan.REPITEMS.CARRIERLOC.CPVAL_ASCII + "   ";
-                        #endregion
+
+                        #endregion LogSave
 
                         var result_scan = checkHostCommandScan(scan);
 
@@ -620,14 +624,18 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         //cancel_abort_cmd_id = cancel_check_result2.cmdID;
 
                         break;
+
                     case S2F41_PriorityUpdate priority:
+
                         #region LogSave
+
                         log += "RCMD:" + priority.RCMD + "  ";
                         log += priority.REPITEMS.CommandID_CP.CPNAME + ":";
                         log += priority.REPITEMS.CommandID_CP.CPVAL_ASCII + "   ";
                         log += priority.REPITEMS.PRIORITY_CP.CPNAME + ":";
                         log += priority.REPITEMS.PRIORITY_CP.CPVAL_U2 + "   ";
-                        #endregion
+
+                        #endregion LogSave
 
                         switch (priority.RCMD)
                         {
@@ -638,6 +646,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                                 update_cmd_id = update_check_result.cmdID;
                                 PriorityUpdate = update_check_result.priority;
                                 break;
+
                             case SECSConst.RCMD_PortTypeChange:
                                 var typechg_check_result = checkHostCommandPortTypeChg(priority);
                                 s2f42.HCACK = typechg_check_result.checkResult;
@@ -647,8 +656,11 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                                 break;
                         }
                         break;
+
                     case S2F41 normal:
+
                         #region LogSave
+
                         log += "RCMD:" + normal.RCMD + "  ";
 
                         foreach (var v in normal.REPITEMS)
@@ -656,7 +668,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                             log += v.CPNAME + ":";
                             log += v.CPVAL + "   ";
                         }
-                        #endregion
+
+                        #endregion LogSave
+
                         switch (normal.RCMD)
                         {
                             case SECSConst.RCMD_Resume:
@@ -671,12 +685,14 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                                     needToResume = false;
                                 }
                                 break;
+
                             case SECSConst.RCMD_Cancel:
                                 var cancel_check_result = checkHostCommandCancel(s2f41 as S2F41);
                                 canCancelCmd = cancel_check_result.isOK;
                                 s2f42.HCACK = cancel_check_result.checkResult;
                                 cancel_abort_cmd_id = cancel_check_result.cmdID;
                                 break;
+
                             case SECSConst.RCMD_Pause:
                                 needToPause = true;
                                 if (line.TSC_state_machine.State == ALINE.TSCState.AUTO)
@@ -690,21 +706,25 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                                     needToResume = false;
                                 }
                                 break;
+
                             case SECSConst.RCMD_Scan:
                                 //TODO
                                 break;
+
                             case SECSConst.RCMD_Abort:
                                 var abort_check_result = checkHostCommandCancel(s2f41 as S2F41);
                                 canAbortCmd = abort_check_result.isOK;
                                 s2f42.HCACK = abort_check_result.checkResult;
                                 cancel_abort_cmd_id = abort_check_result.cmdID;
                                 break;
+
                             case SECSConst.RCMD_Retry:
                                 //var abort_check_result = checkHostCommandRetry(s2f41 as S2F41);
                                 //canAbortCmd = abort_check_result.isOK;
                                 //s2f42.HCACK = abort_check_result.checkResult;
                                 //cancel_abort_cmd_id = abort_check_result.cmdID;
                                 break;
+
                             case SECSConst.RCMD_Install:
                                 var install_check_result = checkHostCommandInstall(s2f41 as S2F41);
                                 canInstallCmd = install_check_result.isOK;
@@ -714,6 +734,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                                 box_id = install_check_result.BOXID;
                                 carrier_loc = install_check_result.LOCID;
                                 break;
+
                             case SECSConst.RCMD_Remove:
                                 var remove_check_result = checkHostCommandRemove(s2f41 as S2F41);
                                 canRemoveCmd = remove_check_result.isOK;
@@ -722,6 +743,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                                 carrier_id = remove_check_result.CSTID;
                                 box_id = remove_check_result.BOXID;
                                 break;
+
                             case SECSConst.RCMD_DisableShelf:
                                 var disable_check_result = checkHostCommandDisableShelf(s2f41 as S2F41);
                                 canDisShelfCmd = disable_check_result.isOK;
@@ -729,6 +751,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                                 shelf_id = disable_check_result.shelfid;
                                 shelf_enable = false;
                                 break;
+
                             case SECSConst.RCMD_EnbleShelf:
                                 var enable_check_result = checkHostCommandEnableShelf(s2f41 as S2F41);
                                 canDisShelfCmd = enable_check_result.isOK;
@@ -736,6 +759,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                                 shelf_id = enable_check_result.shelfid;
                                 shelf_enable = true;
                                 break;
+
                             case SECSConst.RCMD_ReName:
                                 var rename_check_result = checkHostCommandRename(s2f41 as S2F41);
                                 canRenameCmd = rename_check_result.isOK;
@@ -745,6 +769,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                                 box_id = rename_check_result.BOXID;
                                 carrier_loc = rename_check_result.LOCID;
                                 break;
+
                             case SECSConst.RCMD_CARRIERLOTIDUPDATE:
                                 var CARRIERLOTIDUPDATE_check_result = checkHostCommandRCMD_CARRIERLOTIDUPDATE(s2f41 as S2F41);
                                 s2f42.HCACK = CARRIERLOTIDUPDATE_check_result.checkResult;
@@ -814,7 +839,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 }
                 if (canChangCmd)
                 {
-                    if (scApp.TransferService.isUnitType(change_port_id, Service.UnitType.AGV))
+                    if (scApp.TransferService.isUnitType(change_port_id, UnitType.AGV))
                     {
                         scApp.TransferService.ReportNowPortType(change_port_id);
                     }
@@ -936,7 +961,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             //var command_id = s2F41.REPITEMS.CARRIERID.CPVAL_ASCII;
             //if (command_id == null)
             //{
-
             //}
             //else if (command_id != null)
             //{
@@ -1338,7 +1362,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             return (is_ok, check_result, has_carrier, CarrierID, BoxID, LocID);
         }
 
-
         private (bool isOK, string checkResult) checkHostCommandConfirmRoute(S2F41 s2F41)
         {
             bool is_ok = true;
@@ -1445,7 +1468,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
                     if (is_ok == false)
                     {
-
                     }
                 }
             }
@@ -1589,6 +1611,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     line.LINE_ID, "S1F3_Receive_Eqpt_Stat_Req", ex.ToString());
             }
         }
+
         #region Build VIDItem
 
         private S6F11.RPTINFO.RPTITEM.VIDITEM_107_SV buildZoneDataVIDItem()
@@ -1635,6 +1658,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             };
             return viditem_06;
         }
+
         private S6F11.RPTINFO.RPTITEM.VIDITEM_04_SV buildAlarmsSetVIDItem()
         {
             S6F11.RPTINFO.RPTITEM.VIDITEM_04_SV viditem_04 = new S6F11.RPTINFO.RPTITEM.VIDITEM_04_SV();
@@ -1651,6 +1675,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return viditem_04;
         }
+
         private S6F11.RPTINFO.RPTITEM.VIDITEM_40 buildEnhancedAlarmsSetVIDItem()
         {
             //var alarms = scApp.AlarmBLL.getCurrentAlarms();
@@ -1695,7 +1720,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             //List<APORTSTATION> port_station = scApp.getEQObjCacheManager().getALLPortStation();
             string ohbName = scApp.getEQObjCacheManager().getLine().LINE_ID;
-            //List<PortDef> port_station = scApp.PortDefBLL.GetOHB_PortData(ohbName); 
+            //List<PortDef> port_station = scApp.PortDefBLL.GetOHB_PortData(ohbName);
             List<PortDef> port_station = scApp.PortDefBLL.GetOHB_CVPortData(ohbName);
 
             int port_count = port_station.Count;
@@ -1711,6 +1736,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return viditem_118;
         }
+
         private S6F11.RPTINFO.RPTITEM.VIDITEM_114_SV buildSpecVersionVIDItem()
         {
             S6F11.RPTINFO.RPTITEM.VIDITEM_114_SV viditem_114 = new S6F11.RPTINFO.RPTITEM.VIDITEM_114_SV()
@@ -1719,6 +1745,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             };
             return viditem_114;
         }
+
         private S6F11.RPTINFO.RPTITEM.VIDITEM_350_SV buildCurrentEqPortStatusVIDItem()
         {
             string ohbName = scApp.getEQObjCacheManager().getLine().LINE_ID;
@@ -1738,6 +1765,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return viditem_350;
         }
+
         private S6F11.RPTINFO.RPTITEM.VIDITEM_351_SV buildCurrentPortTypesVIDItem()
         {
             string ohbName = scApp.getEQObjCacheManager().getLine().LINE_ID;
@@ -1757,6 +1785,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return viditem_351;
         }
+
         private S6F11.RPTINFO.RPTITEM.VIDITEM_360_SV buildUnitAlarmListVIDItem()
         {
             //List<ALARM> occurred_alarms = scApp.AlarmBLL.getCurrentAlarmsFromRedis();
@@ -1795,6 +1824,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
             return viditem_360;
         }
+
         private S6F11.RPTINFO.RPTITEM.VIDITEM_51_SV buildEnhancedCarriersVIDItem()
         {
             List<CassetteData> cassettedata = scApp.CassetteDataBLL.loadCassetteData();
@@ -1813,6 +1843,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return viditem_51;
         }
+
         //private S6F11.RPTINFO.RPTITEM.VIDITEM_119_SV buildEnhancedVehiclesVIDItem()
         //{
         //    List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();
@@ -1832,7 +1863,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         //}
         private S6F11.RPTINFO.RPTITEM.VIDITEM_73_SV buildSCStateVIDItem()
         {
-
             string tsc_state = ((int)line.TSC_state_machine.State).ToString();
             if (line.TSC_state_machine.State == ALINE.TSCState.NONE)
             {
@@ -1841,7 +1871,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             else
             {
                 tsc_state = ((int)line.TSC_state_machine.State).ToString();
-
             }
             S6F11.RPTINFO.RPTITEM.VIDITEM_73_SV viditem_73 = new S6F11.RPTINFO.RPTITEM.VIDITEM_73_SV()
             {
@@ -1850,6 +1879,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
             return viditem_73;
         }
+
         //private S6F11.RPTINFO.RPTITEM.VIDITEM_254_SV buildUnitAlarmStatListItem()
         //{
         //    List<ALARM> occurred_alarms = scApp.AlarmBLL.getCurrentAlarmsFromRedis();
@@ -1914,7 +1944,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 viditem_76.ENHANCED_TRANSFER_CMD[i].TRANSFER_INFO_OBJ.DESTINATION_ID_OBJ.DESTINATION_ID = mcs_cmd.HOSTDESTINATION;
             }
 
-
             //for (int k = 0; k < cmd_count; k++)
             //{
             //    ACMD_MCS mcs_cmd = mcs_cmds[k];
@@ -1926,7 +1955,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             //    string transfer_state = SECSConst.convert2MES(mcs_cmd.TRANSFERSTATE);
             //    viditem_76.ENHANCED_TRANSFER_COMMAND_INFOS[k].TRANSFER_STATE_OBJ.TRANSFER_STATE = transfer_state;
 
-
             //    viditem_76.ENHANCED_TRANSFER_COMMAND_INFOS[k].TRANSFER_INFO_OBJ = new S6F11.RPTINFO.RPTITEM.VIDITEM_67_SV[1];
             //    viditem_76.ENHANCED_TRANSFER_COMMAND_INFOS[k].TRANSFER_INFO_OBJ[0] = new S6F11.RPTINFO.RPTITEM.VIDITEM_67_SV();
             //    viditem_76.ENHANCED_TRANSFER_COMMAND_INFOS[k].TRANSFER_INFO_OBJ[0].CARRIER_ID = mcs_cmd.CARRIER_ID;
@@ -1936,6 +1964,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             //}
             return viditem_76;
         }
+
         //private S6F11.RPTINFO.RPTITEM.VIDITEM_91_SV buildEnhancedCarriersVIDItem()
         //{
         //    List<AVEHICLE> has_carry_vhs = scApp.getEQObjCacheManager().getAllVehicle().Where(vh => vh.HAS_CST == 1).ToList();
@@ -2043,7 +2072,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         //    }
         //    return viditem_360;
         //}
-        VehicleOperationState Convert2VehicleOperationState(AVEHICLE vh)
+        private VehicleOperationState Convert2VehicleOperationState(AVEHICLE vh)
         {
             if (!vh.isTcpIpConnect)
             {
@@ -2067,7 +2096,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
         }
 
-        VehicleCommunictionState Convert2VehicleCommunication(AVEHICLE vh)
+        private VehicleCommunictionState Convert2VehicleCommunication(AVEHICLE vh)
         {
             if (!vh.isTcpIpConnect)
             {
@@ -2085,7 +2114,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 }
             }
         }
-        VehicleControlMode Convert2VehicleControlMode(AVEHICLE vh)
+
+        private VehicleControlMode Convert2VehicleControlMode(AVEHICLE vh)
         {
             if (!vh.isTcpIpConnect) return VehicleControlMode.Manual;
             if (vh.MODE_STATUS >= ProtocolFormat.OHTMessage.VHModeStatus.AutoRemote)
@@ -2097,11 +2127,13 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 return VehicleControlMode.Manual;
             }
         }
-        VehicleJamState Convert2VehicleJamState(AVEHICLE vh)
+
+        private VehicleJamState Convert2VehicleJamState(AVEHICLE vh)
         {
             return vh.IsBlocking ? VehicleJamState.JamExists : VehicleJamState.NoJan;
         }
-        enum VehicleOperationState
+
+        private enum VehicleOperationState
         {
             Disconnected,
             Operating,
@@ -2109,26 +2141,29 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             Error,
             Detached
         }
-        enum VehicleCommunictionState
+
+        private enum VehicleCommunictionState
         {
             Disconnected,
             Communicating,
             NoCommunicating
         }
-        enum VehicleControlMode
+
+        private enum VehicleControlMode
         {
             Manual,
             Auto
         }
-        enum VehicleJamState
+
+        private enum VehicleJamState
         {
             NoJan,
             JamExists,
             Stuck
         }
 
-
         #endregion Build VIDItem
+
         protected override void S1F15ReceiveRequestOffLine(object sender, SECSEventArgs e)
         {
             try
@@ -2175,7 +2210,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 logger.Error("MESDefaultMapAction has Error[Line Name:{0}],[Error method:{1}],[Error Message:{2}", line.LINE_ID, "S1F17_Receive_OnlineRequest", ex.ToString());
             }
         }
-
 
         protected override void S1F17ReceiveRequestOnLine(object sender, SECSEventArgs e)
         {
@@ -2299,7 +2333,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         //            }
         //        }
 
-
         //        TrxSECS.ReturnCode rtnCode = ISECSControl.replySECS(bcfApp, s5f6);
         //        SCUtility.secsActionRecordMsg(scApp, false, s5f6);
         //        if (rtnCode != TrxSECS.ReturnCode.Normal)
@@ -2312,10 +2345,14 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         //        logger.Error("MESDefaultMapAction has Error[Line Name:{0}],[Error method:{1}],[Error Message:{2}", line.LINE_ID, "S5F5ReceiveListAlarmRequest", ex.ToString());
         //    }
         //}
-        #endregion Receive 
+        #endregion Receive
+
+
 
         #region Send
+
         #region other
+
         public override bool S1F13SendEstablishCommunicationRequest()
         {
             try
@@ -2359,6 +2396,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return false;
         }
+
         public override bool S5F1SendAlarmReport(string alcd, string alid, string altx)
         {
             try
@@ -2407,14 +2445,17 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
         }
 
-        #endregion
+        #endregion other
+
         #region S6F11 Report
+
         public void SendS6F11(string ceid, VIDCollection vids)
         {
             AMCSREPORTQUEUE mcs_queue = S6F11BulibMessage(ceid, vids);
             scApp.ReportBLL.insertMCSReport(mcs_queue);
             S6F11SendMessage(mcs_queue);
         }
+
         public override bool S6F11SendEquiptmentOffLine()
         {
             try
@@ -2430,6 +2471,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return true;
         }
+
         public override bool S6F11SendControlStateLocal()
         {
             try
@@ -2446,6 +2488,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return true;
         }
+
         public override bool S6F11SendControlStateRemote()
         {
             try
@@ -2461,6 +2504,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return true;
         }
+
         public override bool S6F11SendAlarmCleared(ACMD_MCS CMD_MCS, ALARM ALARM, string unitid, string unitstate)
         {
             try
@@ -2547,6 +2591,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return true;
         }
+
         public override bool S6F11SendTSCPauseCompleted()
         {
             try
@@ -2562,6 +2607,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return true;
         }
+
         public override bool S6F11SendTSCPaused()
         {
             try
@@ -2593,6 +2639,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return true;
         }
+
         public override bool S6F11SendTransferAbortCompleted(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             try
@@ -2699,6 +2746,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return true;
         }
+
         public override bool S6F11SendTransferCancelCompleted(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             try
@@ -2736,6 +2784,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 return false;
             }
         }
+
         public override bool S6F11SendTransferCancelFailed(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             try
@@ -2911,6 +2960,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 return false;
             }
         }
+
         public override bool S6F11SendTransferPaused(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             try
@@ -2986,6 +3036,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 return false;
             }
         }
+
         public override bool S6F11SendCarrierTransferring(ACMD_MCS cmd, CassetteData cassette, string ohtName, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             try
@@ -3021,6 +3072,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 return false;
             }
         }
+
         public override bool S6F11SendCarrierInstallCompleted(CassetteData cst, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             try
@@ -3052,6 +3104,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 return false;
             }
         }
+
         public override bool S6F11SendCarrierRemovedCompleted(string cst_id, string box_id, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             try
@@ -3331,7 +3384,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
         }
 
-
         public override bool S6F11SendCarrierWaitOut(CassetteData cst, string portType, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             try
@@ -3398,7 +3450,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                    Data: ex);
             }
             return true;
-
         }
 
         public override bool S6F11SendUnitAlarmCleared(string unitID, string alarmID, string alarmTest, List<AMCSREPORTQUEUE> reportQueues = null)
@@ -3727,8 +3778,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
         }
 
-
-
         public override bool S6F11SendPortOutOfService(string port_id, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             try
@@ -3747,9 +3796,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     reportQueues.Add(mcs_queue);
                 }
 
-
                 return true;
-
             }
             catch (Exception ex)
             {
@@ -3758,6 +3805,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return true;
         }
+
         public override bool S6F11SendPortInService(string port_id, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             try
@@ -3833,6 +3881,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return true;
         }
+
         public override bool S6F11SendNoReq(string port_id, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             try
@@ -4039,6 +4088,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return true;
         }
+
         public override bool S6F11SendClearBoxMoveReq(string boxID, string portID, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             try
@@ -4066,6 +4116,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return true;
         }
+
         public override AMCSREPORTQUEUE S6F11BulibMessage(string ceid, object vidCollection)
         {
             try
@@ -4102,108 +4153,143 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                             case SECSConst.VID_Control_State:
                                 vid_item = Vids.VIDITEM_06_SV_ControlState;
                                 break;
+
                             case SECSConst.VID_Enhanced_Carrier_Info:
                                 vid_item = Vids.VIDITEM_10_SV_EnhancedCarrierInfo;
                                 break;
+
                             case SECSConst.VID_Command_Info:
                                 vid_item = Vids.VIDITEM_11_SV_CommandInfo;
                                 break;
+
                             case SECSConst.VID_Install_Time:
                                 vid_item = Vids.VIDITEM_12_DVVAL_InstallTime;
                                 break;
+
                             case SECSConst.VID_Carrier_ID:
                                 vid_item = Vids.VIDITEM_54_DVVAL_CarrierID;
                                 break;
+
                             case SECSConst.VID_Carrier_Info:
                                 vid_item = Vids.VIDITEM_55_DVVAL_CarrierInfo;
                                 break;
+
                             case SECSConst.VID_Carrier_Loc:
                                 vid_item = Vids.VIDITEM_56_DVVAL_CarrierLoc;
                                 break;
+
                             case SECSConst.VID_Command_ID:
                                 vid_item = Vids.VIDITEM_58_DVVAL_CommandID;
                                 break;
+
                             case SECSConst.VID_Dest_Port:
                                 vid_item = Vids.VIDITEM_60_DVVAL_DestPort;
                                 break;
+
                             case SECSConst.VID_Eqp_Name:
                                 vid_item = Vids.VIDITEM_61_ECV_EqpName;
                                 break;
+
                             case SECSConst.VID_Priority:
                                 vid_item = Vids.VIDITEM_62_DVVAL_Priority;
                                 break;
+
                             case SECSConst.VID_Replace:
                                 vid_item = Vids.VIDITEM_63_DVVAL_ErrorId;
                                 break;
+
                             case SECSConst.VID_Result_Code:
                                 vid_item = Vids.VIDITEM_64_DVVAL_ResultCode;
                                 break;
+
                             case SECSConst.VID_Source_ID:
                                 vid_item = Vids.VIDITEM_65_DVVAL_SourceID;
                                 break;
+
                             case SECSConst.VID_Handoff_Type:
                                 vid_item = Vids.VIDITEM_66_DVVAL_HandoffType;
                                 break;
+
                             case SECSConst.VID_IDread_Status:
                                 vid_item = Vids.VIDITEM_67_DVVAL_IDreadStatus;
                                 break;
+
                             case SECSConst.VID_Recoery_Option:
                                 vid_item = Vids.VIDITEM_68_DVVAL_RecoeryOption;
                                 break;
+
                             case SECSConst.VID_Crane_ID:
                                 vid_item = Vids.VIDITEM_70_DVVAL_CraneID;
                                 break;
+
                             case SECSConst.VID_Unit_Info:
                                 vid_item = Vids.VIDITEM_72_SV_UnitInfo;
                                 break;
+
                             case SECSConst.VID_SC_State:
                                 vid_item = Vids.VIDITEM_73_DVVAL_SCState;
                                 break;
+
                             case SECSConst.VID_Command_Type:
                                 vid_item = Vids.VIDITEM_80_DVVAL_CommandType;
                                 break;
+
                             case SECSConst.VID_Alarm_ID:
                                 vid_item = Vids.VIDITEM_81_DVVAL_AlarmID;
                                 break;
+
                             case SECSConst.VID_Alarm_Text:
                                 vid_item = Vids.VIDITEM_82_DVVAL_AlarmText;
                                 break;
+
                             case SECSConst.VID_Unit_ID:
                                 vid_item = Vids.VIDITEM_83_DVVAL_UnitID;
                                 break;
+
                             case SECSConst.VID_Spec_Version:
                                 vid_item = Vids.VIDITEM_114_DVVAL_SpecVersion;
                                 break;
+
                             case SECSConst.VID_Port_ID:
                                 vid_item = Vids.VIDITEM_115_DVVAL_PortID;
                                 break;
+
                             case SECSConst.VID_Port_Type:
                                 vid_item = Vids.VIDITEM_116_DVVAL_PortType;
                                 break;
+
                             case SECSConst.VID_Zone_Data:
                                 vid_item = Vids.VIDITEM_172_SV_ZoneData;
                                 break;
+
                             case SECSConst.VID_BOX_ID:
                                 vid_item = Vids.VIDITEM_179_DVVAL_BOXID;
                                 break;
+
                             case SECSConst.VID_Carrier_Zone_Name:
                                 vid_item = Vids.VIDITEM_370_DVVAL_CarrierZoneName;
                                 break;
+
                             case SECSConst.VID_Transfer_Info:
                                 vid_item = Vids.VIDITEM_720_SV_TransferInfo;
                                 break;
+
                             case SECSConst.VID_Request_Count:
                                 vid_item = Vids.VIDITEM_890_DVVAL_RequestCount;
                                 break;
+
                             case SECSConst.VID_Crane_Current_Position:
                                 vid_item = Vids.VIDITEM_891_DVVAL_CraneCurrentPosition;
                                 break;
+
                             case SECSConst.VID_Crane_Total_Distance:
                                 vid_item = Vids.VIDITEM_892_DVVAL_CraneTotalDistance;
                                 break;
+
                             case SECSConst.VID_Monitored_CraneInfo:
                                 vid_item = Vids.VIDITEM_893_SV_MonitoredCraneInfo;
                                 break;
+
                             default:
                                 break;
                         }
@@ -4223,6 +4309,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 return null;
             }
         }
+
         private AMCSREPORTQUEUE BuildMCSReport(S6F11 sxfy, string cmd_id, string vh_id, string port_id)
         {
             byte[] byteArray = SCUtility.ToByteArray(sxfy);
@@ -4240,6 +4327,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             };
             return queue;
         }
+
         protected override Boolean isSend(SXFY sxfy)
         {
             Boolean result = false;
@@ -4274,6 +4362,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
             return result;
         }
+
         public override bool S6F11SendMessage(AMCSREPORTQUEUE queue)
         {
             try
@@ -4292,7 +4381,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
                 SCUtility.RecodeReportInfo(queue.VEHICLE_ID, queue.MCS_CMD_ID, s6f11, s6f11.CEID);
                 SCUtility.secsActionRecordMsg(scApp, false, s6f11);
+
                 #region LogSave
+
                 log = "";
                 //string[] dataVal;
                 foreach (var v in s6f11.INFO.ITEM[0].VIDITEM)
@@ -4307,7 +4398,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     }
                 }
                 TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "OHB >> MCS|S6F11 CEID:" + s6f11.CEID + "  " + log);
-                #endregion
+
+                #endregion LogSave
 
                 TrxSECS.ReturnCode rtnCode = ISECSControl.sendRecv<S6F12>(bcfApp, s6f11, out s6f12,
                     out abortSecs, out rtnMsg, null);
@@ -4343,10 +4435,12 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
         }
 
+        #endregion S6F11 Report
+
         #endregion Send
-        #endregion
 
         #region VID Info
+
         private VIDCollection AVIDINFO2VIDCollection(AVIDINFO vid_info)
         {
             if (vid_info == null)
@@ -4358,7 +4452,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             var line = scApp.getEQObjCacheManager().getLine();
             VIDCollection vid_collection = new VIDCollection();
             vid_collection.VH_ID = vid_info.EQ_ID;
-
 
             AVEHICLE vh = scApp.VehicleBLL.getVehicleByID(vid_info.EQ_ID);
             //VID_01_AlarmID
@@ -4486,10 +4579,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             ////VIDITEM_262_DVVAL_VehicleNextPosition
             //vid_collection.VIDITEM_262_DVVAL_VehicleNextPosition.VEHICLE_NEXT_POSITION = "";//todo 要確認要填入的資料
 
-
-
             return vid_collection;
         }
+
         #endregion VID Info
 
         protected override void S2F37ReceiveEnableDisableEventReport(object sender, SECSEventArgs e)
@@ -4657,14 +4749,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
         }
 
-
-
         //public override bool S6F11SendCarrierInstalled(string vhID, string carrierID, string transferPort, List<AMCSREPORTQUEUE> reportQueues = null)
         //{
-
         //    try
         //    {
-
         //        VIDCollection Vids = new VIDCollection();
         //        Vids.VIDITEM_61_ECV_EqpName.EQPT_NAME = line.LINE_ID;
 
@@ -4692,6 +4780,5 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         //    }
         //    return true;
         //}
-
     }
 }

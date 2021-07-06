@@ -7,6 +7,7 @@ using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.BLL;
 using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.Data.Enum;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 using com.mirle.ibg3k0.sc.Service;
@@ -407,6 +408,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         private void Port_onCIM_ON(object sender, ValueChangedEventArgs e)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -438,6 +440,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         private void Port_onPreLoadOK(object sender, ValueChangedEventArgs e)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -467,6 +470,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         private void Port_onOutOfService(object sender, ValueChangedEventArgs e)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -600,10 +604,13 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     case BCFAppConstants.RUN_LEVEL.ZERO:
                         initialValueRead();
                         break;
+
                     case BCFAppConstants.RUN_LEVEL.ONE:
                         break;
+
                     case BCFAppConstants.RUN_LEVEL.TWO:
                         break;
+
                     case BCFAppConstants.RUN_LEVEL.NINE:
 
                         break;
@@ -739,6 +746,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             //not implement
         }
+
         public virtual void Port_onModeChangable(object sender, ValueChangedEventArgs args)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -787,7 +795,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         );
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -799,6 +806,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         public virtual void Port_onWaitIn(object sender, ValueChangedEventArgs args)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -847,7 +855,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         );
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -859,6 +866,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         public virtual void Port_onWaitOut(object sender, ValueChangedEventArgs args)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -889,11 +897,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
                 if (function.PortWaitOut)
                 {
-
                 }
                 else
                 {
-                    //if (scApp.TransferService.isUnitType(function.EQ_ID, Service.UnitType.AGV))
+                    //if (scApp.TransferService.isUnitType(function.EQ_ID, UnitType.AGV))
                     //{
                     //    CassetteData datainfo = new CassetteData();
                     //    datainfo.CSTID = function.CassetteID.Trim();        //填CSTID
@@ -913,6 +920,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         public virtual void Port_onDirectionStatusChangeToInput(object sender, ValueChangedEventArgs args)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -945,7 +953,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         scApp.TransferService.DeleteOHCVPortCst(function.EQ_ID, log);
                     }
 
-                    if (scApp.TransferService.isUnitType(function.EQ_ID, Service.UnitType.AGV))
+                    if (scApp.TransferService.isUnitType(function.EQ_ID, UnitType.AGV))
                     {
                         scApp.TransferService.PLC_AGV_Station(function, log);
                     }
@@ -993,7 +1001,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         scApp.TransferService.DeleteOHCVPortCst(function.EQ_ID, log);
                     }
 
-                    if (scApp.TransferService.isUnitType(function.EQ_ID, Service.UnitType.AGV))
+                    if (scApp.TransferService.isUnitType(function.EQ_ID, UnitType.AGV))
                     {
                         scApp.TransferService.PLC_AGV_Station(function, log);
                     }
@@ -1011,7 +1019,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
         public PortPLCInfo GetPortValue()
         {
-
             PortPLCInfo portData = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
             portData.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
             return portData;
@@ -1041,7 +1048,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 {
                     //get box ID here
                     //box ID is stored in function.BoxID
-                    if (scApp.TransferService.isUnitType(function.EQ_ID, Service.UnitType.AGV))
+                    if (scApp.TransferService.isUnitType(function.EQ_ID, UnitType.AGV))
                     {
                         scApp.TransferService.TransferServiceLogger.Info
                         (
@@ -1090,7 +1097,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
                 if (function.CstRemoveCheck)
                 {
-                    if (scApp.TransferService.isUnitType(function.EQ_ID, Service.UnitType.AGV))
+                    if (scApp.TransferService.isUnitType(function.EQ_ID, UnitType.AGV))
                     {
                         CassetteData datainfo = new CassetteData();
                         datainfo.CSTID = function.CassetteID.Trim();        //填CSTID
@@ -1147,7 +1154,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         #region LoadPosition
+
         private void Port_onLoadPosition(object sender, ValueChangedEventArgs e)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -1176,7 +1185,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     return;
                 }
 
-                if (function.OpAutoMode && function.IsInputMode && scApp.TransferService.isUnitType(port.PORT_ID, Service.UnitType.AGV))
+                if (function.OpAutoMode && function.IsInputMode && scApp.TransferService.isUnitType(port.PORT_ID, UnitType.AGV))
                 {
                     if (function.LoadPosition1)
                     {
@@ -1220,6 +1229,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         private void Port_onLoadPosition2(object sender, ValueChangedEventArgs e)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -1274,6 +1284,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         private void Port_onLoadPosition3(object sender, ValueChangedEventArgs e)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -1328,6 +1339,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         private void Port_onLoadPosition4(object sender, ValueChangedEventArgs e)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -1382,6 +1394,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         private void Port_onLoadPosition5(object sender, ValueChangedEventArgs e)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -1444,6 +1457,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         private void Port_onLoadPosition6(object sender, ValueChangedEventArgs e)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -1497,7 +1511,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
-        const int PRE_STAGE_WATING_TIME_MS = 3000;
+
+        private const int PRE_STAGE_WATING_TIME_MS = 3000;
+
         private void Port_onLoadPosition7(object sender, ValueChangedEventArgs e)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -1559,12 +1575,12 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
-        #endregion
 
+        #endregion LoadPosition
 
+        private const int OHCV_ALARM_CODE_BCR_READ_FAIL_OVER_TIMES_ON_CV5 = 1570;
+        private const int OHCV_ALARM_CODE_BCR_READ_FAIL_OVER_TIMES_ON_CV1 = 370;
 
-        const int OHCV_ALARM_CODE_BCR_READ_FAIL_OVER_TIMES_ON_CV5 = 1570;
-        const int OHCV_ALARM_CODE_BCR_READ_FAIL_OVER_TIMES_ON_CV1 = 370;
         public void Port_ErrorCodeChange(object sender, ValueChangedEventArgs e)
         {
             var function = scApp.getFunBaseObj<PortPLCInfo>(port.PORT_ID) as PortPLCInfo;
@@ -1595,7 +1611,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCInfo>(function);
             }
         }
+
         #region OHB >> PLC
+
         public void Port_WriteBoxCstID(CassetteData cassetteData)
         {
             var function = scApp.getFunBaseObj<PortPLCControl_CSTID_BOXID>(port.PORT_ID) as PortPLCControl_CSTID_BOXID;
@@ -1634,6 +1652,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCControl_CSTID_BOXID>(function);
             }
         }
+
         public void Port_ChangeToInput(bool isInput)
         {
             //var function = scApp.getFunBaseObj<PortPLCControl>(port.PORT_ID) as PortPLCControl;
@@ -1689,6 +1708,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCControl_PortInOutModeChange>(function);
             }
         }
+
         public void Port_ChangeToOutputTEST(bool isOutput)  //PLC單點控制，參考
         {
             try
@@ -1696,7 +1716,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 ValueWrite out_mode = bcfApp.getWriteValueEvent(port.EqptObjectCate, port.PORT_ID, "CHANGE_TO_OUTPUT_MODE");
                 out_mode.setWriteValue(isOutput ? "1" : "0");
                 ISMControl.writeDeviceBlock(bcfApp, out_mode);
-
             }
             catch (Exception ex)
             {
@@ -1731,7 +1750,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCControl_VehicleCommanding1>(function);
             }
         }
+
         #region AGV 專有
+
         public void Port_ToggleBoxCover(bool open)
         {
             var function = scApp.getFunBaseObj<PortPLCControl_AGV_OpenBOX>(port.PORT_ID) as PortPLCControl_AGV_OpenBOX;
@@ -1757,6 +1778,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCControl_AGV_OpenBOX>(function);
             }
         }
+
         public void Port_BCR_Read(bool read)
         {
             var function = scApp.getFunBaseObj<PortPLCControl_AGV_BCR_Read>(port.PORT_ID) as PortPLCControl_AGV_BCR_Read;
@@ -1783,6 +1805,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCControl_AGV_BCR_Read>(function);
             }
         }
+
         public void Port_BCR_Enable(bool enable)
         {
             var function = scApp.getFunBaseObj<PortPLCControl_AGV_BCR_Enable>(port.PORT_ID) as PortPLCControl_AGV_BCR_Enable;
@@ -1809,6 +1832,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCControl_AGV_BCR_Enable>(function);
             }
         }
+
         public void Port_ChangeToAGVMode()
         {
             var function = scApp.getFunBaseObj<PortPLCControl_AGV_AGVmode>(port.PORT_ID) as PortPLCControl_AGV_AGVmode;
@@ -1835,6 +1859,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCControl_AGV_AGVmode>(function);
             }
         }
+
         public void Port_ChangeToMGVMode()
         {
             var function = scApp.getFunBaseObj<PortPLCControl_AGV_AGVmode>(port.PORT_ID) as PortPLCControl_AGV_AGVmode;
@@ -1861,7 +1886,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCControl_AGV_AGVmode>(function);
             }
         }
-        #endregion
+
+        #endregion AGV 專有
 
         public void Port_RUN()
         {
@@ -1890,6 +1916,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCControl_PortRunStop>(function);
             }
         }
+
         public void Port_STOP()
         {
             var function = scApp.getFunBaseObj<PortPLCControl_PortRunStop>(port.PORT_ID) as PortPLCControl_PortRunStop;
@@ -1917,6 +1944,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 scApp.putFunBaseObj<PortPLCControl_PortRunStop>(function);
             }
         }
+
         public void Port_PortAlarrmReset(bool reset)
         {
             var function = scApp.getFunBaseObj<PortPLCControl_AlarmReset>(port.PORT_ID) as PortPLCControl_AlarmReset;
@@ -2143,8 +2171,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             throw new NotImplementedException();
         }
-        #endregion
 
-
+        #endregion OHB >> PLC
     }
 }

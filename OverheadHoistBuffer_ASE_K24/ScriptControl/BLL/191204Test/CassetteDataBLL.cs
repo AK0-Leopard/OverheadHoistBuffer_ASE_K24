@@ -11,6 +11,7 @@ using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Service;
 using com.mirle.ibg3k0.sc.BLL.Interface;
+using com.mirle.ibg3k0.sc.Data.Enum;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
@@ -68,7 +69,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     + "OHB >> DB|卡匣新增成功：" + scApp.TransferService.GetCstLog(datainfo)
                 );
 
-                if (scApp.TransferService.isUnitType(datainfo.Carrier_LOC, Service.UnitType.AGV))
+                if (scApp.TransferService.isUnitType(datainfo.Carrier_LOC, UnitType.AGV))
                 {
                     scApp.TransferService.Redis_AddCstBox(datainfo);
                 }
@@ -181,12 +182,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                     CassetteData cstData = cassettedataDao.LoadCassetteDataByBoxID(con, boxid);
                     string time = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
 
-                    if (scApp.TransferService.isUnitType(cstData.Carrier_LOC, Service.UnitType.SHELF))
+                    if (scApp.TransferService.isUnitType(cstData.Carrier_LOC, UnitType.SHELF))
                     {
                         scApp.ShelfDefBLL.updateStatus(cstData.Carrier_LOC, ShelfDef.E_ShelfState.EmptyShelf);
                     }
 
-                    if (scApp.TransferService.isUnitType(loc, Service.UnitType.SHELF))
+                    if (scApp.TransferService.isUnitType(loc, UnitType.SHELF))
                     {
                         scApp.ShelfDefBLL.updateStatus(loc, ShelfDef.E_ShelfState.Stored);
                         cstData.StoreDT = time;
@@ -799,12 +800,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             datainfo.TrnDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
             datainfo.Stage = 1;
 
-
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
             {
                 cassettedataDao.insertCassetteData(con, datainfo);
             }
         }
     }
-
 }

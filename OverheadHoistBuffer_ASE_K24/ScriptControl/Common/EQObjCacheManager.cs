@@ -25,10 +25,10 @@ using NLog;
 using com.mirle.ibg3k0.sc.ConfigHandler;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
+using com.mirle.ibg3k0.sc.Data.Enum;
 
 namespace com.mirle.ibg3k0.sc.Common
 {
-
     /// <summary>
     /// Class EQObjCacheManager.
     /// </summary>
@@ -51,6 +51,7 @@ namespace com.mirle.ibg3k0.sc.Common
             new VEHICLEMAP(){  ID ="OHx13",REAL_ID="M113"},
             new VEHICLEMAP(){  ID ="OHx14",REAL_ID="M114"},
         };
+
         private List<MTSSetting> MTSSettings = new List<MTSSetting>()
         {
             new MTSSetting(){ID = "MTS",MTSSegment="013", MTSAddress ="20292", SystemInAddress ="20199" },
@@ -66,10 +67,12 @@ namespace com.mirle.ibg3k0.sc.Common
         /// The instance
         /// </summary>
         private static EQObjCacheManager instance = null;
+
         /// <summary>
         /// The _lock
         /// </summary>
         private static Object _lock = new Object();
+
         /// <summary>
         /// The sc application
         /// </summary>
@@ -80,66 +83,83 @@ namespace com.mirle.ibg3k0.sc.Common
         /// The line
         /// </summary>
         private ALINE line = null;
+
         /// <summary>
         /// The _lock line
         /// </summary>
         private Object _lockLine = new Object();
+
         /// <summary>
         /// The zone list
         /// </summary>
         private List<AZONE> zoneList = new List<AZONE>();
+
         /// <summary>
         /// The _lock zone dic
         /// </summary>
         private Dictionary<string, Object> _lockZoneDic = new Dictionary<string, object>();
+
         /// <summary>
         /// The node list
         /// </summary>
         private List<ANODE> nodeList = new List<ANODE>();
+
         /// <summary>
         /// The _lock node dic
         /// </summary>
         private Dictionary<string, Object> _lockNodeDic = new Dictionary<string, object>();
+
         /// <summary>
         /// The eqpt list
         /// </summary>
         private List<AEQPT> eqptList = new List<AEQPT>();
+
         private List<AVEHICLE> vhList = new List<AVEHICLE>();
+
         /// <summary>
         /// The _lock eqpt dic
         /// </summary>
         private Dictionary<string, Object> _lockEqptDic = new Dictionary<string, object>();
+
         private Dictionary<string, Object> _lockVhDic = new Dictionary<string, object>();
+
         /// <summary>
         /// The unit list
         /// </summary>
         private List<AUNIT> unitList = new List<AUNIT>();
+
         /// <summary>
         /// The _lock unit dic
         /// </summary>
         private Dictionary<string, Object> _lockUnitDic = new Dictionary<string, object>();
+
         /// <summary>
         /// The port list
         /// </summary>
         private List<APORT> portList = new List<APORT>();
+
         private Dictionary<string, Object> _lockPorStationtDic = new Dictionary<string, object>();
         private List<APORTSTATION> portStationList = new List<APORTSTATION>();
         private Dictionary<string, Object> _lockPortDefDic = new Dictionary<string, object>();
         private List<PortDef> portDefList = new List<PortDef>();
         private Dictionary<string, Object> _lockShelfDefDic = new Dictionary<string, object>();
         private List<ShelfDef> shelfDefList = new List<ShelfDef>();
+
         /// <summary>
         /// The _lock port dic
         /// </summary>
         private Dictionary<string, Object> _lockPortDic = new Dictionary<string, object>();
+
         /// <summary>
         /// The buff list
         /// </summary>
         private List<ABUFFER> buffList = new List<ABUFFER>();
+
         /// <summary>
         /// The _lock buff dic
         /// </summary>
         private Dictionary<string, Object> _lockBuffDic = new Dictionary<string, object>();
+
         /// <summary>
         /// The eqpt CSS
         /// </summary>
@@ -151,6 +171,7 @@ namespace com.mirle.ibg3k0.sc.Common
         /// The flow relation dic
         /// </summary>
         private Dictionary<string, FlowRelation> flowRelationDic = new Dictionary<string, FlowRelation>();
+
         /// <summary>
         /// The node flow relative CSS
         /// </summary>
@@ -160,6 +181,7 @@ namespace com.mirle.ibg3k0.sc.Common
         /// The common information
         /// </summary>
         private CommonInfo commonInfo = new CommonInfo();                   //A0.08
+
         /// <summary>
         /// Gets the common information.
         /// </summary>
@@ -170,6 +192,7 @@ namespace com.mirle.ibg3k0.sc.Common
         /// Prevents a default instance of the <see cref="EQObjCacheManager"/> class from being created.
         /// </summary>
         private EQObjCacheManager() { }
+
         /// <summary>
         /// Gets the instance.
         /// </summary>
@@ -230,7 +253,6 @@ namespace com.mirle.ibg3k0.sc.Common
             //registerAlarmHandler();
             //registerLotHandler();
 
-
             List<APSetting> lstAPSetting = scApp.LineBLL.loadAPSettiong();
             commonInfo.dicCommunactionInfo = new Dictionary<string, CommuncationInfo>();
             foreach (APSetting ap in lstAPSetting)
@@ -247,7 +269,6 @@ namespace com.mirle.ibg3k0.sc.Common
 
             //List<APORTSTATION> PORTSTATIONs = scApp.MapBLL.loadAllPort();
             //portStationList = PORTSTATIONs;
-
         }
 
         /// <summary>
@@ -617,7 +638,6 @@ namespace com.mirle.ibg3k0.sc.Common
                 TrnDT = "1",
                 HandoffDirection = null,
                 ADR_ID = portStationConfig.Address_ID
-
             };
         }
 
@@ -658,33 +678,42 @@ namespace com.mirle.ibg3k0.sc.Common
                 ADR_ID = portStationConfig.Address_ID,
                 ZoneName = zoneName,
                 PRIORITY = 0
-
             };
         }
+
         private string getPortDefUnitType(SCAppConstants.EqptType eqptType)
         {
             switch (eqptType)
             {
                 case SCAppConstants.EqptType.OHCV:
-                    return Service.UnitType.OHCV.ToString();
+                    return UnitType.OHCV.ToString();
+
                 case SCAppConstants.EqptType.AGV:
-                    return Service.UnitType.AGV.ToString();
+                    return UnitType.AGV.ToString();
+
                 case SCAppConstants.EqptType.NTB:
-                    return Service.UnitType.NTB.ToString();
+                    return UnitType.NTB.ToString();
+
                 case SCAppConstants.EqptType.Buffer:
-                    return Service.UnitType.SHELF.ToString();
+                    return UnitType.SHELF.ToString();
+
                 case SCAppConstants.EqptType.Stock:
-                    return Service.UnitType.STK.ToString();
+                    return UnitType.STK.ToString();
+
                 case SCAppConstants.EqptType.CRANE:
-                    return Service.UnitType.CRANE.ToString();
+                    return UnitType.CRANE.ToString();
+
                 case SCAppConstants.EqptType.AGVZONE:
-                    return Service.UnitType.AGVZONE.ToString();
+                    return UnitType.AGVZONE.ToString();
+
                 case SCAppConstants.EqptType.LINE:
-                    return Service.UnitType.LINE.ToString();
+                    return UnitType.LINE.ToString();
+
                 case SCAppConstants.EqptType.Equipment:
-                    return Service.UnitType.EQ.ToString();
+                    return UnitType.EQ.ToString();
+
                 default:
-                    return Service.UnitType.EQ.ToString();
+                    return UnitType.EQ.ToString();
             }
         }
 
@@ -698,12 +727,14 @@ namespace com.mirle.ibg3k0.sc.Common
             }
             return real_id;
         }
+
         private MTSSetting getMTSSetting(string mtsID)
         {
             var setting = MTSSettings.Where(id => id.ID.Trim() == mtsID.Trim()).SingleOrDefault();
 
             return setting;
         }
+
         private string getOHCVLocation(string ohcvID)
         {
             var setting = scApp.EqptLocationInfoDao.getEqptLocationInfo(scApp, ohcvID);
@@ -1037,12 +1068,12 @@ namespace com.mirle.ibg3k0.sc.Common
                 _lockVhDic.Add(vh.VEHICLE_ID, new Object());
             }
 
-
             foreach (AUNIT unit in unitList)
             {
                 _lockUnitDic.Add(unit.UNIT_ID, new Object());
             }
         }
+
         //private void registerLotHandler()
         //{
         //    foreach (AZONE zone in zoneList)
@@ -1061,9 +1092,6 @@ namespace com.mirle.ibg3k0.sc.Common
         {
             // not implement yet
         }
-
-
-
 
         /// <summary>
         /// 取得此Node(Upstream)可以流向的Downstream List
@@ -1116,6 +1144,7 @@ namespace com.mirle.ibg3k0.sc.Common
         }
 
         #region 取得各種EQ Object的方法
+
         //
         /// <summary>
         /// Gets the line.
@@ -1165,8 +1194,6 @@ namespace com.mirle.ibg3k0.sc.Common
             return nodeList.Where(n => n.NODE_ID.Trim() == node_id.Trim()).FirstOrDefault();
         }
 
-
-
         /// <summary>
         /// Gets the parent node by eqptid.
         /// </summary>
@@ -1200,6 +1227,7 @@ namespace com.mirle.ibg3k0.sc.Common
             }
             return eqpt;
         }
+
         public AVEHICLE getVehicletByVHID(string vh_id)
         {
             AVEHICLE vh = null;
@@ -1238,6 +1266,7 @@ namespace com.mirle.ibg3k0.sc.Common
         {
             return eqptList;
         }
+
         public List<AVEHICLE> getAllVehicle()
         {
             return vhList.OrderBy(data => data.VEHICLE_ID).ToList();
@@ -1289,6 +1318,7 @@ namespace com.mirle.ibg3k0.sc.Common
         {
             return portList.ToList();
         }
+
         public List<APORTSTATION> getALLPortStation()
         {
             return portStationList;
@@ -1355,6 +1385,7 @@ namespace com.mirle.ibg3k0.sc.Common
         {
             return portList.Where(p => p.PORT_ID.Trim() == port_id.Trim()).SingleOrDefault();
         }
+
         public APORTSTATION getPortStationByPortID(string port_id)
         {
             return portStationList.Where(p => p.PORT_ID.Trim() == port_id.Trim()).SingleOrDefault();
@@ -1374,19 +1405,21 @@ namespace com.mirle.ibg3k0.sc.Common
         {
             return portStationList.Where(p => p.PORT_ID.Trim() == port_id.Trim()).SingleOrDefault();
         }
+
         public PortDef getPortDef(string port_id)
         {
             return portDefList.Where(p => SCUtility.isMatche(p.PLCPortID, port_id)).SingleOrDefault();
         }
+
         public ShelfDef getShelfDef(string shelfID)
         {
             return shelfDefList.Where(p => SCUtility.isMatche(p.ShelfID, shelfID)).SingleOrDefault();
         }
+
         public APORTSTATION getPortStationByAdrID(string adrID)
         {
             return portStationList.Where(p => p.ADR_ID.Trim() == adrID.Trim()).SingleOrDefault();
         }
-
 
         /// <summary>
         /// Gets the buff by buff identifier.
@@ -1457,9 +1490,8 @@ namespace com.mirle.ibg3k0.sc.Common
             AZONE zone = getZoneByZoneID(node.ZONE_ID);
             return zone;
         }
-        #endregion
 
-
+        #endregion 取得各種EQ Object的方法
 
         /// <summary>
         /// Sets the value to propety.
@@ -1495,7 +1527,6 @@ namespace com.mirle.ibg3k0.sc.Common
                 setValueToPropety<ALINE>(ref source_line, ref line);
             }
         }
-
 
         /// <summary>
         /// Puts the specified source_zone.
@@ -1583,6 +1614,7 @@ namespace com.mirle.ibg3k0.sc.Common
             }
             //}
         }
+
         public void update(AVEHICLE vh_bo)
         {
             if (vh_bo == null) { return; }
@@ -1635,6 +1667,7 @@ namespace com.mirle.ibg3k0.sc.Common
             //}
             //}
         }
+
         /// <summary>
         /// Puts the specified source_unit.
         /// </summary>
@@ -1689,6 +1722,7 @@ namespace com.mirle.ibg3k0.sc.Common
                 setValueToPropety<ABUFFER>(ref source_buff, ref buff);
             }
         }
+
         public void put(APORTSTATION portStation)
         {
             if (portStation == null) { return; }
@@ -1699,6 +1733,7 @@ namespace com.mirle.ibg3k0.sc.Common
                 setValueToPropety<APORTSTATION>(ref portStation, ref port_station);
             }
         }
+
         public void put(PortDef portDef)
         {
             if (portDef == null) { return; }
@@ -1709,6 +1744,7 @@ namespace com.mirle.ibg3k0.sc.Common
                 setValueToPropety<PortDef>(ref portDef, ref port_def);
             }
         }
+
         public void put(ShelfDef sheltDef)
         {
             if (sheltDef == null) { return; }
@@ -1720,7 +1756,7 @@ namespace com.mirle.ibg3k0.sc.Common
             }
         }
 
-        #endregion
+        #endregion 將最新物件資料，放置入Cache的方法
 
         /// <summary>
         /// Removes the line.
@@ -1731,13 +1767,14 @@ namespace com.mirle.ibg3k0.sc.Common
         }
 
         #region 從DB取得最新EQ Object，並更新Cache
+
         /// <summary>
         /// Refreshes the line.
         /// </summary>
         public void refreshLine()
         {
             ALINE tmpLine = scApp.LineBLL.getLineByIDAndDeleteOtherLine(line.LINE_ID);
-            //if (tmpLine == null) 
+            //if (tmpLine == null)
             //{
             //    removeLine();
             //    tmpLine = scApp.LineBLL.getFirstLine();
@@ -1839,7 +1876,9 @@ namespace com.mirle.ibg3k0.sc.Common
                 refreshBuffer(buff.BUFF_ID);
             }
         }
-        #endregion
+
+        #endregion 從DB取得最新EQ Object，並更新Cache
+
         /// <summary>
         /// A0.07
         /// 重新載入Alarm Desc File
@@ -1851,10 +1890,5 @@ namespace com.mirle.ibg3k0.sc.Common
                 //eqpt.reloadAlarmDesc();
             }
         }
-
-
-
-
-
     }
 }
