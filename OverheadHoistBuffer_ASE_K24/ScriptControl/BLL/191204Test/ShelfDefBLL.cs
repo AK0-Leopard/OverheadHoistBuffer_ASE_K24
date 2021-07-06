@@ -48,7 +48,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             return is_success;
         }
 
-
         public ShelfDef GetShelfDataByID(string shelfid)
         {
             try
@@ -363,8 +362,16 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
     }
 
-    public partial class ShelfDefBLL: IManualPortShelfDefBLL
+    public partial class ShelfDefBLL : IManualPortShelfDefBLL
     {
+        public void SetEmpty(string shelfId)
+        {
+            throw new NotImplementedException();
+        }
 
+        public void SetStored(string shelfId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

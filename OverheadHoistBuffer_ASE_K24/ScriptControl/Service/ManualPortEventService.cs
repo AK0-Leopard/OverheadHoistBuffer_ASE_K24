@@ -1,4 +1,6 @@
-﻿using com.mirle.ibg3k0.sc.BLL.Interface;
+﻿using com.mirle.ibg3k0.sc.BLL._191204Test.Extensions;
+using com.mirle.ibg3k0.sc.BLL.Interface;
+using com.mirle.ibg3k0.sc.Data.Enum;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events;
@@ -125,7 +127,8 @@ namespace com.mirle.ibg3k0.sc.Service
             if (cassetteDataBLL.GetCarrierByPortName(portName, stage: 1, out var cassetteData) == false)
                 WriteEventLog($"{logTitle} The port direction is InMode. Cannot find carrier data at this port.");
 
-            //儲位到 port 的話 stage 1 ON 時通常已經有帳了嗎?  或是 需要將帳從車上移到 Port 上
+            if (cassetteData == null)
+                return;
 
             if (reportBll.ReportCarrierWaitOut(cassetteData))
                 WriteEventLog($"{logTitle} Report MCS carrier wait out success.");
@@ -186,9 +189,10 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (portDefBLL.GetPortDef(duplicateCarrierData.Carrier_LOC, out var duplicateLocation))
             {
-                WaitInDuplicateAtShelfProcess(logTitle, portName, info, duplicateCarrierData);
-
-                WaitInDuplicateAtPortProcess(logTitle, portName, info, duplicateCarrierData, duplicateLocation);
+                if (duplicateLocation.ToUnitType().IsShlef())
+                    WaitInDuplicateAtShelfProcess(logTitle, portName, info, duplicateCarrierData);
+                else
+                    WaitInDuplicateAtPortProcess(logTitle, portName, info, duplicateCarrierData, duplicateLocation);
             }
             else
             {
@@ -205,19 +209,84 @@ namespace com.mirle.ibg3k0.sc.Service
             return id;
         }
 
-        private void WaitInDuplicateAtShelfProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierId)
+        private void WaitInDuplicateAtShelfProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData)
         {
-            WriteEventLog($"{logTitle} Duplicate at shelf ({duplicateCarrierId.Carrier_LOC}).");
+            WriteEventLog($"{logTitle} Duplicate at shelf ({duplicateCarrierData.Carrier_LOC}).");
+
+            CheckDuplicateCarrier(logTitle, duplicateCarrierData, out var needRemoveDuplicateShelf, out var unknownId);
+
+            if (needRemoveDuplicateShelf)
+            {
+                cassetteDataBLL.Install(portName, info.CarrierIdOfStage1);
+                WriteEventLog($"{logTitle} Install cassette data [{info.CarrierIdOfStage1}] at this port.");
+            }
+            else
+            {
+                cassetteDataBLL.Install(portName, unknownId);
+                WriteEventLog($"{logTitle} Install cassette data [{unknownId}] at this port.");
+            }
+
+            cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
+
+            ReportIDRead(logTitle, cassetteData, isDuplicate: true);
+
+            if (needRemoveDuplicateShelf)
+                ReportForcedCarrierRemove(logTitle, duplicateCarrierData);
+
+            ReportWaitIn(logTitle, cassetteData);
         }
 
-        private void WaitInDuplicateAtPortProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierId, PortDef duplicatePort)
+        private void CheckDuplicateCarrier(string logTitle, CassetteData duplicateCarrierData, out bool needRemoveDuplicateShelf, out string unknownId)
+        {
+            needRemoveDuplicateShelf = true;
+
+            unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
+            var duplicateCarrierhasNoCommand = commandBLL.GetCommandByBoxId(duplicateCarrierData.BOXID, out var command) == false;
+            if (duplicateCarrierhasNoCommand)
+            {
+                ChageDuplicateLocationCarrierIdToUnknownId(logTitle, duplicateCarrierData, unknownId);
+                return;
+            }
+
+            WriteEventLog($"{logTitle} Duplicate carrier has command [{command.CMD_ID}] now.");
+
+            if (command.TRANSFERSTATE == E_TRAN_STATUS.Queue)
+            {
+                WriteEventLog($"{logTitle} Command state is queue.");
+
+                commandBLL.Delete(duplicateCarrierData.BOXID);
+                WriteEventLog($"{logTitle} Delete Command.");
+
+                ChageDuplicateLocationCarrierIdToUnknownId(logTitle, duplicateCarrierData, unknownId);
+
+                return;
+            }
+
+            needRemoveDuplicateShelf = false;
+
+            WriteEventLog($"{logTitle} Command state is not queue.  Install UnknownID[{unknownId}] on this wait in port.");
+        }
+
+        private void ChageDuplicateLocationCarrierIdToUnknownId(string logTitle, CassetteData duplicateCarrierData, string unknownId)
+        {
+            cassetteDataBLL.Delete(duplicateCarrierData.BOXID);
+            WriteEventLog($"{logTitle} Delete duplicate carrier.");
+
+            shelfDefBLL.SetStored(duplicateCarrierData.Carrier_LOC);
+            WriteEventLog($"{logTitle} Set shelf stage of duplicate shelf[{duplicateCarrierData.Carrier_LOC}] to stored.");
+
+            cassetteDataBLL.Install(duplicateCarrierData.Carrier_LOC, unknownId);
+            WriteEventLog($"{logTitle} Install UnknownID[{unknownId}] on shelf[{duplicateCarrierData.Carrier_LOC}].");
+        }
+
+        private void WaitInDuplicateAtPortProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData, PortDef duplicatePort)
         {
             WriteEventLog($"{logTitle} Duplicate at Port ({duplicatePort.PLCPortID}).");
         }
 
-        private void WaitInDuplicateAtOhtProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierId)
+        private void WaitInDuplicateAtOhtProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData)
         {
-            WriteEventLog($"{logTitle} Duplicate at OHT ({duplicateCarrierId.Carrier_LOC}).");
+            WriteEventLog($"{logTitle} Duplicate at OHT ({duplicateCarrierData.Carrier_LOC}).");
         }
 
         private void WaitInNormalProcess(string logTitle, string portName, ManualPortPLCInfo info)
@@ -229,7 +298,7 @@ namespace com.mirle.ibg3k0.sc.Service
             cassetteDataBLL.Install(portName, info.CarrierIdOfStage1);
             WriteEventLog($"{logTitle} Install cassette data at this port.");
 
-            cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
+            cassetteDataBLL.GetCarrierByPortName(portName, stage: 1, out var cassetteData);
 
             ReportIDRead(logTitle, cassetteData, isDuplicate: false);
             ReportWaitIn(logTitle, cassetteData);
@@ -272,17 +341,17 @@ namespace com.mirle.ibg3k0.sc.Service
         private void ReportForcedCarrierRemove(string logTitle, CassetteData cassetteData)
         {
             if (reportBll.ReportForcedRemoveCarrier(cassetteData))
-                WriteEventLog($"{logTitle} Report MCS CarrierRemoveComplete Success.");
+                WriteEventLog($"{logTitle} Report MCS CarrierRemoveComplete Success. CarrierId[{cassetteData.BOXID}]");
             else
-                WriteEventLog($"{logTitle} Report MCS CarrierRemoveComplete Failed.");
+                WriteEventLog($"{logTitle} Report MCS CarrierRemoveComplete Failed.  CarrierId[{cassetteData.BOXID}]");
         }
 
         private void ReportIDRead(string logTitle, CassetteData cassetteData, bool isDuplicate)
         {
             if (reportBll.ReportCarrierIDRead(cassetteData, isDuplicate))
-                WriteEventLog($"{logTitle} Report MCS CarrierIDRead Success. isDuplicate[{isDuplicate}]");
+                WriteEventLog($"{logTitle} Report MCS CarrierIDRead Success. CarrierId[{cassetteData.BOXID}] isDuplicate[{isDuplicate}]");
             else
-                WriteEventLog($"{logTitle} Report MCS CarrierIDRead Failed.  isDuplicate[{isDuplicate}]");
+                WriteEventLog($"{logTitle} Report MCS CarrierIDRead Failed.  CarrierId[{cassetteData.BOXID}] isDuplicate[{isDuplicate}]");
         }
 
         private void ReportWaitIn(string logTitle, CassetteData cassetteData)
