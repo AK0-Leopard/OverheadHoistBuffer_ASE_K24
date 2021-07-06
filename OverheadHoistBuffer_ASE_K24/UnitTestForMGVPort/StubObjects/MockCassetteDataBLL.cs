@@ -2,40 +2,85 @@
 using com.mirle.ibg3k0.sc.BLL.Interface;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTestForMGVPort.StubObjects
 {
     public class MockCassetteDataBLL : IManualPortCassetteDataBLL
     {
-        public string InstalledCarrierId { get; private set; }
-        public string InstalledCarrierLocation { get; private set; }
+        public Dictionary<string, string> _datasByLocation { get; set; }
+
+        public Dictionary<string, string> _datasByCarrierId { get; set; }
+
+        public string CarrierIdByDelete { get; private set; }
+
+        public string CarrierIdByInstall { get; private set; }
+
+        public string CarrierLocationByInstall { get; private set; }
 
         public MockCassetteDataBLL()
         {
+            _datasByLocation = new Dictionary<string, string>();
+            _datasByCarrierId = new Dictionary<string, string>();
         }
 
         public void Delete(string carrierId)
         {
-            throw new NotImplementedException();
+            CarrierIdByDelete = carrierId;
+
+            if (_datasByCarrierId.ContainsKey(carrierId))
+            {
+                _datasByLocation[_datasByCarrierId[carrierId]] = "";
+                _datasByCarrierId.Remove(carrierId);
+            }
         }
 
         public void Install(string carrierLocation, string carrierId)
         {
-            InstalledCarrierLocation = carrierLocation;
-            InstalledCarrierId = carrierId;
+            CarrierIdByInstall = carrierId;
+            CarrierLocationByInstall = carrierLocation;
+
+            if (_datasByLocation.ContainsKey(carrierLocation))
+            {
+                _datasByLocation[carrierLocation] = carrierId;
+                _datasByCarrierId[carrierId] = carrierLocation;
+            }
+            else
+            {
+                _datasByLocation.Add(carrierLocation, carrierId);
+                _datasByCarrierId.Add(carrierId, carrierLocation);
+            }
         }
 
         public bool GetCarrierByBoxId(string carrierId, out CassetteData cassetteData)
         {
-            throw new NotImplementedException();
+            cassetteData = null;
+            if (_datasByCarrierId.ContainsKey(carrierId) == false)
+                return false;
+
+            cassetteData = new CassetteData();
+            cassetteData.BOXID = carrierId;
+            cassetteData.Carrier_LOC = _datasByCarrierId[carrierId];
+            cassetteData.Stage = 1;
+
+            return true;
         }
 
         public bool GetCarrierByPortName(string portName, int stage, out CassetteData cassetteData)
         {
-            throw new NotImplementedException();
+            cassetteData = null;
+
+            if (stage > 1)
+                return false;
+
+            if (_datasByLocation.ContainsKey(portName) == false)
+                return false;
+
+            cassetteData = new CassetteData();
+            cassetteData.BOXID = _datasByLocation[portName];
+            cassetteData.Carrier_LOC = portName;
+            cassetteData.Stage = 1;
+
+            return true;
         }
     }
 }
