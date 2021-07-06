@@ -100,7 +100,6 @@ namespace UnitTestForMGVPort
         public void 無殘帳時轉成InMode___資料庫的PortDef資料表需轉成InMode()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
@@ -117,7 +116,6 @@ namespace UnitTestForMGVPort
         public void 無殘帳時轉成InMode___上報MCS轉成InMode()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
@@ -132,7 +130,6 @@ namespace UnitTestForMGVPort
         public void 有殘帳時轉成InMode__上報MCS轉成InMode()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
@@ -150,7 +147,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
@@ -167,7 +163,6 @@ namespace UnitTestForMGVPort
         public void 有殘帳時轉成InMode__資料庫刪除殘帳()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
@@ -184,7 +179,6 @@ namespace UnitTestForMGVPort
         public void 有殘帳且殘留命令時轉成InMode__資料庫刪除殘帳()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
@@ -202,7 +196,6 @@ namespace UnitTestForMGVPort
         public void 有殘帳且殘留命令時轉成InMode__資料庫刪除殘帳的命令()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortInfo();
@@ -224,7 +217,6 @@ namespace UnitTestForMGVPort
         public void 無殘帳時轉成OutMode___資料庫的PortDef資料表需轉成OutMode()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
@@ -241,7 +233,6 @@ namespace UnitTestForMGVPort
         public void 無殘帳時轉成OutMode__上報MCS轉成OutMode()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
@@ -256,7 +247,6 @@ namespace UnitTestForMGVPort
         public void 有殘帳時轉成OutMode__上報MCS轉成OutMode()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
@@ -274,7 +264,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
@@ -291,7 +280,6 @@ namespace UnitTestForMGVPort
         public void 有殘帳時轉成OutMode__資料庫刪除殘帳()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
@@ -308,7 +296,6 @@ namespace UnitTestForMGVPort
         public void 有殘帳且殘留命令時轉成OutMode__資料庫刪除殘帳()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
@@ -326,7 +313,6 @@ namespace UnitTestForMGVPort
         public void 有殘帳且殘留命令時轉成OutMode__資料庫刪除殘帳的命令()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();

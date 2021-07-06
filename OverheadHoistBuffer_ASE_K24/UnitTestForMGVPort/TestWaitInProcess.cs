@@ -94,7 +94,6 @@ namespace UnitTestForMGVPort
         public void 沒有發生Duplicate__上報MCS()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -112,7 +111,6 @@ namespace UnitTestForMGVPort
         public void 沒有發生Duplicate__資料庫建帳於Port()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -130,7 +128,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -153,7 +150,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -174,7 +170,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -194,7 +189,6 @@ namespace UnitTestForMGVPort
         public void 發生Duplicate_Duplicate的卡匣在儲位目前沒命令__資料庫刪除Duplicate的卡匣()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -213,7 +207,6 @@ namespace UnitTestForMGVPort
         public void 發生Duplicate_Duplicate的卡匣在儲位目前沒命令__資料庫建帳於Port()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -233,7 +226,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -254,7 +246,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockCassetteDataBLL = new MockCassetteDataBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -274,7 +265,6 @@ namespace UnitTestForMGVPort
         public void 發生Duplicate_Duplicate的卡匣在儲位目前有命令__資料庫不會刪除Duplicate的卡匣()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -298,7 +288,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -319,7 +308,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -339,7 +327,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -359,7 +346,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -380,7 +366,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -404,7 +389,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -425,7 +409,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
@@ -447,7 +430,6 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             var mockReportBLL = new MockReportBLL();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";

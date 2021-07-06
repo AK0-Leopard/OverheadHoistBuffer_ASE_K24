@@ -116,7 +116,6 @@ namespace UnitTestForMGVPort
         public void InMode時變為InService___上報MCS轉成InService()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInServiceInModePortInfo();
@@ -130,7 +129,6 @@ namespace UnitTestForMGVPort
         public void OutMode時變為InService___上報MCS轉成InService()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInServiceOutModePortInfo();
@@ -148,7 +146,6 @@ namespace UnitTestForMGVPort
         public void InMode時變為OutService___上報MCS轉成InService()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutServiceInModePortInfo();
@@ -162,7 +159,6 @@ namespace UnitTestForMGVPort
         public void OutMode時變為OutService___上報MCS轉成InService()
         {
             var stub = GetStubObject();
-            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutServiceOutModePortInfo();
