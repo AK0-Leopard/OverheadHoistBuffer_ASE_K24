@@ -12,9 +12,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface
     {
         object GetPortState();
 
-        Task ChangeToInModeAsync();
+        Task ChangeToInModeAsync(bool isOn);
 
-        Task ChangeToOutModeAsync();
+        Task ChangeToOutModeAsync(bool isOn);
 
         Task ResetAlarmAsync();
 

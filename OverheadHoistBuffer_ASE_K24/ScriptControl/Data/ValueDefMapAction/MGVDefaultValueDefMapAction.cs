@@ -477,22 +477,22 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             });
         }
 
-        public Task ChangeToInModeAsync()
+        public Task ChangeToInModeAsync(bool inOn)
         {
             return Task.Run(() =>
             {
                 var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
-                function.IsChangeToInMode = true;
+                function.IsChangeToInMode = inOn;
                 CommitChange(function);
             });
         }
 
-        public Task ChangeToOutModeAsync()
+        public Task ChangeToOutModeAsync(bool inOn)
         {
             return Task.Run(() =>
             {
                 var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
-                function.IsChangeToOutMode = true;
+                function.IsChangeToOutMode = inOn;
                 CommitChange(function);
             });
         }
