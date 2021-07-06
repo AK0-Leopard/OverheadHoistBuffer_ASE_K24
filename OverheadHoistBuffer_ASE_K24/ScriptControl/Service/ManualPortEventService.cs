@@ -1,4 +1,5 @@
 ﻿using com.mirle.ibg3k0.sc.BLL.Interface;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
@@ -103,7 +104,23 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-                throw new NotImplementedException();
+                var info = args.ManualPortPLCInfo;
+                var stage1CarrierId = info.CarrierIdOfStage1;
+
+                if (info.LoadPosition1)
+                {
+                    var logTitle = $"PortName[{args.PortName}] LoadPresenceChanged -> Stage1 ON => ";
+                    WriteEventLog($"{logTitle} CarrierIdOfStage1[{stage1CarrierId}]");
+
+                    StagePresenceOnProcess(logTitle, args.PortName, info);
+                }
+                else
+                {
+                    var logTitle = $"PortName[{args.PortName}] LoadPresenceChanged -> Stage1 OFF => ";
+                    WriteEventLog($"{logTitle} CarrierIdOfStage1[{stage1CarrierId}]");
+
+                    StagePresenceOffProcess(logTitle, args.PortName, info);
+                }
             }
             catch (Exception ex)
             {
@@ -111,18 +128,131 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        private void Port_OnWaitIn(object sender, ManualPortEventArgs args)
+        private void StagePresenceOnProcess(string logTitle, string portName, ManualPortPLCInfo info)
         {
-            var info = args.ManualPortPLCInfo;
+            if (info.Direction == DirectionType.InMode)
+                return;
 
-            if (cassetteDataBLL.GetCarrierByBoxId(info.CarrierIdOfStage1, out var duplicateCarrierId))
+            if (cassetteDataBLL.GetCarrierByPortName(portName, stage: 1, out var cassetteData) == false)
+                WriteEventLog($"{logTitle} The port direction is InMode. Cannot find carrier data at this port.");
+
+            //儲位到 port 的話 stage 1 ON 時通常已經有帳了嗎?  或是 需要將帳從車上移到 Port 上
+
+            if (reportBll.ReportCarrierWaitOut(cassetteData))
+                WriteEventLog($"{logTitle} Report MCS carrier wait out success.");
+            else
+                WriteEventLog($"{logTitle} Report MCS carrier wait out failed.");
+        }
+
+        private void StagePresenceOffProcess(string logTitle, string portName, ManualPortPLCInfo info)
+        {
+            if (info.Direction == DirectionType.InMode)
+                return;
+
+            if (cassetteDataBLL.GetCarrierByPortName(portName, stage: 1, out var cassetteData) == false)
             {
+                WriteEventLog($"{logTitle} The port direction is OutMode but cannot find carrier data at this port. Normal should have data.");
                 return;
             }
 
+            WriteEventLog($"{logTitle} The port direction is OutMode. Find a carrier data [{cassetteData.BOXID}] at this port.");
+
+            cassetteDataBLL.Delete(cassetteData.BOXID);
+            WriteEventLog($"{logTitle} Delete carrier data [{cassetteData.BOXID}].");
+
+            if (reportBll.ReportCarrierRemoveFromManualPort(cassetteData.BOXID))
+                WriteEventLog($"{logTitle} Report MCS carrier remove From manual port success.");
+            else
+                WriteEventLog($"{logTitle} Report MCS carrier remove From manual port Failed.");
+        }
+
+        private void Port_OnWaitIn(object sender, ManualPortEventArgs args)
+        {
+            var info = args.ManualPortPLCInfo;
+            var readResult = info.CarrierIdReadResult;
+            var stage1CarrierId = info.CarrierIdOfStage1;
+
+            var logTitle = $"PortName[{args.PortName}] WaitIn => ";
+
+            WriteEventLog($"{logTitle} ReadResult[{readResult}] CarrierIdOfStage1[{stage1CarrierId}]");
+
+            if (cassetteDataBLL.GetCarrierByBoxId(info.CarrierIdOfStage1, out var duplicateCarrierId))
+            {
+                if (duplicateCarrierId.Carrier_LOC != args.PortName)
+                    WaitInDuplicateProcess(logTitle, args.PortName, info, duplicateCarrierId);
+                else
+                    WaitInNormalProcess(logTitle, args.PortName, info);
+            }
+            else
+                WaitInNormalProcess(logTitle, args.PortName, info);
+        }
+
+        private void WaitInDuplicateProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierId)
+        {
+            WriteEventLog($"{logTitle} Duplicate Happened. Duplication location is [{duplicateCarrierId.Carrier_LOC}]");
+
+            if (duplicateCarrierId.AtShelf)
+            {
+                WaitInDuplicateAtShelfProcess(logTitle, portName, info, duplicateCarrierId);
+            }
+            else if (portDefBLL.GetPortDef(duplicateCarrierId.Carrier_LOC, out var duplicatePort))
+            {
+                WaitInDuplicateAtPortProcess(logTitle, portName, info, duplicateCarrierId, duplicatePort);
+            }
+            else
+            {
+                WaitInDuplicateAtOhtProcess(logTitle, portName, info, duplicateCarrierId);
+            }
+        }
+
+        private void WaitInDuplicateAtShelfProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierId)
+        {
+            WriteEventLog($"{logTitle} Duplicate at shelf.");
+        }
+
+        private void WaitInDuplicateAtPortProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierId, PortDef duplicatePort)
+        {
+            WriteEventLog($"{logTitle} Duplicate at Port ({duplicatePort.PLCPortID}).");
+
+            throw new NotImplementedException();
+        }
+
+        private void WaitInDuplicateAtOhtProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierId)
+        {
+            WriteEventLog($"{logTitle} Duplicate at OHT ({duplicateCarrierId.Carrier_LOC}).");
+
+            throw new NotImplementedException();
+        }
+
+        private void WaitInNormalProcess(string logTitle, string portName, ManualPortPLCInfo info)
+        {
+            WriteEventLog($"{logTitle} Normal Process.");
+
             var cassetteData = new CassetteData();
             cassetteData.BOXID = info.CarrierIdOfStage1;
-            reportBll.ReportCarrierWaitIn(cassetteData, isDuplicate: false);
+
+            //檢查殘帳
+            //建帳
+            //OHBC 不用管 Shelf State 嗎?
+
+            ReportIDRead(logTitle, cassetteData, isDuplicate: false);
+            ReportWaitIn(logTitle, cassetteData);
+        }
+
+        private void ReportIDRead(string logTitle, CassetteData cassetteData, bool isDuplicate)
+        {
+            if (reportBll.ReportCarrierIDRead(cassetteData, isDuplicate))
+                WriteEventLog($"{logTitle} Report MCS CarrierIDRead Success. isDuplicate[{isDuplicate}]");
+            else
+                WriteEventLog($"{logTitle} Report MCS CarrierIDRead Failed.  isDuplicate[{isDuplicate}]");
+        }
+
+        private void ReportWaitIn(string logTitle, CassetteData cassetteData)
+        {
+            if (reportBll.ReportCarrierWaitIn(cassetteData))
+                WriteEventLog($"{logTitle} Report MCS WaitIn Success.");
+            else
+                WriteEventLog($"{logTitle} Report MCS WaitIn Failed.");
         }
 
         private void Port_OnBcrReadDone(object sender, ManualPortEventArgs args)
@@ -145,7 +275,10 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-                throw new NotImplementedException();
+                var info = args.ManualPortPLCInfo;
+                var stage1CarrierId = info.CarrierIdOfStage1;
+
+                WriteEventLog($"PortName[{args.PortName}] WaitOut => CarrierIdOfStage1[{stage1CarrierId}]");
             }
             catch (Exception ex)
             {

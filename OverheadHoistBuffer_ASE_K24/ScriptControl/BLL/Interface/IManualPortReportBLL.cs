@@ -30,12 +30,11 @@
         /// <returns></returns>
         bool ReportUnitAlarmClear(ALARM alarm);
 
-        /// <summary>
-        /// 實作時需先上報 S6F11 CarrierIDRead 再上報 S6F11 WaitIn
-        /// </summary>
-        /// <param name="cassetteData"></param>
-        /// <returns></returns>
-        bool ReportCarrierWaitIn(CassetteData cassetteData, bool isDuplicate);
+        bool ReportCarrierIDRead(CassetteData cassetteData, bool isDuplicate);
+
+        bool ReportCarrierWaitIn(CassetteData cassetteData);
+
+        bool ReportCarrierWaitOut(CassetteData cassetteData);
 
         bool ReportForcedRemoveCarrier(CassetteData cassetteData);
 

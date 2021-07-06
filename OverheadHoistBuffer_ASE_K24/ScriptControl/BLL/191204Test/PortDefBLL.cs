@@ -27,17 +27,18 @@ namespace com.mirle.ibg3k0.sc.BLL
 {
     public partial class PortDefBLL
     {
-        SCApplication scApp = null;
-        PortDefDao portdefDao = null;
+        private SCApplication scApp = null;
+        private PortDefDao portdefDao = null;
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public Cache cache { get; private set; }
 
-        ALINE line
+        private ALINE line
         {
             get => scApp.getEQObjCacheManager().getLine();
         }
+
         public void start(SCApplication scApp)
         {
             this.scApp = scApp;
@@ -45,6 +46,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             cache = new Cache(scApp, scApp.getCommObjCacheManager());
             //line = scApp.getEQObjCacheManager().getLine();
         }
+
         public bool setPortDef(PortDef port)
         {
             bool is_success = true;
@@ -62,6 +64,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return is_success;
         }
+
         public bool UpdataPortType(string portID, E_PortType portType) //更新流向
         {
             try
@@ -79,6 +82,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return false;
             }
         }
+
         public void UpdataPortService(string portID, E_PORT_STATUS service)  //service：1 = OutOfService, 2 = InService
         {
             try
@@ -101,6 +105,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
             }
         }
+
         public void UpdataAGVPortService(string portID, E_PORT_STATUS service)  //service：1 = OutOfService, 2 = InService
         {
             try
@@ -115,7 +120,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 logger.Error(ex, "Exception");
             }
-
         }
 
         public void UpdataAGVSimPortLocationType(string portID, int service_num)  //service：1 = first 2 port, 2 = Last 2 port
@@ -132,8 +136,8 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 logger.Error(ex, "Exception");
             }
-
         }
+
         public bool updatePriority(string port_id, int priority)
         {
             try
@@ -158,6 +162,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return true;
         }
+
         public bool UpdateIgnoreModeChange(string portName, string enable)
         {
             try
@@ -175,6 +180,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return false;
             }
         }
+
         public List<PortDef> GetOHB_PortData(string ohbName)
         {
             try
@@ -206,6 +212,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         //A20.06.12
         public List<PortDef> GetAGVPortGroupDataByStationID(string ohbName, string stationID)
         {
@@ -250,8 +257,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
+
         public int GetPortTypeDefCount(string ohbName, E_PortType type)    //取得預設流向幾進幾出，type: 0 = In, 1 = Out
         {
             try
@@ -282,7 +289,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
 
         public string GetUnitType(string portName)
@@ -306,7 +312,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-
         }
 
         public bool getAddressID(string adr_port_id, out string adr)
@@ -339,19 +344,24 @@ namespace com.mirle.ibg3k0.sc.BLL
                 ).ToList();
             return AGV_station;
         }
+
         public class Cache
         {
-            CommObjCacheManager objCacheManager;
-            ALINE line
+            private CommObjCacheManager objCacheManager;
+
+            private ALINE line
             {
                 get => scApp.getEQObjCacheManager().getLine();
             }
-            App.SCApplication scApp;
+
+            private App.SCApplication scApp;
+
             public Cache(App.SCApplication _scApp, CommObjCacheManager _objCacheManager)
             {
                 scApp = _scApp;
                 objCacheManager = _objCacheManager;
             }
+
             public List<PortDef> loadCanAvoidCVPortDefs()
             {
                 var port_defs = objCacheManager.getPortDefs();
@@ -359,6 +369,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                                                port.PortTypeIndex.HasValue && port.PortTypeIndex.Value == 1).
                                  ToList();
             }
+
             public List<PortDef> loadCanAvoidPortDefs()
             {
                 var port_defs = objCacheManager.getPortDefs();
@@ -372,6 +383,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return port_defs.Where(port => SCUtility.isMatche(port.UnitType, "OHCV")).
                                  ToList();
             }
+
             public (bool isFind, PortDef portDef) tryGetCVPortByAdrID(string adrID)
             {
                 var port_defs = objCacheManager.getPortDefs();
@@ -380,12 +392,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                                  FirstOrDefault();
                 return (port_def != null, port_def);
             }
+
             public PortDef getCVPortDef(string portID)
             {
                 var port_defs = objCacheManager.getPortDefs();
                 return port_defs.Where(port => SCUtility.isMatche(port.PLCPortID, portID)).
                                  FirstOrDefault();
             }
+
             public (bool isInThisStation, PortDef portDef) isInAGVStByPortID(string agvStationID, string checkPortID)
             {
                 var port_defs = objCacheManager.getPortDefs();
@@ -396,7 +410,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                                  FirstOrDefault();
                 return (port_def != null, port_def);
             }
-
         }
 
         internal bool doUpdateTimeOutForAutoUD(string port_id, int timeOutForAutoUD)
@@ -453,6 +466,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             return true;
         }
     }
+
     public partial class PortDefBLL : IManualPortDefBLL
     {
         public bool ChangeDirectionToInMode(string portName)
@@ -491,6 +505,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return false;
             }
+        }
+
+        public bool GetPortDef(string portName, out PortDef portDef)
+        {
+            throw new NotImplementedException();
         }
     }
 }
