@@ -16,14 +16,34 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private ConcurrentDictionary<string, IManualPortValueDefMapAction> manualPorts { get; set; }
 
-        private readonly IManualPortReportBLL reportBll;
-        private readonly IManualPortCMDBLL commandBLL;
-        private readonly IManualPortAlarmBLL alarmBLL;
-        private readonly IManualPortDefBLL portDefBLL;
-        private readonly IManualPortShelfDefBLL shelfDefBLL;
-        private readonly IManualPortCassetteDataBLL cassetteDataBLL;
+        private IManualPortReportBLL reportBll;
+        private IManualPortCMDBLL commandBLL;
+        private IManualPortAlarmBLL alarmBLL;
+        private IManualPortDefBLL portDefBLL;
+        private IManualPortShelfDefBLL shelfDefBLL;
+        private IManualPortCassetteDataBLL cassetteDataBLL;
 
-        public ManualPortEventService(IEnumerable<IManualPortValueDefMapAction> ports,
+        //public ManualPortEventService(IEnumerable<IManualPortValueDefMapAction> ports,
+        //                              IManualPortReportBLL reportBll,
+        //                              IManualPortDefBLL portDefBLL,
+        //                              IManualPortShelfDefBLL shelfDefBLL,
+        //                              IManualPortCassetteDataBLL cassetteDataBLL,
+        //                              IManualPortCMDBLL commandBLL,
+        //                              IManualPortAlarmBLL alarmBLL)
+        public ManualPortEventService()
+        {
+            //this.reportBll = reportBll;
+            //this.portDefBLL = portDefBLL;
+            //this.shelfDefBLL = shelfDefBLL;
+            //this.cassetteDataBLL = cassetteDataBLL;
+            //this.commandBLL = commandBLL;
+            //this.alarmBLL = alarmBLL;
+
+            WriteLog($"ManualPortEventService Initial");
+
+            //RegisterEvent(ports);
+        }
+        public void Start(IEnumerable<IManualPortValueDefMapAction> ports,
                                       IManualPortReportBLL reportBll,
                                       IManualPortDefBLL portDefBLL,
                                       IManualPortShelfDefBLL shelfDefBLL,
@@ -42,7 +62,6 @@ namespace com.mirle.ibg3k0.sc.Service
 
             RegisterEvent(ports);
         }
-
         private void RegisterEvent(IEnumerable<IManualPortValueDefMapAction> ports)
         {
             manualPorts = new ConcurrentDictionary<string, IManualPortValueDefMapAction>();

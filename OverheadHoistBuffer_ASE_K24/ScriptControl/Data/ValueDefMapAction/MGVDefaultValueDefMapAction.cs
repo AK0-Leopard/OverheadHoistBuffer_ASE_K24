@@ -585,7 +585,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
         #endregion Control
 
-        public ManualPortPLCInfo GetPortState()
+        //public ManualPortPLCInfo GetPortState()
+        public object GetPortState()
         {
             return scApp.getFunBaseObj<ManualPortPLCInfo>(eqpt.EQPT_ID) as ManualPortPLCInfo;
         }

@@ -1515,10 +1515,8 @@ namespace com.mirle.ibg3k0.sc.App
             shelfService = new ShelfService();
             emptyBoxHandlerService = new EmptyBoxHandlerService();
 
-            var manual_port_map_action = PortStationBLL.OperateCatch.loadAllMgvPortStationMapAction();
-            manualPortControlService = new ManualPortControlService(manual_port_map_action);
-            manualPortEventService = new ManualPortEventService(manual_port_map_action,
-                                                                reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL);
+            manualPortControlService = new ManualPortControlService();
+            manualPortEventService = new ManualPortEventService();
         }
 
         /// <summary>
@@ -1579,6 +1577,10 @@ namespace com.mirle.ibg3k0.sc.App
             blockControlService.start(this);
             shelfService.start(this);
             emptyBoxHandlerService.start(this);
+
+            var manual_port_map_action = PortStationBLL.OperateCatch.loadAllMgvPortStationMapAction();
+            manualPortControlService.Start(manual_port_map_action);
+            manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL);
         }
 
         /// <summary>

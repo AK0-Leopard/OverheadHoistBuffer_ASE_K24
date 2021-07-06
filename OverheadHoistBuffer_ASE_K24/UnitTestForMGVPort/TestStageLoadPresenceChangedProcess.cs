@@ -126,7 +126,9 @@ namespace UnitTestForMGVPort
         public void InMode時StagePresenceON___不上報MCS任何事件()
         {
             var stub = GetStubObject();
-            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService();
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetInModePortHasCarrierInfo(carrierId);
 
@@ -142,7 +144,9 @@ namespace UnitTestForMGVPort
         public void OutMode時StagePresenceON___不上報MCS任何事件()
         {
             var stub = GetStubObject();
-            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService();
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var info = GetOutModePortHasCarrierInfo(carrierId);
 
@@ -162,7 +166,9 @@ namespace UnitTestForMGVPort
         public void InMode時StagePresenceOFF___不上報MCS任何事件()
         {
             var stub = GetStubObject();
-            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService();
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetInModePortHasNoCarrierInfo();
 
             stub.ManualPortValueDefMapAction.OnLoadPresenceChanged += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
@@ -177,7 +183,9 @@ namespace UnitTestForMGVPort
         public void OutMode時StagePresenceOFF___上報MCS_CarrierRemove()
         {
             var stub = GetStubObject();
-            IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            //IManualPortEventService manualPortService = new ManualPortEventService(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            IManualPortEventService manualPortService = new ManualPortEventService();
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var carrierDataOnPort = GetCarrierOnThisManualPort(carrierId);
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out Arg.Any<CassetteData>()).Returns(c => { c[2] = carrierDataOnPort; return true; });

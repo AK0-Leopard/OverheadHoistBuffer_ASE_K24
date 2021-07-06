@@ -860,6 +860,7 @@
     <Compile Include="Data\ValueDefMapAction\ASEMCSDefaultMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\Events\ManualPortEventArgs.cs" />
     <Compile Include="Data\ValueDefMapAction\Events\ManualPortEvents.cs" />
+    <Compile Include="Data\ValueDefMapAction\Interface\ICommonPortInfoValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\Interface\IManualPortValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\MGVDefaultValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\SimpleMTLValueDefMapAction.cs" />
