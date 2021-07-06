@@ -472,12 +472,31 @@ namespace com.mirle.ibg3k0.sc.Service
                 else
                     newDirection += "DirectionChangeTo_OutMode";
 
+                var logTitle = $"PortName[{args.PortName}] {newDirection} => ";
+
                 var info = args.ManualPortPLCInfo;
                 var stage1CarrierId = info.CarrierIdOfStage1;
 
-                WriteEventLog($"PortName[{args.PortName}] {newDirection} => CarrierIdOfStage1[{stage1CarrierId}]");
+                WriteEventLog($"{logTitle} CarrierIdOfStage1[{stage1CarrierId}]");
 
-                throw new NotImplementedException();
+                CheckResidualCassetteProcess(logTitle, args.PortName);
+
+                if (args.ManualPortPLCInfo.Direction == DirectionType.InMode)
+                {
+                    reportBll.ReportPortDirectionChanged(args.PortName, newDirectionIsInMode: true);
+                    WriteEventLog($"{logTitle} Report MCS PortTypeChange InMode");
+
+                    portDefBLL.ChangeDirectionToInMode(args.PortName);
+                    WriteEventLog($"{logTitle} PortDef change direction to InMode");
+                }
+                else
+                {
+                    reportBll.ReportPortDirectionChanged(args.PortName, newDirectionIsInMode: false);
+                    WriteEventLog($"{logTitle} Report MCS PortTypeChange OutMode");
+
+                    portDefBLL.ChangeDirectionToOutMode(args.PortName);
+                    WriteEventLog($"{logTitle} PortDef change direction to OutMode");
+                }
             }
             catch (Exception ex)
             {
