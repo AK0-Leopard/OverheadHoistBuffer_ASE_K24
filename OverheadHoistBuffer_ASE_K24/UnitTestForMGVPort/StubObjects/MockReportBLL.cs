@@ -78,5 +78,10 @@ namespace UnitTestForMGVPort.StubObjects
         {
             throw new System.NotImplementedException();
         }
+
+        public bool ReportTransferCompleted(ACMD_MCS cmd, CassetteData cassette, string resultCode)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -1935,5 +1935,12 @@ namespace com.mirle.ibg3k0.sc.BLL
             isSuccsess = isSuccsess && iBSEMDriver.S6F11SendCarrierWaitOut(cassetteData, outMode);
             return isSuccsess;
         }
+
+        public bool ReportTransferCompleted(ACMD_MCS cmd, CassetteData cassette, string resultCode)
+        {
+            bool isSuccsess = true;
+            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendTransferCompleted(cmd, cassette, resultCode);
+            return isSuccsess;
+        }
     }
 }

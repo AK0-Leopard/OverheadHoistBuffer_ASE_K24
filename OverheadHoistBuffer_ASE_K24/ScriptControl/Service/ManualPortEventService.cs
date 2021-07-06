@@ -8,6 +8,7 @@ using NLog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using static com.mirle.ibg3k0.sc.ACMD_MCS;
 
 namespace com.mirle.ibg3k0.sc.Service
 {
@@ -17,14 +18,19 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private ConcurrentDictionary<string, IManualPortValueDefMapAction> manualPorts { get; set; }
 
-        private readonly IManualPortReportBLL reportBll;
-        private readonly IManualPortCMDBLL commandBLL;
-        private readonly IManualPortAlarmBLL alarmBLL;
-        private readonly IManualPortDefBLL portDefBLL;
-        private readonly IManualPortShelfDefBLL shelfDefBLL;
-        private readonly IManualPortCassetteDataBLL cassetteDataBLL;
+        private IManualPortReportBLL reportBll;
+        private IManualPortCMDBLL commandBLL;
+        private IManualPortAlarmBLL alarmBLL;
+        private IManualPortDefBLL portDefBLL;
+        private IManualPortShelfDefBLL shelfDefBLL;
+        private IManualPortCassetteDataBLL cassetteDataBLL;
 
-        public ManualPortEventService(IEnumerable<IManualPortValueDefMapAction> ports,
+        public ManualPortEventService()
+        {
+            WriteLog($"New ManualPortEventService");
+        }
+
+        public void Start(IEnumerable<IManualPortValueDefMapAction> ports,
                                       IManualPortReportBLL reportBll,
                                       IManualPortDefBLL portDefBLL,
                                       IManualPortShelfDefBLL shelfDefBLL,
@@ -39,7 +45,7 @@ namespace com.mirle.ibg3k0.sc.Service
             this.commandBLL = commandBLL;
             this.alarmBLL = alarmBLL;
 
-            WriteLog($"ManualPortEventService Initial");
+            WriteLog($"ManualPortEventService Start");
 
             RegisterEvent(ports);
         }
@@ -80,6 +86,8 @@ namespace com.mirle.ibg3k0.sc.Service
         }
 
         #endregion Log
+
+        #region LoadPresenceChanged
 
         private void Port_OnLoadPresenceChanged(object sender, ManualPortEventArgs args)
         {
@@ -147,6 +155,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 WriteEventLog($"{logTitle} Report MCS carrier remove From manual port Failed.");
         }
 
+        #endregion LoadPresenceChanged
+
+        #region Wait In
+
         private void Port_OnWaitIn(object sender, ManualPortEventArgs args)
         {
             var info = args.ManualPortPLCInfo;
@@ -168,56 +180,101 @@ namespace com.mirle.ibg3k0.sc.Service
                 WaitInNormalProcess(logTitle, args.PortName, info);
         }
 
-        private void WaitInDuplicateProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierId)
+        private void WaitInDuplicateProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData)
         {
-            WriteEventLog($"{logTitle} Duplicate Happened. Duplication location is [{duplicateCarrierId.Carrier_LOC}]");
+            WriteEventLog($"{logTitle} Duplicate Happened. Duplication location is [{duplicateCarrierData.Carrier_LOC}]");
 
-            if (duplicateCarrierId.AtShelf)
+            if (portDefBLL.GetPortDef(duplicateCarrierData.Carrier_LOC, out var duplicateLocation))
             {
-                WaitInDuplicateAtShelfProcess(logTitle, portName, info, duplicateCarrierId);
-            }
-            else if (portDefBLL.GetPortDef(duplicateCarrierId.Carrier_LOC, out var duplicatePort))
-            {
-                WaitInDuplicateAtPortProcess(logTitle, portName, info, duplicateCarrierId, duplicatePort);
+                WaitInDuplicateAtShelfProcess(logTitle, portName, info, duplicateCarrierData);
+
+                WaitInDuplicateAtPortProcess(logTitle, portName, info, duplicateCarrierData, duplicateLocation);
             }
             else
             {
-                WaitInDuplicateAtOhtProcess(logTitle, portName, info, duplicateCarrierId);
+                WaitInDuplicateAtOhtProcess(logTitle, portName, info, duplicateCarrierData);
             }
+        }
+
+        public string GetDuplicateUnknownId(string carrierId)
+        {
+            var year = DateTime.Now.Year % 100;
+            var date = string.Format("{0}{1:00}{2:00}{3:00}{4:00}", year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute);
+            var id = "UNKD" + carrierId + date + string.Format("{0:00}", DateTime.Now.Second);
+
+            return id;
         }
 
         private void WaitInDuplicateAtShelfProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierId)
         {
-            WriteEventLog($"{logTitle} Duplicate at shelf.");
+            WriteEventLog($"{logTitle} Duplicate at shelf ({duplicateCarrierId.Carrier_LOC}).");
         }
 
         private void WaitInDuplicateAtPortProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierId, PortDef duplicatePort)
         {
             WriteEventLog($"{logTitle} Duplicate at Port ({duplicatePort.PLCPortID}).");
-
-            throw new NotImplementedException();
         }
 
         private void WaitInDuplicateAtOhtProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierId)
         {
             WriteEventLog($"{logTitle} Duplicate at OHT ({duplicateCarrierId.Carrier_LOC}).");
-
-            throw new NotImplementedException();
         }
 
         private void WaitInNormalProcess(string logTitle, string portName, ManualPortPLCInfo info)
         {
             WriteEventLog($"{logTitle} Normal Process.");
 
-            var cassetteData = new CassetteData();
-            cassetteData.BOXID = info.CarrierIdOfStage1;
+            CheckResidualCassetteProcess(logTitle, portName);
 
-            //檢查殘帳
-            //建帳
-            //OHBC 不用管 Shelf State 嗎?
+            cassetteDataBLL.Install(portName, info.CarrierIdOfStage1);
+            WriteEventLog($"{logTitle} Install cassette data at this port.");
+
+            cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
 
             ReportIDRead(logTitle, cassetteData, isDuplicate: false);
             ReportWaitIn(logTitle, cassetteData);
+        }
+
+        private void CheckResidualCassetteProcess(string logTitle, string portName)
+        {
+            cassetteDataBLL.GetCarrierByPortName(portName, stage: 1, out var residueCassetteData);
+            var hasNoResidueData = residueCassetteData == null;
+            if (hasNoResidueData)
+                return;
+
+            var residueCarrierId = residueCassetteData.BOXID;
+            WriteEventLog($"{logTitle} There is residual cassette data [{residueCarrierId}] on the port.");
+
+            if (commandBLL.GetCommandByBoxId(residueCarrierId, out var residueCommand))
+            {
+                WriteEventLog($"{logTitle} There is residual command [{residueCommand.CMD_ID}] cassette data [{residueCarrierId}].");
+
+                commandBLL.Delete(residueCarrierId);
+                WriteEventLog($"{logTitle} Delete residual command [{residueCommand.CMD_ID}].");
+
+                ReportForcedTransferComplete(logTitle, residueCommand, residueCassetteData);
+            }
+
+            cassetteDataBLL.Delete(residueCarrierId);
+            WriteEventLog($"{logTitle} Delete residual cassette data.");
+
+            ReportForcedCarrierRemove(logTitle, residueCassetteData);
+        }
+
+        private void ReportForcedTransferComplete(string logTitle, ACMD_MCS command, CassetteData cassetteData)
+        {
+            if (reportBll.ReportTransferCompleted(command, cassetteData, ResultCode.OtherErrors))
+                WriteEventLog($"{logTitle} Report MCS TransferComplete  ResultCod -> OtherErrors  Success.");
+            else
+                WriteEventLog($"{logTitle} Report MCS TransferComplete  ResultCode -> OtherErrors  Failed.");
+        }
+
+        private void ReportForcedCarrierRemove(string logTitle, CassetteData cassetteData)
+        {
+            if (reportBll.ReportForcedRemoveCarrier(cassetteData))
+                WriteEventLog($"{logTitle} Report MCS CarrierRemoveComplete Success.");
+            else
+                WriteEventLog($"{logTitle} Report MCS CarrierRemoveComplete Failed.");
         }
 
         private void ReportIDRead(string logTitle, CassetteData cassetteData, bool isDuplicate)
@@ -235,6 +292,8 @@ namespace com.mirle.ibg3k0.sc.Service
             else
                 WriteEventLog($"{logTitle} Report MCS WaitIn Failed.");
         }
+
+        #endregion Wait In
 
         private void Port_OnBcrReadDone(object sender, ManualPortEventArgs args)
         {
@@ -305,27 +364,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        private void Port_OnInServiceChanged(object sender, ManualPortEventArgs args)
-        {
-            try
-            {
-                var newState = "";
-                if (args.ManualPortPLCInfo.IsRun)
-                    newState += "InService";
-                else
-                    newState += "OutOfService";
-
-                var info = args.ManualPortPLCInfo;
-
-                WriteEventLog($"PortName[{args.PortName}] InServiceChanged => Now state is {newState}. IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
-
-                throw new NotImplementedException();
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "");
-            }
-        }
+        #region Alarm
 
         private void Port_OnAlarmHappen(object sender, ManualPortEventArgs args)
         {
@@ -343,6 +382,30 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "");
+            }
+        }
+
+        #endregion Alarm
+
+        private void Port_OnInServiceChanged(object sender, ManualPortEventArgs args)
+        {
+            try
+            {
+                var newState = "";
+                if (args.ManualPortPLCInfo.IsRun)
+                    newState += "InService";
+                else
+                    newState += "OutOfService";
+
+                var info = args.ManualPortPLCInfo;
+
+                WriteEventLog($"PortName[{args.PortName}] InServiceChanged => Now state is {newState}. IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
+
                 throw new NotImplementedException();
             }
             catch (Exception ex)

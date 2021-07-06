@@ -43,5 +43,7 @@
         bool ReportPortDirectionChanged(string portName, bool newDirectionIsInMode);
 
         bool ReportPortInServiceChanged(string portName, bool newStateIsInService);
+
+        bool ReportTransferCompleted(ACMD_MCS cmd, CassetteData cassette, string resultCode);
     }
 }
