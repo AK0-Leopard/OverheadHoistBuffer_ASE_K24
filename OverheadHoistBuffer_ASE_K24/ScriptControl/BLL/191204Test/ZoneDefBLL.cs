@@ -26,6 +26,22 @@ namespace com.mirle.ibg3k0.sc.BLL
             shelfdefDao = scApp.ShelfDefDao;
             cassetteDao = scApp.CassetteDataDao;
         }
+        public bool addZoneData(ZoneDef zoneDef)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    zonedefDao.insertZoneDef(con, zoneDef);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
+        }
 
         public List<ZoneDef> loadZoneData()
         {

@@ -144,6 +144,8 @@ namespace com.mirle.ibg3k0.sc.Common
         private List<PortDef> portDefList = new List<PortDef>();
         private Dictionary<string, Object> _lockShelfDefDic = new Dictionary<string, object>();
         private List<ShelfDef> shelfDefList = new List<ShelfDef>();
+        private Dictionary<string, Object> _lockZoneDefDic = new Dictionary<string, object>();
+        private List<ZoneDef> zoneDefList = new List<ZoneDef>();
 
         /// <summary>
         /// The _lock port dic
@@ -313,6 +315,8 @@ namespace com.mirle.ibg3k0.sc.Common
             portDefList.Clear();
             _lockShelfDefDic.Clear();
             shelfDefList.Clear();
+            _lockZoneDefDic.Clear();
+            zoneDefList.Clear();
         }
 
         /// <summary>
@@ -589,7 +593,16 @@ namespace com.mirle.ibg3k0.sc.Common
 
                             portDefList.Add(getPortDefObj(line.LINE_ID, eqpt_id, portStationConfig, eqptType));
                             if (eqptType == SCAppConstants.EqptType.Buffer)
+                            {
                                 shelfDefList.Add(getShelfDefObj(eqpt_id, portStationConfig));
+                                _lockShelfDefDic.Add(port_id, new object());
+                            }
+                        }
+                        if (eqptType == SCAppConstants.EqptType.Buffer)
+                        {
+                            int high_water_mark = eqptConfig.PortStationConfigList.Count();
+                            zoneDefList.Add(getZoneDefObj(eqptConfig, high_water_mark));
+                            _lockZoneDefDic.Add(eqpt_id, new object());
                         }
                     }
                     int vh_nmu = 1;
@@ -640,6 +653,24 @@ namespace com.mirle.ibg3k0.sc.Common
                 ADR_ID = portStationConfig.Address_ID
             };
         }
+        private ZoneDef getZoneDefObj(EQPTConfigSection eqptConfig, int highWaterMark)
+        {
+            return new ZoneDef()
+            {
+                StockerID = "1",
+                ZoneID = eqptConfig.EQPT_ID,
+                ZoneName = eqptConfig.EQPT_ID,
+                HighWaterMark = highWaterMark,
+                LowWaterMark = 1,
+                ZoneType = 1,
+                InventoryCheck = "Y",
+                Color = "",
+                SourceWeighted = 0,
+                DestWeighted = 0,
+                Remark = null,
+                TrnDT = null
+            };
+        }
 
         private PortDef getPortDefObj(string lineID, string zoneName, PortStationConfigSection portStationConfig, SCAppConstants.EqptType eqptType)
         {
@@ -661,6 +692,7 @@ namespace com.mirle.ibg3k0.sc.Common
                 DestWeighted = 0,
                 Direction = 0,
                 Color = null,
+                TimeOutForAutoUD = 0,
                 TimeOutForAutoInZone = "",
                 AlternateToZone = "",
                 Vehicles = 1,
@@ -711,6 +743,9 @@ namespace com.mirle.ibg3k0.sc.Common
 
                 case SCAppConstants.EqptType.Equipment:
                     return UnitType.EQ.ToString();
+
+                case SCAppConstants.EqptType.MGV:
+                    return UnitType.OHCV.ToString();
 
                 default:
                     return UnitType.EQ.ToString();
@@ -994,6 +1029,21 @@ namespace com.mirle.ibg3k0.sc.Common
                         else
                         {
                             put(shelfDef);
+                        }
+                    }
+                    foreach (ZoneDef zone in zoneDefList)
+                    {
+                        ZoneDef zoneDef = scApp.ZoneDefBLL.loadZoneDataByID(zone.ZoneID);
+                        if (zoneDef == null)
+                        {
+                            if (!scApp.ZoneDefBLL.addZoneData(zone))
+                            {
+                                logger.Error("insert zone_def[{0}] Failed.", zone.ZoneID);
+                            }
+                        }
+                        else
+                        {
+                            put(zoneDef);
                         }
                     }
                 }
@@ -1415,6 +1465,10 @@ namespace com.mirle.ibg3k0.sc.Common
         {
             return shelfDefList.Where(p => SCUtility.isMatche(p.ShelfID, shelfID)).SingleOrDefault();
         }
+        public ZoneDef getZoneDef(string zoneID)
+        {
+            return zoneDefList.Where(p => SCUtility.isMatche(p.ZoneID, zoneID)).SingleOrDefault();
+        }
 
         public APORTSTATION getPortStationByAdrID(string adrID)
         {
@@ -1753,6 +1807,16 @@ namespace com.mirle.ibg3k0.sc.Common
             lock (_lockShelfDefDic[shelf.ShelfID])
             {
                 setValueToPropety<ShelfDef>(ref sheltDef, ref shelf);
+            }
+        }
+        public void put(ZoneDef zoneDef)
+        {
+            if (zoneDef == null) { return; }
+            ZoneDef shelf = getZoneDef(zoneDef.ZoneID);
+            if (shelf == null) { return; }
+            lock (_lockZoneDefDic[shelf.ZoneID])
+            {
+                setValueToPropety<ZoneDef>(ref zoneDef, ref shelf);
             }
         }
 
