@@ -580,6 +580,7 @@
     <Compile Include="Data\DAO\EntityFramework\HCMD_OHTCDao.cs" />
     <Compile Include="Data\DAO\EqptLocationInfoDao.cs" />
     <Compile Include="Data\DAO\191204Test\PortDefDao.cs" />
+    <Compile Include="Data\DAO\EQCstTypeMapDao.cs" />
     <Compile Include="Data\DAO\ReserveEnhanceInfoDao.cs" />
     <Compile Include="Data\DAO\VCMD_MCSDao.cs" />
     <Compile Include="Data\DAO\PortStationDao.cs" />
@@ -898,6 +899,7 @@
     <Compile Include="Data\VO\PartialVo\ShelfDef.cs" />
     <Compile Include="Data\VO\PartialVo\CassetteData.cs" />
     <Compile Include="Data\VO\PartialVo\ZoneDef.cs" />
+    <Compile Include="Data\VO\EQCstTypeMap.cs" />
     <Compile Include="Data\VO\ReserveEnhanceInfo.cs" />
     <Compile Include="Data\VO\ReturnCodeMap.cs" />
     <Compile Include="Data\VO\AlarmMap.cs" />

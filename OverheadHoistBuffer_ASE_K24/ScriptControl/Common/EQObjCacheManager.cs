@@ -454,6 +454,9 @@ namespace com.mirle.ibg3k0.sc.Common
                         string ecidFormat = eqptConfig.ECID_Format;                    //A0.04
                         int Type = eqptConfig.EQPT_Type;
 
+
+                        string carrier_cst_type = getEqCstCarrierType(eqpt_id);
+
                         List<AUNIT> unitListOfEQPT = new List<AUNIT>();
 
                         if (unitListOfEQPT.Count > 0)
@@ -573,7 +576,8 @@ namespace com.mirle.ibg3k0.sc.Common
                                     ADR_ID = adr_id,
                                     LD_VH_TYPE = load_vh_type,
                                     ULD_VH_TYPE = unload_vh_type,
-                                    PORT_STATUS = E_PORT_STATUS.InService
+                                    PORT_STATUS = E_PORT_STATUS.InService,
+                                    CARRIER_CST_TYPE = carrier_cst_type
                                 });
                             }
                             else
@@ -585,7 +589,8 @@ namespace com.mirle.ibg3k0.sc.Common
                                     ADR_ID = adr_id,
                                     LD_VH_TYPE = load_vh_type,
                                     ULD_VH_TYPE = unload_vh_type,
-                                    PORT_STATUS = E_PORT_STATUS.InService
+                                    PORT_STATUS = E_PORT_STATUS.InService,
+                                    CARRIER_CST_TYPE = carrier_cst_type
                                 });
                             }
 
@@ -768,6 +773,19 @@ namespace com.mirle.ibg3k0.sc.Common
             var setting = MTSSettings.Where(id => id.ID.Trim() == mtsID.Trim()).SingleOrDefault();
 
             return setting;
+        }
+
+        private string getEqCstCarrierType(string eqID)
+        {
+            var setting = scApp.EQCstTypeMapDao.getEqCstTypeInfo(scApp, eqID);
+            if (setting == null)
+            {
+                return "";
+            }
+            else
+            {
+                return setting.CST_TYPE;
+            }
         }
 
         private string getOHCVLocation(string ohcvID)

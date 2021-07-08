@@ -455,6 +455,8 @@ namespace com.mirle.ibg3k0.sc.App
         public HCMD_MCSDao HCMD_MCSDao { get { return hcmd_mcsDao; } }
         private HCMD_OHTCDao hcmd_ohtcDao = null;
         public HCMD_OHTCDao HCMD_OHTCDao { get { return hcmd_ohtcDao; } }
+        private EQCstTypeMapDao eqCstTypeMapDao = null;
+        public EQCstTypeMapDao EQCstTypeMapDao { get { return eqCstTypeMapDao; } }
 
         //BLL
         /// <summary>
@@ -1230,6 +1232,7 @@ namespace com.mirle.ibg3k0.sc.App
             hcmd_mcsDao = new HCMD_MCSDao();
             hcmd_ohtcDao = new HCMD_OHTCDao();
             flexsimcommandDao = new FlexsimCommandDao();
+            eqCstTypeMapDao = new EQCstTypeMapDao();
         }
 
         /// <summary>
@@ -1250,6 +1253,7 @@ namespace com.mirle.ibg3k0.sc.App
                 loadCSVToDataset(ohxcConfig, "RESERVEENHANCEINFO");
                 loadMapInfoCSVToDataset(ohxcConfig, "AADDRESS");
                 loadMapInfoCSVToDataset(ohxcConfig, "ASECTION");
+                loadMapInfoCSVToDataset(ohxcConfig, "EQCSTTYPEMAP");
                 logger.Info("init bc_Config success");
             }
             else

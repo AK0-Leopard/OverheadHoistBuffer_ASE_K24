@@ -352,6 +352,7 @@ message Timestamp {
 	repeated string Guide_Address_StartToLoad = 12;
 	repeated string Guide_Sections_ToDestination = 13;
 	repeated string Guide_Address_ToDestination = 14;
+	string CST_TYPE = 15;
   }
   message ID_131_TRANS_RESPONSE {
   	string Cmd_ID = 1;

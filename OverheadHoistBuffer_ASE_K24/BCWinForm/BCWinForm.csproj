@@ -630,6 +630,9 @@
     <None Include="Config\Hsinchu_2F\CSV\MapInfo\ASECTION.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Config\Hsinchu_2F\CSV\EQCSTTYPEMAP.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Config\Hsinchu_2F\CSV\RESERVEENHANCEINFO.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

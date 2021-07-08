@@ -15,6 +15,7 @@ namespace com.mirle.ibg3k0.sc
         }
         public string CST_ID { get; set; }
         public string EQPT_ID { get; set; }
+        public string CARRIER_CST_TYPE { get; set; }
         public override void doShareMemoryInit(BCFAppConstants.RUN_LEVEL runLevel)
         {
             foreach (IValueDefMapAction action in valueDefMapActionDic.Values)
