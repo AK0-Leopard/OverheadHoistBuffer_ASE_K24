@@ -12,6 +12,7 @@ using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Service;
 using com.mirle.ibg3k0.sc.BLL.Interface;
 using com.mirle.ibg3k0.sc.Data.Enum;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
@@ -786,7 +787,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-        public void Install(string carrierLocation, string carrierId)
+        public void Install(string carrierLocation, string carrierId, CstType type)
         {
             CassetteData datainfo = new CassetteData();
 
@@ -799,6 +800,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             datainfo.CSTInDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
             datainfo.TrnDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
             datainfo.Stage = 1;
+            datainfo.CSTType = type.ToString();
 
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
             {

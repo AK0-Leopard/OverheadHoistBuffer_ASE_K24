@@ -88,8 +88,10 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV
         {
             if (CstTypes == 1)
                 return CstType.A;
-            else
+            else if (CstTypes == 2)
                 return CstType.B;
+            else
+                return CstType.Undefined;
         }
     }
 }

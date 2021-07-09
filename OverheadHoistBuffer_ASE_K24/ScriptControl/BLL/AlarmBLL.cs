@@ -28,6 +28,7 @@ using com.mirle.ibg3k0.sc.Service;
 using com.mirle.ibg3k0.sc.Data.DAO.EntityFramework;
 using com.mirle.ibg3k0.sc.BLL.Interface;
 using com.mirle.ibg3k0.sc.Data.Enum;
+using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
@@ -126,12 +127,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             lock (lock_obj_alarm)
             {
                 string alarmEq = eq_id;
-                //if (scApp.TransferService.isUnitType(eq_id, UnitType.AGVZONE))
-                //{
-                //    alarmEq = eq_id.Remove(0, 12);
-                //}
 
-                if (IsAlarmExist(alarmEq, error_code)) return null;
+                if (IsAlarmExist(alarmEq, error_code))
+                    return null;
+
                 string alarmUnitType = "LINE";
 
                 if (scApp.TransferService.isUnitType(eq_id, UnitType.AGV))
@@ -165,7 +164,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     //B7_OHBLINE1_ST01
                     alarmUnitType = "LINE";
-                    //eq_id = eq_id.Remove(0, 12);
                 }
 
                 AlarmMap alarmMap = alarmMapDao.getAlarmMap(alarmUnitType, error_code);
@@ -202,7 +200,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                     ALAM_CODE = error_code,
                     ALAM_LVL = alarmMap == null ? E_ALARM_LVL.Warn : alarmMap.ALARM_LVL,
                     ALAM_STAT = ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
-                    //ALAM_DESC = alarmMap == null ? $"unknow alarm code:{error_code}" : $"{eq_id} {alarmMap.ALARM_DESC}(error code:{error_code})",
                     ALAM_DESC = alam_desc,
                     ERROR_ID = error_code,  //alarmMap?.ALARM_ID ?? "0",
                     UnitID = eq_id,
@@ -240,12 +237,6 @@ namespace com.mirle.ibg3k0.sc.BLL
 
                     CheckSetAlarm();
                 }
-
-                //if (scApp.TransferService.isUnitType(eq_id, UnitType.CRANE) == false)
-                //{
-                //    alarm.EQPT_ID = "";
-                //    alarm.UnitID = "";
-                //}
 
                 return alarm;
             }
@@ -539,40 +530,46 @@ namespace com.mirle.ibg3k0.sc.BLL
 
     public partial class AlarmBLL : IManualPortAlarmBLL
     {
-        public bool GetAlarmReport(string eqId, string alarmCode, out ALARM alarmReport)
+        public bool SetAlarm(string portName, string alarmCode, ACMD_MCS commandOfPort, out ALARM alarmReport, out string reasonOfAlarmSetFalied)
         {
-            try
+            alarmReport = new ALARM();
+            var allAlarms = loadSetAlarmList();
+            if (allAlarms.Any(data => data.ALAM_STAT == ErrorStatus.ErrSet && data.EQPT_ID.Trim() == portName && data.ALAM_CODE == alarmCode))
             {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                {
-                    alarmReport = alarmDao.getAlarm(con, eqId, alarmCode);
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                alarmReport = null;
-                logger.Error(ex, "Exception");
+                reasonOfAlarmSetFalied = "The database already has this alarm code.";
                 return false;
             }
+
+            reasonOfAlarmSetFalied = "";
+
+            alarmReport = setAlarmReport(null, portName, alarmCode, commandOfPort, "");
+
+            return true;
         }
 
-        public bool GetAlarmReport(string eqId, string alarmCode, string commandId, out ALARM alarmReport)
+        public bool ClearAllAlarm(string portName, ACMD_MCS commandOfPort, out List<ALARM> alarmReports, out string reasonOfAlarmClear)
         {
-            try
+            alarmReports = null;
+            var allAlarms = loadSetAlarmList();
+            var alarms = allAlarms.Where(data => data.EQPT_ID.Trim() == portName && data.ALAM_STAT == ErrorStatus.ErrSet);
+            if (alarms == null)
             {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                {
-                    alarmReport = alarmDao.getAlarm(con, eqId, alarmCode);
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                alarmReport = null;
-                logger.Error(ex, "Exception");
+                reasonOfAlarmClear = "Cannot find alarm that alarm state is [AlarmSet]";
                 return false;
             }
+
+            reasonOfAlarmClear = "";
+
+            alarmReports = new List<ALARM>();
+
+            foreach (var alarm in alarms)
+            {
+                var alarmReport = resetAlarmReport(alarm.EQPT_ID, alarm.ALAM_CODE);
+                if (alarmReport != null)
+                    alarmReports.Add(alarmReport);
+            }
+
+            return true;
         }
     }
 }

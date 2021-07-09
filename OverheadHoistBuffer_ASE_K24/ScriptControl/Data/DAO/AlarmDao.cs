@@ -10,21 +10,15 @@
 // ------------- -------------  -------------  ------  -----------------------------
 // 2014/03/05    Hayes Chen     N/A            N/A     Initial Release
 // 2014/04/02    Miles Chen     N/A            A0.01   Modify Functions for UI Use
-// 
+//
 //**********************************************************************************
+using com.mirle.ibg3k0.bcf.Data;
+using NLog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using com.mirle.ibg3k0.bcf.Common;
-using com.mirle.ibg3k0.bcf.Data;
-using com.mirle.ibg3k0.sc.App;
-using com.mirle.ibg3k0.sc.Data.VO;
-using NLog;
-using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
-using System.Globalization;
 using System.Data.Entity;
+using System.Globalization;
+using System.Linq;
 
 namespace com.mirle.ibg3k0.sc.Data.DAO
 {
@@ -38,8 +32,6 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
         /// The logger
         /// </summary>
         private static Logger logger = LogManager.GetCurrentClassLogger();
-
-
 
         /// <summary>
         /// Inserts the alarm.
@@ -95,6 +87,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                                   b.EQPT_ID == eq_id &&
                                   b.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrSet
                             select b;
+
                 return alarm.Count();
             }
             catch (Exception ex)
@@ -103,6 +96,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
+
         public ALARM getSetAlarm(DBConnection_EF conn, string eq_id, string code)
         {
             var alarm = from b in conn.ALARM
@@ -110,16 +104,20 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                          b.EQPT_ID.Trim() == eq_id.Trim() &&
                          b.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrSet
                         select b;
+
             return alarm.FirstOrDefault();
         }
+
         public ALARM getAlarm(DBConnection_EF conn, string eq_id, string code)
         {
             var alarm = from b in conn.ALARM
                         where b.ALAM_CODE.Trim() == code.Trim() &&
                               b.EQPT_ID.Trim() == eq_id.Trim()
                         select b;
+
             return alarm.FirstOrDefault();
         }
+
         public ALARM getAlarm(DBConnection_EF conn, string eq_id, string cmd_id, string code)
         {
             var alarm = from b in conn.ALARM
@@ -127,8 +125,10 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                               b.EQPT_ID.Trim() == eq_id.Trim() &&
                               b.CMD_ID.Trim() == cmd_id.Trim()
                         select b;
+
             return alarm.FirstOrDefault();
         }
+
         public List<ALARM> loadAllAlarm(DBConnection_EF conn)
         {
             try
@@ -136,6 +136,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 var alarm = from a in conn.ALARM
                             orderby a.RPT_DATE_TIME descending
                             select a;
+
                 return alarm.Take(1000).ToList();
             }
             catch (Exception ex)
@@ -144,6 +145,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
+
         public List<ALARM> loadSetAlarm(DBConnection_EF conn, string eq_id)
         {
             try
@@ -152,6 +154,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                             where a.EQPT_ID == eq_id &&
                                   a.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrSet
                             select a;
+
                 return alarm.ToList();
             }
             catch (Exception ex)
@@ -160,6 +163,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
+
         public List<ALARM> loadSetAlarm(DBConnection_EF conn)
         {
             try
@@ -167,6 +171,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 var alarm = from a in conn.ALARM
                             where a.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrSet
                             select a;
+
                 return alarm.ToList();
             }
             catch (Exception ex)
@@ -175,6 +180,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
+
         public List<ALARM> loadSetAlarmByError(DBConnection_EF conn)
         {
             try
@@ -183,6 +189,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                             where a.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrSet
                             && a.ALAM_LVL == E_ALARM_LVL.Error
                             select a;
+
                 return alarm.ToList();
             }
             catch (Exception ex)
@@ -191,6 +198,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
+
         public List<ALARM> loadSetAlarmByWarn(DBConnection_EF conn)
         {
             try
@@ -199,6 +207,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                             where a.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrSet
                             && a.ALAM_LVL == E_ALARM_LVL.Warn
                             select a;
+
                 return alarm.ToList();
             }
             catch (Exception ex)
@@ -207,6 +216,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
+
         public List<ALARM> loadSetAlarmByEqName(DBConnection_EF conn, string eqName)
         {
             try
@@ -215,6 +225,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                             where a.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrSet
                                 && a.EQPT_ID == eqName
                             select a;
+
                 return alarm.ToList();
             }
             catch (Exception ex)
@@ -223,6 +234,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
+
         public int GetSetAlarmErrorCount(DBConnection_EF conn)
         {
             try
@@ -231,6 +243,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                             where a.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrSet &&
                                   a.ALAM_LVL == E_ALARM_LVL.Error
                             select a;
+
                 return alarm.Count();
             }
             catch (Exception ex)
@@ -239,6 +252,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
+
         public void DeleteAlarmByAlarmID(DBConnection_EF conn, ALARM alarm)
         {
             try
@@ -252,6 +266,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
+
         public IQueryable getQueryAllSQL(DBConnection_EF conn)
         {
             try
@@ -305,9 +320,5 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
 
             return compareTime > endTime;
         }
-
-
-
-
     }
 }

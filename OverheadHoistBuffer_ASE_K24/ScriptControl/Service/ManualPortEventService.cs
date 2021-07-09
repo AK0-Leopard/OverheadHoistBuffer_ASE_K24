@@ -2,6 +2,7 @@
 using com.mirle.ibg3k0.sc.BLL.Interface;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Extension;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 using com.mirle.ibg3k0.sc.Service.Interface;
@@ -169,7 +170,25 @@ namespace com.mirle.ibg3k0.sc.Service
 
             var logTitle = $"PortName[{args.PortName}] WaitIn => ";
 
-            WriteEventLog($"{logTitle} ReadResult[{readResult}] CarrierIdOfStage1[{stage1CarrierId}]");
+            WriteEventLog($"{logTitle} ReadResult[{readResult}] CarrierIdOfStage1[{stage1CarrierId}] CstType[{info.CstTypes}]({info.CarrierType})");
+
+            if (HasCstTypeMismatch(logTitle, info))
+            {
+                if (manualPorts.TryGetValue(args.PortName, out var plcPort))
+                {
+                    plcPort.SetMoveBackReasonAsync(MoveBackReasons.TypeMismatch);
+                    plcPort.MoveBackAsync();
+                    WriteEventLog($"{logTitle} Move Back  Reason:(TypeMismatch).");
+                }
+                else
+                {
+                    plcPort.SetMoveBackReasonAsync(MoveBackReasons.Other);
+                    plcPort.MoveBackAsync();
+                    WriteEventLog($"{logTitle} Cannot find [IManualPortValueDefMapAction] Move Back   Reason:(Other).");
+                }
+
+                return;
+            }
 
             if (cassetteDataBLL.GetCarrierByBoxId(info.CarrierIdOfStage1, out var duplicateCarrierId))
             {
@@ -180,6 +199,12 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             else
                 WaitInNormalProcess(logTitle, args.PortName, info);
+        }
+
+        private bool HasCstTypeMismatch(string logTitle, ManualPortPLCInfo info)
+        {
+            WriteEventLog($"{logTitle} OHBC does not implement mismatch check function.    Always return has no mismatch.");
+            return false;
         }
 
         private void WaitInDuplicateProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData)
@@ -195,7 +220,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             else
             {
-                WaitInDuplicateAtOhtProcess(logTitle, portName, duplicateCarrierData);
+                WaitInDuplicateAtOhtProcess(logTitle, portName, info, duplicateCarrierData);
             }
         }
 
@@ -216,13 +241,13 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (needRemoveDuplicateShelf)
             {
-                cassetteDataBLL.Install(portName, info.CarrierIdOfStage1);
-                WriteEventLog($"{logTitle} Install cassette data [{info.CarrierIdOfStage1}] at this port.");
+                cassetteDataBLL.Install(portName, info.CarrierIdOfStage1, info.CarrierType);
+                WriteEventLog($"{logTitle} Install cassette data [{info.CarrierIdOfStage1}] Type[{info.CarrierType}] at this port.");
             }
             else
             {
-                cassetteDataBLL.Install(portName, unknownId);
-                WriteEventLog($"{logTitle} Install cassette data [{unknownId}] at this port.");
+                cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
+                WriteEventLog($"{logTitle} Install cassette data [{unknownId}] Type[{info.CarrierType}] at this port.");
             }
 
             cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
@@ -279,7 +304,7 @@ namespace com.mirle.ibg3k0.sc.Service
             shelfDefBLL.SetStored(duplicateCarrierData.Carrier_LOC);
             WriteEventLog($"{logTitle} Set shelf stage of duplicate shelf[{duplicateCarrierData.Carrier_LOC}] to stored.");
 
-            cassetteDataBLL.Install(duplicateCarrierData.Carrier_LOC, unknownId);
+            cassetteDataBLL.Install(duplicateCarrierData.Carrier_LOC, unknownId, duplicateCarrierData.CSTType.ToCstType());
             WriteEventLog($"{logTitle} Install UnknownID[{unknownId}] on shelf[{duplicateCarrierData.Carrier_LOC}].");
         }
 
@@ -292,8 +317,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 WriteEventLog($"{logTitle} Duplicate carrier has command [{command.CMD_ID}] now.");
 
                 var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
-                cassetteDataBLL.Install(portName, unknownId);
-                WriteEventLog($"{logTitle} Install cassette data [{unknownId}] at this port.");
+                cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
+                WriteEventLog($"{logTitle} Install cassette data [{unknownId}] Type[{info.CarrierType}] at this port.");
 
                 cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
 
@@ -306,8 +331,8 @@ namespace com.mirle.ibg3k0.sc.Service
             cassetteDataBLL.Delete(duplicateCarrierData.BOXID);
             WriteEventLog($"{logTitle} Delete duplicate cassette data [{duplicateCarrierData.BOXID}].");
 
-            cassetteDataBLL.Install(portName, info.CarrierIdOfStage1);
-            WriteEventLog($"{logTitle} Install cassette data [{info.CarrierIdOfStage1}] at this port.");
+            cassetteDataBLL.Install(portName, info.CarrierIdOfStage1, info.CarrierType);
+            WriteEventLog($"{logTitle} Install cassette data [{info.CarrierIdOfStage1}] Type[{info.CarrierType}] at this port.");
 
             cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData2);
 
@@ -318,13 +343,13 @@ namespace com.mirle.ibg3k0.sc.Service
             ReportWaitIn(logTitle, cassetteData2);
         }
 
-        private void WaitInDuplicateAtOhtProcess(string logTitle, string portName, CassetteData duplicateCarrierData)
+        private void WaitInDuplicateAtOhtProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData)
         {
             WriteEventLog($"{logTitle} Duplicate at OHT ({duplicateCarrierData.Carrier_LOC}).");
 
             var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
-            cassetteDataBLL.Install(portName, unknownId);
-            WriteEventLog($"{logTitle} Install cassette data [{unknownId}] at this port.");
+            cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
+            WriteEventLog($"{logTitle} Install cassette data [{unknownId}] Type[{info.CarrierType}] at this port.");
 
             cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
 
@@ -338,8 +363,8 @@ namespace com.mirle.ibg3k0.sc.Service
 
             CheckResidualCassetteProcess(logTitle, portName);
 
-            cassetteDataBLL.Install(portName, info.CarrierIdOfStage1);
-            WriteEventLog($"{logTitle} Install cassette data at this port.");
+            cassetteDataBLL.Install(portName, info.CarrierIdOfStage1, info.CarrierType);
+            WriteEventLog($"{logTitle} Install cassette data [{info.CarrierIdOfStage1}] Type[{info.CarrierType}] at this port.");
 
             cassetteDataBLL.GetCarrierByPortName(portName, stage: 1, out var cassetteData);
 
@@ -509,7 +534,32 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-                throw new NotImplementedException();
+                var info = args.ManualPortPLCInfo;
+                var portName = args.PortName;
+                var logTitle = $"PortName[{args.PortName}] AlarmHappen => ";
+                WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
+
+                var alarmCode = info.AlarmCode.Trim();
+                var commandOfPort = GetCommandOfPort(info);
+
+                if (alarmBLL.SetAlarm(portName, alarmCode, commandOfPort, out var alarmReport, out var reasonOfAlarmSetFailed) == false)
+                {
+                    WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Set Alarm failed. ({reasonOfAlarmSetFailed}) Cannot report MCS Alarm.");
+                    return;
+                }
+
+                if (alarmReport.ALAM_LVL == E_ALARM_LVL.Error)
+                {
+                    reportBll.ReportAlarmSet(alarmReport);
+                    WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Alarm level is (Error). Report alarm set.");
+                }
+                else if (alarmReport.ALAM_LVL == E_ALARM_LVL.Warn)
+                {
+                    reportBll.ReportUnitAlarmSet(alarmReport);
+                    WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Alarm level is (Warn). Report unit alarm set.");
+                }
+                else
+                    WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Not reported because the alarm level is (None).  Should be (Error) or (Warn).");
             }
             catch (Exception ex)
             {
@@ -521,12 +571,53 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-                throw new NotImplementedException();
+                var info = args.ManualPortPLCInfo;
+                var portName = args.PortName;
+                var logTitle = $"PortName[{args.PortName}] AlarmClear => ";
+                WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
+
+                var alarmCode = info.AlarmCode.Trim();
+                var commandOfPort = GetCommandOfPort(info);
+
+                if (alarmBLL.ClearAllAlarm(portName, commandOfPort, out var alarmReports, out var reasonOfAlarmClearFailed) == false)
+                {
+                    WriteEventLog($"{logTitle} Clear all Alarm failed. ({reasonOfAlarmClearFailed}). Cannot report MCS Alarm.");
+                    return;
+                }
+
+                foreach (var alarm in alarmReports)
+                {
+                    if (alarm.ALAM_LVL == E_ALARM_LVL.Error)
+                    {
+                        reportBll.ReportAlarmClear(alarm);
+                        WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Alarm level is (Error). Report alarm clear.");
+                    }
+                    else if (alarm.ALAM_LVL == E_ALARM_LVL.Warn)
+                    {
+                        reportBll.ReportUnitAlarmClear(alarm);
+                        WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Alarm level is (Warn). Report unit alarm clear.");
+                    }
+                    else
+                        WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Not reported because the alarm level is (None).  Should be (Error) or (Warn).");
+                }
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "");
             }
+        }
+
+        private ACMD_MCS GetCommandOfPort(ManualPortPLCInfo info)
+        {
+            var hasCommand = commandBLL.GetCommandByBoxId(info.CarrierIdOfStage1, out var commandOfPort);
+            if (hasCommand == false)
+            {
+                commandOfPort = new ACMD_MCS();
+                commandOfPort.CMD_ID = "";
+                commandOfPort.BOX_ID = "";
+            }
+
+            return commandOfPort;
         }
 
         #endregion Alarm

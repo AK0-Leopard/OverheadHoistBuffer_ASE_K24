@@ -4,5 +4,6 @@
     {
         A,
         B,
+        Undefined,
     }
 }

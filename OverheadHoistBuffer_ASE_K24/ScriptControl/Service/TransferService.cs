@@ -7457,14 +7457,8 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 if (alarm != null)
                 {
-                    //if (isUnitType(alarm.EQPT_ID, UnitType.CRANE) || isUnitType(alarm.EQPT_ID, UnitType.LINE) || alarm.EQPT_ID.Contains("LINE"))
-                    //{
                     if (alarm.ALAM_LVL == E_ALARM_LVL.Error)
                     {
-                        //if(alarmBLL.loadSetAlarmListByEqName(alarmEq).Count == 1)
-                        //{
-                        //    reportBLL.ReportAlarmHappend(ErrorStatus.ErrSet, alarm.ALAM_CODE, alarm.ALAM_DESC);
-                        //}
                         reportBLL.ReportAlarmHappend(ErrorStatus.ErrSet, alarm.ALAM_CODE, alarm.ALAM_DESC);
                         reportBLL.ReportAlarmSet(mcsCmdData, alarm, alarm.UnitID, alarm.UnitState, alarm.RecoveryOption);
                     }
@@ -7472,11 +7466,6 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         reportBLL.ReportUnitAlarmSet(alarm.EQPT_ID, alarm.ALAM_CODE, alarm.ALAM_DESC);
                     }
-                    //}
-                    //else
-                    //{
-                    //    reportBLL.ReportUnitAlarmSet(alarm.EQPT_ID, alarm.ALAM_CODE, alarm.ALAM_DESC);
-                    //}
                 }
             }
             catch (Exception ex)
@@ -7528,43 +7517,21 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 string alarmEq = craneName;
 
-                //if (isAGVZone(craneName))
-                //{
-                //    alarmEq = craneName.Remove(0, 12);
-                //}
-
                 ALARM alarm = scApp.AlarmBLL.loadAlarmByAlarmID(alarmEq, errCode);
 
                 if (alarm != null)
                 {
                     string eqID = alarm.EQPT_ID.Trim();
 
-                    //if (isUnitType(alarm.EQPT_ID, UnitType.CRANE) || isUnitType(alarm.EQPT_ID, UnitType.LINE) || alarm.EQPT_ID.Contains("LINE"))
-                    //{
-                    //if (isUnitType(craneName, UnitType.CRANE) == false)
-                    //{
-                    //    alarm.EQPT_ID = "";
-                    //    alarm.UnitID = "";
-                    //}
-
                     if (alarm.ALAM_LVL == E_ALARM_LVL.Error)
                     {
                         reportBLL.ReportAlarmCleared(mcsCmdData, alarm, alarm.UnitID.Trim(), alarm.UnitState.Trim());
                         scApp.ReportBLL.ReportAlarmHappend(ErrorStatus.ErrReset, alarm.ALAM_CODE.Trim(), alarm.ALAM_DESC.Trim());
-                        //if (alarmBLL.loadSetAlarmListByEqName(eqID).Count == 1)
-                        //{
-                        //    scApp.ReportBLL.ReportAlarmHappend(ErrorStatus.ErrReset, alarm.ALAM_CODE.Trim(), alarm.ALAM_DESC.Trim());
-                        //}
                     }
                     else if (alarm.ALAM_LVL == E_ALARM_LVL.Warn)
                     {
                         reportBLL.ReportUnitAlarmCleared(alarm.EQPT_ID, alarm.ALAM_CODE, alarm.ALAM_DESC);
                     }
-                    //}
-                    //else
-                    //{
-                    //    reportBLL.ReportUnitAlarmCleared(alarm.EQPT_ID, alarm.ALAM_CODE, alarm.ALAM_DESC);
-                    //}
 
                     scApp.AlarmBLL.resetAlarmReport(eqID, alarm.ALAM_CODE);
 
