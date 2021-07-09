@@ -450,10 +450,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     if (alarmCode == 0)
                         OnAlarmClear?.Invoke(this, new ManualPortEventArgs(function));
                     else
-                        OnAlarmHappen?.Invoke(this, new ManualPortEventArgs(function));
+                        WarningHappen(function);
                 }
                 else
-                    OnAlarmHappen?.Invoke(this, new ManualPortEventArgs(function));
+                    AlarmHappen(function);
             }
             catch (Exception ex)
             {
@@ -463,6 +463,16 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 scApp.putFunBaseObj<ManualPortPLCInfo>(function);
             }
+        }
+
+        private void WarningHappen(ManualPortPLCInfo function)
+        {
+            OnAlarmHappen?.Invoke(this, new ManualPortEventArgs(function));
+        }
+
+        private void AlarmHappen(ManualPortPLCInfo function)
+        {
+            OnAlarmHappen?.Invoke(this, new ManualPortEventArgs(function));
         }
 
         #region Control

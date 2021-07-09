@@ -48,6 +48,7 @@
     <Compile Include="StubObjects\MockCassetteDataBLL.cs" />
     <Compile Include="StubObjects\MockReportBLL.cs" />
     <Compile Include="StubObjects\NStubObject.cs" />
+    <Compile Include="StubObjects\StubAlarmBLL.cs" />
     <Compile Include="TestAlarmProcess.cs" />
     <Compile Include="TestDirectionChangeProcess.cs" />
     <Compile Include="TestInServiceChangedProcess.cs" />

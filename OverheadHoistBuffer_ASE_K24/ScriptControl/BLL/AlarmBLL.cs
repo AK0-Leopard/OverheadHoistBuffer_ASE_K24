@@ -126,12 +126,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             lock (lock_obj_alarm)
             {
                 string alarmEq = eq_id;
-                //if (scApp.TransferService.isUnitType(eq_id, UnitType.AGVZONE))
-                //{
-                //    alarmEq = eq_id.Remove(0, 12);
-                //}
 
-                if (IsAlarmExist(alarmEq, error_code)) return null;
+                if (IsAlarmExist(alarmEq, error_code))
+                    return null;
+
                 string alarmUnitType = "LINE";
 
                 if (scApp.TransferService.isUnitType(eq_id, UnitType.AGV))
@@ -165,7 +163,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     //B7_OHBLINE1_ST01
                     alarmUnitType = "LINE";
-                    //eq_id = eq_id.Remove(0, 12);
                 }
 
                 AlarmMap alarmMap = alarmMapDao.getAlarmMap(alarmUnitType, error_code);
@@ -202,7 +199,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                     ALAM_CODE = error_code,
                     ALAM_LVL = alarmMap == null ? E_ALARM_LVL.Warn : alarmMap.ALARM_LVL,
                     ALAM_STAT = ProtocolFormat.OHTMessage.ErrorStatus.ErrSet,
-                    //ALAM_DESC = alarmMap == null ? $"unknow alarm code:{error_code}" : $"{eq_id} {alarmMap.ALARM_DESC}(error code:{error_code})",
                     ALAM_DESC = alam_desc,
                     ERROR_ID = error_code,  //alarmMap?.ALARM_ID ?? "0",
                     UnitID = eq_id,
@@ -240,12 +236,6 @@ namespace com.mirle.ibg3k0.sc.BLL
 
                     CheckSetAlarm();
                 }
-
-                //if (scApp.TransferService.isUnitType(eq_id, UnitType.CRANE) == false)
-                //{
-                //    alarm.EQPT_ID = "";
-                //    alarm.UnitID = "";
-                //}
 
                 return alarm;
             }
@@ -539,40 +529,14 @@ namespace com.mirle.ibg3k0.sc.BLL
 
     public partial class AlarmBLL : IManualPortAlarmBLL
     {
-        public bool GetAlarmReport(string eqId, string alarmCode, out ALARM alarmReport)
+        public bool ClearAllAlarm(string portName, ACMD_MCS commandOfPort, out List<ALARM> alarmReports)
         {
-            try
-            {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                {
-                    alarmReport = alarmDao.getAlarm(con, eqId, alarmCode);
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                alarmReport = null;
-                logger.Error(ex, "Exception");
-                return false;
-            }
+            throw new NotImplementedException();
         }
 
-        public bool GetAlarmReport(string eqId, string alarmCode, string commandId, out ALARM alarmReport)
+        public bool SetAlarm(string portName, string alarmCode, ACMD_MCS commandOfPort, out ALARM alarmReport)
         {
-            try
-            {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                {
-                    alarmReport = alarmDao.getAlarm(con, eqId, alarmCode);
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                alarmReport = null;
-                logger.Error(ex, "Exception");
-                return false;
-            }
+            throw new NotImplementedException();
         }
     }
 }

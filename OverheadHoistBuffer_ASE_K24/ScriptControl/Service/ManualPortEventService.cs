@@ -509,7 +509,32 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-                throw new NotImplementedException();
+                var info = args.ManualPortPLCInfo;
+                var portName = args.PortName;
+                var logTitle = $"PortName[{args.PortName}] AlarmHappen => ";
+                WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
+
+                var alarmCode = info.AlarmCode.Trim();
+                var commandOfPort = GetCommandOfPort(info);
+
+                if (alarmBLL.SetAlarm(portName, alarmCode, commandOfPort, out var alarmReport) == false)
+                {
+                    WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Set Alarm failed. Cannot report MCS Alarm.");
+                    return;
+                }
+
+                if (alarmReport.ALAM_LVL == E_ALARM_LVL.Error)
+                {
+                    reportBll.ReportAlarmSet(alarmReport);
+                    WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Alarm level is (Error). Report alarm set.");
+                }
+                else if (alarmReport.ALAM_LVL == E_ALARM_LVL.Warn)
+                {
+                    reportBll.ReportUnitAlarmSet(alarmReport);
+                    WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Alarm level is (Warn). Report unit alarm set.");
+                }
+                else
+                    WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Not reported because the alarm level is (None).  Should be (Error) or (Warn).");
             }
             catch (Exception ex)
             {
@@ -521,12 +546,53 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-                throw new NotImplementedException();
+                var info = args.ManualPortPLCInfo;
+                var portName = args.PortName;
+                var logTitle = $"PortName[{args.PortName}] AlarmClear => ";
+                WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
+
+                var alarmCode = info.AlarmCode.Trim();
+                var commandOfPort = GetCommandOfPort(info);
+
+                if (alarmBLL.ClearAllAlarm(portName, commandOfPort, out var alarmReports) == false)
+                {
+                    WriteEventLog($"{logTitle} Clear all Alarm failed. Cannot report MCS Alarm.");
+                    return;
+                }
+
+                foreach (var alarm in alarmReports)
+                {
+                    if (alarm.ALAM_LVL == E_ALARM_LVL.Error)
+                    {
+                        reportBll.ReportAlarmClear(alarm);
+                        WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Alarm level is (Error). Report alarm clear.");
+                    }
+                    else if (alarm.ALAM_LVL == E_ALARM_LVL.Warn)
+                    {
+                        reportBll.ReportUnitAlarmClear(alarm);
+                        WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Alarm level is (Warn). Report unit alarm clear.");
+                    }
+                    else
+                        WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Not reported because the alarm level is (None).  Should be (Error) or (Warn).");
+                }
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "");
             }
+        }
+
+        private ACMD_MCS GetCommandOfPort(ManualPortPLCInfo info)
+        {
+            var hasCommand = commandBLL.GetCommandByBoxId(info.CarrierIdOfStage1, out var commandOfPort);
+            if (hasCommand == false)
+            {
+                commandOfPort = new ACMD_MCS();
+                commandOfPort.CMD_ID = "";
+                commandOfPort.BOX_ID = "";
+            }
+
+            return commandOfPort;
         }
 
         #endregion Alarm
