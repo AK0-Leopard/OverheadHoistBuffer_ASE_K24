@@ -24,6 +24,8 @@ namespace com.mirle.ibg3k0.sc.BLL._191204Test.Extensions
                 return UnitType.SHELF;
             else if (portDef.UnitType == "STK")
                 return UnitType.STK;
+            else if (portDef.UnitType == "MGV")
+                return UnitType.MGV;
             else
                 return UnitType.ZONE;
         }
@@ -33,9 +35,5 @@ namespace com.mirle.ibg3k0.sc.BLL._191204Test.Extensions
             return type == UnitType.SHELF;
         }
 
-        public static bool IsOhcvPort(this UnitType type)
-        {
-            return type == UnitType.OHCV;
-        }
     }
 }

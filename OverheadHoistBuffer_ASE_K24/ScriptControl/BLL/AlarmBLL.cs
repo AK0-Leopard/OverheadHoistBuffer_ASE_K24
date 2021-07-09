@@ -165,6 +165,15 @@ namespace com.mirle.ibg3k0.sc.BLL
                     //B7_OHBLINE1_ST01
                     alarmUnitType = "LINE";
                 }
+                else if (scApp.TransferService.isUnitType(eq_id, UnitType.MGV))
+                {
+                    //B7_OHBLINE1_ST01
+                    alarmUnitType = "MGV";
+                }
+                else if (scApp.TransferService.isUnitType(eq_id, UnitType.EQ))
+                {
+                    //不會上報Eq的alarm
+                }
 
                 AlarmMap alarmMap = alarmMapDao.getAlarmMap(alarmUnitType, error_code);
                 string alam_desc = "";

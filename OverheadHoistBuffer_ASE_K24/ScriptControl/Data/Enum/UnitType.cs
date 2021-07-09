@@ -11,6 +11,7 @@
         ZONE,
         AGVZONE,
         LINE,
-        EQ
+        EQ,
+        MGV
     }
 }

@@ -750,7 +750,7 @@ namespace com.mirle.ibg3k0.sc.Common
                     return UnitType.EQ.ToString();
 
                 case SCAppConstants.EqptType.MGV:
-                    return UnitType.OHCV.ToString();
+                    return UnitType.MGV.ToString();
 
                 default:
                     return UnitType.EQ.ToString();
