@@ -537,7 +537,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 var info = args.ManualPortPLCInfo;
                 var portName = args.PortName;
                 var logTitle = $"PortName[{args.PortName}] AlarmHappen => ";
-                WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
+                WriteEventLog($"{logTitle} AlarmIndex[{info.ErrorIndex}] AlarmCode[{info.AlarmCode}] IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
 
                 var alarmCode = info.AlarmCode.Trim();
                 var commandOfPort = GetCommandOfPort(info);
@@ -560,6 +560,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else
                     WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Not reported because the alarm level is (None).  Should be (Error) or (Warn).");
+
+                UpdateOHBCErrorIndex(logTitle, args);
             }
             catch (Exception ex)
             {
@@ -574,7 +576,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 var info = args.ManualPortPLCInfo;
                 var portName = args.PortName;
                 var logTitle = $"PortName[{args.PortName}] AlarmClear => ";
-                WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
+                WriteEventLog($"{logTitle} AlarmIndex[{info.ErrorIndex}] AlarmCode[{info.AlarmCode}] IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
 
                 var alarmCode = info.AlarmCode.Trim();
                 var commandOfPort = GetCommandOfPort(info);
@@ -600,11 +602,26 @@ namespace com.mirle.ibg3k0.sc.Service
                     else
                         WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Not reported because the alarm level is (None).  Should be (Error) or (Warn).");
                 }
+
+                UpdateOHBCErrorIndex(logTitle, args);
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "");
             }
+        }
+
+        private void UpdateOHBCErrorIndex(string logTitle, ManualPortEventArgs args)
+        {
+            var info = args.ManualPortPLCInfo;
+
+            if (manualPorts.TryGetValue(args.PortName, out var plcAction))
+            {
+                plcAction.SetControllerErrorIndexAsync(info.ErrorIndex);
+                WriteEventLog($"{logTitle} Set OHBC AlarmIndex to [{info.ErrorIndex}]");
+            }
+            else
+                WriteEventLog($"{logTitle} Set OHBC AlarmIndex to [{info.ErrorIndex}] Failed. Cannot find IManualPortValueDefMapAction by PortName[{args.PortName}]");
         }
 
         private ACMD_MCS GetCommandOfPort(ManualPortPLCInfo info)
