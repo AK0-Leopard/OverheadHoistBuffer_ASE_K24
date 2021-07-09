@@ -1,6 +1,4 @@
-﻿using com.mirle.ibg3k0.bcf.Data.ValueDefMapAction;
-using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
-using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
+﻿using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using System.Threading.Tasks;
 using static com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events.ManualPortEvents;
 
@@ -31,5 +29,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface
         Task MoveBackAsync();
 
         Task SetMoveBackReasonAsync(MoveBackReasons reason);
+
+        Task TimeCalibrationAsync();
     }
 }

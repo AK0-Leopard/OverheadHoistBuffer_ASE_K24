@@ -18,6 +18,7 @@ using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
+using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Extension;
 using NLog;
 using System;
 using System.Threading.Tasks;
@@ -571,7 +572,33 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             return Task.Run(() =>
             {
-                throw new NotImplementedException();
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+
+                if (newIndex <= 65535)
+                    function.OhbcErrorIndex = (UInt16)(newIndex);
+                else
+                    function.OhbcErrorIndex = 1;
+
+                CommitChange(function);
+            });
+        }
+
+        public Task TimeCalibrationAsync()
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+
+                function.TimeCalibrationBcdYearMonth = (UInt16)((DateTime.Now.Year.ToBCD() - 2000) * 256 + DateTime.Now.Month.ToBCD());
+                function.TimeCalibrationBcdDayHour = (UInt16)(DateTime.Now.Day.ToBCD() * 256 + DateTime.Now.Hour.ToBCD());
+                function.TimeCalibrationBcdMinuteSecond = (UInt16)(DateTime.Now.Minute.ToBCD() * 256 + DateTime.Now.Second.ToBCD());
+
+                if (function.TimeCalibrationIndex < 65535)
+                    function.TimeCalibrationIndex = (UInt16)(function.OhbcErrorIndex + 1);
+                else
+                    function.TimeCalibrationIndex = 1;
+
+                CommitChange(function);
             });
         }
 
@@ -595,7 +622,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
         #endregion Control
 
-        //public ManualPortPLCInfo GetPortState()
         public object GetPortState()
         {
             return scApp.getFunBaseObj<ManualPortPLCInfo>(port.PORT_ID) as ManualPortPLCInfo;

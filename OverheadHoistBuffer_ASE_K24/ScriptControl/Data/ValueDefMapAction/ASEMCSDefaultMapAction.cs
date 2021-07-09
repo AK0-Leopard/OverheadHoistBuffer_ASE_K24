@@ -2345,9 +2345,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         //        logger.Error("MESDefaultMapAction has Error[Line Name:{0}],[Error method:{1}],[Error Message:{2}", line.LINE_ID, "S5F5ReceiveListAlarmRequest", ex.ToString());
         //    }
         //}
+
         #endregion Receive
-
-
 
         #region Send
 
@@ -4706,6 +4705,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     .getMapActionByIdentityKey(typeof(PLCSystemInfoMapAction).Name) as PLCSystemInfoMapAction;
                 systemTimeMapAction.PLC_SetSystemTime();
                 systemTimeMapAction.PLC_FinishTimeCalibration();
+
+                //與 Manual Port 同步時間
+                //MGVDefaultValueDefMapAction systemTimeMapAction = scApp.getEQObjCacheManager().getPortStationByPortID("MASTER_PLC")
+                //   .getMapActionByIdentityKey(typeof(MGVDefaultValueDefMapAction).Name) as MGVDefaultValueDefMapAction;
             }
             catch (Exception ex)
             {
