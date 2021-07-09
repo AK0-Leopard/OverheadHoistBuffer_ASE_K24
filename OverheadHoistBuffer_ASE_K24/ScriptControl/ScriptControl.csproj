@@ -644,6 +644,7 @@
     <Compile Include="Data\PLC_Functions\MGV\Enums\CstType.cs" />
     <Compile Include="Data\PLC_Functions\MGV\Enums\DirectionType.cs" />
     <Compile Include="Data\PLC_Functions\MGV\Enums\MoveBackReasons.cs" />
+    <Compile Include="Data\PLC_Functions\MGV\Extension\ManualPortExtensions.cs" />
     <Compile Include="Data\PLC_Functions\MGV\ManualPortPLCControl.cs" />
     <Compile Include="Data\PLC_Functions\MGV\ManualPortPLCInfo.cs" />
     <Compile Include="Data\PLC_Functions\MGV\OHxCToMGV_Status.cs" />

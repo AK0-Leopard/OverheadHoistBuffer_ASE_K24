@@ -2,10 +2,12 @@
 using com.mirle.ibg3k0.sc.BLL.Interface;
 using com.mirle.ibg3k0.sc.Data.Enum;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 using com.mirle.ibg3k0.sc.Service;
 using com.mirle.ibg3k0.sc.Service.Interface;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Extension;
 using NSubstitute;
 using NUnit.Framework;
 using UnitTestForMGVPort.StubObjects;
@@ -57,23 +59,25 @@ namespace UnitTestForMGVPort
             return info;
         }
 
-        private CassetteData GetCarrierOnShelf(string carrierId)
+        private CassetteData GetCarrierOnShelf(string carrierId, CstType type = CstType.A)
         {
             var cassette = new CassetteData();
             cassette.Carrier_LOC = "100101";
             cassette.BOXID = carrierId;
             cassette.CSTState = E_CSTState.Installed;
             cassette.Stage = 1;
+            cassette.CSTType = type.ToString();
             return cassette;
         }
 
-        private CassetteData GetCarrierOnPort(string carrierId, int stage)
+        private CassetteData GetCarrierOnPort(string carrierId, int stage, CstType type = CstType.A)
         {
             var cassette = new CassetteData();
             cassette.Carrier_LOC = _otherPortName;
             cassette.BOXID = carrierId;
             cassette.CSTState = E_CSTState.Installed;
             cassette.Stage = stage;
+            cassette.CSTType = type.ToString();
             return cassette;
         }
 
@@ -165,7 +169,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
-            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
             var shelfPortDef = GetShelfPortDef(carrierOnShelf.Carrier_LOC);
             stub.PortDefBLL.GetPortDef(carrierOnShelf.Carrier_LOC, out Arg.Any<PortDef>()).Returns(c => { c[1] = shelfPortDef; return true; });
@@ -186,7 +190,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
-            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
             var shelfPortDef = GetShelfPortDef(carrierOnShelf.Carrier_LOC);
             stub.PortDefBLL.GetPortDef(carrierOnShelf.Carrier_LOC, out Arg.Any<PortDef>()).Returns(c => { c[1] = shelfPortDef; return true; });
@@ -207,7 +211,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
-            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
             var shelfPortDef = GetShelfPortDef(carrierOnShelf.Carrier_LOC);
             stub.PortDefBLL.GetPortDef(carrierOnShelf.Carrier_LOC, out Arg.Any<PortDef>()).Returns(c => { c[1] = shelfPortDef; return true; });
@@ -227,7 +231,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
-            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
             var shelfPortDef = GetShelfPortDef(carrierOnShelf.Carrier_LOC);
             stub.PortDefBLL.GetPortDef(carrierOnShelf.Carrier_LOC, out Arg.Any<PortDef>()).Returns(c => { c[1] = shelfPortDef; return true; });
@@ -247,7 +251,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
-            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
             var shelfPortDef = GetShelfPortDef(carrierOnShelf.Carrier_LOC);
             stub.PortDefBLL.GetPortDef(carrierOnShelf.Carrier_LOC, out Arg.Any<PortDef>()).Returns(c => { c[1] = shelfPortDef; return true; });
@@ -268,7 +272,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
-            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
             var command = GetCommand(carrierId, E_TRAN_STATUS.Transferring);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out Arg.Any<ACMD_MCS>()).Returns(c => { c[1] = command; return true; });
             var shelfPortDef = GetShelfPortDef(carrierOnShelf.Carrier_LOC);
@@ -290,7 +294,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
-            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
             var command = GetCommand(carrierId, E_TRAN_STATUS.Transferring);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out Arg.Any<ACMD_MCS>()).Returns(c => { c[1] = command; return true; });
             var shelfPortDef = GetShelfPortDef(carrierOnShelf.Carrier_LOC);
@@ -312,7 +316,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
-            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
             var command = GetCommand(carrierId, E_TRAN_STATUS.Transferring);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out Arg.Any<ACMD_MCS>()).Returns(c => { c[1] = command; return true; });
             var shelfPortDef = GetShelfPortDef(carrierOnShelf.Carrier_LOC);
@@ -338,7 +342,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
-            stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID, carrierOnPort.CSTType.ToCstType());
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
             var portDef = GetPortDef(carrierOnPort.Carrier_LOC);
             stub.PortDefBLL.GetPortDef(carrierOnPort.Carrier_LOC, out Arg.Any<PortDef>()).Returns(c => { c[1] = portDef; return true; });
@@ -359,7 +363,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
-            stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID, carrierOnPort.CSTType.ToCstType());
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
             var portDef = GetPortDef(carrierOnPort.Carrier_LOC);
             stub.PortDefBLL.GetPortDef(carrierOnPort.Carrier_LOC, out Arg.Any<PortDef>()).Returns(c => { c[1] = portDef; return true; });
@@ -380,7 +384,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
-            stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID, carrierOnPort.CSTType.ToCstType());
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
             var portDef = GetPortDef(carrierOnPort.Carrier_LOC);
             stub.PortDefBLL.GetPortDef(carrierOnPort.Carrier_LOC, out Arg.Any<PortDef>()).Returns(c => { c[1] = portDef; return true; });
@@ -402,7 +406,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
-            stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID, carrierOnPort.CSTType.ToCstType());
             var command = GetCommand(carrierId, E_TRAN_STATUS.Queue);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out Arg.Any<ACMD_MCS>()).Returns(c => { c[1] = command; return true; });
             var portDef = GetPortDef(carrierOnPort.Carrier_LOC);
@@ -424,7 +428,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
-            stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID);
+            stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID, carrierOnPort.CSTType.ToCstType());
             var command = GetCommand(carrierId, E_TRAN_STATUS.Queue);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out Arg.Any<ACMD_MCS>()).Returns(c => { c[1] = command; return true; });
             var portDef = GetPortDef(carrierOnPort.Carrier_LOC);
@@ -449,9 +453,9 @@ namespace UnitTestForMGVPort
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var residueCarrierID = "B";
-            var info = GetWaitInInfo(carrierId);
-            stub.CassetteDataBLL.Install(_portName, residueCarrierID);
+            stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.A);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
+            var info = GetWaitInInfo(carrierId);
 
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
@@ -469,7 +473,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var residueCarrierID = "B";
             var info = GetWaitInInfo(carrierId);
-            stub.CassetteDataBLL.Install(_portName, residueCarrierID);
+            stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.A);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
 
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
@@ -488,7 +492,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var residueCarrierID = "B";
             var info = GetWaitInInfo(carrierId);
-            stub.CassetteDataBLL.Install(_portName, residueCarrierID);
+            stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.A);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
 
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));

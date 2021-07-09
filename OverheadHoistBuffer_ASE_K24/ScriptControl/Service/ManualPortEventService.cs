@@ -2,6 +2,7 @@
 using com.mirle.ibg3k0.sc.BLL.Interface;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Extension;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 using com.mirle.ibg3k0.sc.Service.Interface;
@@ -195,7 +196,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             else
             {
-                WaitInDuplicateAtOhtProcess(logTitle, portName, duplicateCarrierData);
+                WaitInDuplicateAtOhtProcess(logTitle, portName, info, duplicateCarrierData);
             }
         }
 
@@ -216,12 +217,12 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (needRemoveDuplicateShelf)
             {
-                cassetteDataBLL.Install(portName, info.CarrierIdOfStage1);
+                cassetteDataBLL.Install(portName, info.CarrierIdOfStage1, info.CarrierType);
                 WriteEventLog($"{logTitle} Install cassette data [{info.CarrierIdOfStage1}] at this port.");
             }
             else
             {
-                cassetteDataBLL.Install(portName, unknownId);
+                cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
                 WriteEventLog($"{logTitle} Install cassette data [{unknownId}] at this port.");
             }
 
@@ -279,7 +280,7 @@ namespace com.mirle.ibg3k0.sc.Service
             shelfDefBLL.SetStored(duplicateCarrierData.Carrier_LOC);
             WriteEventLog($"{logTitle} Set shelf stage of duplicate shelf[{duplicateCarrierData.Carrier_LOC}] to stored.");
 
-            cassetteDataBLL.Install(duplicateCarrierData.Carrier_LOC, unknownId);
+            cassetteDataBLL.Install(duplicateCarrierData.Carrier_LOC, unknownId, duplicateCarrierData.CSTType.ToCstType());
             WriteEventLog($"{logTitle} Install UnknownID[{unknownId}] on shelf[{duplicateCarrierData.Carrier_LOC}].");
         }
 
@@ -292,7 +293,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 WriteEventLog($"{logTitle} Duplicate carrier has command [{command.CMD_ID}] now.");
 
                 var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
-                cassetteDataBLL.Install(portName, unknownId);
+                cassetteDataBLL.Install(portName, unknownId, duplicateCarrierData.CSTType.ToCstType());
                 WriteEventLog($"{logTitle} Install cassette data [{unknownId}] at this port.");
 
                 cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
@@ -306,7 +307,7 @@ namespace com.mirle.ibg3k0.sc.Service
             cassetteDataBLL.Delete(duplicateCarrierData.BOXID);
             WriteEventLog($"{logTitle} Delete duplicate cassette data [{duplicateCarrierData.BOXID}].");
 
-            cassetteDataBLL.Install(portName, info.CarrierIdOfStage1);
+            cassetteDataBLL.Install(portName, info.CarrierIdOfStage1, info.CarrierType);
             WriteEventLog($"{logTitle} Install cassette data [{info.CarrierIdOfStage1}] at this port.");
 
             cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData2);
@@ -318,12 +319,12 @@ namespace com.mirle.ibg3k0.sc.Service
             ReportWaitIn(logTitle, cassetteData2);
         }
 
-        private void WaitInDuplicateAtOhtProcess(string logTitle, string portName, CassetteData duplicateCarrierData)
+        private void WaitInDuplicateAtOhtProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData)
         {
             WriteEventLog($"{logTitle} Duplicate at OHT ({duplicateCarrierData.Carrier_LOC}).");
 
             var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
-            cassetteDataBLL.Install(portName, unknownId);
+            cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
             WriteEventLog($"{logTitle} Install cassette data [{unknownId}] at this port.");
 
             cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
@@ -338,7 +339,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
             CheckResidualCassetteProcess(logTitle, portName);
 
-            cassetteDataBLL.Install(portName, info.CarrierIdOfStage1);
+            cassetteDataBLL.Install(portName, info.CarrierIdOfStage1, info.CarrierType);
             WriteEventLog($"{logTitle} Install cassette data at this port.");
 
             cassetteDataBLL.GetCarrierByPortName(portName, stage: 1, out var cassetteData);
@@ -517,9 +518,9 @@ namespace com.mirle.ibg3k0.sc.Service
                 var alarmCode = info.AlarmCode.Trim();
                 var commandOfPort = GetCommandOfPort(info);
 
-                if (alarmBLL.SetAlarm(portName, alarmCode, commandOfPort, out var alarmReport) == false)
+                if (alarmBLL.SetAlarm(portName, alarmCode, commandOfPort, out var alarmReport, out var reasonOfAlarmSetFailed) == false)
                 {
-                    WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Set Alarm failed. Cannot report MCS Alarm.");
+                    WriteEventLog($"{logTitle} AlarmCode[{info.AlarmCode}] Set Alarm failed. ({reasonOfAlarmSetFailed}) Cannot report MCS Alarm.");
                     return;
                 }
 
@@ -554,9 +555,9 @@ namespace com.mirle.ibg3k0.sc.Service
                 var alarmCode = info.AlarmCode.Trim();
                 var commandOfPort = GetCommandOfPort(info);
 
-                if (alarmBLL.ClearAllAlarm(portName, commandOfPort, out var alarmReports) == false)
+                if (alarmBLL.ClearAllAlarm(portName, commandOfPort, out var alarmReports, out var reasonOfAlarmClearFailed) == false)
                 {
-                    WriteEventLog($"{logTitle} Clear all Alarm failed. Cannot report MCS Alarm.");
+                    WriteEventLog($"{logTitle} Clear all Alarm failed. ({reasonOfAlarmClearFailed}). Cannot report MCS Alarm.");
                     return;
                 }
 

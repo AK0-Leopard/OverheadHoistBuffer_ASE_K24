@@ -1,4 +1,6 @@
-﻿namespace com.mirle.ibg3k0.sc.BLL.Interface
+﻿using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
+
+namespace com.mirle.ibg3k0.sc.BLL.Interface
 {
     public interface IManualPortCassetteDataBLL
     {
@@ -8,6 +10,6 @@
 
         void Delete(string carrierId);
 
-        void Install(string carrierLocation, string carrierId);
+        void Install(string carrierLocation, string carrierId, CstType type);
     }
 }
