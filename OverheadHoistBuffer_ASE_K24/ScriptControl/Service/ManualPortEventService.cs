@@ -172,6 +172,24 @@ namespace com.mirle.ibg3k0.sc.Service
 
             WriteEventLog($"{logTitle} ReadResult[{readResult}] CarrierIdOfStage1[{stage1CarrierId}] CstType[{info.CstTypes}]({info.CarrierType})");
 
+            if (HasCstTypeMismatch(logTitle, info))
+            {
+                if (manualPorts.TryGetValue(args.PortName, out var plcPort))
+                {
+                    plcPort.SetMoveBackReasonAsync(MoveBackReasons.TypeMismatch);
+                    plcPort.MoveBackAsync();
+                    WriteEventLog($"{logTitle} Move Back  Reason:(TypeMismatch).");
+                }
+                else
+                {
+                    plcPort.SetMoveBackReasonAsync(MoveBackReasons.Other);
+                    plcPort.MoveBackAsync();
+                    WriteEventLog($"{logTitle} Cannot find [IManualPortValueDefMapAction] Move Back   Reason:(Other).");
+                }
+
+                return;
+            }
+
             if (cassetteDataBLL.GetCarrierByBoxId(info.CarrierIdOfStage1, out var duplicateCarrierId))
             {
                 if (duplicateCarrierId.Carrier_LOC != args.PortName)
@@ -181,6 +199,12 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             else
                 WaitInNormalProcess(logTitle, args.PortName, info);
+        }
+
+        private bool HasCstTypeMismatch(string logTitle, ManualPortPLCInfo info)
+        {
+            WriteEventLog($"{logTitle} OHBC does not implement mismatch check function.    Always return has no mismatch.");
+            return false;
         }
 
         private void WaitInDuplicateProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData)
