@@ -191,9 +191,9 @@ namespace com.mirle.ibg3k0.bc.winform
             #region dataGridView4
             string read_result = "";
             string carrier_type = "";
-            if (port is MGV_PORTSTATION)
+            if (port is MANUAL_PORTSTATION)
             {
-                var manual_port_info = (port as MGV_PORTSTATION).getManualPortPLCInfo();
+                var manual_port_info = (port as MANUAL_PORTSTATION).getManualPortPLCInfo();
                 read_result = manual_port_info.CarrierIdReadResult;
                 carrier_type = manual_port_info.CarrierType.ToString();
             }
@@ -485,9 +485,9 @@ namespace com.mirle.ibg3k0.bc.winform
         private void moveBack_Click_1(object sender, EventArgs e)
         {
             var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
-            if (port is MGV_PORTSTATION)
+            if (port is MANUAL_PORTSTATION)
             {
-                var manual_port = port as MGV_PORTSTATION;
+                var manual_port = port as MANUAL_PORTSTATION;
                 manual_port.MoveBackAsync();
             }
             else
@@ -502,10 +502,10 @@ namespace com.mirle.ibg3k0.bc.winform
         {
 
             var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
-            if (port is MGV_PORTSTATION)
+            if (port is MANUAL_PORTSTATION)
             {
                 Enum.TryParse<MoveBackReasons>(cmb_moveBackReason.SelectedValue.ToString(), out MoveBackReasons moveBackReasons);
-                var manual_port = port as MGV_PORTSTATION;
+                var manual_port = port as MANUAL_PORTSTATION;
                 manual_port.SetMoveBackReasonAsync(moveBackReasons);
             }
             else

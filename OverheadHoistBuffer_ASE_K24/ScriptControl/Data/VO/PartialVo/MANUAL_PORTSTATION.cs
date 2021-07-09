@@ -10,9 +10,9 @@ using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 
 namespace com.mirle.ibg3k0.sc
 {
-    public partial class MGV_PORTSTATION : APORTSTATION
+    public partial class MANUAL_PORTSTATION : APORTSTATION
     {
-        public MGV_PORTSTATION() : base()
+        public MANUAL_PORTSTATION() : base()
         {
 
         }

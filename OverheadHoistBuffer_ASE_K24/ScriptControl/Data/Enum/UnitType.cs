@@ -12,6 +12,6 @@
         AGVZONE,
         LINE,
         EQ,
-        MGV
+        MANUALPORT
     }
 }

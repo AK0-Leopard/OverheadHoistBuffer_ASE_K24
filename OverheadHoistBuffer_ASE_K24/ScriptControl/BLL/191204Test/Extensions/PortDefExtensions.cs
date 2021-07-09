@@ -24,8 +24,8 @@ namespace com.mirle.ibg3k0.sc.BLL._191204Test.Extensions
                 return UnitType.SHELF;
             else if (portDef.UnitType == "STK")
                 return UnitType.STK;
-            else if (portDef.UnitType == "MGV")
-                return UnitType.MGV;
+            else if (portDef.UnitType == "MANUALPORT")
+                return UnitType.MANUALPORT;
             else
                 return UnitType.ZONE;
         }

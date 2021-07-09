@@ -165,10 +165,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                     //B7_OHBLINE1_ST01
                     alarmUnitType = "LINE";
                 }
-                else if (scApp.TransferService.isUnitType(eq_id, UnitType.MGV))
+                else if (scApp.TransferService.isUnitType(eq_id, UnitType.MANUALPORT))
                 {
                     //B7_OHBLINE1_ST01
-                    alarmUnitType = "MGV";
+                    alarmUnitType = "MANUALPORT";
                 }
                 else if (scApp.TransferService.isUnitType(eq_id, UnitType.EQ))
                 {

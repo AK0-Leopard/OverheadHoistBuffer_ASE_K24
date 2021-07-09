@@ -7089,7 +7089,7 @@ namespace com.mirle.ibg3k0.sc.Service
                  || portINIData[portName].UnitType == UnitType.NTB.ToString()
                  || portINIData[portName].UnitType == UnitType.AGV.ToString()
                  || portINIData[portName].UnitType == UnitType.STK.ToString()
-                 || portINIData[portName].UnitType == UnitType.MGV.ToString()
+                 || portINIData[portName].UnitType == UnitType.MANUALPORT.ToString()
                  || isAGVZone(portName)
                    )
                 {
@@ -8520,7 +8520,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                                     || data.UnitType == UnitType.STK.ToString()
                                                     || data.UnitType == UnitType.NTB.ToString()
                                                     || data.UnitType == UnitType.AGV.ToString()
-                                                    || data.UnitType == UnitType.MGV.ToString()
+                                                    || data.UnitType == UnitType.MANUALPORT.ToString()
                                                     )
                                            ).ToList();
         }
