@@ -1251,9 +1251,10 @@ namespace com.mirle.ibg3k0.sc.App
                 loadCSVToDataset(ohxcConfig, "RETURNCODEMAP");
                 loadCSVToDataset(ohxcConfig, "EQPTLOCATIONINFO");
                 loadCSVToDataset(ohxcConfig, "RESERVEENHANCEINFO");
+                loadCSVToDataset(ohxcConfig, "EQCSTTYPEMAP");
+
                 loadMapInfoCSVToDataset(ohxcConfig, "AADDRESS");
                 loadMapInfoCSVToDataset(ohxcConfig, "ASECTION");
-                loadMapInfoCSVToDataset(ohxcConfig, "EQCSTTYPEMAP");
                 logger.Info("init bc_Config success");
             }
             else

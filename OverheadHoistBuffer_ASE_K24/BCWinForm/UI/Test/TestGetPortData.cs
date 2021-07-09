@@ -1,6 +1,7 @@
 ﻿using com.mirle.ibg3k0.sc;
 using com.mirle.ibg3k0.sc.Data.Enum;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Service;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,6 @@ namespace com.mirle.ibg3k0.bc.winform
         private App.BCApplication BCApp;
         private ALINE line = null;
         private List<PortDef> portList = null;
-        private PortPLCInfo portData = new PortPLCInfo();
 
         private TransferService transferService = null;
         private DateTime openTime = new DateTime();
@@ -52,12 +52,6 @@ namespace com.mirle.ibg3k0.bc.winform
             comboBox2.Items.Add("Out");
             comboBox2.SelectedIndex = 0;
 
-            foreach (var v in transferService.GetAGVZone())
-            {
-                comboBox3.Items.Add(v.PortName);
-
-                comboBox3.SelectedIndex = 0;
-            }
 
             #region dataGridView2
 
@@ -119,24 +113,16 @@ namespace com.mirle.ibg3k0.bc.winform
             dataGridView4.Columns.Add("訊號名稱", "訊號名稱");                 //1
             dataGridView4.Columns.Add("狀態", "狀態");                        //2
 
-            dataGridView4.Rows.Add("開啟自動補退盒子功能", "openAGV_Station");       //0
-            dataGridView4.Rows.Add("開啟自動切換流向功能", "openAGV_AutoPortType");  //1
-            dataGridView4.Rows.Add("AGV 模式", "IsAGVMode");                      //2
-            dataGridView4.Rows.Add("MGV 模式", "IsMGVMode");                      //3
-            dataGridView4.Rows.Add("", "", "");                                  //4
-            dataGridView4.Rows.Add("AGV 能投放", "AGVPortReady");                 //5
-            dataGridView4.Rows.Add("AGV 不能投放", "AGVPortMismatch");          //6
-            dataGridView4.Rows.Add("", "", "");                                 //7
-            dataGridView4.Rows.Add("是否能開蓋", "CanOpenBox");                 //8
-            dataGridView4.Rows.Add("開蓋狀態", "IsBoxOpen");                    //9
-            dataGridView4.Rows.Add("", "", "");                                 //10
-            dataGridView4.Rows.Add("卡匣ID", "CassetteID");                     //11
-            dataGridView4.Rows.Add("是否有卡匣", "IsCSTPresence");              //12
+            dataGridView4.Rows.Add("BCR 讀取結果", "CarrierIdReadResult");       //0
+            dataGridView4.Rows.Add("CST Type", "CarrierType");  //1
 
             dataGridView4.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView4.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
 
             #endregion dataGridView4
+
+            cmb_moveBackReason.DataSource = Enum.GetValues(typeof(MoveBackReasons)).Cast<MoveBackReasons>();
+
 
             GetPortData();
             openTime = DateTime.Now;
@@ -149,8 +135,10 @@ namespace com.mirle.ibg3k0.bc.winform
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            portData = transferService.GetPLC_PortData(comboBox1.Text);
 
+            var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
+            //PortPLCInfo portData = transferService.GetPLC_PortData(comboBox1.Text);
+            PortPLCInfo portData = port.getPortPLCInfo();
             #region dataGridView2
 
             dataGridView2.Rows[0].Cells[2].Value = portData.OpAutoMode.ToString();
@@ -178,7 +166,7 @@ namespace com.mirle.ibg3k0.bc.winform
             dataGridView3.Rows[0].Cells[2].Value = portData.CstRemoveCheck.ToString();
             //dataGridView3.Rows[1].Cells[2].Value = portData.IsAutoMode.ToString();
             dataGridView3.Rows[2].Cells[2].Value = portData.BCRReadDone.ToString();
-            dataGridView3.Rows[3].Cells[2].Value = portData.BoxID.ToString();
+            dataGridView3.Rows[3].Cells[2].Value = portData.BoxID;
             //dataGridView3.Rows[4].Cells[2].Value = "";
             dataGridView3.Rows[5].Cells[2].Value = portData.LoadPosition1.ToString();
             dataGridView3.Rows[5].Cells[3].Value = portData.LoadPositionBOX1.ToString();
@@ -201,91 +189,21 @@ namespace com.mirle.ibg3k0.bc.winform
             #endregion dataGridView3
 
             #region dataGridView4
-
-            dataGridView4.Rows[0].Cells[2].Value = transferService.GetAGV_StationStatus(comboBox1.Text);
-            dataGridView4.Rows[1].Cells[2].Value = transferService.GetAGV_AutoPortType(comboBox1.Text);
-            dataGridView4.Rows[2].Cells[2].Value = portData.IsAGVMode.ToString();
-            dataGridView4.Rows[3].Cells[2].Value = portData.IsMGVMode.ToString();
-            //dataGridView4.Rows[4].Cells[2].Value =
-            dataGridView4.Rows[5].Cells[2].Value = portData.AGVPortReady.ToString();
-            dataGridView4.Rows[6].Cells[2].Value = portData.CSTPresenceMismatch.ToString();
-            //dataGridView4.Rows[7].Cells[2].Value =
-            dataGridView4.Rows[8].Cells[2].Value = portData.CanOpenBox.ToString();
-            dataGridView4.Rows[9].Cells[2].Value = portData.IsBoxOpen.ToString();
-            //dataGridView4.Rows[10].Cells[2].Value =
-            dataGridView4.Rows[11].Cells[2].Value = portData.CassetteID.ToString();
-            dataGridView4.Rows[12].Cells[2].Value = portData.IsCSTPresence.ToString();
-
-            #endregion dataGridView4
-
-            #region 待刪除
-
-            //label2.Text =
-            //    "Port狀態：\n"
-            //    + "運轉狀態_RUN: " + portData.OpAutoMode.ToString() + "\n"
-            //    + "自動模式_IsAutoMode: " + portData.IsAutoMode.ToString() + "\n"
-            //    + "異常狀態_ErrorBit: " + portData.OpError.ToString() + "\n"
-            //    + "異常代碼_ErrorCode: " + portData.ErrorCode.ToString() + "\n"
-            //    ;
-
-            //label3.Text = "搬送資訊：" + "\n"
-            //    + "是否能切換流向_IsModeChangable: " + portData.IsModeChangable.ToString() + "\n"
-            //    + "流向:AGV 往 OHT_IsInputMode: " + portData.IsInputMode.ToString() + "\n"
-            //    + "流向:OHT 往 AGV_IsOutputMode: " + portData.IsOutputMode.ToString() + "\n"
-            //    + "\n"
-            //    + "AGV Port是否能投入 BOX_IsReadyToLoad: " + portData.IsReadyToLoad.ToString() + "\n"
-            //    + "AGV Port是否能投入 BOX_IsReadyToUnload: " + portData.IsReadyToUnload.ToString() + "\n"
-            //    + "\n"
-            //    + "等待 OHT 搬走_PortWaitIn: " + portData.PortWaitIn.ToString() + "\n"
-            //    + "等待從 AGV Port搬走_PortWaitOut: " + portData.PortWaitOut.ToString() + "\n"
-            //    + "\n"
-            //    + "帳移除_Remove: " + portData.CstRemoveCheck.ToString() + "\n"
-            //    + "\n"
-            //    + "CassetteID: " + portData.CassetteID.ToString() + "\n"
-            //    + "是否有卡匣_IsCSTPresence: " + portData.IsCSTPresence.ToString() + "\n"
-            //    + "\n"
-            //    + "BCR讀取狀態_BCRReadDone: " + portData.BCRReadDone.ToString() + "\n"
-            //    + "\n"
-            //    + "BoxID:   " + portData.BoxID.ToString() + "\n"
-            //    + "BOX位置1_LoadPosition1: " + portData.LoadPosition1.ToString() + "   BOXID:  " + portData.LoadPositionBOX1.ToString() + "\n"
-            //    + "BOX位置2_LoadPosition2: " + portData.LoadPosition2.ToString() + "   BOXID:  " + portData.LoadPositionBOX2.ToString() + "\n"
-            //    + "BOX位置3_LoadPosition3: " + portData.LoadPosition3.ToString() + "   BOXID:  " + portData.LoadPositionBOX3.ToString() + "\n"
-            //    + "BOX位置4_LoadPosition4: " + portData.LoadPosition4.ToString() + "   BOXID:  " + portData.LoadPositionBOX4.ToString() + "\n"
-            //    + "BOX位置5_LoadPosition5: " + portData.LoadPosition5.ToString() + "   BOXID:  " + portData.LoadPositionBOX5.ToString() + "\n"
-            //    + "BOX位置6_LoadPosition6: " + portData.LoadPosition6.ToString() + "\n"
-            //    + "BOX位置7_LoadPosition7: " + portData.LoadPosition7.ToString() + "\n"
-            //    ;
-
-            //label4.Text =
-            //    "AGV Port 專有訊號:\n"
-            //    + "開啟自動補退 BOX 功能_openAGV_Station:   " + transferService.GetAGV_StationStatus(comboBox1.Text) + "\n"
-            //    + "AGV模式_IsAGVMode:                       " + portData.IsAGVMode.ToString() + "\n"
-            //    + "\n"
-            //    + "AGVPortReady:                            " + portData.AGVPortReady.ToString() + "\n"
-            //    + "AGVPortMismatch:                         " + portData.CSTPresenceMismatch.ToString() + "\n"
-            //    + "\n"
-            //    + "是否能開蓋:                              " + portData.CanOpenBox.ToString() + "\n"
-            //    + "開蓋狀態:                                " + portData.IsBoxOpen.ToString() + "\n"
-            //    + "\n"
-            //    ;
-
-            #endregion 待刪除
-
-            label6.Text = "關聯實際狀態： " + transferService.agvZone_ConnectedRealAGVPortRunDown.ToString();
-            label11.Text = "單取單放狀態： " + transferService.oneInoneOutMethodUse.ToString();
-
-            if (transferService.isAGVZone(comboBox3.Text))
+            string read_result = "";
+            string carrier_type = "";
+            if (port is MGV_PORTSTATION)
             {
-                label7.Text = "強制讓貨先出去: " + transferService.portINIData[comboBox3.Text].forceRejectAGVCTrigger.ToString();
+                var manual_port_info = (port as MGV_PORTSTATION).getManualPortPLCInfo();
+                read_result = manual_port_info.CarrierIdReadResult;
+                carrier_type = manual_port_info.CarrierType.ToString();
             }
             else
             {
-                label7.Text = "AGV Zone 名稱輸入錯誤";
+                //noy thing...
             }
-
-            label8.Text = "ST01: " + transferService.agvcTriggerResult_ST01;
-            label9.Text = "ST02: " + transferService.agvcTriggerResult_ST02;
-            label10.Text = "ST03: " + transferService.agvcTriggerResult_ST03;
+            dataGridView4.Rows[0].Cells[2].Value = read_result;
+            dataGridView4.Rows[1].Cells[2].Value = carrier_type;
+            #endregion dataGridView4
 
             dataGridView5.DataSource = BCApp.SCApplication.VehicleBLL.cache.loadVhs().Select(data =>
                                     new
@@ -307,7 +225,6 @@ namespace com.mirle.ibg3k0.bc.winform
                                                                                             ).ToList();
 
             TimeSpan timeOut = DateTime.Now - openTime;
-
             if (timeOut.Minutes > 5)
             {
                 timer1.Enabled = false;
@@ -514,16 +431,6 @@ namespace com.mirle.ibg3k0.bc.winform
             GetPortData();
         }
 
-        private void button28_Click(object sender, EventArgs e)
-        {
-            transferService.Manual_OpenAGV_State(comboBox3.Text);
-        }
-
-        private void button29_Click(object sender, EventArgs e)
-        {
-            transferService.Manual_CloseAGV_State(comboBox3.Text);
-        }
-
         private void button30_Click(object sender, EventArgs e)
         {
             BCApp.SCApplication.TransferService.AlliniPortData();
@@ -544,40 +451,6 @@ namespace com.mirle.ibg3k0.bc.winform
             dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
         }
 
-        private void button32_Click(object sender, EventArgs e)
-        {
-            transferService.agvZone_ConnectedRealAGVPortRunDown = true;
-        }
-
-        private void button33_Click(object sender, EventArgs e)
-        {
-            transferService.agvZone_ConnectedRealAGVPortRunDown = false;
-        }
-
-        private void button34_Click(object sender, EventArgs e)
-        {
-            if (transferService.isAGVZone(comboBox3.Text))
-            {
-                transferService.portINIData[comboBox3.Text].forceRejectAGVCTrigger = true;
-            }
-        }
-
-        private void button35_Click(object sender, EventArgs e)
-        {
-            if (transferService.isAGVZone(comboBox3.Text))
-            {
-                transferService.portINIData[comboBox3.Text].forceRejectAGVCTrigger = false;
-            }
-        }
-
-        private void button36_Click(object sender, EventArgs e)
-        {
-            if (transferService.portINIData[comboBox3.Text].forceRejectAGVCTrigger == true)
-            {
-                transferService.TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + " forceRejectAGVCTrigger 觸發按鍵點選。");
-                transferService.CanExcuteUnloadTransferAGVStationFromAGVC(comboBox3.Text.Trim(), 0, false);
-            }
-        }
 
         private void button25_Click(object sender, EventArgs e)
         {
@@ -604,35 +477,43 @@ namespace com.mirle.ibg3k0.bc.winform
             transferService.PortBCR_Enable(comboBox1.Text, false);
         }
 
-        private void UseFirst2Port_buttom_Click(object sender, EventArgs e)
-        {
-            if (comboBox3.Text.Contains("LOOP"))
-            {
-                transferService.Manual_UseFirst2Port(comboBox3.Text);
-            }
-        }
-
-        private void UseLast2Port_buttom_Click(object sender, EventArgs e)
-        {
-            if (comboBox3.Text.Contains("LOOP"))
-            {
-                transferService.Manual_UseLast2Port(comboBox3.Text);
-            }
-        }
-
         private void button41_Click(object sender, EventArgs e)
         {
             transferService.doUpdateTimeOutForAutoUD(comboBox1.Text, (int)numericUpDown1.Value);
         }
 
-        private void button42_Click(object sender, EventArgs e)
+        private void moveBack_Click_1(object sender, EventArgs e)
         {
-            transferService.Manual_SetOneInoneOutMethodUse(true);
+            var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
+            if (port is MGV_PORTSTATION)
+            {
+                var manual_port = port as MGV_PORTSTATION;
+                manual_port.MoveBackAsync();
+            }
+            else
+            {
+                MessageBox.Show($"Port ID:{comboBox1.Text} 並不是Manual port，無法進行move back", "Message",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+            }
         }
 
-        private void button43_Click(object sender, EventArgs e)
+        private void button7_Click_1(object sender, EventArgs e)
         {
-            transferService.Manual_SetOneInoneOutMethodUse(false);
+
+            var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
+            if (port is MGV_PORTSTATION)
+            {
+                Enum.TryParse<MoveBackReasons>(cmb_moveBackReason.SelectedValue.ToString(), out MoveBackReasons moveBackReasons);
+                var manual_port = port as MGV_PORTSTATION;
+                manual_port.SetMoveBackReasonAsync(moveBackReasons);
+            }
+            else
+            {
+                MessageBox.Show($"Port ID:{comboBox1.Text} 並不是Manual port，無法進行move back", "Message",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+            }
         }
     }
 }
