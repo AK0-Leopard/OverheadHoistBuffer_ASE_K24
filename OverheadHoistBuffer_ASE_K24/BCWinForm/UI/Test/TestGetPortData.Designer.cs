@@ -50,6 +50,9 @@
             this.button15 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cmb_moveBackReason = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.label4 = new System.Windows.Forms.Label();
@@ -66,9 +69,6 @@
             this.button38 = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button41 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cmb_moveBackReason = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
@@ -305,6 +305,37 @@
             this.panel1.Size = new System.Drawing.Size(1362, 426);
             this.panel1.TabIndex = 30;
             // 
+            // cmb_moveBackReason
+            // 
+            this.cmb_moveBackReason.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_moveBackReason.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.cmb_moveBackReason.FormattingEnabled = true;
+            this.cmb_moveBackReason.Location = new System.Drawing.Point(825, 273);
+            this.cmb_moveBackReason.Name = "cmb_moveBackReason";
+            this.cmb_moveBackReason.Size = new System.Drawing.Size(140, 24);
+            this.cmb_moveBackReason.TabIndex = 38;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label5.Location = new System.Drawing.Point(820, 255);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(134, 16);
+            this.label5.TabIndex = 41;
+            this.label5.Text = "Move Back Reason:";
+            // 
+            // button7
+            // 
+            this.button7.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button7.Location = new System.Drawing.Point(971, 271);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(46, 27);
+            this.button7.TabIndex = 40;
+            this.button7.Text = "Set";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click_1);
+            // 
             // button6
             // 
             this.button6.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -432,7 +463,7 @@
             this.dataGridView5.Name = "dataGridView5";
             this.dataGridView5.ReadOnly = true;
             this.dataGridView5.RowTemplate.Height = 24;
-            this.dataGridView5.Size = new System.Drawing.Size(877, 119);
+            this.dataGridView5.Size = new System.Drawing.Size(848, 119);
             this.dataGridView5.TabIndex = 35;
             // 
             // button25
@@ -485,37 +516,6 @@
             this.button41.Text = "設定自動搬送時間";
             this.button41.UseVisualStyleBackColor = true;
             this.button41.Click += new System.EventHandler(this.button41_Click);
-            // 
-            // button7
-            // 
-            this.button7.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button7.Location = new System.Drawing.Point(971, 271);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(46, 27);
-            this.button7.TabIndex = 40;
-            this.button7.Text = "Set";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click_1);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(820, 255);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(134, 16);
-            this.label5.TabIndex = 41;
-            this.label5.Text = "Move Back Reason:";
-            // 
-            // cmb_moveBackReason
-            // 
-            this.cmb_moveBackReason.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_moveBackReason.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.cmb_moveBackReason.FormattingEnabled = true;
-            this.cmb_moveBackReason.Location = new System.Drawing.Point(825, 273);
-            this.cmb_moveBackReason.Name = "cmb_moveBackReason";
-            this.cmb_moveBackReason.Size = new System.Drawing.Size(140, 24);
-            this.cmb_moveBackReason.TabIndex = 38;
             // 
             // TestGetPortData
             // 

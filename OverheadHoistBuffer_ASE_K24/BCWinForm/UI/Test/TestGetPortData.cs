@@ -139,10 +139,10 @@ namespace com.mirle.ibg3k0.bc.winform
             var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
             //PortPLCInfo portData = transferService.GetPLC_PortData(comboBox1.Text);
             PortPLCInfo portData = port.getPortPLCInfo();
-            #region dataGridView2
+            #region dataGridView2再Manual Port
 
             dataGridView2.Rows[0].Cells[2].Value = portData.OpAutoMode.ToString();
-            dataGridView2.Rows[1].Cells[2].Value = portData.IsAutoMode.ToString();
+            dataGridView2.Rows[1].Cells[2].Value = portData.IsAutoMode.ToString(); //
             dataGridView2.Rows[2].Cells[2].Value = portData.OpError.ToString();
             dataGridView2.Rows[3].Cells[2].Value = portData.ErrorCode.ToString();
             //dataGridView2.Rows[4].Cells[2].Value = 流向說明;

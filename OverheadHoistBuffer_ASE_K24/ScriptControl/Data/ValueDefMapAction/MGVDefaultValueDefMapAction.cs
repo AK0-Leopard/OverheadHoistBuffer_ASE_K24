@@ -624,7 +624,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
         public object GetPortState()
         {
-            return scApp.getFunBaseObj<ManualPortPLCInfo>(port.PORT_ID) as ManualPortPLCInfo;
+            var port_data = scApp.getFunBaseObj<ManualPortPLCInfo>(port.PORT_ID) as ManualPortPLCInfo;
+            port_data.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
+            return port_data;
         }
     }
 }
