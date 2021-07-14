@@ -515,6 +515,12 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
                 function.IsMoveBack = true;
                 CommitChange(function);
+
+                Task.Delay(3_000).Wait();
+
+                function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+                function.IsMoveBack = false;
+                CommitChange(function);
             });
         }
 
@@ -524,6 +530,12 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
                 function.IsResetOn = true;
+                CommitChange(function);
+
+                Task.Delay(3_000).Wait();
+
+                function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+                function.IsResetOn = false;
                 CommitChange(function);
             });
         }
@@ -535,6 +547,12 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
                 function.IsBuzzerStop = true;
                 CommitChange(function);
+
+                Task.Delay(3_000).Wait();
+
+                function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+                function.IsBuzzerStop = false;
+                CommitChange(function);
             });
         }
 
@@ -545,6 +563,12 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
                 function.IsSetRun = true;
                 CommitChange(function);
+
+                Task.Delay(3_000).Wait();
+
+                function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+                function.IsSetRun = false;
+                CommitChange(function);
             });
         }
 
@@ -554,6 +578,12 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
                 function.IsSetStop = true;
+                CommitChange(function);
+
+                Task.Delay(3_000).Wait();
+
+                function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+                function.IsSetStop = false;
                 CommitChange(function);
             });
         }
