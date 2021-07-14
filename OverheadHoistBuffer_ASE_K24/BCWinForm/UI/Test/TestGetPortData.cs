@@ -52,30 +52,31 @@ namespace com.mirle.ibg3k0.bc.winform
             comboBox2.Items.Add("Out");
             comboBox2.SelectedIndex = 0;
 
-
             #region dataGridView2
 
             dataGridView2.Columns.Add("中文說明", "中文說明");
             dataGridView2.Columns.Add("訊號名稱", "訊號名稱");
             dataGridView2.Columns.Add("狀態", "狀態");
 
-            dataGridView2.Rows.Add("運轉狀態", "RUN", "");
-            dataGridView2.Rows.Add("自動模式", "IsAutoMode", "");
+            dataGridView2.Rows.Add("運轉狀態", "RUN", "");  //0
+            dataGridView2.Rows.Add("自動模式", "IsAutoMode", "");    //1
             dataGridView2.Rows.Add("異常狀態", "ErrorBit", "");
             dataGridView2.Rows.Add("異常代碼", "ErrorCode", "");
             dataGridView2.Rows.Add("流向", "", "");
-            dataGridView2.Rows.Add("是否能切換流向", "IsModeChangable", "");
+            dataGridView2.Rows.Add("是否能切換流向", "IsModeChangable", "");   //5
             dataGridView2.Rows.Add("流向:Port 往 OHT", "IsInputMode", "");
             dataGridView2.Rows.Add("流向:OHT 往 Port", "IsOutputMode", "");
             dataGridView2.Rows.Add("投出入說明", "", "");
             dataGridView2.Rows.Add("Port 是否能搬入 BOX ", "IsReadyToLoad", "");
-            dataGridView2.Rows.Add("Port 是否能搬出 BOX ", "IsReadyToUnload", "");
+            dataGridView2.Rows.Add("Port 是否能搬出 BOX ", "IsReadyToUnload", ""); //10
             dataGridView2.Rows.Add("等待說明", "", "");
             dataGridView2.Rows.Add("等待 OHT 搬走", "PortWaitIn", "");
             dataGridView2.Rows.Add("等待從 Port 搬走", "PortWaitOut", "");
             dataGridView2.Rows.Add("狀態說明", "", "");
-            dataGridView2.Rows.Add("PLC 離線狀態", "CIM_ON", "");
+            dataGridView2.Rows.Add("PLC 離線狀態", "CIM_ON", "");              //15
             dataGridView2.Rows.Add("PLC 預先入料完成", "PreLoadOK", "");
+            dataGridView2.Rows.Add("PLC 異常編號", "PLC_AlarmIndex", "");
+            dataGridView2.Rows.Add("異常碼", "AlarmCode", "");                 //18
 
             dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView2.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
@@ -123,7 +124,6 @@ namespace com.mirle.ibg3k0.bc.winform
 
             cmb_moveBackReason.DataSource = Enum.GetValues(typeof(MoveBackReasons)).Cast<MoveBackReasons>();
 
-
             GetPortData();
             openTime = DateTime.Now;
         }
@@ -135,10 +135,10 @@ namespace com.mirle.ibg3k0.bc.winform
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-
             var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
-            //PortPLCInfo portData = transferService.GetPLC_PortData(comboBox1.Text);
+
             PortPLCInfo portData = port.getPortPLCInfo();
+
             #region dataGridView2再Manual Port
 
             dataGridView2.Rows[0].Cells[2].Value = portData.OpAutoMode.ToString();
@@ -159,7 +159,13 @@ namespace com.mirle.ibg3k0.bc.winform
             dataGridView2.Rows[15].Cells[2].Value = portData.cim_on.ToString();
             dataGridView2.Rows[16].Cells[2].Value = portData.preLoadOK.ToString();
 
-            #endregion dataGridView2
+            var manualPort = port as MANUAL_PORTSTATION;
+            var manualPortData = manualPort.getManualPortPLCInfo();
+
+            dataGridView2.Rows[17].Cells[2].Value = manualPortData.ErrorIndex.ToString();
+            dataGridView2.Rows[18].Cells[2].Value = manualPortData.AlarmCode.ToString();
+
+            #endregion dataGridView2再Manual Port
 
             #region dataGridView3
 
@@ -189,6 +195,7 @@ namespace com.mirle.ibg3k0.bc.winform
             #endregion dataGridView3
 
             #region dataGridView4
+
             string read_result = "";
             string carrier_type = "";
             if (port is MANUAL_PORTSTATION)
@@ -203,6 +210,7 @@ namespace com.mirle.ibg3k0.bc.winform
             }
             dataGridView4.Rows[0].Cells[2].Value = read_result;
             dataGridView4.Rows[1].Cells[2].Value = carrier_type;
+
             #endregion dataGridView4
 
             dataGridView5.DataSource = BCApp.SCApplication.VehicleBLL.cache.loadVhs().Select(data =>
@@ -451,7 +459,6 @@ namespace com.mirle.ibg3k0.bc.winform
             dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
         }
 
-
         private void button25_Click(object sender, EventArgs e)
         {
             try
@@ -500,7 +507,6 @@ namespace com.mirle.ibg3k0.bc.winform
 
         private void button7_Click_1(object sender, EventArgs e)
         {
-
             var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
             if (port is MANUAL_PORTSTATION)
             {

@@ -83,7 +83,6 @@ namespace com.mirle.ibg3k0.sc
                 CSTPresenceMismatch = false,
                 IsTransferComplete = mgvPortInfo.IsTransferComplete,
                 CstRemoveCheck = mgvPortInfo.IsRemoveCheck,
-                //ErrorCode = mgvPortInfo.IsBcrReadDone,
                 BoxID = mgvPortInfo.CarrierIdOfStage1,
                 LoadPositionBOX1 = "",
                 LoadPositionBOX2 = "",
@@ -94,7 +93,6 @@ namespace com.mirle.ibg3k0.sc
                 FireAlarm = false,
                 cim_on = false,
                 preLoadOK = false,
-                //ErrorCode = mgvPortInfo.AlarmCode
             };
         }
 
