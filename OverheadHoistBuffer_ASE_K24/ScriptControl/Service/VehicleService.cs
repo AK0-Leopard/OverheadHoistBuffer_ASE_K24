@@ -2407,7 +2407,6 @@ namespace com.mirle.ibg3k0.sc.Service
         private void TransferReportBCRRead(BCFApplication bcfApp, AVEHICLE eqpt, int seqNum,
                                              EventType eventType, string read_carrier_id, BCRReadResult bCRReadResult)
         {
-            scApp.VehicleBLL.updateVehicleBCRReadResult(eqpt, bCRReadResult);
             AVIDINFO vid_info = scApp.VIDBLL.getVIDInfo(eqpt.VEHICLE_ID);
             string old_carrier_id = SCUtility.Trim(vid_info.CARRIER_ID, true);
 
@@ -2418,36 +2417,61 @@ namespace com.mirle.ibg3k0.sc.Service
                        Data: $"BCR miss match happend,start abort command id:{eqpt.OHTC_CMD?.Trim()} and rename cst id:{old_carrier_id}...",
                        VehicleID: eqpt.VEHICLE_ID,
                        CarrierID: eqpt.BOX_ID);
-                    if (!checkHasDuplicateHappend(bcfApp, eqpt, seqNum, eventType, read_carrier_id, old_carrier_id))
+
+                    //todo ->想改成的模式
+                    //var missmatch_process_result = scApp.TransferService.IDReadMismatchHappend(eqpt.VEHICLE_ID, read_carrier_id);
+                    //string rename_carrier_id = missmatch_process_result.RemaneBox;
+                    //CMDCancelType cancel_type = missmatch_process_result.isContinue ?
+                    //    CMDCancelType.CmdNone : CMDCancelType.CmdCancelIdMismatch;
+                    //replyTranEventReport(bcfApp, eventType, eqpt, seqNum,
+                    //                     renameCarrierID: rename_carrier_id,
+                    //                     cancelType: cancel_type);
+
+                    //-----Mismatch 準備被取代的部分 Start-----
+                    //if (!checkHasDuplicateHappend(bcfApp, eqpt, seqNum, eventType, read_carrier_id, old_carrier_id))
+                    //{
+                    scApp.VehicleBLL.updataVehicleBOXID(eqpt.VEHICLE_ID, read_carrier_id);
+                    if (scApp.CMDBLL.getCMD_OHTCByID(eqpt.OHTC_CMD).CMD_TPYE == E_CMD_TYPE.Scan)
                     {
-                        scApp.VehicleBLL.updataVehicleBOXID(eqpt.VEHICLE_ID, read_carrier_id);
-                        if (scApp.CMDBLL.getCMD_OHTCByID(eqpt.OHTC_CMD).CMD_TPYE == E_CMD_TYPE.Scan)
-                        {
-                            replyTranEventReport(bcfApp, eventType, eqpt, seqNum,
-                            renameCarrierID: read_carrier_id,
-                            cancelType: CMDCancelType.CmdNone);
-                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                               Data: $"BCR miss match happend,but in Scan command id:{eqpt.OHTC_CMD?.Trim()} and rename cst id:{old_carrier_id} to {read_carrier_id}",
-                               VehicleID: eqpt.VEHICLE_ID,
-                               CarrierID: eqpt.BOX_ID);
-                        }
-                        else
-                        {
-                            replyTranEventReport(bcfApp, eventType, eqpt, seqNum,
-                            renameCarrierID: read_carrier_id,
-                            cancelType: CMDCancelType.CmdCancelIdMismatch);
-                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                               Data: $"BCR miss match happend,start abort command id:{eqpt.OHTC_CMD?.Trim()} and rename cst id:{old_carrier_id} to {read_carrier_id}",
-                               VehicleID: eqpt.VEHICLE_ID,
-                               CarrierID: eqpt.BOX_ID);
-                        }
+                        replyTranEventReport(bcfApp, eventType, eqpt, seqNum,
+                        renameCarrierID: read_carrier_id,
+                        cancelType: CMDCancelType.CmdNone);
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"BCR miss match happend,but in Scan command id:{eqpt.OHTC_CMD?.Trim()} and rename cst id:{old_carrier_id} to {read_carrier_id}",
+                           VehicleID: eqpt.VEHICLE_ID,
+                           CarrierID: eqpt.BOX_ID);
                     }
+                    else
+                    {
+
+                        replyTranEventReport(bcfApp, eventType, eqpt, seqNum,
+                        renameCarrierID: read_carrier_id,
+                        cancelType: CMDCancelType.CmdCancelIdMismatch);
+
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"BCR miss match happend,start abort command id:{eqpt.OHTC_CMD?.Trim()} and rename cst id:{old_carrier_id} to {read_carrier_id}",
+                           VehicleID: eqpt.VEHICLE_ID,
+                           CarrierID: eqpt.BOX_ID);
+                    }
+                    //-----Mismatch 準備被取代的部分 End-----
+
+                    //}
                     // Task.Run(() => doAbortCommand(eqpt, eqpt.OHTC_CMD, CMDCancelType.CmdCancelIdMismatch));
                     //20200130 Hsinyu Chang
                     scApp.CMDBLL.updateCMD_MCS_BCROnCrane(eqpt.MCS_CMD, read_carrier_id);
                     break;
 
                 case BCRReadResult.BcrReadFail:
+                    //todo ->想改成的模式
+                    //var readfail_process_result = scApp.TransferService.IDReadFailHappend(eqpt.VEHICLE_ID, read_carrier_id);
+                    //string rename_carrier_id = readfail_process_result.RemaneBox;
+                    //CMDCancelType cancel_type = readfail_process_result.isContinue ?
+                    //    CMDCancelType.CmdNone : CMDCancelType.CmdCancelIdMismatch;
+                    //replyTranEventReport(bcfApp, eventType, eqpt, seqNum,
+                    //                     renameCarrierID: rename_carrier_id,
+                    //                     cancelType: cancel_type);
+
+                    //-----Read fail 準備被取代的部分 Start-----
                     string new_carrier_id = "";
                     CMDCancelType cancelType = CMDCancelType.CmdNone;
                     if (SystemParameter.IsEnableIDReadFailScenario)
@@ -2520,6 +2544,8 @@ namespace com.mirle.ibg3k0.sc.Service
                     replyTranEventReport(bcfApp, eventType, eqpt, seqNum,
                         renameCarrierID: new_carrier_id,
                         cancelType: cancelType);
+                    //-----Read fail 準備被取代的部分 End-----
+
                     // B0.03
                     scApp.TransferService.OHBC_AlarmSet(eqpt.VEHICLE_ID, ((int)AlarmLst.OHT_BCR_READ_FAIL).ToString());
                     scApp.TransferService.OHBC_AlarmCleared(eqpt.VEHICLE_ID, ((int)AlarmLst.OHT_BCR_READ_FAIL).ToString());
@@ -3276,6 +3302,16 @@ namespace com.mirle.ibg3k0.sc.Service
                 scApp.TransferService.OHBC_AlarmCleared(vh.VEHICLE_ID, ((int)AlarmLst.OHT_VEHICLE_ABORT).ToString());
                 //
             }
+            //todo id mismatch、id read fail
+            //else if (recive_str.CmpStatus == CompleteStatus.CmpStatusIdmisMatch)
+            //{
+            //    scApp.TransferService.CommandCompleteByIDMismatch(vh_id, finish_ohxc_cmd);
+
+            //}
+            //else if (recive_str.CmpStatus == CompleteStatus.CmpStatusIdreadFailed)
+            //{
+            //    scApp.TransferService.CommandCompleteByIDReadFail(vh_id, finish_ohxc_cmd);
+            //}
             else
             {
                 scApp.TransferService.OHT_TransferStatus(finish_ohxc_cmd,

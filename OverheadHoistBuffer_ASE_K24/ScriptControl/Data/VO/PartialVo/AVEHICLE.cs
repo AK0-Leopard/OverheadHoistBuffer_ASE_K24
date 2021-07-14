@@ -295,7 +295,6 @@ namespace com.mirle.ibg3k0.sc
                 }
             }
         }
-        public BCRReadResult BCRReadResult = BCRReadResult.BcrNormal;
 
         public VehicleState State = VehicleState.Remove;
 

@@ -40,6 +40,7 @@ using com.mirle.ibg3k0.sc.Data.SECS.ASE;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction;
 using com.mirle.ibg3k0.sc.Data.VO;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
+using com.mirle.ibg3k0.sc.Service.Interface;
 using Mirle.Hlts.Utils;
 using NLog;
 using System;
@@ -160,7 +161,7 @@ namespace com.mirle.ibg3k0.sc.Service
         Transfer = 2,
     }
 
-    public class TransferService
+    public partial class TransferService
     {
         #region 屬性
 
@@ -10622,5 +10623,28 @@ namespace com.mirle.ibg3k0.sc.Service
         }
 
         #endregion disconnection alarm handler
+    }
+
+    public partial class TransferService : IVehicleTransferHandler
+    {
+        public bool CommandCompleteByIDMismatch(string vhID, string finishCommandID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CommandCompleteByIDReadFail(string vhID, string finishCommandID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public (bool isContinue, string RemaneBox) IDReadFailHappend(string vhID, string readBOXID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public (bool isContinue, string RemaneBox) IDReadMismatchHappend(string vhID, string readBOXID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

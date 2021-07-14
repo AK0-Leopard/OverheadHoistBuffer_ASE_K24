@@ -211,10 +211,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             vh.VhRecentTranEvent = vhPassEvent;
             vh.NotifyVhStatusChange();
         }
-        public void updateVehicleBCRReadResult(AVEHICLE vh, BCRReadResult bcrReadResult)
-        {
-            vh.BCRReadResult = bcrReadResult;
-        }
         //public bool updateVheiclePosition(string vh_id, string adr_id, string sec_id, int sce_dis, EventType vhPassEvent)
         public void updateVheiclePosition(string vh_id, string adr_id, string sec_id, double sce_dis, EventType vhPassEvent)
         {
