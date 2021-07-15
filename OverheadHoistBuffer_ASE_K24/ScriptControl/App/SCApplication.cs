@@ -636,6 +636,8 @@ namespace com.mirle.ibg3k0.sc.App
         private IRouteGuide newrouteGuide = null;
         public IRouteGuide NewRouteGuide { get { return newrouteGuide; } }
 
+        private Grpc.Core.Server gRPC_With_VehicleControlFun;
+
         //config
         /// <summary>
         /// The indxer configuration
@@ -1522,6 +1524,12 @@ namespace com.mirle.ibg3k0.sc.App
 
             manualPortControlService = new ManualPortControlService();
             manualPortEventService = new ManualPortEventService();
+
+            gRPC_With_VehicleControlFun = new Grpc.Core.Server()
+            {
+                Services = { com.mirle.AK0.ProtocolFormat.VehicleControlFun.BindService(new WebAPI.VehicleControlFun()) },
+                Ports = { new Grpc.Core.ServerPort("0.0.0.0", 7001, Grpc.Core.ServerCredentials.Insecure) },
+            };
         }
 
         /// <summary>
@@ -1586,6 +1594,7 @@ namespace com.mirle.ibg3k0.sc.App
             var manual_port_map_action = PortStationBLL.OperateCatch.loadAllMgvPortStationMapAction();
             manualPortControlService.Start(manual_port_map_action);
             manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL);
+            gRPC_With_VehicleControlFun.Start();
         }
 
         /// <summary>

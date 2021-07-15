@@ -1,0 +1,42 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "com.mirle.AK0.ProtocolFormat.VehicleControlPublishMessage";
+
+enum TranStatus
+{
+    TranStatus_Queue = 0;
+    TranStatus_Initial = 1;
+    TranStatus_PreInitial = 2;
+    TranStatus_Transferring = 3;
+    TranStatus_Canceling = 4;
+    TranStatus_Aborting = 5;
+    TranStatus_Canceled = 6;
+    TranStatus_Aborted = 7;
+    TranStatus_Complete = 8;
+    TranStatus_RouteChanging = 9;
+    TranStatus_Reject = 10;
+}
+
+message TransferCommandInfo {
+	int64 LAST_UPDATE_TIME = 1;
+	repeated TransferCommand infos = 2;
+}
+
+message TransferCommand {
+	string CMD_ID = 1;
+	string CARRIER_ID = 2;
+	TranStatus TRANSFERSTATE = 3;
+	int32 COMMANDSTATE = 4;
+	string HOSTSOURCE = 5;
+	string HOSTDESTINATION = 6;
+	int32 PRIORITY = 7;
+	string CHECKCODE = 8;
+	string PAUSEFLAG = 9;
+	int64 CMD_INSER_TIME = 10;
+	int64 CMD_START_TIME = 11;
+	int64 CMD_FINISH_TIME = 12;
+	int32 TIME_PRIORITY = 13;
+	int32 PORT_PRIORITY = 14;
+	int32 PRIORITY_SUM = 15;
+	int32 REPLACE = 16;
+}

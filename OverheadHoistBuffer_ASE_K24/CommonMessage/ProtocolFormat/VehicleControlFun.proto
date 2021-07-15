@@ -1,0 +1,79 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "com.mirle.AK0.ProtocolFormat";
+// The greeting service definition.
+service VehicleControlFun {
+	// Sends a greeting
+	rpc RequestSegmentData(Empty) returns (ReplySegmentData) {}
+	rpc RequestTrnsfer(VehicleCommandInfo) returns (ReplyTrnsfer) {}
+	rpc RequestGuideInfo(SearchInfo) returns (ReplyGuideInfo) {}
+}
+
+//comm enum
+enum Result
+{
+    Result_OK = 0;
+    Result_NG = 1;
+}
+
+//Start MapData
+message Empty 
+{
+	string ID = 1;
+}
+enum SegmentStatus
+{
+    SegmentStatus_Active = 0;
+    SegmentStatus_Inactive = 1;
+    SegmentStatus_Closed = 2;
+}
+message SegmentInfo 
+{
+	string ID = 1;
+	SegmentStatus  status = 2;
+	repeated string sec_ids = 3;
+	string note = 4;
+}
+message ReplySegmentData
+{
+	repeated SegmentInfo segment_infos = 1;
+}
+
+//End MapData
+
+//Start Command
+enum CommandEventType
+{
+    CommandEventType_Move = 0;
+    CommandEventType_Load = 1;
+    CommandEventType_Unload = 2;
+    CommandEventType_LoadUnload = 3;
+}
+message VehicleCommandInfo 
+{
+	string vh_id = 1;
+    CommandEventType type = 2;
+	string carrier_id = 3;
+	string from_port_id = 4;
+	string to_port_id = 5;
+}
+message ReplyTrnsfer
+{
+	Result result = 1;
+	string reason = 2;
+}
+
+//End Command
+//Start GuideInfo
+
+message SearchInfo 
+{
+	string start_adr = 1;
+    string end_adr = 2;
+}
+message ReplyGuideInfo
+{
+	repeated string adr_ids = 1;
+	repeated string sec_ids = 2;
+}
+//End GuideInfo

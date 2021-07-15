@@ -2115,6 +2115,15 @@ namespace com.mirle.ibg3k0.sc.BLL
                        Where(vh => SCUtility.isMatche(vh.CUR_ADR_ID, adrID)).
                        FirstOrDefault();
             }
+
+            public List<AVEHICLE> getVhBySections(string secID)
+            {
+                var vhs = eqObjCacheManager.getAllVehicle();
+                return vhs.
+                       Where(vh => SCUtility.isMatche(vh.CUR_SEC_ID, secID)).
+                       ToList();
+            }
+
             public int getVhByHasCSTIDCount(string cstID)
             {
                 var vhs = eqObjCacheManager.getAllVehicle();
