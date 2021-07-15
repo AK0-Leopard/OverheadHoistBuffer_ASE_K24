@@ -185,7 +185,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
 
                 //2.read log
-                LogManager.GetCurrentClassLogger().Info(function.ToString());
+                logger.Info(function.ToString());
 
                 if (function.IsRun)
                     OnInServiceChanged?.Invoke(this, new ManualPortEventArgs(function));
@@ -208,7 +208,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //1.建立各個Function物件
                 function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
                 //2.read log
-                LogManager.GetCurrentClassLogger().Info(function.ToString());
+                logger.Info(function.ToString());
 
                 if (function.IsDown)
                     OnInServiceChanged?.Invoke(this, new ManualPortEventArgs(function));
@@ -233,7 +233,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
 
                 //2.read log
-                LogManager.GetCurrentClassLogger().Info(function.ToString());
+                logger.Info(function.ToString());
 
                 if (function.IsAlarm)
                     OnInServiceChanged?.Invoke(this, new ManualPortEventArgs(function));
@@ -262,7 +262,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
 
                 //2.read log
-                LogManager.GetCurrentClassLogger().Info(function.ToString());
+                logger.Info(function.ToString());
 
                 OnDirectionChanged?.Invoke(this, new ManualPortEventArgs(function));
             }
@@ -286,7 +286,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
 
                 //2.read log
-                LogManager.GetCurrentClassLogger().Info(function.ToString());
+                logger.Info(function.ToString());
 
                 OnDirectionChanged?.Invoke(this, new ManualPortEventArgs(function));
             }
@@ -314,7 +314,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
 
                 //2.read log
-                LogManager.GetCurrentClassLogger().Info(function.ToString());
+                logger.Info(function.ToString());
 
                 if (function.IsBcrReadDone)
                     OnBcrReadDone?.Invoke(this, new ManualPortEventArgs(function));
@@ -339,7 +339,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
 
                 //2.read log
-                LogManager.GetCurrentClassLogger().Info(function.ToString());
+                logger.Info(function.ToString());
 
                 if (function.IsWaitIn)
                     OnWaitIn?.Invoke(this, new ManualPortEventArgs(function));
@@ -368,7 +368,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
 
                 //2.read log
-                LogManager.GetCurrentClassLogger().Info(function.ToString());
+                logger.Info(function.ToString());
 
                 if (function.IsWaitOut)
                     OnWaitOut?.Invoke(this, new ManualPortEventArgs(function));
@@ -393,7 +393,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
 
                 //2.read log
-                LogManager.GetCurrentClassLogger().Info(function.ToString());
+                logger.Info(function.ToString());
 
                 if (function.IsRemoveCheck)
                     OnCstRemoved?.Invoke(this, new ManualPortEventArgs(function));
@@ -420,7 +420,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
 
                 //2.read log
-                LogManager.GetCurrentClassLogger().Info(function.ToString());
+                logger.Info(function.ToString());
 
                 OnLoadPresenceChanged?.Invoke(this, new ManualPortEventArgs(function));
             }
@@ -444,7 +444,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
 
                 //2.read log
-                LogManager.GetCurrentClassLogger().Info(function.ToString());
+                logger.Info(function.ToString());
 
                 if (function.IsRun && Int32.TryParse(function.AlarmCode, out var alarmCode))
                 {
@@ -638,7 +638,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
 
-                LogManager.GetCurrentClassLogger().Info(function.ToString());
+                logger.Info(function.ToString());
             }
             catch (Exception ex)
             {
