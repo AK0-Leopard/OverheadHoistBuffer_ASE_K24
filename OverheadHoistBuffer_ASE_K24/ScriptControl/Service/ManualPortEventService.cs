@@ -512,6 +512,14 @@ namespace com.mirle.ibg3k0.sc.Service
 
                     portDefBLL.ChangeDirectionToInMode(args.PortName);
                     WriteEventLog($"{logTitle} PortDef change direction to InMode");
+
+                    if (manualPorts.TryGetValue(args.PortName, out var plcPort))
+                    {
+                        plcPort.ChangeToInModeAsync(isOn: false);
+                        WriteEventLog($"{logTitle} OFF ChangeToInMode Signal");
+                    }
+                    else
+                        WriteEventLog($"{logTitle} Cannot OFF ChangeToInMode Signal. Because cannot find IManualPortValueDefMapAction by portName[{args.PortName}]");
                 }
                 else
                 {
@@ -520,6 +528,14 @@ namespace com.mirle.ibg3k0.sc.Service
 
                     portDefBLL.ChangeDirectionToOutMode(args.PortName);
                     WriteEventLog($"{logTitle} PortDef change direction to OutMode");
+
+                    if (manualPorts.TryGetValue(args.PortName, out var plcPort))
+                    {
+                        plcPort.ChangeToOutModeAsync(isOn: false);
+                        WriteEventLog($"{logTitle} OFF ChangeToOutMode Signal");
+                    }
+                    else
+                        WriteEventLog($"{logTitle} Cannot OFF ChangeToOutMode Signal. Because cannot find IManualPortValueDefMapAction by portName[{args.PortName}]");
                 }
             }
             catch (Exception ex)
