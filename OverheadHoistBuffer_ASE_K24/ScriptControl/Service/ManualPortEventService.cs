@@ -18,6 +18,8 @@ namespace com.mirle.ibg3k0.sc.Service
     {
         private Logger logger = LogManager.GetLogger("ManualPortLogger");
 
+        private string now { get => DateTime.Now.ToString("HH:mm:ss.fff "); }
+
         private ConcurrentDictionary<string, IManualPortValueDefMapAction> manualPorts { get; set; }
 
         private IManualPortReportBLL reportBll;
@@ -29,6 +31,9 @@ namespace com.mirle.ibg3k0.sc.Service
 
         public ManualPortEventService()
         {
+            WriteLog("");
+            WriteLog("");
+            WriteLog("");
             WriteLog($"New ManualPortEventService");
         }
 
@@ -77,13 +82,13 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private void WriteLog(string message)
         {
-            var logMessage = DateTime.Now.ToString("HH:mm:ss.fff ") + message;
+            var logMessage = $"[{now}] {message}";
             logger.Info(logMessage);
         }
 
         private void WriteEventLog(string message)
         {
-            var logMessage = DateTime.Now.ToString("HH:mm:ss.fff ") + $"PLC >> OHBC | {message}";
+            var logMessage = $"[{now}] PLC Event | {message}";
             logger.Info(logMessage);
         }
 
