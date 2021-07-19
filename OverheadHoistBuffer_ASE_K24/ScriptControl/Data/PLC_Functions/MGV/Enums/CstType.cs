@@ -2,6 +2,7 @@
 {
     public enum CstType
     {
+        PortHasNoCarrierNow,
         A,
         B,
         Undefined,
