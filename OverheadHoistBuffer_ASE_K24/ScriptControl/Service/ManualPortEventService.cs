@@ -555,7 +555,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 var logTitle = $"PortName[{args.PortName}] AlarmHappen => ";
                 WriteEventLog($"{logTitle} AlarmIndex[{info.ErrorIndex}] AlarmCode[{info.AlarmCode}] IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
 
-                var alarmCode = info.AlarmCode.Trim();
+                var alarmCode = info.AlarmCode.ToString().Trim();
                 var commandOfPort = GetCommandOfPort(info);
 
                 if (alarmBLL.SetAlarm(portName, alarmCode, commandOfPort, out var alarmReport, out var reasonOfAlarmSetFailed) == false)
@@ -594,7 +594,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 var logTitle = $"PortName[{args.PortName}] AlarmClear => ";
                 WriteEventLog($"{logTitle} AlarmIndex[{info.ErrorIndex}] AlarmCode[{info.AlarmCode}] IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
 
-                var alarmCode = info.AlarmCode.Trim();
+                var alarmCode = info.AlarmCode.ToString().Trim();
                 var commandOfPort = GetCommandOfPort(info);
 
                 if (alarmBLL.ClearAllAlarm(portName, commandOfPort, out var alarmReports, out var reasonOfAlarmClearFailed) == false)
