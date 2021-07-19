@@ -446,7 +446,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //2.read log
                 logger.Info(function.ToString());
 
-                if (function.IsRun && Int32.TryParse(function.AlarmCode, out var alarmCode))
+                var alarmCode = function.AlarmCode;
+
+                if (function.IsRun)
                 {
                     if (alarmCode == 0)
                         OnAlarmClear?.Invoke(this, new ManualPortEventArgs(function));
