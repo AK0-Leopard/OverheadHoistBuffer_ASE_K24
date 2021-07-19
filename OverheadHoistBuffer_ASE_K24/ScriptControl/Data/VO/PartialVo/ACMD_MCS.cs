@@ -71,6 +71,8 @@ namespace com.mirle.ibg3k0.sc
                 return COMMANDSTATE == COMMAND_STATUS_BIT_INDEX_UNLOADING;
             }
         }
+        public string CARRIER_ID { get { return BOX_ID; } }
+
 
         public enum CmdType
         {

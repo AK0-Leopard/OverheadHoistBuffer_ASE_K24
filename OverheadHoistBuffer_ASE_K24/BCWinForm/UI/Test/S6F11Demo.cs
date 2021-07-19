@@ -227,7 +227,7 @@ namespace com.mirle.ibg3k0.bc.winform
         private void button5_Click(object sender, EventArgs e)
         {
             CassetteData datainfo = new CassetteData();
-            datainfo.CSTID = textBox1.Text;
+            //datainfo.CSTID = textBox1.Text;
             datainfo.Carrier_LOC = comboBox5.Text;
             datainfo.BOXID = textBox2.Text;
 
@@ -241,7 +241,7 @@ namespace com.mirle.ibg3k0.bc.winform
         private void button6_Click(object sender, EventArgs e)
         {
             CassetteData datainfo = new CassetteData();
-            datainfo.CSTID = textBox1.Text;
+            //datainfo.CSTID = textBox1.Text;
             datainfo.Carrier_LOC = comboBox5.Text;
             datainfo.BOXID = textBox2.Text;
 
@@ -370,7 +370,7 @@ namespace com.mirle.ibg3k0.bc.winform
 
         private void button3_Click(object sender, EventArgs e)
         {
-            BCApp.SCApplication.TransferService.Manual_InsertCassette(textBox1.Text, textBox2.Text, comboBox3.Text);
+            BCApp.SCApplication.TransferService.Manual_InsertCassette( textBox2.Text, comboBox3.Text);
         }
 
         private void button23_Click(object sender, EventArgs e)
@@ -421,7 +421,6 @@ namespace com.mirle.ibg3k0.bc.winform
         private void button25_Click(object sender, EventArgs e)
         {
             PortPLCInfo portPLCInfo = new PortPLCInfo();
-            portPLCInfo.CassetteID = textBox1.Text;
             portPLCInfo.BoxID = textBox2.Text;
             portPLCInfo.EQ_ID = comboBox3.Text;
             BCApp.SCApplication.TransferService.PLC_ReportPortWaitIn(portPLCInfo, "S6F11 Demo");

@@ -16,7 +16,6 @@ namespace com.mirle.ibg3k0.sc
     {
         public string CMD_ID { get; set; }
         public string VH_ID { get; set; }
-        public string CARRIER_ID { get; set; }
         public string CMD_ID_MCS { get; set; }
         public E_CMD_TYPE CMD_TPYE { get; set; }
         public string SOURCE { get; set; }

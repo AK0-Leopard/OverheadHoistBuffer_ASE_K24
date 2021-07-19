@@ -1100,7 +1100,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     if (scApp.TransferService.isUnitType(function.EQ_ID, UnitType.AGV))
                     {
                         CassetteData datainfo = new CassetteData();
-                        datainfo.CSTID = function.CassetteID.Trim();        //填CSTID
+                        //datainfo.CSTID = function.CassetteID.Trim();        //填CSTID
                         datainfo.BOXID = function.BoxID.Trim();        //填BOXID
                         datainfo.Carrier_LOC = function.EQ_ID.Trim();  //填Port 名稱
                         scApp.TransferService.PortCarrierRemoved(datainfo, function.IsAGVMode, "PortRemove");
@@ -1190,7 +1190,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     if (function.LoadPosition1)
                     {
                         CassetteData datainfo = new CassetteData();
-                        datainfo.CSTID = function.CassetteID;        //填CSTID
+                        //datainfo.CSTID = function.CassetteID;        //填CSTID
                         datainfo.BOXID = function.LoadPositionBOX1.Trim();        //填BOXID
                         datainfo.Carrier_LOC = port.PORT_ID.Trim();  //填Port 名稱
 
@@ -1206,7 +1206,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 if (function.OpAutoMode && function.IsOutputMode)  //2020/2/18 Hsinyu Chang: input mode時忽略position資訊的更新
                 {
                     CassetteData datainfo = new CassetteData();
-                    datainfo.CSTID = function.CassetteID;        //填CSTID
+                    //datainfo.CSTID = function.CassetteID;        //填CSTID
                     datainfo.BOXID = function.LoadPositionBOX1.Trim();        //填BOXID
                     datainfo.Carrier_LOC = function.EQ_ID.Trim();  //填Port 名稱
 
@@ -1261,7 +1261,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 if (function.IsOutputMode == true)  //2020/2/18 Hsinyu Chang: input mode時忽略position資訊的更新
                 {
                     CassetteData datainfo = new CassetteData();
-                    datainfo.CSTID = function.CassetteID;        //填CSTID
+                    //datainfo.CSTID = function.CassetteID;        //填CSTID
                     datainfo.BOXID = function.LoadPositionBOX2.Trim();        //填BOXID
                     datainfo.Carrier_LOC = port.PORT_ID.Trim();  //填Port 名稱
 
@@ -1316,7 +1316,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 if (function.IsOutputMode == true)  //2020/2/18 Hsinyu Chang: input mode時忽略position資訊的更新
                 {
                     CassetteData datainfo = new CassetteData();
-                    datainfo.CSTID = function.CassetteID;        //填CSTID
+                    //datainfo.CSTID = function.CassetteID;        //填CSTID
                     datainfo.BOXID = function.LoadPositionBOX3.Trim();        //填BOXID
                     datainfo.Carrier_LOC = port.PORT_ID.Trim();  //填Port 名稱
 
@@ -1371,7 +1371,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 if (function.IsOutputMode == true)  //2020/2/18 Hsinyu Chang: input mode時忽略position資訊的更新
                 {
                     CassetteData datainfo = new CassetteData();
-                    datainfo.CSTID = function.CassetteID;        //填CSTID
+                    //datainfo.CSTID = function.CassetteID;        //填CSTID
                     datainfo.BOXID = function.LoadPositionBOX4.Trim();        //填BOXID
                     datainfo.Carrier_LOC = port.PORT_ID.Trim();  //填Port 名稱
 
@@ -1426,7 +1426,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 if (function.IsOutputMode == true)  //2020/2/18 Hsinyu Chang: input mode時忽略position資訊的更新
                 {
                     CassetteData datainfo = new CassetteData();
-                    datainfo.CSTID = function.CassetteID;        //填CSTID
+                    //datainfo.CSTID = function.CassetteID;        //填CSTID
                     datainfo.BOXID = function.LoadPositionBOX5.Trim();        //填BOXID
                     datainfo.Carrier_LOC = port.PORT_ID.Trim();  //填Port 名稱
 
@@ -1488,7 +1488,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 if (function.IsOutputMode == true)  //2020/2/18 Hsinyu Chang: input mode時忽略position資訊的更新
                 {
                     CassetteData datainfo = new CassetteData();
-                    datainfo.CSTID = function.CassetteID;        //填CSTID
+                    //datainfo.CSTID = function.CassetteID;        //填CSTID
                     datainfo.BOXID = function.BoxID.Trim();        //填BOXID
                     datainfo.Carrier_LOC = port.PORT_ID.Trim();  //填Port 名稱
 
@@ -1544,7 +1544,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 if (function.IsOutputMode == true)  //2020/2/18 Hsinyu Chang: input mode時忽略position資訊的更新
                 {
                     CassetteData datainfo = new CassetteData();
-                    datainfo.CSTID = function.CassetteID;        //填CSTID
+                    //datainfo.CSTID = function.CassetteID;        //填CSTID
                     datainfo.BOXID = function.BoxID.Trim();        //填BOXID
                     datainfo.Carrier_LOC = port.PORT_ID.Trim();  //填Port 名稱
 

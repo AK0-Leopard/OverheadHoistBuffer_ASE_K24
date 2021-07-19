@@ -15,7 +15,6 @@ namespace com.mirle.ibg3k0.sc
     public partial class ACMD_MCS
     {
         public string CMD_ID { get; set; }
-        public string CARRIER_ID { get; set; }
         public E_TRAN_STATUS TRANSFERSTATE { get; set; }
         public int COMMANDSTATE { get; set; }
         public string HOSTSOURCE { get; set; }

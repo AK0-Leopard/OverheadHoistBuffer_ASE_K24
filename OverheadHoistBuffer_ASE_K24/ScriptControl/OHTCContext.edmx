@@ -1829,7 +1829,6 @@
           </Key>
           <Property Type="String" Name="CMD_ID" Nullable="false" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="VH_ID" Nullable="false" MaxLength="32" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="CARRIER_ID" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="CMD_ID_MCS" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Type="OHTC_DevModel.E_CMD_TYPE" Name="CMD_TPYE" Nullable="false" />
           <Property Type="String" Name="SOURCE" MaxLength="64" FixedLength="true" Unicode="false" />
@@ -2694,7 +2693,6 @@
             <PropertyRef Name="CMD_ID" />
           </Key>
           <Property Name="CMD_ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Name="CARRIER_ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="TRANSFERSTATE" Type="OHTC_DevModel.E_TRAN_STATUS" Nullable="false" />
           <Property Name="COMMANDSTATE" Type="Int32" Nullable="false" />
           <Property Name="HOSTSOURCE" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
@@ -2722,7 +2720,6 @@
             <PropertyRef Name="BOXID" />
           </Key>
           <Property Name="StockerID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Name="CSTID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="BOXID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="Carrier_LOC" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="Stage" Type="Decimal" Nullable="false" Precision="2" Scale="0" />
@@ -3201,7 +3198,6 @@
         <MappingFragment StoreEntitySet="ACMD_OHTC">
           <ScalarProperty Name="CMD_ID" ColumnName="CMD_ID" />
           <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />
-          <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
           <ScalarProperty Name="CMD_ID_MCS" ColumnName="CMD_ID_MCS" />
           <ScalarProperty Name="CMD_TPYE" ColumnName="CMD_TPYE" />
           <ScalarProperty Name="SOURCE" ColumnName="SOURCE" />
@@ -4050,7 +4046,6 @@
       <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACMD_MCS)">
         <MappingFragment StoreEntitySet="ACMD_MCS">
           <ScalarProperty Name="CMD_ID" ColumnName="CMD_ID" />
-          <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
           <ScalarProperty Name="TRANSFERSTATE" ColumnName="TRANSFERSTATE" />
           <ScalarProperty Name="COMMANDSTATE" ColumnName="COMMANDSTATE" />
           <ScalarProperty Name="HOSTSOURCE" ColumnName="HOSTSOURCE" />
@@ -4080,7 +4075,6 @@
         <MappingFragment StoreEntitySet="CassetteData">
           <ScalarProperty Name="BOXID" ColumnName="BOXID" />
           <ScalarProperty Name="StockerID" ColumnName="StockerID" />
-          <ScalarProperty Name="CSTID" ColumnName="CSTID" />
           <ScalarProperty Name="Carrier_LOC" ColumnName="Carrier_LOC" />
           <ScalarProperty Name="Stage" ColumnName="Stage" />
           <ScalarProperty Name="CSTState" ColumnName="CSTState" />

@@ -190,7 +190,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Test
         }
         private void button9_Click(object sender, EventArgs e)
         {
-            BCApp.SCApplication.TransferService.SetScanCmd(textBox1.Text, textBox2.Text, comboBox3.Text);
+            BCApp.SCApplication.TransferService.SetScanCmd(textBox2.Text, comboBox3.Text);
             UpDate_CmdData();
         }
 
@@ -241,7 +241,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Test
         }
         private void button8_Click(object sender, EventArgs e)
         {
-            label10.Text = BCApp.SCApplication.TransferService.Manual_InsertCassette(textBox1.Text, textBox2.Text, comboBox3.Text);
+            label10.Text = BCApp.SCApplication.TransferService.Manual_InsertCassette(textBox2.Text, comboBox3.Text);
             UpDate_CstData();
         }
         private void button14_Click(object sender, EventArgs e) //刪除OHCV所有帳
@@ -319,11 +319,10 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Test
                         return;
                     }
 
-                    string cstID = dataGridView2.Rows[v.RowIndex].Cells["CSTID"].Value?.ToString() ?? "";
                     string boxID = dataGridView2.Rows[v.RowIndex].Cells["BOXID"].Value.ToString();
                     string loc = dataGridView2.Rows[v.RowIndex].Cells["Carrier_LOC"].Value.ToString();
                     //string lotID = dataGridView2.Rows[v.RowIndex].Cells["LotID"].Value.ToString();
-                    BCApp.SCApplication.TransferService.OHBC_InsertCassette(cstID, boxID, loc, "測試用 CMD_CST_DATA");
+                    BCApp.SCApplication.TransferService.OHBC_InsertCassette(boxID, loc, "測試用 CMD_CST_DATA");
                 }
                 UpDate_CstData();
             }
@@ -386,20 +385,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Test
             }
         }
 
-        private void button20_Click(object sender, EventArgs e)
-        {
-            DialogResult result;
-
-            result = MessageBox.Show("確定像 Redis 詢問 CSTID?", "詢問 CSTID", MessageBoxButtons.YesNo);
-
-            if (result == System.Windows.Forms.DialogResult.Yes)
-            {
-                foreach (CassetteData unkCstData in BCApp.SCApplication.CassetteDataBLL.LoadCassetteDataByCSTID_UNK())
-                {
-                    BCApp.SCApplication.TransferService.Redis_UpdateCstID(unkCstData);
-                }
-            }
-        }
 
         private void button21_Click(object sender, EventArgs e)
         {

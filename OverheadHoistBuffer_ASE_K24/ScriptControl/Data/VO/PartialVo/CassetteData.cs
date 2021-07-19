@@ -26,5 +26,8 @@ namespace com.mirle.ibg3k0.sc
         }
 
         public bool AtShelf { get => Int32.TryParse(Carrier_LOC, out var _) ? true : false; }
+
+        public string CSTID { get { return BOXID; } }
+
     }
 }

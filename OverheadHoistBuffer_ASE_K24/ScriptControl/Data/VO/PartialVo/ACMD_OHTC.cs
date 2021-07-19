@@ -8,6 +8,7 @@ namespace com.mirle.ibg3k0.sc
 {
     public partial class ACMD_OHTC
     {
+        public string CARRIER_ID { get; set; }
 
         public bool IsTransferCmdByMCS
         {
@@ -38,7 +39,7 @@ namespace com.mirle.ibg3k0.sc
                 DESTINATION_ADR = this.DESTINATION_ADR,
                 BOX_ID = this.BOX_ID,
                 LOT_ID = this.LOT_ID,
-                CMD_INSER_TIME = 
+                CMD_INSER_TIME =
                 this.CMD_INSER_TIME.HasValue ? this.CMD_INSER_TIME.Value : DateTime.Now,
             };
         }

@@ -82,48 +82,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
-        public bool upDateVIDCommandInfo(string eq_id, string mcs_cmd_id)
-        {
-            bool isSuccess = true;
-            if (SCUtility.isEmpty(mcs_cmd_id))
-            {
-                return false;
-            }
-            ACMD_MCS mcs_msc = scApp.CMDBLL.getCMD_MCSByID(mcs_cmd_id);
-            if (mcs_msc != null)
-            {
-                isSuccess = upDateVIDCommandInfo(eq_id, mcs_msc.CARRIER_ID, mcs_msc.CMD_ID, mcs_msc.HOSTSOURCE, mcs_msc.HOSTDESTINATION, mcs_msc.PRIORITY, mcs_msc.REPLACE);
-            }
 
-            return isSuccess;
-        }
-        private bool upDateVIDCommandInfo(string eq_id, string carrier_id, string cmd_id, string source_port, string dest_port, int priority, int replace)
-        {
-            bool isSuccess = true;
-            //using (DBConnection_EF con = new DBConnection_EF())
-            using (DBConnection_EF con = DBConnection_EF.GetContext())
-            {
-                AVIDINFO vid_info = vidIvfoDAO.getByID(con, eq_id);
-                if (vid_info != null)
-                {
-                    vid_info.CARRIER_ID = carrier_id;
-                    vid_info.COMMAND_ID = cmd_id;
-                    vid_info.SOURCEPORT = source_port;
-                    vid_info.DESTPORT = dest_port;
-                    vid_info.PRIORITY = priority;
-                    vid_info.CARRIER_LOC = source_port;
-                    vid_info.REPLACE = replace;
-                    //vid_info.CARRIER_LOC = dest_port;
-                    vidIvfoDAO.update(con);
-                }
-                else
-                {
-                    isSuccess = false;
-                    //TODO Exception log
-                }
-            }
-            return isSuccess;
-        }
         public bool initialVIDCommandInfo(string eq_id)
         {
             bool isSuccess = true;

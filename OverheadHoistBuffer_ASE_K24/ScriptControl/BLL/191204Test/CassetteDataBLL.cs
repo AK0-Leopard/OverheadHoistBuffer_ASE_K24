@@ -48,7 +48,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             bool isSuccess = true;
             try
             {
-                datainfo.CSTID = datainfo.CSTID.Trim();
+                //datainfo.CSTID = datainfo.CSTID.Trim();
                 datainfo.BOXID = datainfo.BOXID.Trim();
                 datainfo.Carrier_LOC = datainfo.Carrier_LOC.Trim();
                 datainfo.CSTInDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
@@ -112,7 +112,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
                     var cassette = con.CassetteData.Where(x => x.BOXID == boxid).FirstOrDefault();
-                    cassette.CSTID = cstid;
+                    //cassette.CSTID = cstid;
                     cassette.Carrier_LOC = locid;
                     cassettedataDao.UpdateCassetteData(con);
                 }
@@ -230,7 +230,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             return isSuccess;
         }
 
-        public bool UpdateCSTID(string loc, string boxid, string cstid, string lotID)
+        public bool UpdateLotID(string loc, string boxid, string lotID)
         {
             bool isSuccess = true;
             try
@@ -238,7 +238,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
                     CassetteData cstData = con.CassetteData.Where(data => data.Carrier_LOC == loc && data.BOXID == boxid).First();
-                    cstData.CSTID = cstid.Trim();
                     cstData.LotID = lotID.Trim();
                     cassettedataDao.UpdateCassetteData(con);
                 }
@@ -792,7 +791,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             CassetteData datainfo = new CassetteData();
 
             datainfo.StockerID = "1";
-            datainfo.CSTID = "";
+            //datainfo.CSTID = "";
             datainfo.BOXID = SCUtility.Trim(carrierId, true);
             datainfo.Carrier_LOC = SCUtility.Trim(carrierLocation, true);
             datainfo.LotID = "";

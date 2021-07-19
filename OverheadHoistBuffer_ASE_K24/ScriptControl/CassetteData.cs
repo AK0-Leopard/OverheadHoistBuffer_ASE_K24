@@ -15,7 +15,6 @@ namespace com.mirle.ibg3k0.sc
     public partial class CassetteData
     {
         public string StockerID { get; set; }
-        public string CSTID { get; set; }
         public string BOXID { get; set; }
         public string Carrier_LOC { get; set; }
         public decimal Stage { get; set; }

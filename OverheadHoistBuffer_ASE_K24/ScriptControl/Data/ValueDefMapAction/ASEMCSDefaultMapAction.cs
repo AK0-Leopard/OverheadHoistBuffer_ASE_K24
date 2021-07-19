@@ -850,7 +850,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 }
                 if (canInstallCmd)
                 {
-                    scApp.TransferService.OHBC_InsertCassette(carrier_id, box_id, carrier_loc, "S2F41");
+                    scApp.TransferService.OHBC_InsertCassette( box_id, carrier_loc, "S2F41");
                     //scApp.VehicleService.doInstallCommandByMCSCmdID(has_carrier, carrier_id, box_id, carrier_loc);
                 }
                 if (canRemoveCmd)
@@ -874,7 +874,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 }
                 if (canScanCmd)
                 {
-                    scApp.TransferService.SetScanCmd(carrier_id, box_id, carrier_loc);
+                    scApp.TransferService.SetScanCmd(box_id, carrier_loc);
                 }
             }
             catch (Exception ex)
@@ -1464,7 +1464,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 }
                 else
                 {
-                    is_ok = scApp.CassetteDataBLL.UpdateCSTID(cstData.Carrier_LOC, cstData.BOXID, cstData.CSTID, lotID.Trim());
+                    is_ok = scApp.CassetteDataBLL.UpdateLotID(cstData.Carrier_LOC, cstData.BOXID, lotID.Trim());
 
                     if (is_ok == false)
                     {

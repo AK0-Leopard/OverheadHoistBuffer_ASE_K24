@@ -950,7 +950,7 @@ namespace com.mirle.ibg3k0.sc.WebAPI
 					{
 						if (scApp.TransferService. isShelfPort(item))
 						{
-							scApp.TransferService. SetScanCmd("", "", item);
+							scApp.TransferService. SetScanCmd( "", item);
 						}
 					}
 					//foreach (var v in )

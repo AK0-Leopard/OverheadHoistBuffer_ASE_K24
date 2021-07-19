@@ -350,7 +350,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     {
                         CassetteData cstData_FromS2F49 = new CassetteData();
                         cstData_FromS2F49.BOXID = box_id.Trim(); //填BOXID
-                        cstData_FromS2F49.CSTID = ""; // 填入空白即可
+                        //cstData_FromS2F49.CSTID = ""; // 填入空白即可
                         cstData_FromS2F49.Carrier_LOC = HostSource.Trim();  //填PortID
                         cstData_FromS2F49.CSTState = E_CSTState.Installed;
                         cstData_FromS2F49.StockerID = "1";
@@ -672,7 +672,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             if (cstData != null)
             {
-                scApp.CassetteDataBLL.UpdateCSTID(cstData.Carrier_LOC, cstData.BOXID, carrier_id.Trim(), LOT_ID.Trim());
+                scApp.CassetteDataBLL.UpdateLotID(cstData.Carrier_LOC, cstData.BOXID, LOT_ID.Trim());
             }
 
             //if (mcs_com != null)
@@ -708,7 +708,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
                 ACMD_MCS cmd = new ACMD_MCS()
                 {
-                    CARRIER_ID = carrier_id,
                     CMD_ID = command_id,
                     TRANSFERSTATE = E_TRAN_STATUS.Queue,
                     //COMMANDSTATE = SCAppConstants.TaskCmdStatus.Queue,
