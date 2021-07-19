@@ -125,26 +125,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             return isSuccess;
         }
 
-        public bool DeleteCSTDataByID(string cstid, string boxid)
-        {
-            bool isSuccess = true;
-            try
-            {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                {
-                    var quary = con.CassetteData
-                        .Where(data => data.CSTID == cstid && data.BOXID == boxid)
-                        .FirstOrDefault();
-                    cassettedataDao.DeleteCassetteData(con, quary);
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Exception");
-                isSuccess = false;
-            }
-            return isSuccess;
-        }
+
 
         public bool UpdateCSTLoc(string boxid, string loc, int stage)
         {
@@ -325,21 +306,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-        public List<CassetteData> LoadCassetteDataByCSTID_UNK()
-        {
-            try
-            {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                {
-                    return cassettedataDao.LoadCassetteDataByCSTID_UNK(con);
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Exception");
-                return null;
-            }
-        }
 
         /// <summary>
         /// 找出是UNK 但不是UNKU且在shelf 上的CST
@@ -378,22 +344,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-        public List<CassetteData> LoadCassetteDataByCstAndEmptyLotID()  //取得有 CSID 但沒有LOTID 所有資料
-        {
-            try
-            {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                {
-                    return cassettedataDao.LoadCassetteDataByCSTID_UNK(con);
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Exception");
-                return null;
-            }
-        }
-
+    
         public List<CassetteData> loadCassetteDataIsUnfinished()
         {
             try
@@ -458,22 +409,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-        public CassetteData loadCassetteDataByCSTID(string cstid)
-        {
-            try
-            {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                {
-                    return cassettedataDao.LoadCassetteDataByCSTID(con, cstid);
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Exception");
-                return null;
-            }
-        }
-
         public CassetteData loadCassetteDataByBoxID(string boxid)
         {
             try
@@ -482,23 +417,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     //return con.CassetteData.Where(data => data.BOXID == boxid).FirstOrDefault();
                     return cassettedataDao.LoadCassetteDataByBoxID(con, boxid);
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Exception");
-                return null;
-            }
-        }
-
-        public CassetteData loadCassetteDataByDU_CstID(CassetteData cstData)
-        {
-            try
-            {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                {
-                    //return con.CassetteData.Where(data => data.BOXID == boxid).FirstOrDefault();
-                    return cassettedataDao.LoadCassetteDataByDU_CSTID(con, cstData);
                 }
             }
             catch (Exception ex)
@@ -525,13 +443,13 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-        public CassetteData loadCassetteDataByCstBoxID(string cstid, string boxid)
+        public CassetteData loadCassetteDataByBoxID(string cstid, string boxid)
         {
             try
             {
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
-                    return con.CassetteData.Where(data => data.CSTID.Trim() == cstid.Trim() && data.BOXID.Trim() == boxid.Trim()).FirstOrDefault();
+                    return con.CassetteData.Where(data => data.BOXID.Trim() == boxid.Trim()).FirstOrDefault();
                 }
             }
             catch (Exception ex)
@@ -539,23 +457,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return null;
             }
-        }
-
-        public CassetteData GetEmptyBox(string ohtName)   //取得空BOX，oht
-        {
-            try
-            {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                {
-                    return con.CassetteData.Where(x => x.CSTID == "" && x.Carrier_LOC.Trim() != ohtName).FirstOrDefault();
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Exception");
-                return null;
-            }
-            //using (DBConnection_EF con = new DBConnection_EF())
         }
 
         public string GetZoneName(string shiefid)
@@ -630,7 +531,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 CassetteData csidData;
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
-                    csidData = con.CassetteData.Where(data => data.CSTID.Trim() == cstid.Trim() && data.BOXID.Trim() == boxid.Trim()).First();
+                    csidData = con.CassetteData.Where(data =>  data.BOXID.Trim() == boxid.Trim()).First();
 
                     cassettedataDao.DeleteCassetteData(con, csidData);
                 }

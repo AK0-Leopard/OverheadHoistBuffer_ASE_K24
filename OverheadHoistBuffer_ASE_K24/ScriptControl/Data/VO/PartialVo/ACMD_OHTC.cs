@@ -8,7 +8,7 @@ namespace com.mirle.ibg3k0.sc
 {
     public partial class ACMD_OHTC
     {
-        public string CARRIER_ID { get; set; }
+        public string CARRIER_ID { get { return this.BOX_ID; } }
 
         public bool IsTransferCmdByMCS
         {

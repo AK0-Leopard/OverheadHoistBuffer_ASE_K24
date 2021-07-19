@@ -2509,7 +2509,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         ACMD_OHTC cmdohtc = new ACMD_OHTC
                         {
                             CMD_ID = scApp.SequenceBLL.getCommandID(SCAppConstants.GenOHxCCommandType.Auto),
-                            CARRIER_ID = mcs_cmd.CARRIER_ID,
+                            //CARRIER_ID = mcs_cmd.CARRIER_ID,
                             BOX_ID = mcs_cmd.BOX_ID,
                             VH_ID = bestSuitableVh.VEHICLE_ID.Trim(),
                             CMD_ID_MCS = mcs_cmd.CMD_ID,
@@ -3402,7 +3402,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     CMD_ID = commandID,
                     VH_ID = vh_id,
-                    CARRIER_ID = cst_id,
+                    //CARRIER_ID = cst_id,
                     CMD_ID_MCS = cmd_id_mcs,
                     CMD_TPYE = cmd_type,
                     SOURCE = _source,
