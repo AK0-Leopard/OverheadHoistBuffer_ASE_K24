@@ -5296,8 +5296,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
                     command = cmd_mcsDao.getByBoxID(con, carrierId);
+                    return command != null;
                 }
-                return true;
             }
             catch (Exception ex)
             {

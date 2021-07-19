@@ -509,7 +509,8 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public bool GetPortDef(string portName, out PortDef portDef)
         {
-            throw new NotImplementedException();
+            portDef = null;
+            return false;
         }
     }
 }
