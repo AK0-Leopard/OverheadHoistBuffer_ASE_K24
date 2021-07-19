@@ -1392,20 +1392,6 @@ namespace com.mirle.ibg3k0.sc.Service
             return is_success;
         }
 
-        public bool doRemoveCommandByMCSCmdID(bool has_carrier, string carrier_id, string box_id)
-        {
-            bool is_success = true;
-            if (has_carrier)
-            {
-                is_success &= scApp.CassetteDataBLL.DeleteCSTDataByID(carrier_id, box_id);
-            }
-            else
-            {
-                is_success = false;
-            }
-            scApp.ReportBLL.ReportCarrierRemovedCompleted(carrier_id, box_id);
-            return is_success;
-        }
 
         public bool doChgEnableShelfCommand(string shelf_id, bool enable)
         {
@@ -2152,7 +2138,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                     {
                                         cmdOHT_CSTdata.Carrier_LOC = eqpt.VEHICLE_ID;
                                         scApp.TransferService.ForceDeleteCstAndCmd(cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial", ACMD_MCS.ResultCode.IDmismatch);
-                                        scApp.TransferService.OHBC_InsertCassette( nowOHT_CSTdata.BOXID, nowOHT_CSTdata.Carrier_LOC, "TransferReportInitial");
+                                        scApp.TransferService.OHBC_InsertCassette(nowOHT_CSTdata.BOXID, nowOHT_CSTdata.Carrier_LOC, "TransferReportInitial");
                                         TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，發生mismatch initial cst id:{cstID},命令cst id:{cmdOHT_CSTdata.BOXID}");
                                     }
                                     else
@@ -2167,7 +2153,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                 else
                                 {
                                     scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, null, "TransferReportInitial");
-                                    scApp.TransferService.OHBC_InsertCassette( nowOHT_CSTdata.BOXID, nowOHT_CSTdata.Carrier_LOC, "TransferReportInitial");
+                                    scApp.TransferService.OHBC_InsertCassette(nowOHT_CSTdata.BOXID, nowOHT_CSTdata.Carrier_LOC, "TransferReportInitial");
                                     TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，cst id:{cstID} 並無帳料於系統中，進行強制建帳");
                                 }
                             }
@@ -2219,7 +2205,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             string new_carrier_id =
                               $"UNKF{eqpt.Real_ID.Trim()}{DateTime.Now.ToString(SCAppConstants.TimestampFormat_12)}";
                             final_cst_id = new_carrier_id;
-                            scApp.TransferService.OHBC_InsertCassette( new_carrier_id, eqpt.VEHICLE_ID, "TransferReportInitial");
+                            scApp.TransferService.OHBC_InsertCassette(new_carrier_id, eqpt.VEHICLE_ID, "TransferReportInitial");
                         }
                     }
                     else

@@ -6208,34 +6208,6 @@ namespace com.mirle.ibg3k0.sc.Service
 
             #region 卡匣讀不到檢查
 
-            //if (readData.CSTID.Contains("NOCST1") || string.IsNullOrWhiteSpace(readData.CSTID))
-            //{
-            //    readData.CSTID = "";
-            //}
-
-            //if (readData.CSTID.Contains("ERROR1") || readData.CSTID.Contains("NORD01"))
-            //{
-            //    if (isUnitType(readData.Carrier_LOC, UnitType.AGV)
-            //     || isUnitType(readData.Carrier_LOC, UnitType.NTB))
-            //    {
-            //        scApp.TransferService.OHBC_AlarmSet(readData.Carrier_LOC, ((int)AlarmLst.PORT_CSTID_READ_FAIL).ToString());
-            //        scApp.TransferService.OHBC_AlarmCleared(readData.Carrier_LOC, ((int)AlarmLst.PORT_CSTID_READ_FAIL).ToString());
-            //    }
-
-            //    readData.CSTID = CarrierReadFail(readData.Carrier_LOC);
-
-            //    if (isUnitType(readData.Carrier_LOC, UnitType.AGV))
-            //    {
-            //        PortDef dbPortDef = portDefBLL.GetPortData(readData.Carrier_LOC);
-            //        if (dbPortDef.AGVState == E_PORT_STATUS.InService)
-            //        {
-            //            readData.CSTID = CarrierReadFailAtTargetAGV(readData.Carrier_LOC);
-            //        }
-            //    }
-
-            //    carrierIDFail = true;
-            //}
-
             if (readData.BOXID.Contains("ERROR1") || readData.BOXID.Contains("NORD01") || string.IsNullOrWhiteSpace(readData.BOXID))
             {
                 //B0.03
@@ -6270,10 +6242,9 @@ namespace com.mirle.ibg3k0.sc.Service
 
             #region 卡匣重複檢查
 
-            CassetteData duCarrierID = cassette_dataBLL.loadCassetteDataByDU_CstID(readData);
             CassetteData duBoxID = cassette_dataBLL.loadCassetteDataByDU_BoxID(readData);
 
-            if ((duCarrierID != null && string.IsNullOrWhiteSpace(readData.CSTID) == false) || duBoxID != null)
+            if (duBoxID != null)
             {
                 bool insertCassetteDuCst = true;
 
@@ -6284,21 +6255,6 @@ namespace com.mirle.ibg3k0.sc.Service
                     TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "卡匣重複，發現搬送中命令 " + GetCmdLog(nowCmd));
                 }
 
-                if (duCarrierID != null && string.IsNullOrWhiteSpace(cstData.CSTID) == false)
-                {
-                    if (nowCmd != null || isShelfPort(duCarrierID.Carrier_LOC) == false)
-                    {
-                        TransferServiceLogger.Info
-                        (
-                            DateTime.Now.ToString("HH:mm:ss.fff ") + " CSTID 重複 "
-                            + "\nIDRead:" + GetCstLog(cstData)
-                            + "\nDB_CST_Data:" + GetCstLog(duCarrierID)
-                        );
-                        //readData.CSTID = CarrierReadduplicate(cstData.CSTID);
-                        readData.BOXID = CarrierReadFail(cstData.Carrier_LOC);
-                        insertCassetteDuCst = false;
-                    }
-                }
 
                 if (duBoxID != null)
                 {
@@ -6312,7 +6268,6 @@ namespace com.mirle.ibg3k0.sc.Service
                         );
                         //readData.CSTID = CarrierReadFail(cstData.Carrier_LOC);
                         readData.BOXID = CarrierReadduplicate(cstData.BOXID);
-                        insertCassetteDuCst = false;
                     }
                 }
 
@@ -6429,7 +6384,6 @@ namespace com.mirle.ibg3k0.sc.Service
         public void Duplicate(CassetteData bcrData) //卡匣重複處理
         {
             CassetteData newCstData = new CassetteData();
-            CassetteData duCarrID = cassette_dataBLL.loadCassetteDataByDU_CstID(bcrData);
             CassetteData duBoxID = cassette_dataBLL.loadCassetteDataByDU_BoxID(bcrData);
 
             if (duBoxID != null && duBoxID.Carrier_LOC != bcrData.Carrier_LOC)    //BOXID 重複
@@ -6438,31 +6392,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 //newCstData.CSTID = CarrierReadFail(newCstData.Carrier_LOC); //20/07/16 美微說 CSTID 要變 UNKF
                 newCstData.BOXID = CarrierReadduplicate(duBoxID.BOXID);
 
-                if (duCarrID != null)   //同個BOX，CSTID 重複
-                {
-                    //if (duCarrID.Carrier_LOC == duBoxID.Carrier_LOC)
-                    //{
-                    //    newCstData.CSTID = CarrierReadduplicate(bcrData.CSTID);
-                    //}
-
-                    reportBLL.ReportCarrierRemovedCompleted(duBoxID.CSTID, duBoxID.BOXID);
-                    OHBC_InsertCassette(newCstData.BOXID, newCstData.Carrier_LOC, "Duplicate");
-                    return;
-                }
-
                 reportBLL.ReportCarrierRemovedCompleted(duBoxID.CSTID, duBoxID.BOXID);
                 OHBC_InsertCassette(newCstData.BOXID, newCstData.Carrier_LOC, "BOX Duplicate");
             }
 
-            if (duCarrID != null && duCarrID.Carrier_LOC != bcrData.Carrier_LOC && string.IsNullOrWhiteSpace(bcrData.CSTID) == false)    //CSTID 重複
-            {
-                newCstData = duCarrID.Clone();
-                //newCstData.CSTID = CarrierReadduplicate(bcrData.CSTID);
-                newCstData.BOXID = CarrierReadFail(newCstData.Carrier_LOC); //20/07/16 美微說 CSTID 要變 UNKF
-
-                reportBLL.ReportCarrierRemovedCompleted(duCarrID.CSTID, duCarrID.BOXID);
-                OHBC_InsertCassette(newCstData.BOXID, newCstData.Carrier_LOC, "CSTID Duplicate");
-            }
         }
 
         #endregion 異常流程
@@ -6537,7 +6470,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 if (isLocExist(portName))
                 {
                     if (cassette_dataBLL.loadCassetteDataByBoxID(datainfo.BOXID) != null
-                     || (cassette_dataBLL.loadCassetteDataByCSTID(datainfo.CSTID) != null && string.IsNullOrWhiteSpace(datainfo.CSTID) == false)
+                     //|| (cassette_dataBLL.loadCassetteDataByCSTID(datainfo.CSTID) != null && string.IsNullOrWhiteSpace(datainfo.CSTID) == false)
                       )
                     {
                         Duplicate(datainfo);

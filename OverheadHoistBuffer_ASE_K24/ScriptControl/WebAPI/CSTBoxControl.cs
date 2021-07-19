@@ -188,7 +188,6 @@ namespace com.mirle.ibg3k0.sc.WebAPI
                             break;
 
                         case "InstallCST_BOX":
-                            CassetteData cassette = scApp.CassetteDataBLL.loadCassetteDataByCSTID(cst_id);
                             result = scApp.TransferService.Manual_InsertCassette(box_id, cst_loc);
                             break;
 

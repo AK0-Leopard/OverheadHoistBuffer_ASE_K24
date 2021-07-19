@@ -365,23 +365,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Test
 
             if (result == System.Windows.Forms.DialogResult.Yes)
             {
-                foreach (CassetteData emptyLotIDdata in BCApp.SCApplication.CassetteDataBLL.LoadCassetteDataByCstAndEmptyLotID())
-                {
-                    BCApp.SCApplication.TransferService.QueryLotID(emptyLotIDdata);
-                }
 
-                //List<int> listInt = new List<int>();
-                //foreach (DataGridViewCell v in dataGridView2.SelectedCells)
-                //{
-                //    string cstID = dataGridView2.Rows[v.RowIndex].Cells["CSTID"].Value.ToString();
-                //    //string boxID = dataGridView2.Rows[v.RowIndex].Cells["BOXID"].Value.ToString();
-
-                //    if (listInt.Contains(v.RowIndex) == false)
-                //    {
-                //        BCApp.SCApplication.ReportBLL.ReportQueryLotID(cstID);
-                //        listInt.Add(v.RowIndex);
-                //    }
-                //}
             }
         }
 

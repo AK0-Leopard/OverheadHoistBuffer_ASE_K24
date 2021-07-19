@@ -114,9 +114,9 @@ namespace com.mirle.ibg3k0.sc.Data.DAO.EntityFramework
         public ACMD_MCS getByCstBoxID(DBConnection_EF con, string cst_id, string box_id)
         {
             var query = from cmd in con.ACMD_MCS
-                        where cmd.CARRIER_ID.Trim() == cst_id.Trim()
-                           && cmd.BOX_ID.Trim() == box_id.Trim()
-                           && cmd.TRANSFERSTATE != E_TRAN_STATUS.TransferCompleted
+                            //cmd.CARRIER_ID.Trim() == cst_id.Trim()
+                        where cmd.BOX_ID.Trim() == box_id.Trim()
+                        && cmd.TRANSFERSTATE != E_TRAN_STATUS.TransferCompleted
                         select cmd;
             return query.SingleOrDefault();
         }
@@ -263,9 +263,9 @@ namespace com.mirle.ibg3k0.sc.Data.DAO.EntityFramework
         public int getCMD_MCSIsUnfinishedCountByCarrierID(DBConnection_EF con, string carrier_id)
         {
             var query = from cmd in con.ACMD_MCS
-                        where cmd.CARRIER_ID.Trim() == carrier_id.Trim() &&
-                        cmd.TRANSFERSTATE >= E_TRAN_STATUS.Queue
-                        && cmd.TRANSFERSTATE < E_TRAN_STATUS.Canceling
+                            //cmd.CARRIER_ID.Trim() == carrier_id.Trim() &&
+                        where cmd.TRANSFERSTATE >= E_TRAN_STATUS.Queue
+                          && cmd.TRANSFERSTATE < E_TRAN_STATUS.Canceling
                         select cmd;
             return query.Count();
         }

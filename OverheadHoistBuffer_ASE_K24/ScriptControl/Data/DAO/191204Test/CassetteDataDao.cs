@@ -82,21 +82,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
-        public List<CassetteData> LoadCassetteDataByCSTID_UNK(DBConnection_EF conn)
-        {
-            try
-            {
-                var port = from a in conn.CassetteData
-                           where a.CSTID.Contains("UNK")
-                           select a;
-                return port.ToList();
-            }
-            catch (Exception ex)
-            {
-                logger.Warn(ex);
-                throw;
-            }
-        }
+
         /// <summary>
         /// 找出是UNK 但不是UNKU且在shelf 上的CST
         /// </summary>
@@ -121,21 +107,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
-        public List<CassetteData> LoadCassetteDataByCstAndEmptyLotID(DBConnection_EF conn)
-        {
-            try
-            {
-                var port = from a in conn.CassetteData
-                           where string.IsNullOrWhiteSpace(a.CSTID) == false && string.IsNullOrWhiteSpace(a.LotID)
-                           select a;
-                return port.ToList();
-            }
-            catch (Exception ex)
-            {
-                logger.Warn(ex);
-                throw;
-            }
-        }
+
         public List<CassetteData> LoadCassetteDataByNotCompleted(DBConnection_EF conn)  //原本打算是要取得除了在 shelf 的所有帳
         {
             try
@@ -232,29 +204,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             }
         }
 
-        public CassetteData LoadCassetteDataByDU_CSTID(DBConnection_EF conn, CassetteData cstData)
-        {
-            try
-            {
-                if (cstData == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    var result = conn.CassetteData.Where
-                        (x => x.CSTID.Trim() == cstData.CSTID.Trim()
-                        && x.Carrier_LOC.Trim() != cstData.Carrier_LOC.Trim()
-                        ).FirstOrDefault();
-                    return result;
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Warn(ex);
-                throw;
-            }
-        }
+       
         public CassetteData LoadCassetteDataByDU_BOXID(DBConnection_EF conn, CassetteData cstData)
         {
             try

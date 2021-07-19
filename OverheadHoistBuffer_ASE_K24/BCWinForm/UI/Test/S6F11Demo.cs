@@ -36,7 +36,7 @@ namespace com.mirle.ibg3k0.bc.winform
             portList = BCApp.SCApplication.PortDefBLL.GetOHB_PortData(line.LINE_ID);
             shelfDefs = BCApp.SCApplication.ShelfDefBLL.LoadEnableShelf();
             avehicle = BCApp.SCApplication.VehicleBLL.loadAllVehicle();
-            
+
             int selindex = 0;
 
             comboBox11.Items.Add(line.LINE_ID);
@@ -51,12 +51,12 @@ namespace com.mirle.ibg3k0.bc.winform
                 {
                     comboBox9.Items.Add(s.PLCPortID);
                 }
-                else if(s.UnitType == "AGVZONE")
+                else if (s.UnitType == "AGVZONE")
                 {
                     comboBox1.Items.Add(s.PLCPortID);
                 }
 
-                if(BCApp.SCApplication.TransferService.isCVPort(s.PLCPortID))
+                if (BCApp.SCApplication.TransferService.isCVPort(s.PLCPortID))
                 {
                     comboBox11.Items.Add(s.PLCPortID);
                 }
@@ -108,9 +108,9 @@ namespace com.mirle.ibg3k0.bc.winform
             comboBox6.Items.Add("UNLOADING");
             comboBox6.Items.Add("UNLOAD_COMPLETE");
             comboBox6.Items.Add("COMMNAD_FINISH");
-            comboBox6.Items.Add("DOUBLE_STORAGE"); 
+            comboBox6.Items.Add("DOUBLE_STORAGE");
             comboBox6.Items.Add("EMPTY_RETRIEVAL");
-            comboBox6.Items.Add("InterlockError"); 
+            comboBox6.Items.Add("InterlockError");
             comboBox6.SelectedIndex = 1;
 
             comboBox2.Items.Add("In");
@@ -256,7 +256,7 @@ namespace com.mirle.ibg3k0.bc.winform
             ACMD_OHTC cmdohtc = new ACMD_OHTC
             {
                 CMD_ID = datainfo.CMD_ID,
-                CARRIER_ID = datainfo.CARRIER_ID,
+                //CARRIER_ID = datainfo.CARRIER_ID,
                 BOX_ID = datainfo.BOX_ID,
                 VH_ID = comboBox12.Text,
                 CMD_ID_MCS = datainfo.CMD_ID,
@@ -370,7 +370,7 @@ namespace com.mirle.ibg3k0.bc.winform
 
         private void button3_Click(object sender, EventArgs e)
         {
-            BCApp.SCApplication.TransferService.Manual_InsertCassette( textBox2.Text, comboBox3.Text);
+            BCApp.SCApplication.TransferService.Manual_InsertCassette(textBox2.Text, comboBox3.Text);
         }
 
         private void button23_Click(object sender, EventArgs e)
@@ -400,7 +400,7 @@ namespace com.mirle.ibg3k0.bc.winform
 
         private void button32_Click(object sender, EventArgs e)
         {
-            foreach(var v in comboBox11.Items)
+            foreach (var v in comboBox11.Items)
             {
                 BCApp.SCApplication.TransferService.OHBC_AlarmAllCleared(v.ToString());
             }
@@ -458,7 +458,7 @@ namespace com.mirle.ibg3k0.bc.winform
 
         private void button36_Click(object sender, EventArgs e)
         {
-            BCApp.SCApplication.TransferService.autoRemarkBOXCSTData = false ;
+            BCApp.SCApplication.TransferService.autoRemarkBOXCSTData = false;
             label18.Text = "自動救帳狀態:" + BCApp.SCApplication.TransferService.autoRemarkBOXCSTData.ToString();
         }
 
@@ -469,11 +469,11 @@ namespace com.mirle.ibg3k0.bc.winform
 
         private void button38_Click(object sender, EventArgs e)
         {
-            ShowDataList("PortADR"); 
+            ShowDataList("PortADR");
         }
         private void button39_Click(object sender, EventArgs e)
         {
-            ShowDataList("All_ADR");            
+            ShowDataList("All_ADR");
         }
         private void button43_Click(object sender, EventArgs e)
         {
@@ -482,7 +482,7 @@ namespace com.mirle.ibg3k0.bc.winform
 
         public void ShowDataList(string type)
         {
-            switch(type)
+            switch (type)
             {
                 case "portINIData":
                     dataGridView1.DataSource = BCApp.SCApplication.TransferService.portINIData.Values.ToList();

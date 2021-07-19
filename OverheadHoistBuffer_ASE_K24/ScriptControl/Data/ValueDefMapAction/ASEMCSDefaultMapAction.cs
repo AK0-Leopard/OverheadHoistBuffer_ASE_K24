@@ -394,7 +394,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
                         string cmdID = s2f49_transfer.REPITEMS.COMMINFO.COMMAINFO.COMMANDIDINFO.CommandID;
                         string priority = s2f49_transfer.REPITEMS.COMMINFO.COMMAINFO.PRIORITY.CPVAL;
-                        string cstID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.CARRIERIDINFO.CarrierID;
+                        //string cstID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.CARRIERIDINFO.CarrierID;
+                        string cstID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.BOXIDINFO.BoxID;
                         //string cstType = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.CARRIERTYPEINFO.CarrierType;
                         string cstType = "";
                         string boxID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.BOXIDINFO.BoxID;
@@ -850,7 +851,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 }
                 if (canInstallCmd)
                 {
-                    scApp.TransferService.OHBC_InsertCassette( box_id, carrier_loc, "S2F41");
+                    scApp.TransferService.OHBC_InsertCassette(box_id, carrier_loc, "S2F41");
                     //scApp.VehicleService.doInstallCommandByMCSCmdID(has_carrier, carrier_id, box_id, carrier_loc);
                 }
                 if (canRemoveCmd)
@@ -917,19 +918,19 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     cstID = cstData.CSTID;
                 }
             }
-            else if (!string.IsNullOrWhiteSpace(cstID))
-            {
-                if (string.IsNullOrWhiteSpace(cstID) == false)
-                {
-                    cstData = scApp.CassetteDataBLL.loadCassetteDataByCSTID(cstID);
+            //else if (!string.IsNullOrWhiteSpace(cstID))
+            //{
+            //    if (string.IsNullOrWhiteSpace(cstID) == false)
+            //    {
+            //        cstData = scApp.CassetteDataBLL.loadCassetteDataByCSTID(cstID);
 
-                    if (cstData != null)
-                    {
-                        loc = cstData.Carrier_LOC;
-                        boxID = cstData.BOXID;
-                    }
-                }
-            }
+            //        if (cstData != null)
+            //        {
+            //            loc = cstData.Carrier_LOC;
+            //            boxID = cstData.BOXID;
+            //        }
+            //    }
+            //}
             else //位置對象都沒有，不能判斷要scan誰
             {
                 check_result = SECSConst.HCACK_Param_Invalid;
@@ -1228,7 +1229,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 CarrierID = carrier_id_item.CPVAL?.ToString() ?? "";
                 BoxID = Box_item.CPVAL;
 
-                CassetteData cassette = scApp.CassetteDataBLL.loadCassetteDataByCstBoxID(CarrierID, BoxID);
+                CassetteData cassette = scApp.CassetteDataBLL.loadCassetteDataByBoxID(CarrierID, BoxID);
 
                 if (cassette == null)
                 {
@@ -1342,23 +1343,25 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             string BoxID = Box_item.CPVAL;
             string LocID = Loc_item.CPVAL;
 
-            if (carrier_id_item != null)
-            {
-                CassetteData cassette = scApp.CassetteDataBLL.loadCassetteDataByCSTID(CarrierID);
-                if (cassette == null)
-                {
-                    has_carrier = false;
-                }
-                else
-                {
-                    has_carrier = true;
-                }
-            }
-            else
-            {
-                check_result = SECSConst.HCACK_Param_Invalid;
-                is_ok = false;
-            }
+            check_result = SECSConst.HCACK_Param_Invalid;
+            is_ok = false;
+            //if (carrier_id_item != null)
+            //{
+            //    CassetteData cassette = scApp.CassetteDataBLL.loadCassetteDataByCSTID(CarrierID);
+            //    if (cassette == null)
+            //    {
+            //        has_carrier = false;
+            //    }
+            //    else
+            //    {
+            //        has_carrier = true;
+            //    }
+            //}
+            //else
+            //{
+            //    check_result = SECSConst.HCACK_Param_Invalid;
+            //    is_ok = false;
+            //}
             return (is_ok, check_result, has_carrier, CarrierID, BoxID, LocID);
         }
 
@@ -1453,26 +1456,30 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
             if (cstID_item != null && lotID_item != null)
             {
-                cstID = cstID_item.CPVAL?.Trim() ?? "";
-                lotID = lotID_item.CPVAL?.Trim() ?? "";
+                //cstID = cstID_item.CPVAL?.Trim() ?? "";
+                //lotID = lotID_item.CPVAL?.Trim() ?? "";
 
-                CassetteData cstData = scApp.CassetteDataBLL.loadCassetteDataByCSTID(cstID);
 
-                if (cstData == null)
-                {
-                    check_result = SECSConst.HCACK_Obj_Not_Exist;
-                }
-                else
-                {
-                    is_ok = scApp.CassetteDataBLL.UpdateLotID(cstData.Carrier_LOC, cstData.BOXID, lotID.Trim());
+                //CassetteData cstData = scApp.CassetteDataBLL.loadCassetteDataByCSTID(cstID);
 
-                    if (is_ok == false)
-                    {
-                    }
-                }
+                //if (cstData == null)
+                //{
+                //    check_result = SECSConst.HCACK_Obj_Not_Exist;
+                //}
+                //else
+                //{
+                //    is_ok = scApp.CassetteDataBLL.UpdateLotID(cstData.Carrier_LOC, cstData.BOXID, lotID.Trim());
+
+                //    if (is_ok == false)
+                //    {
+                //    }
+                //}
+                is_ok = false;
+                check_result = SECSConst.HCACK_Param_Invalid;
             }
             else
             {
+                is_ok = false;
                 check_result = SECSConst.HCACK_Param_Invalid;
             }
 
@@ -2680,7 +2687,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 VIDCollection Vids = new VIDCollection();
                 ACMD_MCS cmd = scApp.CMDBLL.getCMD_MCSByID(cmd_id);
-                CassetteData cassette = scApp.CassetteDataBLL.loadCassetteDataByCstBoxID(cmd.CARRIER_ID, cmd.BOX_ID);
+                CassetteData cassette = scApp.CassetteDataBLL.loadCassetteDataByBoxID(cmd.CARRIER_ID, cmd.BOX_ID);
                 string cstID = cassette?.CSTID ?? "";
                 string boxID = cassette?.BOXID ?? "";
                 string loc = cassette?.Carrier_LOC ?? "";
@@ -3111,7 +3118,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //if (!isSend()) return true;
                 VIDCollection Vids = new VIDCollection();
                 //var aa = scApp.CassetteDataBLL.loadCassetteData();
-                var cassette = scApp.CassetteDataBLL.loadCassetteDataByCstBoxID(cst_id, box_id);
+                var cassette = scApp.CassetteDataBLL.loadCassetteDataByBoxID(cst_id, box_id);
                 string zonename = scApp.CassetteDataBLL.GetZoneName(cassette.Carrier_LOC);
 
                 Vids.VIDITEM_54_DVVAL_CarrierID.CARRIER_ID = cassette.CSTID;
