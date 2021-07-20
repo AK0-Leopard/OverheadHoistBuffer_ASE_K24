@@ -69,9 +69,10 @@ namespace com.mirle.ibg3k0.sc.WebAPI
 
             scApp.CMDBLL.doCreatTransferCommand(request.VhId, out var cmd_obj,
                                         cmd_type: converTo(request.Type),
-                                        source: request.FromPortId,
-                                        destination: request.ToPortId,
+                                        source: "",
+                                        destination: "",
                                         box_id: request.CarrierId,
+                                        destination_address: request.ToPortId,
                                         gen_cmd_type: SCAppConstants.GenOHxCCommandType.Manual);
             sc.BLL.CMDBLL.OHTCCommandCheckResult check_result_info =
                                 sc.BLL.CMDBLL.getCallContext<sc.BLL.CMDBLL.OHTCCommandCheckResult>
