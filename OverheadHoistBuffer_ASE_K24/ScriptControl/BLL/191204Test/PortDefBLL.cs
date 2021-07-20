@@ -473,7 +473,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             try
             {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                using (var con = DBConnection_EF.GetUContext())
                 {
                     var port = portdefDao.GetPortData(con, portName);
                     port.PortType = E_PortType.In;
@@ -492,7 +492,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             try
             {
-                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                using (var con = DBConnection_EF.GetUContext())
                 {
                     var port = portdefDao.GetPortData(con, portName);
                     port.PortType = E_PortType.Out;
@@ -509,8 +509,20 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public bool GetPortDef(string portName, out PortDef portDef)
         {
-            portDef = null;
-            return false;
+            try
+            {
+                using (var con = DBConnection_EF.GetUContext())
+                {
+                    portDef = portdefDao.GetPortData(con, portName);
+                    return portDef != null;
+                }
+            }
+            catch (Exception ex)
+            {
+                portDef = null;
+                logger.Error(ex, "Exception");
+                return false;
+            }
         }
     }
 }
