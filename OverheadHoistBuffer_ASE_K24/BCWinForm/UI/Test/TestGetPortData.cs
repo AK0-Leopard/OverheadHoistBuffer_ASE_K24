@@ -591,5 +591,14 @@ namespace com.mirle.ibg3k0.bc.winform
                                 MessageBoxIcon.Warning);
             }
         }
+
+        private void button_StopBuzzer_Click(object sender, EventArgs e)
+        {
+            var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
+
+            port.StopBuzzer();
+
+            MessageBox.Show($"Port ID:{comboBox1.Text} 已執行 關閉蜂鳴器", "Message", MessageBoxButtons.OK);
+        }
     }
 }

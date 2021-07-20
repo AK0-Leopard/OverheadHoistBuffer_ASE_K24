@@ -50,9 +50,21 @@
             this.button15 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cmb_moveBackReason = new System.Windows.Forms.ComboBox();
-            this.button7 = new System.Windows.Forms.Button();
+            this.button_TimeCalibration = new System.Windows.Forms.Button();
+            this.groupBox_Commanding = new System.Windows.Forms.GroupBox();
+            this.button_Commanding_OFF = new System.Windows.Forms.Button();
+            this.button_Commanding_ON = new System.Windows.Forms.Button();
+            this.groupBox_MoveBack = new System.Windows.Forms.GroupBox();
             this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.cmb_moveBackReason = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button_ShowPLCMonitor = new System.Windows.Forms.Button();
+            this.textBox_ComingOutCarrierID = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBox_ReadyToWaitOutCarrierID1 = new System.Windows.Forms.TextBox();
+            this.textBox_ReadyToWaitOutCarrierID2 = new System.Windows.Forms.TextBox();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.label4 = new System.Windows.Forms.Label();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
@@ -68,28 +80,17 @@
             this.button38 = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button41 = new System.Windows.Forms.Button();
-            this.button_ShowPLCMonitor = new System.Windows.Forms.Button();
-            this.textBox_ReadyToWaitOutCarrierID1 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBox_ReadyToWaitOutCarrierID2 = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBox_ComingOutCarrierID = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox_MoveBack = new System.Windows.Forms.GroupBox();
-            this.groupBox_Commanding = new System.Windows.Forms.GroupBox();
-            this.button_Commanding_ON = new System.Windows.Forms.Button();
-            this.button_Commanding_OFF = new System.Windows.Forms.Button();
-            this.button_TimeCalibration = new System.Windows.Forms.Button();
+            this.button_StopBuzzer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
+            this.groupBox_Commanding.SuspendLayout();
+            this.groupBox_MoveBack.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            this.groupBox_MoveBack.SuspendLayout();
-            this.groupBox_Commanding.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -319,15 +320,74 @@
             this.panel1.Size = new System.Drawing.Size(1362, 426);
             this.panel1.TabIndex = 30;
             // 
-            // cmb_moveBackReason
+            // button_TimeCalibration
             // 
-            this.cmb_moveBackReason.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_moveBackReason.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.cmb_moveBackReason.FormattingEnabled = true;
-            this.cmb_moveBackReason.Location = new System.Drawing.Point(14, 27);
-            this.cmb_moveBackReason.Name = "cmb_moveBackReason";
-            this.cmb_moveBackReason.Size = new System.Drawing.Size(140, 24);
-            this.cmb_moveBackReason.TabIndex = 38;
+            this.button_TimeCalibration.Font = new System.Drawing.Font("微軟正黑體", 9F);
+            this.button_TimeCalibration.Location = new System.Drawing.Point(985, 386);
+            this.button_TimeCalibration.Name = "button_TimeCalibration";
+            this.button_TimeCalibration.Size = new System.Drawing.Size(178, 22);
+            this.button_TimeCalibration.TabIndex = 43;
+            this.button_TimeCalibration.Text = "向 PLC 對時";
+            this.button_TimeCalibration.UseVisualStyleBackColor = true;
+            this.button_TimeCalibration.Click += new System.EventHandler(this.button_TimeCalibration_Click);
+            // 
+            // groupBox_Commanding
+            // 
+            this.groupBox_Commanding.Controls.Add(this.button_Commanding_OFF);
+            this.groupBox_Commanding.Controls.Add(this.button_Commanding_ON);
+            this.groupBox_Commanding.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.groupBox_Commanding.Location = new System.Drawing.Point(989, 321);
+            this.groupBox_Commanding.Name = "groupBox_Commanding";
+            this.groupBox_Commanding.Size = new System.Drawing.Size(174, 59);
+            this.groupBox_Commanding.TabIndex = 50;
+            this.groupBox_Commanding.TabStop = false;
+            this.groupBox_Commanding.Text = "預約 Manual Port 方向";
+            // 
+            // button_Commanding_OFF
+            // 
+            this.button_Commanding_OFF.Font = new System.Drawing.Font("微軟正黑體", 11F);
+            this.button_Commanding_OFF.Location = new System.Drawing.Point(89, 24);
+            this.button_Commanding_OFF.Name = "button_Commanding_OFF";
+            this.button_Commanding_OFF.Size = new System.Drawing.Size(46, 27);
+            this.button_Commanding_OFF.TabIndex = 42;
+            this.button_Commanding_OFF.Text = "OFF";
+            this.button_Commanding_OFF.UseVisualStyleBackColor = true;
+            this.button_Commanding_OFF.Click += new System.EventHandler(this.button_Commanding_OFF_Click);
+            // 
+            // button_Commanding_ON
+            // 
+            this.button_Commanding_ON.Font = new System.Drawing.Font("微軟正黑體", 11F);
+            this.button_Commanding_ON.Location = new System.Drawing.Point(37, 24);
+            this.button_Commanding_ON.Name = "button_Commanding_ON";
+            this.button_Commanding_ON.Size = new System.Drawing.Size(46, 27);
+            this.button_Commanding_ON.TabIndex = 41;
+            this.button_Commanding_ON.Text = "ON";
+            this.button_Commanding_ON.UseVisualStyleBackColor = true;
+            this.button_Commanding_ON.Click += new System.EventHandler(this.button_Commanding_ON_Click);
+            // 
+            // groupBox_MoveBack
+            // 
+            this.groupBox_MoveBack.Controls.Add(this.button6);
+            this.groupBox_MoveBack.Controls.Add(this.button7);
+            this.groupBox_MoveBack.Controls.Add(this.cmb_moveBackReason);
+            this.groupBox_MoveBack.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.groupBox_MoveBack.Location = new System.Drawing.Point(989, 211);
+            this.groupBox_MoveBack.Name = "groupBox_MoveBack";
+            this.groupBox_MoveBack.Size = new System.Drawing.Size(222, 104);
+            this.groupBox_MoveBack.TabIndex = 49;
+            this.groupBox_MoveBack.TabStop = false;
+            this.groupBox_MoveBack.Text = "Move Back 原因與執行";
+            // 
+            // button6
+            // 
+            this.button6.Font = new System.Drawing.Font("微軟正黑體", 11F);
+            this.button6.Location = new System.Drawing.Point(14, 66);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(192, 27);
+            this.button6.TabIndex = 38;
+            this.button6.Text = "Move Back";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.moveBack_Click_1);
             // 
             // button7
             // 
@@ -340,16 +400,83 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click_1);
             // 
-            // button6
+            // cmb_moveBackReason
             // 
-            this.button6.Font = new System.Drawing.Font("微軟正黑體", 11F);
-            this.button6.Location = new System.Drawing.Point(14, 66);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(192, 27);
-            this.button6.TabIndex = 38;
-            this.button6.Text = "Move Back";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.moveBack_Click_1);
+            this.cmb_moveBackReason.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_moveBackReason.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.cmb_moveBackReason.FormattingEnabled = true;
+            this.cmb_moveBackReason.Location = new System.Drawing.Point(14, 27);
+            this.cmb_moveBackReason.Name = "cmb_moveBackReason";
+            this.cmb_moveBackReason.Size = new System.Drawing.Size(140, 24);
+            this.cmb_moveBackReason.TabIndex = 38;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.button_ShowPLCMonitor);
+            this.groupBox1.Controls.Add(this.textBox_ComingOutCarrierID);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.textBox_ReadyToWaitOutCarrierID1);
+            this.groupBox1.Controls.Add(this.textBox_ReadyToWaitOutCarrierID2);
+            this.groupBox1.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.groupBox1.Location = new System.Drawing.Point(844, 211);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(135, 197);
+            this.groupBox1.TabIndex = 48;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "PLC 人機顯示提醒";
+            // 
+            // button_ShowPLCMonitor
+            // 
+            this.button_ShowPLCMonitor.Font = new System.Drawing.Font("微軟正黑體", 11F);
+            this.button_ShowPLCMonitor.Location = new System.Drawing.Point(12, 21);
+            this.button_ShowPLCMonitor.Name = "button_ShowPLCMonitor";
+            this.button_ShowPLCMonitor.Size = new System.Drawing.Size(111, 39);
+            this.button_ShowPLCMonitor.TabIndex = 42;
+            this.button_ShowPLCMonitor.Text = "Show";
+            this.button_ShowPLCMonitor.UseVisualStyleBackColor = true;
+            this.button_ShowPLCMonitor.Click += new System.EventHandler(this.button_ShowPLCMonitor_Click);
+            // 
+            // textBox_ComingOutCarrierID
+            // 
+            this.textBox_ComingOutCarrierID.Location = new System.Drawing.Point(12, 160);
+            this.textBox_ComingOutCarrierID.Name = "textBox_ComingOutCarrierID";
+            this.textBox_ComingOutCarrierID.Size = new System.Drawing.Size(111, 25);
+            this.textBox_ComingOutCarrierID.TabIndex = 47;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("微軟正黑體", 9F);
+            this.label6.Location = new System.Drawing.Point(9, 67);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(115, 16);
+            this.label6.TabIndex = 44;
+            this.label6.Text = "準備出庫的 Foup ID";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("微軟正黑體", 9F);
+            this.label7.Location = new System.Drawing.Point(9, 141);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(115, 16);
+            this.label7.TabIndex = 46;
+            this.label7.Text = "正要出庫的 Foup ID";
+            // 
+            // textBox_ReadyToWaitOutCarrierID1
+            // 
+            this.textBox_ReadyToWaitOutCarrierID1.Location = new System.Drawing.Point(12, 86);
+            this.textBox_ReadyToWaitOutCarrierID1.Name = "textBox_ReadyToWaitOutCarrierID1";
+            this.textBox_ReadyToWaitOutCarrierID1.Size = new System.Drawing.Size(111, 25);
+            this.textBox_ReadyToWaitOutCarrierID1.TabIndex = 43;
+            // 
+            // textBox_ReadyToWaitOutCarrierID2
+            // 
+            this.textBox_ReadyToWaitOutCarrierID2.Location = new System.Drawing.Point(12, 112);
+            this.textBox_ReadyToWaitOutCarrierID2.Name = "textBox_ReadyToWaitOutCarrierID2";
+            this.textBox_ReadyToWaitOutCarrierID2.Size = new System.Drawing.Size(111, 25);
+            this.textBox_ReadyToWaitOutCarrierID2.TabIndex = 45;
             // 
             // dataGridView3
             // 
@@ -467,7 +594,7 @@
             this.dataGridView5.Name = "dataGridView5";
             this.dataGridView5.ReadOnly = true;
             this.dataGridView5.RowTemplate.Height = 24;
-            this.dataGridView5.Size = new System.Drawing.Size(800, 119);
+            this.dataGridView5.Size = new System.Drawing.Size(788, 119);
             this.dataGridView5.TabIndex = 35;
             // 
             // button25
@@ -522,131 +649,16 @@
             this.button41.UseVisualStyleBackColor = true;
             this.button41.Click += new System.EventHandler(this.button41_Click);
             // 
-            // button_ShowPLCMonitor
+            // button_StopBuzzer
             // 
-            this.button_ShowPLCMonitor.Font = new System.Drawing.Font("微軟正黑體", 11F);
-            this.button_ShowPLCMonitor.Location = new System.Drawing.Point(12, 21);
-            this.button_ShowPLCMonitor.Name = "button_ShowPLCMonitor";
-            this.button_ShowPLCMonitor.Size = new System.Drawing.Size(111, 39);
-            this.button_ShowPLCMonitor.TabIndex = 42;
-            this.button_ShowPLCMonitor.Text = "Show";
-            this.button_ShowPLCMonitor.UseVisualStyleBackColor = true;
-            this.button_ShowPLCMonitor.Click += new System.EventHandler(this.button_ShowPLCMonitor_Click);
-            // 
-            // textBox_ReadyToWaitOutCarrierID1
-            // 
-            this.textBox_ReadyToWaitOutCarrierID1.Location = new System.Drawing.Point(12, 86);
-            this.textBox_ReadyToWaitOutCarrierID1.Name = "textBox_ReadyToWaitOutCarrierID1";
-            this.textBox_ReadyToWaitOutCarrierID1.Size = new System.Drawing.Size(111, 25);
-            this.textBox_ReadyToWaitOutCarrierID1.TabIndex = 43;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("微軟正黑體", 9F);
-            this.label6.Location = new System.Drawing.Point(9, 67);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(115, 16);
-            this.label6.TabIndex = 44;
-            this.label6.Text = "準備出庫的 Foup ID";
-            // 
-            // textBox_ReadyToWaitOutCarrierID2
-            // 
-            this.textBox_ReadyToWaitOutCarrierID2.Location = new System.Drawing.Point(12, 112);
-            this.textBox_ReadyToWaitOutCarrierID2.Name = "textBox_ReadyToWaitOutCarrierID2";
-            this.textBox_ReadyToWaitOutCarrierID2.Size = new System.Drawing.Size(111, 25);
-            this.textBox_ReadyToWaitOutCarrierID2.TabIndex = 45;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("微軟正黑體", 9F);
-            this.label7.Location = new System.Drawing.Point(9, 141);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(115, 16);
-            this.label7.TabIndex = 46;
-            this.label7.Text = "正要出庫的 Foup ID";
-            // 
-            // textBox_ComingOutCarrierID
-            // 
-            this.textBox_ComingOutCarrierID.Location = new System.Drawing.Point(12, 160);
-            this.textBox_ComingOutCarrierID.Name = "textBox_ComingOutCarrierID";
-            this.textBox_ComingOutCarrierID.Size = new System.Drawing.Size(111, 25);
-            this.textBox_ComingOutCarrierID.TabIndex = 47;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.button_ShowPLCMonitor);
-            this.groupBox1.Controls.Add(this.textBox_ComingOutCarrierID);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.textBox_ReadyToWaitOutCarrierID1);
-            this.groupBox1.Controls.Add(this.textBox_ReadyToWaitOutCarrierID2);
-            this.groupBox1.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.groupBox1.Location = new System.Drawing.Point(844, 211);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(135, 197);
-            this.groupBox1.TabIndex = 48;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "PLC 人機顯示提醒";
-            // 
-            // groupBox_MoveBack
-            // 
-            this.groupBox_MoveBack.Controls.Add(this.button6);
-            this.groupBox_MoveBack.Controls.Add(this.button7);
-            this.groupBox_MoveBack.Controls.Add(this.cmb_moveBackReason);
-            this.groupBox_MoveBack.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.groupBox_MoveBack.Location = new System.Drawing.Point(989, 211);
-            this.groupBox_MoveBack.Name = "groupBox_MoveBack";
-            this.groupBox_MoveBack.Size = new System.Drawing.Size(222, 104);
-            this.groupBox_MoveBack.TabIndex = 49;
-            this.groupBox_MoveBack.TabStop = false;
-            this.groupBox_MoveBack.Text = "Move Back 原因與執行";
-            // 
-            // groupBox_Commanding
-            // 
-            this.groupBox_Commanding.Controls.Add(this.button_Commanding_OFF);
-            this.groupBox_Commanding.Controls.Add(this.button_Commanding_ON);
-            this.groupBox_Commanding.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.groupBox_Commanding.Location = new System.Drawing.Point(989, 321);
-            this.groupBox_Commanding.Name = "groupBox_Commanding";
-            this.groupBox_Commanding.Size = new System.Drawing.Size(174, 59);
-            this.groupBox_Commanding.TabIndex = 50;
-            this.groupBox_Commanding.TabStop = false;
-            this.groupBox_Commanding.Text = "預約 Manual Port 方向";
-            // 
-            // button_Commanding_ON
-            // 
-            this.button_Commanding_ON.Font = new System.Drawing.Font("微軟正黑體", 11F);
-            this.button_Commanding_ON.Location = new System.Drawing.Point(37, 24);
-            this.button_Commanding_ON.Name = "button_Commanding_ON";
-            this.button_Commanding_ON.Size = new System.Drawing.Size(46, 27);
-            this.button_Commanding_ON.TabIndex = 41;
-            this.button_Commanding_ON.Text = "ON";
-            this.button_Commanding_ON.UseVisualStyleBackColor = true;
-            this.button_Commanding_ON.Click += new System.EventHandler(this.button_Commanding_ON_Click);
-            // 
-            // button_Commanding_OFF
-            // 
-            this.button_Commanding_OFF.Font = new System.Drawing.Font("微軟正黑體", 11F);
-            this.button_Commanding_OFF.Location = new System.Drawing.Point(89, 24);
-            this.button_Commanding_OFF.Name = "button_Commanding_OFF";
-            this.button_Commanding_OFF.Size = new System.Drawing.Size(46, 27);
-            this.button_Commanding_OFF.TabIndex = 42;
-            this.button_Commanding_OFF.Text = "OFF";
-            this.button_Commanding_OFF.UseVisualStyleBackColor = true;
-            this.button_Commanding_OFF.Click += new System.EventHandler(this.button_Commanding_OFF_Click);
-            // 
-            // button_TimeCalibration
-            // 
-            this.button_TimeCalibration.Font = new System.Drawing.Font("微軟正黑體", 9F);
-            this.button_TimeCalibration.Location = new System.Drawing.Point(985, 386);
-            this.button_TimeCalibration.Name = "button_TimeCalibration";
-            this.button_TimeCalibration.Size = new System.Drawing.Size(178, 22);
-            this.button_TimeCalibration.TabIndex = 43;
-            this.button_TimeCalibration.Text = "向 PLC 對時";
-            this.button_TimeCalibration.UseVisualStyleBackColor = true;
-            this.button_TimeCalibration.Click += new System.EventHandler(this.button_TimeCalibration_Click);
+            this.button_StopBuzzer.Font = new System.Drawing.Font("微軟正黑體", 12F);
+            this.button_StopBuzzer.Location = new System.Drawing.Point(854, 15);
+            this.button_StopBuzzer.Name = "button_StopBuzzer";
+            this.button_StopBuzzer.Size = new System.Drawing.Size(107, 38);
+            this.button_StopBuzzer.TabIndex = 38;
+            this.button_StopBuzzer.Text = "關閉蜂鳴器";
+            this.button_StopBuzzer.UseVisualStyleBackColor = true;
+            this.button_StopBuzzer.Click += new System.EventHandler(this.button_StopBuzzer_Click);
             // 
             // TestGetPortData
             // 
@@ -654,6 +666,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1384, 795);
+            this.Controls.Add(this.button_StopBuzzer);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.dataGridView5);
@@ -688,15 +701,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBox_Commanding.ResumeLayout(false);
+            this.groupBox_MoveBack.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox_MoveBack.ResumeLayout(false);
-            this.groupBox_Commanding.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -755,5 +768,6 @@
         private System.Windows.Forms.Button button_Commanding_OFF;
         private System.Windows.Forms.Button button_Commanding_ON;
         private System.Windows.Forms.Button button_TimeCalibration;
+        private System.Windows.Forms.Button button_StopBuzzer;
     }
 }
