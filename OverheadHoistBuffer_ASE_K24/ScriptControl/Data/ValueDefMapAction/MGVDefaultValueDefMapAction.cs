@@ -446,7 +446,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //2.read log
                 logger.Info(function.ToString());
 
-                if (function.IsRun && Int32.TryParse(function.AlarmCode, out var alarmCode))
+                var alarmCode = function.AlarmCode;
+
+                if (function.IsRun)
                 {
                     if (alarmCode == 0)
                         OnAlarmClear?.Invoke(this, new ManualPortEventArgs(function));
@@ -608,6 +610,45 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     function.OhbcErrorIndex = (UInt16)(newIndex);
                 else
                     function.OhbcErrorIndex = 1;
+
+                CommitChange(function);
+            });
+        }
+
+        public Task ShowReadyToWaitOutCarrierOnMonitorAsync(string carrierId_1, string carrierId_2)
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+
+                carrierId_1 = carrierId_1.Trim();
+                carrierId_2 = carrierId_2.Trim();
+
+                if (carrierId_1.Length > 14)
+                    carrierId_1 = carrierId_1.Substring(0, 14);
+
+                if (carrierId_2.Length > 14)
+                    carrierId_2 = carrierId_2.Substring(0, 14);
+
+                function.ReadyToWaitOutCarrierId1 = carrierId_1;
+                function.ReadyToWaitOutCarrierId2 = carrierId_2;
+
+                CommitChange(function);
+            });
+        }
+
+        public Task ShowComingOutCarrierOnMonitorAsync(string carrierId)
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+
+                carrierId = carrierId.Trim();
+
+                if (carrierId.Length > 14)
+                    carrierId = carrierId.Substring(0, 14);
+
+                function.ComingOutCarrierId = carrierId;
 
                 CommitChange(function);
             });

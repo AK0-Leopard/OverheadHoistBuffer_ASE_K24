@@ -69,7 +69,7 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV
         public UInt16 ErrorIndex;
 
         [PLCElement(ValueName = "MGV_TO_OHxC_ERRORCODE")]
-        public string AlarmCode;
+        public UInt16 AlarmCode;
 
         [PLCElement(ValueName = "MGV_TO_OHxC_STAGE1CARRIERID")]
         public string CarrierIdOfStage1;
@@ -86,7 +86,9 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV
 
         private CstType GetCstType()
         {
-            if (CstTypes == 1)
+            if (CstTypes == 0)
+                return CstType.PortHasNoCarrierNow;
+            else if (CstTypes == 1)
                 return CstType.A;
             else if (CstTypes == 2)
                 return CstType.B;

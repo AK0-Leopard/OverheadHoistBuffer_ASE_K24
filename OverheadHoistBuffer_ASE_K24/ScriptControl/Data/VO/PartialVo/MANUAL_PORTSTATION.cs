@@ -112,11 +112,39 @@ namespace com.mirle.ibg3k0.sc
             manualPortValueDefMapAction.SetMoveBackReasonAsync(moveBackReasons);
         }
 
+        public void ShowReadyToWaitOutCarrierOnMonitorAsync(string carrierID1, string carrierID2)
+        {
+            var manualPortValueDefMapAction = getIManualPortValueDefMapAction();
+            if (manualPortValueDefMapAction == null) return;
+            manualPortValueDefMapAction.ShowReadyToWaitOutCarrierOnMonitorAsync(carrierID1, carrierID2);
+        }
+
+        public void ShowComingOutCarrierOnMonitorAsync(string carrierID)
+        {
+            var manualPortValueDefMapAction = getIManualPortValueDefMapAction();
+            if (manualPortValueDefMapAction == null) return;
+            manualPortValueDefMapAction.ShowComingOutCarrierOnMonitorAsync(carrierID);
+        }
+
         public void TimeCalibrationAsync()
         {
             var manualPortValueDefMapAction = getIManualPortValueDefMapAction();
             if (manualPortValueDefMapAction == null) return;
             manualPortValueDefMapAction.TimeCalibrationAsync();
+        }
+
+        public void SetCommandingOnAsync()
+        {
+            var manualPortValueDefMapAction = getIManualPortValueDefMapAction();
+            if (manualPortValueDefMapAction == null) return;
+            manualPortValueDefMapAction.SetCommandingAsync(setOn: true);
+        }
+
+        public void SetCommandingOffAsync()
+        {
+            var manualPortValueDefMapAction = getIManualPortValueDefMapAction();
+            if (manualPortValueDefMapAction == null) return;
+            manualPortValueDefMapAction.SetCommandingAsync(setOn: false);
         }
 
         #endregion Control Port

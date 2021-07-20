@@ -125,8 +125,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             return isSuccess;
         }
 
-
-
         public bool UpdateCSTLoc(string boxid, string loc, int stage)
         {
             bool isSuccess = true;
@@ -306,7 +304,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-
         /// <summary>
         /// 找出是UNK 但不是UNKU且在shelf 上的CST
         /// </summary>
@@ -344,7 +341,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-    
         public List<CassetteData> loadCassetteDataIsUnfinished()
         {
             try
@@ -531,7 +527,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 CassetteData csidData;
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
-                    csidData = con.CassetteData.Where(data =>  data.BOXID.Trim() == boxid.Trim()).First();
+                    csidData = con.CassetteData.Where(data => data.BOXID.Trim() == boxid.Trim()).First();
 
                     cassettedataDao.DeleteCassetteData(con, csidData);
                 }
@@ -658,8 +654,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
                     cassetteData = cassettedataDao.LoadCassetteDataByBoxID(con, carrierId);
+                    return cassetteData != null;
                 }
-                return true;
             }
             catch (Exception ex)
             {
@@ -676,8 +672,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
                     cassetteData = cassettedataDao.LoadCassetteDataByLoc(con, portName, stage);
+                    return cassetteData != null;
                 }
-                return true;
             }
             catch (Exception ex)
             {

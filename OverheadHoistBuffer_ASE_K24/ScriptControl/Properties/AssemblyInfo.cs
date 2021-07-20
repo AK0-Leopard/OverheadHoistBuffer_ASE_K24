@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 // 組件的版本資訊是由下列四項值構成:
 //
 //      主要版本
-//      次要版本 
+//      次要版本
 //      組建編號
 //      修訂編號
 //
