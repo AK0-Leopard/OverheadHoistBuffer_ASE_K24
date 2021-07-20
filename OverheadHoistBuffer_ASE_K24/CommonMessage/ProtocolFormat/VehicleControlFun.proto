@@ -7,6 +7,7 @@ service VehicleControlFun {
 	rpc RequestSegmentData(Empty) returns (ReplySegmentData) {}
 	rpc RequestTrnsfer(VehicleCommandInfo) returns (ReplyTrnsfer) {}
 	rpc RequestGuideInfo(SearchInfo) returns (ReplyGuideInfo) {}
+	rpc RequestVehicleSummary(Empty) returns (ReplyVehicleSummary) {}
 }
 
 //comm enum
@@ -77,3 +78,14 @@ message ReplyGuideInfo
 	repeated string sec_ids = 2;
 }
 //End GuideInfo
+
+//Start VehicleInfo
+
+  message ReplyVehicleSummary {
+	repeated VehicleSummary vehicles_summary = 1;
+  }
+  message VehicleSummary {
+	string VEHICLE_ID = 1;
+  }
+
+//End VehicleInfo

@@ -142,5 +142,18 @@ namespace com.mirle.ibg3k0.sc.WebAPI
             return i;
         }
         #endregion GuideInfo Request
+        #region VehicleInfo Request
+        public override Task<ReplyVehicleSummary> RequestVehicleSummary(Empty request, ServerCallContext context)
+        {
+            var app = sc.App.SCApplication.getInstance();
+            var vhs = app.VehicleBLL.cache.loadVhs();
+            ReplyVehicleSummary replyVehicleSummary = new ReplyVehicleSummary();
+            foreach (var vh in vhs)
+            {
+                replyVehicleSummary.VehiclesSummary.Add(new VehicleSummary() { VEHICLEID = vh.VEHICLE_ID });
+            }
+            return Task.FromResult(replyVehicleSummary);
+        }
+        #endregion VehicleInfo Request
     }
 }
