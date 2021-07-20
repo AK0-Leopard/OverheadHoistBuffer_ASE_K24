@@ -5,11 +5,8 @@ using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Service;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -115,7 +112,8 @@ namespace com.mirle.ibg3k0.bc.winform
             dataGridView4.Columns.Add("狀態", "狀態");                        //2
 
             dataGridView4.Rows.Add("BCR 讀取結果", "CarrierIdReadResult");       //0
-            dataGridView4.Rows.Add("CST Type", "CarrierType");  //1
+            dataGridView4.Rows.Add("CST Type", "CarrierType");                  //1
+            dataGridView4.Rows.Add("是否開門中", "Door Open");                  //1
 
             dataGridView4.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView4.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
@@ -196,20 +194,21 @@ namespace com.mirle.ibg3k0.bc.winform
 
             #region dataGridView4
 
-            string read_result = "";
-            string carrier_type = "";
+            var read_result = "";
+            var carrier_type = "";
+            var isDoorOpen = "";
+
             if (port is MANUAL_PORTSTATION)
             {
                 var manual_port_info = (port as MANUAL_PORTSTATION).getManualPortPLCInfo();
                 read_result = manual_port_info.CarrierIdReadResult;
                 carrier_type = manual_port_info.CarrierType.ToString();
+                isDoorOpen = manual_port_info.IsDoorOpen.ToString();
             }
-            else
-            {
-                //noy thing...
-            }
+
             dataGridView4.Rows[0].Cells[2].Value = read_result;
             dataGridView4.Rows[1].Cells[2].Value = carrier_type;
+            dataGridView4.Rows[2].Cells[2].Value = isDoorOpen;
 
             #endregion dataGridView4
 
@@ -266,10 +265,10 @@ namespace com.mirle.ibg3k0.bc.winform
             E_PortType mode = (E_PortType)comboBox2.SelectedIndex;
             DialogResult confirmResult = MessageBox.Show(this, $"Do you want to change port:{port_id} to {mode} mode?",
                 App.BCApplication.getMessageString("CONFIRM"), MessageBoxButtons.YesNo);
-            if (confirmResult != System.Windows.Forms.DialogResult.Yes)
-            {
+
+            if (confirmResult != DialogResult.Yes)
                 return;
-            }
+
             await Task.Run(() => transferService.PortTypeChange(port_id, mode, "測試用 UI"));
         }
 
@@ -496,10 +495,11 @@ namespace com.mirle.ibg3k0.bc.winform
             {
                 var manual_port = port as MANUAL_PORTSTATION;
                 manual_port.MoveBackAsync();
+                MessageBox.Show($"Port ID:{comboBox1.Text} 已執行 Moveback", "Message", MessageBoxButtons.OK);
             }
             else
             {
-                MessageBox.Show($"Port ID:{comboBox1.Text} 並不是Manual port，無法進行move back", "Message",
+                MessageBox.Show($"Port ID:{comboBox1.Text} 並不是 Manual Port，無法進行 Move Back", "Message",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning);
             }
@@ -513,10 +513,80 @@ namespace com.mirle.ibg3k0.bc.winform
                 Enum.TryParse<MoveBackReasons>(cmb_moveBackReason.SelectedValue.ToString(), out MoveBackReasons moveBackReasons);
                 var manual_port = port as MANUAL_PORTSTATION;
                 manual_port.SetMoveBackReasonAsync(moveBackReasons);
+                MessageBox.Show($"Port ID:{comboBox1.Text} 已執行 設定 Moveback 的原因", "Message", MessageBoxButtons.OK);
             }
             else
             {
-                MessageBox.Show($"Port ID:{comboBox1.Text} 並不是Manual port，無法進行move back", "Message",
+                MessageBox.Show($"Port ID:{comboBox1.Text} 並不是 Manual Port，無法設定 Moveback 的原因", "Message",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button_ShowPLCMonitor_Click(object sender, EventArgs e)
+        {
+            var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
+            if (port is MANUAL_PORTSTATION)
+            {
+                var manual_port = port as MANUAL_PORTSTATION;
+                manual_port.ShowReadyToWaitOutCarrierOnMonitorAsync(textBox_ReadyToWaitOutCarrierID1.Text, textBox_ReadyToWaitOutCarrierID2.Text);
+                manual_port.ShowComingOutCarrierOnMonitorAsync(textBox_ComingOutCarrierID.Text);
+                MessageBox.Show($"Port ID:{comboBox1.Text} 已執行顯示準備出庫的 Carrier ID", "Message", MessageBoxButtons.OK);
+            }
+            else
+            {
+                MessageBox.Show($"Port ID:{comboBox1.Text} 並不是 Manual Port，無法指定顯示正要出庫的 Carrier ID", "Message",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button_TimeCalibration_Click(object sender, EventArgs e)
+        {
+            var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
+            if (port is MANUAL_PORTSTATION)
+            {
+                var manual_port = port as MANUAL_PORTSTATION;
+                manual_port.TimeCalibrationAsync();
+                MessageBox.Show($"Port ID:{comboBox1.Text} 已執行 對時", "Message", MessageBoxButtons.OK);
+            }
+            else
+            {
+                MessageBox.Show($"Port ID:{comboBox1.Text} 並不是 Manual Port，無法執行對時", "Message",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button_Commanding_ON_Click(object sender, EventArgs e)
+        {
+            var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
+            if (port is MANUAL_PORTSTATION)
+            {
+                var manual_port = port as MANUAL_PORTSTATION;
+                manual_port.SetCommandingOnAsync();
+                MessageBox.Show($"Port ID:{comboBox1.Text} 已執行 預約方向", "Message", MessageBoxButtons.OK);
+            }
+            else
+            {
+                MessageBox.Show($"Port ID:{comboBox1.Text} 並不是 Manual Port，無法執行 預約方向", "Message",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button_Commanding_OFF_Click(object sender, EventArgs e)
+        {
+            var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
+            if (port is MANUAL_PORTSTATION)
+            {
+                var manual_port = port as MANUAL_PORTSTATION;
+                manual_port.SetCommandingOffAsync();
+                MessageBox.Show($"Port ID:{comboBox1.Text} 已執行 解預約方向", "Message", MessageBoxButtons.OK);
+            }
+            else
+            {
+                MessageBox.Show($"Port ID:{comboBox1.Text} 並不是 Manual Port，無法執行 解預約方向", "Message",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning);
             }
