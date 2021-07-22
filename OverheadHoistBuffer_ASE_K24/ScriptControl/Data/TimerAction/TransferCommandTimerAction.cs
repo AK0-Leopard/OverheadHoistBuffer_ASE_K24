@@ -52,7 +52,10 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 }
                 //檢查是否有MCS搬送命令需要執行
                 //scApp.CMDBLL.checkMCS_TransferCommand();
+
                 scApp.TransferService.TransferRun();
+
+                scApp.TransferService.PortTypeCommandProcess();
 
                 //A20.05.28.0 用於定時觸發退補整條線的空box
                 //Task.Run(() => scApp.TransferService.CheckTheEmptyBoxStockLevel());

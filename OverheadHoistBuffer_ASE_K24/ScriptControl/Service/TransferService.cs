@@ -790,9 +790,56 @@ namespace com.mirle.ibg3k0.sc.Service
         #endregion 初始化
 
         #region 流程
+        private long syncPortTypeChangePoint = 0;
+        public void PortTypeCommandProcess()
+        {
+            if (Interlocked.Exchange(ref syncPortTypeChangePoint, 1) == 0)
+            {
+                try
+                {
+                    List<ACMD_MCS> port_type_change_cmds = cmdBLL.LoadCmdData_PortTypeChange();
+                    foreach (var v in port_type_change_cmds)
+                    {
+                        #region PLC控制命令
 
+                        PortPLCInfo portInfo = GetPLC_PortData(v.HOSTSOURCE);
+
+                        if (portInfo.OpAutoMode == false || portInfo.IsModeChangable == false)   // || (int)portData.AGVState == SECSConst.PortState_OutService
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            E_PortType portType = (E_PortType)Enum.Parse(typeof(E_PortType), v.HOSTDESTINATION);
+
+                            if ((portInfo.IsInputMode && portType == E_PortType.In)
+                             || (portInfo.IsOutputMode && portType == E_PortType.Out)
+                               )
+                            {
+                                ReportPortType(portInfo.EQ_ID, portType, "TransferRun");
+
+                                cmdBLL.DeleteCmd(v.CMD_ID);
+                            }
+                            else
+                            {
+                                PortTypeChange(v.HOSTSOURCE, portType, "TransferRun");
+                            }
+                        }
+
+                        #endregion PLC控制命令
+                    }
+                }
+                catch(Exception ex)
+                {
+                    TransferServiceLogger.Error(ex, "PortTypeCommandProcess");
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref syncPortTypeChangePoint, 0);
+                }
+            }
+        }
         private long syncTranCmdPoint = 0;
-
         public void TransferRun()
         {
             if (Interlocked.Exchange(ref syncTranCmdPoint, 1) == 0)
@@ -902,7 +949,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             var queueCmdData = cmdData.Where(data => data.CMDTYPE != CmdType.PortTypeChange.ToString() && data.TRANSFERSTATE == E_TRAN_STATUS.Queue).ToList();
                             var transferCmdData = cmdData.Where(data => data.CMDTYPE != CmdType.PortTypeChange.ToString() && data.TRANSFERSTATE != E_TRAN_STATUS.Queue).ToList();
 
-                            var portTypeChangeCmdData = cmdData.Where(data => data.CMDTYPE == CmdType.PortTypeChange.ToString()).ToList();
+                            //var portTypeChangeCmdData = cmdData.Where(data => data.CMDTYPE == CmdType.PortTypeChange.ToString()).ToList();
 
                             #region 檢查救資料用AGV Port 狀態是否正確
 
@@ -978,36 +1025,36 @@ namespace com.mirle.ibg3k0.sc.Service
                                 #endregion 搬送命令
                             }
 
-                            foreach (var v in portTypeChangeCmdData)
-                            {
-                                #region PLC控制命令
+                            //foreach (var v in portTypeChangeCmdData)
+                            //{
+                            //    #region PLC控制命令
 
-                                PortPLCInfo portInfo = GetPLC_PortData(v.HOSTSOURCE);
+                            //    PortPLCInfo portInfo = GetPLC_PortData(v.HOSTSOURCE);
 
-                                if (portInfo.OpAutoMode == false || portInfo.IsModeChangable == false)   // || (int)portData.AGVState == SECSConst.PortState_OutService
-                                {
-                                    continue;
-                                }
-                                else
-                                {
-                                    E_PortType portType = (E_PortType)Enum.Parse(typeof(E_PortType), v.HOSTDESTINATION);
+                            //    if (portInfo.OpAutoMode == false || portInfo.IsModeChangable == false)   // || (int)portData.AGVState == SECSConst.PortState_OutService
+                            //    {
+                            //        continue;
+                            //    }
+                            //    else
+                            //    {
+                            //        E_PortType portType = (E_PortType)Enum.Parse(typeof(E_PortType), v.HOSTDESTINATION);
 
-                                    if ((portInfo.IsInputMode && portType == E_PortType.In)
-                                     || (portInfo.IsOutputMode && portType == E_PortType.Out)
-                                       )
-                                    {
-                                        ReportPortType(portInfo.EQ_ID, portType, "TransferRun");
+                            //        if ((portInfo.IsInputMode && portType == E_PortType.In)
+                            //         || (portInfo.IsOutputMode && portType == E_PortType.Out)
+                            //           )
+                            //        {
+                            //            ReportPortType(portInfo.EQ_ID, portType, "TransferRun");
 
-                                        cmdBLL.DeleteCmd(v.CMD_ID);
-                                    }
-                                    else
-                                    {
-                                        PortTypeChange(v.HOSTSOURCE, portType, "TransferRun");
-                                    }
-                                }
+                            //            cmdBLL.DeleteCmd(v.CMD_ID);
+                            //        }
+                            //        else
+                            //        {
+                            //            PortTypeChange(v.HOSTSOURCE, portType, "TransferRun");
+                            //        }
+                            //    }
 
-                                #endregion PLC控制命令
-                            }
+                            //    #endregion PLC控制命令
+                            //}
 
                             foreach (var v in transferCmdData)
                             {

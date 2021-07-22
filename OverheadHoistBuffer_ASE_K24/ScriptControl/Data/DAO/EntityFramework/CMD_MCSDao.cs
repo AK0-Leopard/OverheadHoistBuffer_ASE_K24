@@ -359,6 +359,22 @@ namespace com.mirle.ibg3k0.sc.Data.DAO.EntityFramework
                 throw;
             }
         }
+        public List<ACMD_MCS> LoadCmdData_PortTypeChange(DBConnection_EF conn)
+        {
+            try
+            {
+                var port = from a in conn.ACMD_MCS
+                           where a.TRANSFERSTATE != E_TRAN_STATUS.TransferCompleted
+                                 && a.CMDTYPE == ACMD_MCS.CmdType.PortTypeChange.ToString()
+                           select a;
+                return port.ToList();
+            }
+            catch (Exception ex)
+            {
+                //logger.Warn(ex);
+                throw;
+            }
+        }
         public List<ACMD_MCS> LoadAllCmdData(DBConnection_EF conn)  //歷史記錄
         {
             try
