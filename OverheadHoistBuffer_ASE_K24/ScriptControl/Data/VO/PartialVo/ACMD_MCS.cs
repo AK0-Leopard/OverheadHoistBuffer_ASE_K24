@@ -76,6 +76,9 @@ namespace com.mirle.ibg3k0.sc
 
         public string CARRIER_ID { get { return BOX_ID; } }
 
+        public bool IsCanNotServiceReasonChanged;
+        public string CanNotServiceReason;
+
         public enum CmdType
         {
             MCS,
@@ -446,7 +449,24 @@ namespace com.mirle.ibg3k0.sc
                 REPLACE = ortherObj.REPLACE;
                 has_change = true;
             }
+            if (IsCanNotServiceReasonChanged)
+            {
+                IsCanNotServiceReasonChanged = false;
+                has_change = true;
+            }
             return has_change;
         }
+
+        public bool setCanNotServiceReason(string reason)
+        {
+            if (!sc.Common.SCUtility.isMatche(CanNotServiceReason, reason))
+            {
+                CanNotServiceReason = reason;
+                IsCanNotServiceReasonChanged = true;
+                return true;
+            }
+            return false;
+        }
+
     }
 }

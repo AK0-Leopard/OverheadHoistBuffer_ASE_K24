@@ -1,4 +1,5 @@
 ﻿"Id","PositionX","PositionY","IsWorkStation","CanLeftLoad","CanLeftUnload","CanRightLoad","CanRightUnload","IsCharger","CouplerId","ChargeDirection","IsSegmentPoint","CanSpin","PioDirection","IsTR50","InsideSectionId","OffsetX","OffsetY","OffsetTheta","VehicleHeadAngle"
+"10001","1510","30","True","True","False","False","False","False","None","None","True","False","Left","False","0","0","0","0","0"
 "10002","0","940","True","True","False","False","False","False","None","None","True","False","Left","False","0","0","0","0","0"
 "10003","0","1240","True","True","False","False","False","False","None","None","True","False","Left","False","0","0","0","0","0"
 "10004","1000","1940","True","True","False","False","False","False","None","None","True","False","Left","False","0","0","0","0","0"
@@ -41,7 +42,6 @@
 "11068","10451","0","True","True","False","False","False","False","None","None","True","False","Left","False","0","0","0","0","0"
 "11069","8651","0","True","True","False","False","False","False","None","None","True","False","Left","False","0","0","0","0","0"
 "11070","3851","0","True","True","False","False","False","False","None","None","True","False","Left","False","0","0","0","0","0"
-"10001","1481","0","True","True","False","False","False","False","None","None","True","False","Left","False","0","0","0","0","0"
 "10305","27781","670","True","True","False","False","False","False","None","None","True","False","Left","False","0","0","0","0","0"
 "10301","29161","900","True","True","False","False","False","False","None","None","True","False","Left","False","0","0","0","0","0"
 "12302","30541","900","True","True","False","False","False","False","None","None","True","False","Left","False","0","0","0","0","0"

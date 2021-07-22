@@ -1278,13 +1278,14 @@ namespace com.mirle.ibg3k0.sc.Service
                     publish_cmd_mcs.PAUSEFLAG = cmd_mcs.PAUSEFLAG;
                     publish_cmd_mcs.CMDINSERTIME = ((DateTimeOffset)cmd_mcs.CMD_INSER_TIME).ToUnixTimeSeconds();
                     publish_cmd_mcs.CMDSTARTTIME =
-                        cmd_mcs.CMD_START_TIME.HasValue ? 0 : ((DateTimeOffset)cmd_mcs.CMD_START_TIME).ToUnixTimeSeconds();
+                        cmd_mcs.CMD_START_TIME.HasValue ? ((DateTimeOffset)cmd_mcs.CMD_START_TIME).ToUnixTimeSeconds() : 0;
                     publish_cmd_mcs.CMDFINISHTIME =
-                        cmd_mcs.CMD_FINISH_TIME.HasValue ? 0 : ((DateTimeOffset)cmd_mcs.CMD_FINISH_TIME).ToUnixTimeSeconds();
+                        cmd_mcs.CMD_FINISH_TIME.HasValue ? ((DateTimeOffset)cmd_mcs.CMD_FINISH_TIME).ToUnixTimeSeconds() : 0;
                     publish_cmd_mcs.TIMEPRIORITY = cmd_mcs.TIME_PRIORITY;
                     publish_cmd_mcs.PORTPRIORITY = cmd_mcs.PORT_PRIORITY;
                     publish_cmd_mcs.PRIORITYSUM = cmd_mcs.PRIORITY_SUM;
                     publish_cmd_mcs.REPLACE = cmd_mcs.REPLACE;
+                    publish_cmd_mcs.DESCRIPTION = cmd_mcs.CanNotServiceReason;
                     info.Infos.Add(publish_cmd_mcs);
                 }
                 byte[] tran_info_serialize = new byte[info.CalculateSize()];
@@ -1621,6 +1622,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             DateTime.Now.ToString("HH:mm:ss.fff ")
                             + "OHB >> OHB| 命令來源: " + mcsCmd.HOSTSOURCE + " Port狀態不正確，不繼續往下執行。"
                         );
+                        SetTransferCommandNGReason(mcsCmd.CMD_ID, $"Source Port:{SCUtility.Trim(mcsCmd.HOSTSOURCE)},狀態不正確");
                         return false;
                     }
                     //A21.02.22.0 End
@@ -1656,7 +1658,6 @@ namespace com.mirle.ibg3k0.sc.Service
                                 mcsCmd.HOSTDESTINATION = shelfID;
                             }
                         }
-
                         //cmdBLL.updateCMD_MCS_TranStatus(mcsCmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                         //reportBLL.ReportTransferInitiated(mcsCmd.CMD_ID.Trim());
                         //reportBLL.ReportTransferCompleted(mcsCmd, null, ResultCode.ZoneIsfull);
@@ -1680,15 +1681,24 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         destPortType = AreDestEnable(mcsCmd.HOSTDESTINATION);
                     }
-
+                    if (!destPortType)
+                    {
+                        SetTransferCommandNGReason(mcsCmd.CMD_ID, $"Dest. port:{SCUtility.Trim(mcsCmd.HOSTDESTINATION)},狀態不正確");
+                    }
                     #endregion 檢查目的狀態
 
                     if (sourcePortType && destPortType)
                     {
-                        if (OHT_TransportRequest(mcsCmd))
+                        var request_result = OHT_TransportRequest(mcsCmd);
+                        //if (OHT_TransportRequest(mcsCmd))
+                        if (request_result.requsetOK)
                         {
                             TransferIng = true;
                             cmdBLL.updateCMD_MCS_Dest(mcsCmd.CMD_ID, mcsCmd.HOSTDESTINATION);
+                        }
+                        else
+                        {
+                            SetTransferCommandNGReason(mcsCmd.CMD_ID, $"產生命令失敗給車子失敗,reason:{request_result.reason}");
                         }
                     }
                     else if (sourcePortType && isShelfPort(mcsCmd.HOSTSOURCE) == false
@@ -1836,6 +1846,15 @@ namespace com.mirle.ibg3k0.sc.Service
             return TransferIng;
         }
 
+        private void SetTransferCommandNGReason(string cmdID, string reason)
+        {
+            bool is_exist = ACMD_MCS.MCS_CMD_InfoList.TryGetValue(SCUtility.Trim(cmdID), out var cmd_mcs_obj);
+            if (is_exist)
+            {
+                cmd_mcs_obj.setCanNotServiceReason(reason);
+            }
+        }
+
         private bool checkAndProcessIsAgvPortToStation(ACMD_MCS mcsCmd)
         {
             try
@@ -1885,7 +1904,9 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (string.IsNullOrWhiteSpace(cmdRelay.HOSTDESTINATION) == false)
             {
-                if (OHT_TransportRequest(cmdRelay))
+                //if (OHT_TransportRequest(cmdRelay))
+                var request_result = OHT_TransportRequest(cmdRelay);
+                if (request_result.requsetOK)
                 {
                     ShelfReserved(cmdRelay.HOSTSOURCE, cmdRelay.HOSTDESTINATION);
 
@@ -2038,16 +2059,18 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        public bool OHT_TransportRequest(ACMD_MCS cmd)  //詢問 OHT 此筆命令是否能執行
+        public (bool requsetOK, string reason) OHT_TransportRequest(ACMD_MCS cmd)  //詢問 OHT 此筆命令是否能執行
         {
             if (string.IsNullOrWhiteSpace(cmd.RelayStation) == false)
             {
                 cmd.HOSTSOURCE = cmd.RelayStation;
             }
 
-            bool ohtReport = cmdBLL.generateOHTCommand(cmd); //OHT回傳是否可執行搬送命令
+            //bool ohtReport = cmdBLL.generateOHTCommand(cmd); //OHT回傳是否可執行搬送命令
+            var check_result = cmdBLL.generateOHTCommand(cmd); //OHT回傳是否可執行搬送命令
 
-            if (ohtReport)
+            //if (ohtReport)
+            if (check_result.canGenerate)
             {
                 TransferServiceLogger.Info
                 (
@@ -2069,15 +2092,17 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     ShelfReserved(cmd.HOSTSOURCE, cmd.HOSTDESTINATION);
                 }
+                return (true, "");
             }
             else
             {
                 TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "OHB >> OHT|OHT回應不能搬送 " + GetCmdLog(cmd));
 
                 cmdBLL.CheckCmdShelfStatus(cmd);
+                return (false, $"產生搬送命令失敗，{check_result.reason}");
             }
 
-            return ohtReport;
+            //return ohtReport;
         }
 
         public bool AreSourceAndDestEnable(string sourceName, string destName)    //檢查來源目的狀態是否正確

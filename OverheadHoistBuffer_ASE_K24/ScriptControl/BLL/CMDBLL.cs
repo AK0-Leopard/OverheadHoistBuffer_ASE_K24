@@ -2497,7 +2497,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         private long syncTranOHTCommandPoint = 0;
 
-        public bool generateOHTCommand(ACMD_MCS mcs_cmd)
+        public (bool canGenerate, string reason) generateOHTCommand(ACMD_MCS mcs_cmd)
         {
             if (Interlocked.Exchange(ref syncTranOHTCommandPoint, 1) == 0)
             {
@@ -2518,7 +2518,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         bestSuitableVh = scApp.VehicleBLL.findBestSuitableVhStepByNearest(from_adr, vh_type);
                         if (bestSuitableVh == null)
                         {
-                            return false;
+                            return (false, "找不到適合的Vh搬送");
                         }
 
                         ACMD_OHTC cmdohtc = new ACMD_OHTC
@@ -2542,7 +2542,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         };
 
                         creatCommand_OHTC(cmdohtc);
-                        return true;
+                        return (true, "");
                     }
                     else
                     {
@@ -2560,7 +2560,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                                          $"can't excute mcs command:{SCUtility.Trim(mcs_cmd.CMD_ID)}",
                                    VehicleID: bestSuitableVh.VEHICLE_ID,
                                    CarrierID: bestSuitableVh.CST_ID);
-                                return false;
+                                return (false, "source vh of status not ready");
                             }
                             cmd_type = E_CMD_TYPE.Unload;
                         }
@@ -2595,7 +2595,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         //沒有則代表找不到車，因此就更新該筆命令的Time Priority (此步驟上層處理)
                         else
                         {
-                            return false;
+                            return (false, "找不到適合vh搬送");
                         }
 
                         //如果有找到車子則將產生一筆Transfer command
@@ -2614,6 +2614,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                             {
                                 updateCMD_MCS_CRANE(mcs_cmd.CMD_ID, best_suitable_vehicle_id);
                             }
+                            return (true, "");
+                        }
+                        else
+                        {
+                            OHTCCommandCheckResult check_result = getOrSetCallContext<OHTCCommandCheckResult>(CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
+                            return (false, check_result.Result.ToString());
                         }
                         //如果產生完命令後，發現該Vh正在執行OHTC的移動命令時，則需要將該命令Cancel
                         //20200515 不要取消了，讓他做完
@@ -2629,13 +2635,13 @@ namespace com.mirle.ibg3k0.sc.BLL
                         //}
 
                         //return true;
-                        return isSuccess;
+                        //return isSuccess;
                     }
                 }
                 catch (Exception ex)
                 {
                     TransferServiceLogger.Error(ex, "generateOHTCommand");
-                    return false;
+                    return (false,"例外發生");
                 }
                 finally
                 {
@@ -2644,7 +2650,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             else
             {
-                return false;
+                return (false,"尋車功能被占用");
             }
         }
 

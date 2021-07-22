@@ -235,7 +235,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 
         //2020.07.14 Hsinyu Chang: doCheckIPLinkStatus的平行迴圈改寫
         //因 1)foreach中的每個元素沒有資料相依
-        //   2)ping為I/O bound，用sequential loop會有大部分時間在空等
+        //   2)ping為I/O bound，用 sequential loop會有大部分時間在空等
         //   3)ping結果有時效性
         //Note: 目前作法要等到parallel foreach的每個元素都ping完才會更新資料，尚有優化空間
         private void doCheckIPLinkStatusParallel()
