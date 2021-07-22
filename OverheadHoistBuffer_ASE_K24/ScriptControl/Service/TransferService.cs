@@ -48,6 +48,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -585,6 +586,37 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
+        public async void MoveBackManualPortFoup(string apiSource, string portName)
+        {
+            try
+            {
+                TransferServiceLogger.Info
+                (
+                    DateTime.Now.ToString("HH:mm:ss.fff ")
+                    + "OHB >> PLC|MoveBackManualPortFoup"
+                    + "    誰呼叫:" + apiSource
+                    + "    portID:" + portName
+                );
+
+                var port = PortStationBLL.OperateCatch.getPortStation(portName);
+                var isManualPort = port is MANUAL_PORTSTATION;
+                if (isManualPort == false)
+                {
+                    TransferServiceLogger.Info($"{dateTimeNow} OHB >> PLC|MoveBackManualPortFoup  Failed !  Port[{portName}] Not Manual Port.");
+                    return;
+                }
+
+                var manual_port = port as MANUAL_PORTSTATION;
+                await manual_port.MoveBackAsync();
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+
+        private string dateTimeNow { get => DateTime.Now.ToString("HH:mm:ss.fff "); }
+
         public void iniDeletePortCstData(string _portName, int stage)
         {
             //TransferServiceLogger.Info
@@ -793,7 +825,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private long syncTranCmdPoint = 0;
 
-        public void TransferRun()
+        public async void TransferRun()
         {
             if (Interlocked.Exchange(ref syncTranCmdPoint, 1) == 0)
             {
@@ -858,13 +890,11 @@ namespace com.mirle.ibg3k0.sc.Service
 
                     int ohtIdle = vehicleData.Where(data => string.IsNullOrWhiteSpace(data.OHTC_CMD)).Count();
 
-
                     var cmdData = cmdBLL.LoadCmdData();
                     refreshACMD_MCSInfoList(cmdData);
 
                     if (ohtIdle != 0)    //有閒置的車輛在開始派命令
                     {
-
                         if (cmdData.Count != 0)
                         {
                             #region 說明
@@ -900,9 +930,12 @@ namespace com.mirle.ibg3k0.sc.Service
                             #endregion 說明
 
                             var queueCmdData = cmdData.Where(data => data.CMDTYPE != CmdType.PortTypeChange.ToString() && data.TRANSFERSTATE == E_TRAN_STATUS.Queue).ToList();
+
                             var transferCmdData = cmdData.Where(data => data.CMDTYPE != CmdType.PortTypeChange.ToString() && data.TRANSFERSTATE != E_TRAN_STATUS.Queue).ToList();
 
                             var portTypeChangeCmdData = cmdData.Where(data => data.CMDTYPE == CmdType.PortTypeChange.ToString()).ToList();
+
+                            var movebackManualPortCmdDatas = cmdData.Where(data => data.CMDTYPE == CmdType.MoveBack.ToString()).ToList();
 
                             #region 檢查救資料用AGV Port 狀態是否正確
 
@@ -1009,6 +1042,19 @@ namespace com.mirle.ibg3k0.sc.Service
                                 #endregion PLC控制命令
                             }
 
+                            foreach (var v in movebackManualPortCmdDatas)
+                            {
+                                var portName = v.HOSTSOURCE;
+                                var port = scApp.PortStationBLL.OperateCatch.getPortStation(portName);
+                                if (port is MANUAL_PORTSTATION)
+                                {
+                                    var manualPort = port as MANUAL_PORTSTATION;
+                                    await manualPort.MoveBackAsync();
+                                }
+
+                                cmdBLL.DeleteCmd(v.CMD_ID);
+                            }
+
                             foreach (var v in transferCmdData)
                             {
                                 TransferCommandHandler(v);
@@ -1095,6 +1141,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
             }
         }
+
         private void refreshACMD_MCSInfoList(List<ACMD_MCS> currentExcuteMCSCmd)
         {
             bool has_change = false;
@@ -1169,6 +1216,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     (SCAppConstants.NATS_SUBJECT_TRANSFER_COMMAND_CHANGE, tran_info_serialize);
             }
         }
+
         private AK0.ProtocolFormat.VehicleControlPublishMessage.TranStatus convertTo(E_TRAN_STATUS tran)
         {
             switch (tran)
@@ -1181,8 +1229,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 //    return AK0.ProtocolFormat.VehicleControlPublishMessage.TranStatus.Initial;
                 case E_TRAN_STATUS.Transferring:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.TranStatus.Transferring;
+
                 case E_TRAN_STATUS.Canceling:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.TranStatus.Canceling;
+
                 case E_TRAN_STATUS.Aborting:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.TranStatus.Aborting;
                 //case E_TRAN_STATUS.Canceled:
@@ -1199,6 +1249,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     throw new Exception();
             }
         }
+
         /// <summary>
         /// 判斷目前的狀態是否可以將指定Port上的Box退回
         /// </summary>
@@ -6361,7 +6412,6 @@ namespace com.mirle.ibg3k0.sc.Service
                     TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "卡匣重複，發現搬送中命令 " + GetCmdLog(nowCmd));
                 }
 
-
                 if (duBoxID != null)
                 {
                     if (nowCmd != null || isShelfPort(duBoxID.Carrier_LOC) == false)
@@ -6501,7 +6551,6 @@ namespace com.mirle.ibg3k0.sc.Service
                 reportBLL.ReportCarrierRemovedCompleted(duBoxID.CSTID, duBoxID.BOXID);
                 OHBC_InsertCassette(newCstData.BOXID, newCstData.Carrier_LOC, "BOX Duplicate");
             }
-
         }
 
         #endregion 異常流程
@@ -6576,7 +6625,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 if (isLocExist(portName))
                 {
                     if (cassette_dataBLL.loadCassetteDataByBoxID(datainfo.BOXID) != null
-                     //|| (cassette_dataBLL.loadCassetteDataByCSTID(datainfo.CSTID) != null && string.IsNullOrWhiteSpace(datainfo.CSTID) == false)
+                      //|| (cassette_dataBLL.loadCassetteDataByCSTID(datainfo.CSTID) != null && string.IsNullOrWhiteSpace(datainfo.CSTID) == false)
                       )
                     {
                         Duplicate(datainfo);
@@ -6984,6 +7033,53 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 TransferServiceLogger.Error(ex, "SetPortTypeCmd");
+                return false;
+            }
+        }
+
+        public bool SetMoveBackManualPortCommand(string portName)
+        {
+            try
+            {
+                portName = portName.Trim();
+
+                TransferServiceLogger.Info($"{dateTimeNow} OHB >> OHB|{MethodBase.GetCurrentMethod().Name} 新增 MoveBack 命令 PortID:{portName}");
+
+                var datainfo = new ACMD_MCS();
+
+                datainfo.CMD_ID = $"MoveBack-{portName}";
+                datainfo.BOX_ID = "";
+
+                datainfo.HOSTSOURCE = portName;
+                datainfo.HOSTDESTINATION = "";
+
+                datainfo.CMDTYPE = CmdType.MoveBack.ToString();
+
+                if (cmdBLL.getNowCMD_MCSByID(datainfo.CMD_ID) != null)
+                    return false;
+
+                datainfo.LOT_ID = "";
+                datainfo.CMD_INSER_TIME = DateTime.Now;
+                datainfo.TRANSFERSTATE = E_TRAN_STATUS.Queue;
+                datainfo.COMMANDSTATE = ACMD_MCS.COMMAND_iIdle;
+                datainfo.PRIORITY = 50;
+                datainfo.CHECKCODE = "";
+                datainfo.PAUSEFLAG = "";
+                datainfo.TIME_PRIORITY = 0;
+                datainfo.PORT_PRIORITY = 0;
+                datainfo.REPLACE = 1;
+                datainfo.PRIORITY_SUM = datainfo.PRIORITY + datainfo.TIME_PRIORITY + datainfo.PORT_PRIORITY;
+                datainfo.CRANE = "";
+
+                if (cmdBLL.getCMD_MCSByID(datainfo.CMD_ID) != null)
+                    return false;
+
+                cmdBLL.creatCommand_MCS(datainfo);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, MethodBase.GetCurrentMethod().Name);
                 return false;
             }
         }
@@ -7784,7 +7880,6 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-
         public string Redis_GetCstID(string cstID, string boxID)
         {
             string redisCstID = cstID;
@@ -8133,7 +8228,6 @@ namespace com.mirle.ibg3k0.sc.Service
                 OHBC_InsertCassette(boxid, loc, "Manual_InsertCassette");
             }
 
-
             if (boxid.Length != 8)
             {
                 return "BOX_ID 不為 8 碼";
@@ -8145,7 +8239,6 @@ namespace com.mirle.ibg3k0.sc.Service
                     return "BOX_ID，不符合 1、2碼為數字，3、4碼為英文，5~8碼為數字+英文混合";
                 }
             }
-
 
             CassetteData duBOXID = cassette_dataBLL.loadCassetteDataByBoxID(boxid);
 

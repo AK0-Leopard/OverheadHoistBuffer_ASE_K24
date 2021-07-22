@@ -440,10 +440,21 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         {
                             s2f50.HCACK = SECSConst.HCACK_Not_Able_Execute;
                         }
-                        //準備將命令存入資料庫中
-                        using (TransactionScope tx = SCUtility.getTransactionScope())
+
+                        var moveBackCommand = (source == dest) && (string.IsNullOrWhiteSpace(source) == false) && (string.IsNullOrWhiteSpace(dest) == false);
+                        if (moveBackCommand)
                         {
-                            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                            TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"MCS >> OHB|S2F49   Source{source} == Dest{dest} is moveBack Command");
+                            TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50   HCACK:" + s2f50.HCACK);
+
+                            scApp.TransferService.SetMoveBackManualPortCommand(source);
+                            return;
+                        }
+
+                        //準備將命令存入資料庫中
+                        using (var tx = SCUtility.getTransactionScope())
+                        {
+                            using (var con = DBConnection_EF.GetUContext())
                             {
                                 bool isCreatScuess = true;
                                 if (SCUtility.isMatche(SECSConst.HCACK_Confirm, s2f50.HCACK)    //!SCUtility.isMatche(SECSConst.HCACK_Rejected_Already_Requested, s2f50.HCACK
@@ -1458,7 +1469,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 //cstID = cstID_item.CPVAL?.Trim() ?? "";
                 //lotID = lotID_item.CPVAL?.Trim() ?? "";
-
 
                 //CassetteData cstData = scApp.CassetteDataBLL.loadCassetteDataByCSTID(cstID);
 

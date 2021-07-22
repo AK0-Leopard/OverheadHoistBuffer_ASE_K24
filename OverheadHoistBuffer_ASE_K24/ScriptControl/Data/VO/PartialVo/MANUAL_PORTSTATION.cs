@@ -3,6 +3,7 @@ using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
+using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc
 {
@@ -98,11 +99,11 @@ namespace com.mirle.ibg3k0.sc
 
         #region Control Port
 
-        public void MoveBackAsync()
+        public async Task MoveBackAsync()
         {
             var manualPortValueDefMapAction = getIManualPortValueDefMapAction();
             if (manualPortValueDefMapAction == null) return;
-            manualPortValueDefMapAction.MoveBackAsync();
+            await manualPortValueDefMapAction.MoveBackAsync();
         }
 
         public void SetMoveBackReasonAsync(MoveBackReasons moveBackReasons)
