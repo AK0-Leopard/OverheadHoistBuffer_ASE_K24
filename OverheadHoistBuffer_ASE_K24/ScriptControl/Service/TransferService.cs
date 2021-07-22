@@ -1013,7 +1013,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                             //var portTypeChangeCmdData = cmdData.Where(data => data.CMDTYPE == CmdType.PortTypeChange.ToString()).ToList();
 
-                            var movebackManualPortCmdDatas = cmdData.Where(data => data.CMDTYPE == CmdType.MoveBack.ToString()).ToList();
+                            //var movebackManualPortCmdDatas = cmdData.Where(data => data.CMDTYPE == CmdType.MoveBack.ToString()).ToList();
 
                             #region 檢查救資料用AGV Port 狀態是否正確
 
