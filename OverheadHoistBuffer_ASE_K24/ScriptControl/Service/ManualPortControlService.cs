@@ -23,6 +23,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
             //RegisterEvent(ports);
         }
+
         public void Start(IEnumerable<IManualPortValueDefMapAction> ports)
         {
             WriteLog($"ManualPortControlService Start");
@@ -44,7 +45,8 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private void WriteLog(string message)
         {
-            var logMessage = DateTime.Now.ToString("HH:mm:ss.fff ") + message;
+            var time = DateTime.Now.ToString("HH:mm:ss.fff");
+            var logMessage = $"[{time}] {message}";
             logger.Info(logMessage);
         }
 

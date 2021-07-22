@@ -18,7 +18,7 @@ namespace com.mirle.ibg3k0.sc.Service
     {
         private Logger logger = LogManager.GetLogger("ManualPortLogger");
 
-        private string now { get => DateTime.Now.ToString("HH:mm:ss.fff "); }
+        private string now { get => DateTime.Now.ToString("HH:mm:ss.fff"); }
 
         private ConcurrentDictionary<string, IManualPortValueDefMapAction> manualPorts { get; set; }
 
@@ -170,7 +170,7 @@ namespace com.mirle.ibg3k0.sc.Service
         private void Port_OnWaitIn(object sender, ManualPortEventArgs args)
         {
             var info = args.ManualPortPLCInfo;
-            var readResult = info.CarrierIdReadResult;
+            var readResult = info.CarrierIdReadResult.Trim();
             var stage1CarrierId = info.CarrierIdOfStage1.Trim();
 
             var logTitle = $"PortName[{args.PortName}] WaitIn => ";
@@ -208,7 +208,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private bool HasCstTypeMismatch(string logTitle, ManualPortPLCInfo info)
         {
-            WriteEventLog($"{logTitle} OHBC does not implement mismatch check function.    Always return has no mismatch.");
+            WriteEventLog($"{logTitle} OHBC does not implement CstType mismatch check function.    Always return has no mismatch.");
             return false;
         }
 
