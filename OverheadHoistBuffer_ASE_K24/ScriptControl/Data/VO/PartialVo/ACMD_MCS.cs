@@ -2,8 +2,8 @@
 // Date          Author         Request No.    Tag         Description
 // ------------- -------------  -------------  ------      -----------------------------
 // 2020/05/22    Jason Wu       N/A            A20.05.22   新增與shelfDef 相同的clone method.
-// 2020/06/04    Jason Wu       N/A            A20.06.04   修改priority判定部分(由僅用priority sum大小比較 變為分組比較99 up or 99 down)   
-// 2020/06/09    Jason Wu       N/A            A20.06.09.0 修改判定部分(新增判定來源目的地是非shelf的優先)   
+// 2020/06/04    Jason Wu       N/A            A20.06.04   修改priority判定部分(由僅用priority sum大小比較 變為分組比較99 up or 99 down)
+// 2020/06/09    Jason Wu       N/A            A20.06.09.0 修改判定部分(新增判定來源目的地是非shelf的優先)
 //**********************************************************************************
 using System;
 using System.Collections.Concurrent;
@@ -14,13 +14,14 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc
 {
-
     public partial class ACMD_MCS
     {
         public static ConcurrentDictionary<string, ACMD_MCS> MCS_CMD_InfoList { get; private set; } = new ConcurrentDictionary<string, ACMD_MCS>();
+
         //**********************************************************************************
         //A20.05.22 給定一個私有變數去儲存2點間距離
         private int _distanceFromVehicleToHostSource;
+
         /// <summary>
         /// 1 2 4 8 16 32 64 128
         /// 1 1 1 1 1  1  1  1
@@ -29,6 +30,7 @@ namespace com.mirle.ibg3k0.sc
         /// 1 1 1 0 ....
         /// </summary>
         public const int COMMAND_iIdle = 0;
+
         public const int COMMAND_STATUS_BIT_INDEX_ENROUTE = 1;
         public const int COMMAND_STATUS_BIT_INDEX_LOAD_ARRIVE = 2;
         public const int COMMAND_STATUS_BIT_INDEX_LOADING = 4;
@@ -62,26 +64,27 @@ namespace com.mirle.ibg3k0.sc
                 return COMMANDSTATE == COMMAND_STATUS_BIT_INDEX_LOADING;
             }
         }
+
         public bool isUnloading
         {
-
             get
             {
                 COMMANDSTATE = COMMANDSTATE & 224;
                 return COMMANDSTATE == COMMAND_STATUS_BIT_INDEX_UNLOADING;
             }
         }
-        public string CARRIER_ID { get { return BOX_ID; } }
 
+        public string CARRIER_ID { get { return BOX_ID; } }
 
         public enum CmdType
         {
             MCS,
             Manual,
             SCAN,
-            OHBC,       //OHBC 自動產生的命令          
+            OHBC,       //OHBC 自動產生的命令
             AGVStation, //AGV 退補 BOX
             PortTypeChange,        //控制Port流向
+            MoveBack,
         }
 
         public class ResultCode
@@ -114,29 +117,38 @@ namespace com.mirle.ibg3k0.sc
             {
                 case COMMAND_STATUS_BIT_INDEX_ENROUTE:
                     return "Enroute";
+
                 case COMMAND_STATUS_BIT_INDEX_LOAD_ARRIVE:
                     return "Load arrive";
+
                 case COMMAND_STATUS_BIT_INDEX_LOADING:
                     return "Loading";
+
                 case COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE:
                     return "Load complete";
+
                 case COMMAND_STATUS_BIT_INDEX_UNLOAD_ARRIVE:
                     return "Unload arrive";
+
                 case COMMAND_STATUS_BIT_INDEX_UNLOADING:
                     return "Unloading";
+
                 case COMMAND_STATUS_BIT_INDEX_UNLOAD_COMPLETE:
                     return "Unload complete";
+
                 case COMMAND_STATUS_BIT_INDEX_COMMNAD_FINISH:
                     return "Command finish";
             }
             return "";
         }
+
         //**********************************************************************************
         //A20.05.22 設定與shelfDef相同之clone
         public ACMD_MCS Clone()
         {
             return (ACMD_MCS)this.MemberwiseClone();
         }
+
         //*******************************************************************
         //A20.05.22 用於List sort 指令 呼叫使用
         public class MCSCmdCompare_LessThan2 : IComparer<ACMD_MCS>
@@ -221,7 +233,6 @@ namespace com.mirle.ibg3k0.sc
                 }
                 return 0;
             }
-
         }
 
         public class MCSCmdCompare_MoreThan1 : IComparer<ACMD_MCS>
@@ -285,7 +296,6 @@ namespace com.mirle.ibg3k0.sc
                 }
                 return 0;
             }
-
         }
 
         public bool IsCmdSourceTypeShelf(string cmdSource)
@@ -337,6 +347,7 @@ namespace com.mirle.ibg3k0.sc
                 RelayStation = this.RelayStation,
             };
         }
+
         public bool put(ACMD_MCS ortherObj)
         {
             bool has_change = false;
