@@ -47,6 +47,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
         public event ManualPortEvents.ManualPortEventHandler OnAlarmClear;
 
+        public event ManualPortEvents.ManualPortEventHandler OnDoorOpen;
+
         #endregion Implement
 
         private Logger logger = LogManager.GetCurrentClassLogger();
@@ -165,6 +167,11 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 if (bcfApp.tryGetReadValueEventstring(port.EqptObjectCate, port.PORT_ID, "MGV_TO_OHxC_ERRORINDEX", out ValueRead vr11))
                 {
                     vr11.afterValueChange += (_sender, e) => MGV_Status_ErrorIndexChanged(_sender, e);
+                }
+
+                if (bcfApp.tryGetReadValueEventstring(port.EqptObjectCate, port.PORT_ID, "MGV_TO_OHxC_DOOROPEN", out ValueRead vr12))
+                {
+                    vr11.afterValueChange += (_sender, e) => MGV_Status_DoorOpenChanged(_sender, e);
                 }
             }
             catch (Exception ex)
@@ -476,6 +483,30 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         private void AlarmHappen(ManualPortPLCInfo function)
         {
             OnAlarmHappen?.Invoke(this, new ManualPortEventArgs(function));
+        }
+
+        private void MGV_Status_DoorOpenChanged(object sender, ValueChangedEventArgs e)
+        {
+            var function = scApp.getFunBaseObj<ManualPortPLCInfo>(port.PORT_ID) as ManualPortPLCInfo;
+
+            try
+            {
+                //1.建立各個Function物件
+                function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
+
+                //2.read log
+                logger.Info(function.ToString());
+
+                OnDoorOpen?.Invoke(this, new ManualPortEventArgs(function));
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+            finally
+            {
+                scApp.putFunBaseObj<ManualPortPLCInfo>(function);
+            }
         }
 
         #region Control

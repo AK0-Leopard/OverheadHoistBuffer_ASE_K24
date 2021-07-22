@@ -26,6 +26,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface
 
         event ManualPortEventHandler OnAlarmClear;
 
+        event ManualPortEventHandler OnDoorOpen;
+
         Task MoveBackAsync();
 
         Task SetMoveBackReasonAsync(MoveBackReasons reason);
