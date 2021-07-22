@@ -861,7 +861,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         #endregion PLC控制命令
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     TransferServiceLogger.Error(ex, "PortTypeCommandProcess");
                 }
@@ -871,7 +871,38 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
             }
         }
+        private long syncManualPortMoveBackPoint = 0;
+        public async void ManualPortMoveBackProcess()
+        {
+            if (Interlocked.Exchange(ref syncManualPortMoveBackPoint, 1) == 0)
+            {
+                try
+                {
+                    List<ACMD_MCS> manual_port_move_back_cmds = cmdBLL.LoadCmdData_ManualPortMoveBack();
+                    foreach (var v in manual_port_move_back_cmds)
+                    {
+                        var portName = v.HOSTSOURCE;
+                        var port = scApp.PortStationBLL.OperateCatch.getPortStation(portName);
+                        if (port is MANUAL_PORTSTATION)
+                        {
+                            var manualPort = port as MANUAL_PORTSTATION;
+                            await manualPort.MoveBackAsync();
+                        }
+                        cmdBLL.DeleteCmd(v.CMD_ID);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TransferServiceLogger.Error(ex, "ManualPortMoveBackProcess");
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref syncManualPortMoveBackPoint, 0);
+                }
+            }
+        }
         private long syncTranCmdPoint = 0;
+        //public void TransferRun()
         public void TransferRun()
         {
             if (Interlocked.Exchange(ref syncTranCmdPoint, 1) == 0)
@@ -1089,18 +1120,18 @@ namespace com.mirle.ibg3k0.sc.Service
                             //    #endregion PLC控制命令
                             //}
 
-                            foreach (var v in movebackManualPortCmdDatas)
-                            {
-                                var portName = v.HOSTSOURCE;
-                                var port = scApp.PortStationBLL.OperateCatch.getPortStation(portName);
-                                if (port is MANUAL_PORTSTATION)
-                                {
-                                    var manualPort = port as MANUAL_PORTSTATION;
-                                    await manualPort.MoveBackAsync();
-                                }
+                            //foreach (var v in movebackManualPortCmdDatas)
+                            //{
+                            //    var portName = v.HOSTSOURCE;
+                            //    var port = scApp.PortStationBLL.OperateCatch.getPortStation(portName);
+                            //    if (port is MANUAL_PORTSTATION)
+                            //    {
+                            //        var manualPort = port as MANUAL_PORTSTATION;
+                            //        await manualPort.MoveBackAsync();
+                            //    }
 
-                                cmdBLL.DeleteCmd(v.CMD_ID);
-                            }
+                            //    cmdBLL.DeleteCmd(v.CMD_ID);
+                            //}
 
                             foreach (var v in transferCmdData)
                             {
