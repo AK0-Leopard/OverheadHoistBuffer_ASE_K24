@@ -696,7 +696,8 @@ namespace com.mirle.ibg3k0.sc.BLL
             datainfo.CSTInDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
             datainfo.TrnDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
             datainfo.Stage = 1;
-            datainfo.CSTType = type.ToString();
+            var typeInt = (int)type;
+            datainfo.CSTType = typeInt.ToString();
 
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
             {

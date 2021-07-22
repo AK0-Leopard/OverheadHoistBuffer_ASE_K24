@@ -2,9 +2,9 @@
 {
     public enum CstType
     {
-        PortHasNoCarrierNow,
-        A,
-        B,
-        Undefined,
+        PortHasNoCarrierNow = 0,
+        A = 1,
+        B = 2,
+        Undefined = 3,
     }
 }

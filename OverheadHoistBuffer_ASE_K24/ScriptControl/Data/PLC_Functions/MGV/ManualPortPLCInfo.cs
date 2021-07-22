@@ -86,11 +86,11 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV
 
         private CstType GetCstType()
         {
-            if (CstTypes == 0)
+            if (CstTypes == (int)CstType.PortHasNoCarrierNow)
                 return CstType.PortHasNoCarrierNow;
-            else if (CstTypes == 1)
+            else if (CstTypes == (int)CstType.A)
                 return CstType.A;
-            else if (CstTypes == 2)
+            else if (CstTypes == (int)CstType.B)
                 return CstType.B;
             else
                 return CstType.Undefined;
