@@ -133,7 +133,7 @@ namespace com.mirle.ibg3k0.sc.Common
         }
         public List<PortDef> getPortDefs()
         {
-            return PortDefs;
+            return PortDefs.ToList();
         }
         public List<ReserveEnhanceInfo> getReserveEnhanceInfos()
         {

@@ -362,12 +362,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 objCacheManager = _objCacheManager;
             }
 
-            public List<PortDef> loadCanAvoidCVPortDefs()
+
+            public List<PortDef> loadALLPortDefs()
             {
                 var port_defs = objCacheManager.getPortDefs();
-                return port_defs.Where(port => SCUtility.isMatche(port.UnitType, "OHCV") &&
-                                               port.PortTypeIndex.HasValue && port.PortTypeIndex.Value == 1).
-                                 ToList();
+                return port_defs;
             }
 
             public List<PortDef> loadCanAvoidPortDefs()
@@ -410,6 +409,30 @@ namespace com.mirle.ibg3k0.sc.BLL
                                  FirstOrDefault();
                 return (port_def != null, port_def);
             }
+
+            public bool getAddressID(string adr_port_id, out string adr)
+            {
+                E_VH_TYPE vh_type = E_VH_TYPE.None;
+                return getAddressID(adr_port_id, out adr, out vh_type);
+            }
+
+            public bool getAddressID(string adr_port_id, out string adr, out E_VH_TYPE vh_type)
+            {
+                var port_defs = objCacheManager.getPortDefs();
+                var port_def = port_defs.Where(port => SCUtility.isMatche(port.PLCPortID, adr_port_id)).FirstOrDefault();
+                vh_type = E_VH_TYPE.None;
+                if (port_def != null)
+                {
+                    adr = SCUtility.Trim(port_def.ADR_ID);
+                    return true;
+                }
+                else
+                {
+                    adr = adr_port_id;
+                    return false;
+                }
+            }
+
         }
 
         internal bool doUpdateTimeOutForAutoUD(string port_id, int timeOutForAutoUD)

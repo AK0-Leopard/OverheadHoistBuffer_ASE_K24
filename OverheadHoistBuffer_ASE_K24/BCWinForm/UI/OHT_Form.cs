@@ -365,7 +365,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private async void excuteLoadUnloadCommand()
         {
             string fromSection = cmb_fromSection.Text;
-            ASECTION asection = scApp.MapBLL.getSectiontByID(fromSection);
 
             string hostsource_portid = cmb_fromAddress.Text;
             string hostdest_portid = cmb_toAddress.Text;

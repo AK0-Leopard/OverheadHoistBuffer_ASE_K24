@@ -6576,7 +6576,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 if (isLocExist(portName))
                 {
                     if (cassette_dataBLL.loadCassetteDataByBoxID(datainfo.BOXID) != null
-                     //|| (cassette_dataBLL.loadCassetteDataByCSTID(datainfo.CSTID) != null && string.IsNullOrWhiteSpace(datainfo.CSTID) == false)
+                      //|| (cassette_dataBLL.loadCassetteDataByCSTID(datainfo.CSTID) != null && string.IsNullOrWhiteSpace(datainfo.CSTID) == false)
                       )
                     {
                         Duplicate(datainfo);
