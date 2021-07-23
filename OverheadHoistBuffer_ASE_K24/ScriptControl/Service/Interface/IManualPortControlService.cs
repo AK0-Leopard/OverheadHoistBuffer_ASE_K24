@@ -7,6 +7,10 @@ namespace com.mirle.ibg3k0.sc.Service.Interface
 {
     public interface IManualPortControlService
     {
+        void Start(IEnumerable<IManualPortValueDefMapAction> ports);
+
+        void ReflashState();
+
         bool GetPortPlcState(string portName, out ManualPortPLCInfo info);
 
         bool ChangeToInMode(string portName);
@@ -28,6 +32,5 @@ namespace com.mirle.ibg3k0.sc.Service.Interface
         bool SetCommanding(string portName, bool setOn);
 
         bool SetControllerErrorIndex(string portName, int newIndex);
-        void Start(IEnumerable<IManualPortValueDefMapAction> ports);
     }
 }
