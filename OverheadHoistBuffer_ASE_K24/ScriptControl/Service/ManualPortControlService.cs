@@ -28,6 +28,9 @@ namespace com.mirle.ibg3k0.sc.Service
         private void RegisterPort(IEnumerable<IManualPortValueDefMapAction> ports)
         {
             manualPorts = new ConcurrentDictionary<string, IManualPortValueDefMapAction>();
+            comingOutCarrierOfManualPorts = new ConcurrentDictionary<string, string>();
+            readyToWaitOutCarrierOfManualPorts = new ConcurrentDictionary<string, List<string>>();
+            stopWatchForCheckCommandingSignal = new ConcurrentDictionary<string, Stopwatch>();
 
             foreach (var port in ports)
             {
