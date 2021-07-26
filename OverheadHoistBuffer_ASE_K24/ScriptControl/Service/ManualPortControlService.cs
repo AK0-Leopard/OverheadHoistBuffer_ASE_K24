@@ -1,4 +1,5 @@
-﻿using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
+﻿using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 using com.mirle.ibg3k0.sc.Service.Interface;
@@ -77,7 +78,6 @@ namespace com.mirle.ibg3k0.sc.Service
         public void ReflashState()
         {
             var allCommands = ACMD_MCS.MCS_CMD_InfoList;
-
             ReflashPlcMonitor(allCommands);
             ReflashReadyToWaitOutCarrier();
             ReflashComingOutCarrier();
@@ -93,7 +93,6 @@ namespace com.mirle.ibg3k0.sc.Service
                     var portName = portItem.Key;
 
                     readyToWaitOutCarrierOfManualPorts[portName].Clear();
-                    comingOutCarrierOfManualPorts[portName] = string.Empty;
 
                     var commandsOfManualPort = allCommands.Where(c => c.Value.HOSTDESTINATION == portName);
 
@@ -110,11 +109,6 @@ namespace com.mirle.ibg3k0.sc.Service
                         {
                             if (readyToWaitOutCarrierOfManualPorts[portName].Count < 2)
                                 readyToWaitOutCarrierOfManualPorts[portName].Add(command.BOX_ID);
-                        }
-
-                        if (command.TRANSFERSTATE != E_TRAN_STATUS.Queue && string.IsNullOrEmpty(command.RelayStation))
-                        {
-                            comingOutCarrierOfManualPorts[portName] = command.BOX_ID;
                         }
                     }
                 }
@@ -148,6 +142,26 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private void ReflashComingOutCarrier()
         {
+            var commandsOfOHT = ACMD_OHTC.CMD_OHTC_InfoList;
+
+            foreach (var portItem in manualPorts)
+            {
+                var portName = portItem.Key;
+                comingOutCarrierOfManualPorts[portName] = string.Empty;
+
+                var cmds = commandsOfOHT.Where(c => SCUtility.isMatche(c.Value.DESTINATION, portName)).Select(c => c.Value).ToList();
+
+                if (cmds == null)
+                    continue;
+
+                var cmd = cmds.FirstOrDefault();
+
+                if (cmd == null)
+                    continue;
+
+                comingOutCarrierOfManualPorts[portName] = cmd.BOX_ID;
+            }
+
             foreach (var item in comingOutCarrierOfManualPorts)
             {
                 if (string.IsNullOrEmpty(item.Value))

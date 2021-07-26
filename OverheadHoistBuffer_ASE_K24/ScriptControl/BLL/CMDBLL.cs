@@ -142,6 +142,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return cmd_mcsDao.LoadCmdData_PortTypeChange(con);
             }
         }
+
         public List<ACMD_MCS> LoadCmdData_ManualPortMoveBack()
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())
@@ -3539,6 +3540,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+
         public List<ACMD_OHTC> loadUnfnishCMD_OHTC()
         {
             List<ACMD_OHTC> acmd_ohtcs = null;
@@ -3977,6 +3979,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
             }
         }
+
         private void refreshACMD_OHTCInfoList(List<ACMD_OHTC> currentExcuteCmdOhtc)
         {
             bool has_change = false;
@@ -4062,62 +4065,88 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 case E_CMD_TYPE.Move:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Move;
+
                 case E_CMD_TYPE.Move_Park:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.MovePark;
+
                 case E_CMD_TYPE.Move_MTPort:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.MoveMtport;
+
                 case E_CMD_TYPE.Load:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Load;
+
                 case E_CMD_TYPE.Unload:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Unload;
+
                 case E_CMD_TYPE.LoadUnload:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.LoadUnload;
+
                 case E_CMD_TYPE.Teaching:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Teaching;
+
                 case E_CMD_TYPE.Continue:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Continue;
+
                 case E_CMD_TYPE.Round:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Round;
+
                 case E_CMD_TYPE.Override:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Override;
+
                 case E_CMD_TYPE.MTLHome:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Mtlhome;
+
                 case E_CMD_TYPE.MoveToMTL:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.MoveToMtl;
+
                 case E_CMD_TYPE.SystemOut:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.SystemOut;
+
                 case E_CMD_TYPE.SystemIn:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.SystemIn;
+
                 case E_CMD_TYPE.Scan:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Scan;
+
                 default:
                     throw new ArgumentException($"Cmd type:{cmdType},not exist.");
             }
         }
+
         private AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus convertTo(E_CMD_STATUS cmdStatus)
         {
             switch (cmdStatus)
             {
                 case E_CMD_STATUS.Queue:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.Queue;
+
                 case E_CMD_STATUS.Sending:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.Sending;
+
                 case E_CMD_STATUS.Execution:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.Execution;
+
                 case E_CMD_STATUS.Aborting:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.Aborting;
+
                 case E_CMD_STATUS.Canceling:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.Canceling;
+
                 case E_CMD_STATUS.NormalEnd:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.NormalEnd;
+
                 case E_CMD_STATUS.AbnormalEndByOHT:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.AbnormalEndByOht;
+
                 case E_CMD_STATUS.AbnormalEndByOHTC:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.AbnormalEndByOhtc;
+
                 case E_CMD_STATUS.AbnormalEndByMCS:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.AbnormalEndByMcs;
+
                 case E_CMD_STATUS.CancelEndByOHTC:
                     return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.CancelEndByOhtc;
+
                 default:
                     throw new ArgumentException($"Cmd status:{cmdStatus},not exist.");
             }
@@ -5455,14 +5484,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 return new ACMD_OHTC();
             }
-
-            public List<ACMD_OHTC> loadCMDs_OHTCByDestPort(string portID)
-            {
-                var cmd_list = ACMD_OHTC.CMD_OHTC_InfoList;
-                var cmds = cmd_list.Where(c => SCUtility.isMatche(c.Value.DESTINATION, portID)).Select(c => c.Value).ToList();
-                return cmds;
-            }
-
         }
     }
 
