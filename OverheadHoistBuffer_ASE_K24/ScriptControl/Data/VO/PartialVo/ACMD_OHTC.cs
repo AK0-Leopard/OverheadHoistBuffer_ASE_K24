@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace com.mirle.ibg3k0.sc
 {
     public partial class ACMD_OHTC
     {
+        public static ConcurrentDictionary<string, ACMD_OHTC> CMD_OHTC_InfoList { get; private set; } = new ConcurrentDictionary<string, ACMD_OHTC>();
+
         public string CARRIER_ID { get { return this.BOX_ID; } }
 
         public bool IsTransferCmdByMCS
@@ -42,6 +45,109 @@ namespace com.mirle.ibg3k0.sc
                 CMD_INSER_TIME =
                 this.CMD_INSER_TIME.HasValue ? this.CMD_INSER_TIME.Value : DateTime.Now,
             };
+        }
+
+
+        public bool put(ACMD_OHTC ortherObj)
+        {
+            bool has_change = false;
+            if (!sc.Common.SCUtility.isMatche(CMD_ID, ortherObj.CMD_ID))
+            {
+                CMD_ID = ortherObj.CMD_ID;
+                has_change = true;
+            }
+            if (!sc.Common.SCUtility.isMatche(VH_ID, ortherObj.VH_ID))
+            {
+                VH_ID = ortherObj.VH_ID;
+                has_change = true;
+            }
+            if (CMD_TPYE != ortherObj.CMD_TPYE)
+            {
+                CMD_TPYE = ortherObj.CMD_TPYE;
+                has_change = true;
+            }
+            if (!sc.Common.SCUtility.isMatche(SOURCE, ortherObj.SOURCE))
+            {
+                SOURCE = ortherObj.SOURCE;
+                has_change = true;
+            }
+            if (!sc.Common.SCUtility.isMatche(DESTINATION, ortherObj.DESTINATION))
+            {
+                DESTINATION = ortherObj.DESTINATION;
+                has_change = true;
+            }
+            if (PRIORITY != ortherObj.PRIORITY)
+            {
+                PRIORITY = ortherObj.PRIORITY;
+                has_change = true;
+            }
+            if (CMD_START_TIME != ortherObj.CMD_START_TIME)
+            {
+                CMD_START_TIME = ortherObj.CMD_START_TIME;
+                has_change = true;
+            }
+
+            if (CMD_END_TIME != ortherObj.CMD_END_TIME)
+            {
+                CMD_END_TIME = ortherObj.CMD_END_TIME;
+                has_change = true;
+            }
+            if (CMD_STAUS != ortherObj.CMD_STAUS)
+            {
+                CMD_STAUS = ortherObj.CMD_STAUS;
+                has_change = true;
+            }
+            if (CMD_PROGRESS != ortherObj.CMD_PROGRESS)
+            {
+                CMD_PROGRESS = ortherObj.CMD_PROGRESS;
+                has_change = true;
+            }
+            if (INTERRUPTED_REASON != ortherObj.INTERRUPTED_REASON)
+            {
+                INTERRUPTED_REASON = ortherObj.INTERRUPTED_REASON;
+                has_change = true;
+            }
+            if (ESTIMATED_TIME != ortherObj.ESTIMATED_TIME)
+            {
+                ESTIMATED_TIME = ortherObj.ESTIMATED_TIME;
+                has_change = true;
+            }
+            if (ESTIMATED_EXCESS_TIME != ortherObj.ESTIMATED_EXCESS_TIME)
+            {
+                ESTIMATED_EXCESS_TIME = ortherObj.ESTIMATED_EXCESS_TIME;
+                has_change = true;
+            }
+            if (REAL_CMP_TIME != ortherObj.REAL_CMP_TIME)
+            {
+                REAL_CMP_TIME = ortherObj.REAL_CMP_TIME;
+                has_change = true;
+            }
+            if (!sc.Common.SCUtility.isMatche(SOURCE_ADR, ortherObj.SOURCE_ADR))
+            {
+                SOURCE_ADR = ortherObj.SOURCE_ADR;
+                has_change = true;
+            }
+            if (!sc.Common.SCUtility.isMatche(DESTINATION_ADR, ortherObj.DESTINATION_ADR))
+            {
+                DESTINATION_ADR = ortherObj.DESTINATION_ADR;
+                has_change = true;
+            }
+            if (!sc.Common.SCUtility.isMatche(BOX_ID, ortherObj.BOX_ID))
+            {
+                BOX_ID = ortherObj.BOX_ID;
+                has_change = true;
+            }
+            if (!sc.Common.SCUtility.isMatche(LOT_ID, ortherObj.LOT_ID))
+            {
+                LOT_ID = ortherObj.LOT_ID;
+                has_change = true;
+            }
+            if (!sc.Common.SCUtility.isMatche(CMD_INSER_TIME, ortherObj.CMD_INSER_TIME))
+            {
+                CMD_INSER_TIME = ortherObj.CMD_INSER_TIME;
+                has_change = true;
+            }
+            return has_change;
         }
 
         public override string ToString()

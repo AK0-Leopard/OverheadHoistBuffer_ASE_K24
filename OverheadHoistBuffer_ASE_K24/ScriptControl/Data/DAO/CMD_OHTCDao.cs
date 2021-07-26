@@ -70,6 +70,15 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                         select cmd;
             return query.ToList();
         }
+        public List<ACMD_OHTC> loadUnfnishCMD_OHTC(DBConnection_EF con)
+        {
+            var query = from cmd in con.ACMD_OHTC
+                        where cmd.CMD_STAUS < E_CMD_STATUS.NormalEnd 
+                        orderby cmd.CMD_START_TIME
+                        select cmd;
+            return query.ToList();
+        }
+
 
 
         public List<ACMD_OHTC> loadExecuteCmd(DBConnection_EF con, string vh_id)

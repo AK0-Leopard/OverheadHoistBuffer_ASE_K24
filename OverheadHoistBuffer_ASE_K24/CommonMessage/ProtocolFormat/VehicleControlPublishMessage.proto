@@ -75,6 +75,12 @@ enum CmdStatus {
     CmdStatus_CancelEndByOHTC = 9;
 }
 
+
+message TaskInfo {
+	int64 LAST_UPDATE_TIME = 1;
+	repeated Task infos = 2;
+}
+
 message Task {
 	string CMD_ID = 1;
 	string VH_ID = 2;
@@ -85,7 +91,7 @@ message Task {
 	int32 PRIORITY = 7;
 	int64 CMD_START_TIME = 8;
 	int64 CMD_END_TIME = 9;
-	CmdStatus E_CMD_STATUS = 10;
+	CmdStatus CMD_STATUS = 10;
 	int32 CMD_PROGRESS = 11;
 	int32 INTERRUPTED_REASON = 12;
 	string SOURCE_ADR = 13;

@@ -780,12 +780,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                     + "新增命令: " + scApp.TransferService.GetCmdLog(cmd_mcs)
                 );
 
-                if (cmd_mcs.CMDTYPE != CmdType.PortTypeChange.ToString())
+                if (cmd_mcs.CMDTYPE != ACMD_MCS.CmdType.PortTypeChange.ToString())
                 {
                     scApp.TransferService.ShelfReserved(cmd_mcs.HOSTSOURCE, cmd_mcs.HOSTDESTINATION);
                 }
 
-                Task.Run(() =>  //20_0824 冠皚提出車子回 128 結束，直接掃命令，不要等到下次執行緒觸發
+                System.Threading.Tasks.Task.Run(() =>  //20_0824 冠皚提出車子回 128 結束，直接掃命令，不要等到下次執行緒觸發
                 {
                     scApp.TransferService.TransferRun();
                 });
@@ -2641,7 +2641,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 catch (Exception ex)
                 {
                     TransferServiceLogger.Error(ex, "generateOHTCommand");
-                    return (false,"例外發生");
+                    return (false, "例外發生");
                 }
                 finally
                 {
@@ -2650,7 +2650,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             else
             {
-                return (false,"尋車功能被占用");
+                return (false, "尋車功能被占用");
             }
         }
 
@@ -3539,6 +3539,23 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+        public List<ACMD_OHTC> loadUnfnishCMD_OHTC()
+        {
+            List<ACMD_OHTC> acmd_ohtcs = null;
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    acmd_ohtcs = cmd_ohtcDAO.loadUnfnishCMD_OHTC(con);
+                }
+                return acmd_ohtcs;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return null;
+            }
+        }
 
         public List<ACMD_OHTC> loadFinishCMD_OHTC()
         {
@@ -3912,7 +3929,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                         != SCAppConstants.AppServiceMode.Active)
                         return;
                     //找出目前再Queue的ACMD_OHTC
-                    List<ACMD_OHTC> CMD_OHTC_Queues = scApp.CMDBLL.loadCMD_OHTCMDStatusIsQueue();
+
+                    List<ACMD_OHTC> CMD_OHTC_Unfinish = scApp.CMDBLL.loadUnfnishCMD_OHTC();
+                    refreshACMD_OHTCInfoList(CMD_OHTC_Unfinish);
+                    //List<ACMD_OHTC> CMD_OHTC_Queues = scApp.CMDBLL.loadCMD_OHTCMDStatusIsQueue();
+                    List<ACMD_OHTC> CMD_OHTC_Queues = CMD_OHTC_Unfinish.Where(cmd => cmd.CMD_STAUS == E_CMD_STATUS.Queue).ToList();
                     if (CMD_OHTC_Queues == null || CMD_OHTC_Queues.Count == 0)
                         return;
                     foreach (ACMD_OHTC cmd in CMD_OHTC_Queues)
@@ -3954,6 +3975,151 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     System.Threading.Interlocked.Exchange(ref ohxc_cmd_SyncPoint, 0);
                 }
+            }
+        }
+        private void refreshACMD_OHTCInfoList(List<ACMD_OHTC> currentExcuteCmdOhtc)
+        {
+            bool has_change = false;
+            List<string> new_current_excute_cmd_ohtc = currentExcuteCmdOhtc.Select(cmd => SCUtility.Trim(cmd.CMD_ID, true)).ToList();
+            List<string> old_current_excute_cmd_ohtc = ACMD_OHTC.CMD_OHTC_InfoList.Keys.ToList();
+
+            List<string> new_add_cmds_ohtc = new_current_excute_cmd_ohtc.Except(old_current_excute_cmd_ohtc).ToList();
+            //1.新增多出來的命令
+            foreach (string new_cmd in new_add_cmds_ohtc)
+            {
+                ACMD_OHTC new_cmd_obj = new ACMD_OHTC();
+                var current_cmd = currentExcuteCmdOhtc.Where(cmd => SCUtility.isMatche(cmd.CMD_ID, new_cmd)).FirstOrDefault();
+                if (current_cmd == null) continue;
+                new_cmd_obj.put(current_cmd);
+                ACMD_OHTC.CMD_OHTC_InfoList.TryAdd(new_cmd, new_cmd_obj);
+                has_change = true;
+            }
+            //2.刪除以結束的命令
+            List<string> will_del_mcs_cmds = old_current_excute_cmd_ohtc.Except(new_current_excute_cmd_ohtc).ToList();
+            foreach (string old_cmd in will_del_mcs_cmds)
+            {
+                ACMD_OHTC.CMD_OHTC_InfoList.TryRemove(old_cmd, out ACMD_OHTC cmd_ohtc);
+                has_change = true;
+            }
+            //3.更新現有命令
+            foreach (var cmd_ohtc_item in ACMD_OHTC.CMD_OHTC_InfoList)
+            {
+                string cmd_ohtc_id = cmd_ohtc_item.Key;
+                ACMD_OHTC cmd_ohtc = currentExcuteCmdOhtc.Where(cmd => SCUtility.isMatche(cmd.CMD_ID, cmd_ohtc_id)).FirstOrDefault();
+                if (cmd_ohtc == null)
+                {
+                    continue;
+                }
+                if (cmd_ohtc_item.Value.put(cmd_ohtc))
+                {
+                    has_change = true;
+                }
+            }
+            if (has_change)
+            {
+                AK0.ProtocolFormat.VehicleControlPublishMessage.TaskInfo info =
+                    new AK0.ProtocolFormat.VehicleControlPublishMessage.TaskInfo();
+                info.LASTUPDATETIME = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
+                foreach (var tran_item in ACMD_OHTC.CMD_OHTC_InfoList)
+                {
+                    var cmd_ohtc = tran_item.Value;
+                    SCUtility.TrimAllParameter(cmd_ohtc);
+                    var task = new AK0.ProtocolFormat.VehicleControlPublishMessage.Task();
+                    task.CMDID = cmd_ohtc.CMD_ID ?? "";
+                    task.VHID = cmd_ohtc.VH_ID ?? "";
+                    task.CMDIDMCS = cmd_ohtc.CMD_ID_MCS ?? "";
+                    task.CMDTPYE = convertTo(cmd_ohtc.CMD_TPYE);
+                    task.SOURCE = cmd_ohtc.SOURCE ?? "";
+                    task.DESTINATION = cmd_ohtc.DESTINATION ?? "";
+                    task.PRIORITY = cmd_ohtc.PRIORITY;
+                    task.CMDSTARTTIME =
+                        cmd_ohtc.CMD_START_TIME.HasValue ? ((DateTimeOffset)cmd_ohtc.CMD_START_TIME).ToUnixTimeSeconds() : 0;
+                    task.CMDENDTIME =
+                        cmd_ohtc.CMD_END_TIME.HasValue ? ((DateTimeOffset)cmd_ohtc.CMD_END_TIME).ToUnixTimeSeconds() : 0;
+                    task.CMDSTATUS = convertTo(cmd_ohtc.CMD_STAUS);
+                    task.CMDPROGRESS = cmd_ohtc.CMD_PROGRESS;
+                    task.INTERRUPTEDREASON =
+                        cmd_ohtc.INTERRUPTED_REASON.HasValue ? cmd_ohtc.INTERRUPTED_REASON.Value : 0;
+                    task.SOURCEADR = cmd_ohtc.SOURCE_ADR ?? "";
+                    task.DESTINATIONADR = cmd_ohtc.DESTINATION_ADR ?? "";
+                    task.BOXID = cmd_ohtc.BOX_ID ?? "";
+                    task.LOTID = cmd_ohtc.LOT_ID ?? "";
+                    task.CMDINSERTIME =
+                        cmd_ohtc.CMD_INSER_TIME.HasValue ? ((DateTimeOffset)cmd_ohtc.CMD_INSER_TIME).ToUnixTimeSeconds() : 0;
+                    info.Infos.Add(task);
+                }
+                byte[] tran_info_serialize = new byte[info.CalculateSize()];
+                info.WriteTo(new Google.Protobuf.CodedOutputStream(tran_info_serialize));
+
+                scApp.getNatsManager().PublishAsync
+                    (SCAppConstants.NATS_SUBJECT_TASK_COMMAND_CHANGE, tran_info_serialize);
+            }
+        }
+
+        private AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType convertTo(E_CMD_TYPE cmdType)
+        {
+            switch (cmdType)
+            {
+                case E_CMD_TYPE.Move:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Move;
+                case E_CMD_TYPE.Move_Park:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.MovePark;
+                case E_CMD_TYPE.Move_MTPort:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.MoveMtport;
+                case E_CMD_TYPE.Load:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Load;
+                case E_CMD_TYPE.Unload:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Unload;
+                case E_CMD_TYPE.LoadUnload:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.LoadUnload;
+                case E_CMD_TYPE.Teaching:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Teaching;
+                case E_CMD_TYPE.Continue:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Continue;
+                case E_CMD_TYPE.Round:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Round;
+                case E_CMD_TYPE.Override:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Override;
+                case E_CMD_TYPE.MTLHome:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Mtlhome;
+                case E_CMD_TYPE.MoveToMTL:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.MoveToMtl;
+                case E_CMD_TYPE.SystemOut:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.SystemOut;
+                case E_CMD_TYPE.SystemIn:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.SystemIn;
+                case E_CMD_TYPE.Scan:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdType.Scan;
+                default:
+                    throw new ArgumentException($"Cmd type:{cmdType},not exist.");
+            }
+        }
+        private AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus convertTo(E_CMD_STATUS cmdStatus)
+        {
+            switch (cmdStatus)
+            {
+                case E_CMD_STATUS.Queue:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.Queue;
+                case E_CMD_STATUS.Sending:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.Sending;
+                case E_CMD_STATUS.Execution:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.Execution;
+                case E_CMD_STATUS.Aborting:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.Aborting;
+                case E_CMD_STATUS.Canceling:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.Canceling;
+                case E_CMD_STATUS.NormalEnd:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.NormalEnd;
+                case E_CMD_STATUS.AbnormalEndByOHT:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.AbnormalEndByOht;
+                case E_CMD_STATUS.AbnormalEndByOHTC:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.AbnormalEndByOhtc;
+                case E_CMD_STATUS.AbnormalEndByMCS:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.AbnormalEndByMcs;
+                case E_CMD_STATUS.CancelEndByOHTC:
+                    return AK0.ProtocolFormat.VehicleControlPublishMessage.CmdStatus.CancelEndByOhtc;
+                default:
+                    throw new ArgumentException($"Cmd status:{cmdStatus},not exist.");
             }
         }
 
@@ -5289,6 +5455,14 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 return new ACMD_OHTC();
             }
+
+            public List<ACMD_OHTC> loadCMDs_OHTCByDestPort(string portID)
+            {
+                var cmd_list = ACMD_OHTC.CMD_OHTC_InfoList;
+                var cmds = cmd_list.Where(c => SCUtility.isMatche(c.Value.DESTINATION, portID)).Select(c => c.Value).ToList();
+                return cmds;
+            }
+
         }
     }
 

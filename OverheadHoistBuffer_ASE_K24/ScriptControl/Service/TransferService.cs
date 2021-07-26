@@ -1257,6 +1257,12 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     has_change = true;
                 }
+                if (mcs_cmd_item.Value.TRANSFERSTATE != E_TRAN_STATUS.Queue &&
+                   !SCUtility.isEmpty(mcs_cmd_item.Value.CanNotServiceReason))
+                {
+                    mcs_cmd_item.Value.CanNotServiceReason = string.Empty;
+                    has_change = true;
+                }
             }
             if (has_change)
             {
