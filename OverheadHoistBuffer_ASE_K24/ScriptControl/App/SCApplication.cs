@@ -41,6 +41,7 @@ using GenericParsing;
 using Nancy;
 using Nancy.Hosting.Self;
 using NLog;
+
 //using Predes.ZabbixSender;
 using Quartz;
 using Quartz.Impl;
@@ -62,8 +63,6 @@ namespace com.mirle.ibg3k0.sc.App
     /// </summary>
     public class SCApplication
     {
-
-
         /// <summary>
         /// The logger
         /// </summary>
@@ -71,46 +70,55 @@ namespace com.mirle.ibg3k0.sc.App
 
         /// <summary>
         /// The eqpt CSS
-        /// </summary> 
+        /// </summary>
         private EQPTConfigSections eqptCss = null;
+
         /// <summary>
         /// The node flow relative CSS
         /// </summary>
         private NodeFlowRelConfigSections nodeFlowRelCss = null;
 
         private DataCollectionConfigSections dataCollectionCss = null;
+
         /// <summary>
         /// The eap secs agent name
         /// </summary>
         private string eapSecsAgentName;
+
         /// <summary>
         /// Gets the name of the eap secs agent.
         /// </summary>
         /// <value>The name of the eap secs agent.</value>
         public string EAPSecsAgentName { get { return eapSecsAgentName; } }
+
         /// <summary>
         /// Gets the b c_ identifier.
         /// </summary>
         /// <value>The b c_ identifier.</value>
         public string BC_ID { get; private set; }
+
         public static string ServerName { get; private set; }
 
         /// <summary>
         /// The _lock
         /// </summary>
         private static Object _lock = new Object();
+
         /// <summary>
         /// The application
         /// </summary>
         private static SCApplication application;
+
         /// <summary>
         /// The BCF application
         /// </summary>
         private static BCFApplication bcfApplication;
+
         /// <summary>
         /// The eq object cache manager
         /// </summary>
         private EQObjCacheManager eqObjCacheManager;
+
         private CommObjCacheManager commObjCacheManager;
         private RedisCacheManager redisCacheManager;
         private NatsManager natsManager;
@@ -119,118 +127,142 @@ namespace com.mirle.ibg3k0.sc.App
         private Mirle.Hlts.ReserveSection.Map.ViewModels.HltMapViewModel reserveSectionAPI { get; set; }//A0.01
 
         public HAProxyConnectionTest hAProxyConnectionTest { get; private set; }
+
         //        const string REDIS_SERVER_CONFIGURATION = "redis.ohxc.mirle.com.tw:6379";
         public NancyHost NancyHost { get; private set; }
+
         public WebClientManager webClientManager { get; private set; }
-
-
 
         //DAO
         /// <summary>
         /// The line DAO
         /// </summary>
         private LineDao lineDao = null;
+
         /// <summary>
         /// Gets the line DAO.
         /// </summary>
         /// <value>The line DAO.</value>
         public LineDao LineDao { get { return lineDao; } }
+
         /// <summary>
         /// The zone DAO
         /// </summary>
         private ZoneDao zoneDao = null;
+
         /// <summary>
         /// Gets the zone DAO.
         /// </summary>
         /// <value>The zone DAO.</value>
         public ZoneDao ZoneDao { get { return zoneDao; } }
+
         /// <summary>
         /// The node DAO
         /// </summary>
         private NodeDao nodeDao = null;
+
         /// <summary>
         /// Gets the node DAO.
         /// </summary>
         /// <value>The node DAO.</value>
         public NodeDao NodeDao { get { return nodeDao; } }
+
         /// <summary>
         /// The eqpt DAO
         /// </summary>
         private EqptDao eqptDao = null;
+
         /// <summary>
         /// Gets the eqpt DAO.
         /// </summary>
         /// <value>The eqpt DAO.</value>
         public EqptDao EqptDao { get { return eqptDao; } }
+
         /// <summary>
         /// The flow relative DAO
         /// </summary>
         private FlowRelDao flowRelDao = null;
+
         /// <summary>
         /// Gets the flow relative DAO.
         /// </summary>
         /// <value>The flow relative DAO.</value>
         public FlowRelDao FlowRelDao { get { return flowRelDao; } }
+
         /// <summary>
         /// The unit DAO
         /// </summary>
         private UnitDao unitDao = null;
+
         /// <summary>
         /// Gets the unit DAO.
         /// </summary>
         /// <value>The unit DAO.</value>
         public UnitDao UnitDao { get { return unitDao; } }
+
         /// <summary>
         /// The port DAO
         /// </summary>
         private PortDao portDao = null;
+
         /// <summary>
         /// Gets the port DAO.
         /// </summary>
         /// <value>The port DAO.</value>
         public PortDao PortDao { get { return portDao; } }
+
         private PortStationDao portStationDao = null;
         public PortStationDao PortStationDao { get { return portStationDao; } }
+
         /// <summary>
         /// The buffer port DAO
         /// </summary>
         private BufferPortDao bufferPortDao = null;
+
         /// <summary>
         /// Gets the buffer port DAO.
         /// </summary>
         /// <value>The buffer port DAO.</value>
         public BufferPortDao BufferPortDao { get { return bufferPortDao; } }
+
         /// <summary>
         /// The user DAO
         /// </summary>
         private UserDao userDao = null;
+
         /// <summary>
         /// Gets the user DAO.
         /// </summary>
         /// <value>The user DAO.</value>
         public UserDao UserDao { get { return userDao; } }
+
         /// <summary>
         /// The function code DAO
         /// </summary>
         private FunctionCodeDao functionCodeDao = null;
+
         /// <summary>
         /// Gets the function code DAO.
         /// </summary>
         /// <value>The function code DAO.</value>
         public FunctionCodeDao FunctionCodeDao { get { return functionCodeDao; } }
+
         /// <summary>
         /// The user function DAO
         /// </summary>
         private UserFuncDao userFuncDao = null;
+
         /// <summary>
         /// Gets the user function DAO.
         /// </summary>
         /// <value>The user function DAO.</value>
         public UserFuncDao UserFuncDao { get { return userFuncDao; } }
+
         /// <summary>
         /// The alarm DAO
         /// </summary>
         private AlarmDao alarmDao = null;
+
         /// <summary>
         /// Gets the alarm DAO.
         /// </summary>
@@ -241,116 +273,127 @@ namespace com.mirle.ibg3k0.sc.App
         /// The alarm DAO
         /// </summary>
         private MainAlarmDao mainalarmDao = null;
+
         /// <summary>
         /// Gets the alarm DAO.
         /// </summary>
         /// <value>The alarm DAO.</value>
         public MainAlarmDao MainAlarmDao { get { return mainalarmDao; } }
 
-
-
         /// <summary>
         /// The cassette DAO
         /// </summary>
         private CassetteDao cassetteDao = null;
+
         /// <summary>
         /// Gets the cassette DAO.
         /// </summary>
         /// <value>The cassette DAO.</value>
         public CassetteDao CassetteDao { get { return cassetteDao; } }
+
         /// <summary>
         /// The bc status DAO
         /// </summary>
         private BCStatusDao bcStatusDao = null;
+
         /// <summary>
         /// Gets the bc status DAO.
         /// </summary>
         /// <value>The bc status DAO.</value>
         public BCStatusDao BCStatusDao { get { return bcStatusDao; } }
+
         /// <summary>
         /// The sequence DAO
         /// </summary>
         private SequenceDao sequenceDao = null;
+
         /// <summary>
         /// Gets the sequence DAO.
         /// </summary>
         /// <value>The sequence DAO.</value>
         public SequenceDao SequenceDao { get { return sequenceDao; } }
+
         /// <summary>
         /// The event RPT cond DAO
         /// </summary>
         private EventRptCondDao eventRptCondDao = null;
+
         /// <summary>
         /// Gets the event RPT cond DAO.
         /// </summary>
         /// <value>The event RPT cond DAO.</value>
         public EventRptCondDao EventRptCondDao { get { return eventRptCondDao; } }
+
         /// <summary>
         /// The crate DAO
         /// </summary>
         private CrateDao crateDao = null;
+
         /// <summary>
         /// Gets the crate DAO.
         /// </summary>
         /// <value>The crate DAO.</value>
         public CrateDao CrateDao { get { return crateDao; } }
+
         /// <summary>
         /// The alarm RPT cond DAO
         /// </summary>
         private AlarmRptCondDao alarmRptCondDao = null;
+
         /// <summary>
         /// Gets the alarm RPT cond DAO.
         /// </summary>
         /// <value>The alarm RPT cond DAO.</value>
         public AlarmRptCondDao AlarmRptCondDao { get { return alarmRptCondDao; } }
+
         /// <summary>
         /// The trace set DAO
         /// </summary>
         private TraceSetDao traceSetDao = null;
+
         /// <summary>
         /// Gets the trace set DAO.
         /// </summary>
         /// <value>The trace set DAO.</value>
         public TraceSetDao TraceSetDao { get { return traceSetDao; } }
+
         /// <summary>
         /// Gets the operation his DAO.
         /// </summary>
         /// <value>The operation his DAO.</value>
         public OperationHisDao OperationHisDao { get; private set; } = null;
 
-
         public ReturnCodeMapDao ReturnCodeMapDao { get; private set; } = null;
-
-
-
-
 
         /// <summary>
         /// The alarm map DAO
         /// </summary>
         private AlarmMapDao alarmMapDao = null;
+
         /// <summary>
         /// Gets the alarm map DAO.
         /// </summary>
         /// <value>The alarm map DAO.</value>
         public AlarmMapDao AlarmMapDao { get { return alarmMapDao; } }
+
         private UserGroupDao userGroupDao = null;
         public UserGroupDao UserGroupDao { get { return userGroupDao; } }
+
         /// <summary>
         /// The ec data map DAO
         /// </summary>
         private ECDataMapDao ecDataMapDao = null;
+
         /// <summary>
         /// Gets the ec data map DAO.
         /// </summary>
         /// <value>The ec data map DAO.</value>
         public ECDataMapDao ECDataMapDao { get { return ecDataMapDao; } }
+
         private CEIDDao ceidDao = null;
         public CEIDDao CEIDDao { get { return ceidDao; } }
         private RPTIDDao rptidDao = null;
         public RPTIDDao RPTIDDao { get { return rptidDao; } }
-
-
 
         private RAILDao railDao = null;
         public RAILDao RailDao { get { return railDao; } }
@@ -376,7 +419,6 @@ namespace com.mirle.ibg3k0.sc.App
         private CMD_OHTC_DetailDao cmd_ohtc_detailDao = null;
         public CMD_OHTC_DetailDao CMD_OHT_DetailDao { get { return cmd_ohtc_detailDao; } }
 
-
         private BlockZoneDetailDao bolckZoneDetaiDao = null;
         public BlockZoneDetailDao BolckZoneDetaiDao { get { return bolckZoneDetaiDao; } }
         private BlockZoneMasterDao blockZoneMasterDao = null;
@@ -384,14 +426,12 @@ namespace com.mirle.ibg3k0.sc.App
         private BlockZoneQueueDao blockZoneQueueDao = null;
         public BlockZoneQueueDao BlockZoneQueueDao { get { return blockZoneQueueDao; } }
 
-
         private ParkZoneDetailDao parkZoneDetailDao = null;
         public ParkZoneDetailDao ParkZoneDetailDao { get { return parkZoneDetailDao; } }
         private ParkZoneMasterDao parkZoneMasterDao = null;
         public ParkZoneMasterDao ParkZoneMasterDao { get { return parkZoneMasterDao; } }
         private ParkZoneTypeDao parkZoneTypeDao = null;
         public ParkZoneTypeDao ParkZoneTypeDao { get { return parkZoneTypeDao; } }
-
 
         private CycleZoneDetailDao cyclezoneDdetailDao = null;
         public CycleZoneDetailDao CycleZoneDetailDao { get { return cyclezoneDdetailDao; } }
@@ -422,7 +462,6 @@ namespace com.mirle.ibg3k0.sc.App
         public ShelfDefDao ShelfDefDao { get { return shelfdefDao; } }
         private CassetteDataDao cassettedataDao = null;
         public CassetteDataDao CassetteDataDao { get { return cassettedataDao; } }
-
 
         private ViewSectionDao vSection100Dao = null;
         public ViewSectionDao VSection100Dao { get { return vSection100Dao; } }
@@ -463,51 +502,62 @@ namespace com.mirle.ibg3k0.sc.App
         /// The user BLL
         /// </summary>
         private UserBLL userBLL = null;
+
         /// <summary>
         /// Gets the user BLL.
         /// </summary>
         /// <value>The user BLL.</value>
         public UserBLL UserBLL { get { return userBLL; } }
+
         /// <summary>
         /// The bc system BLL
         /// </summary>
         private BCSystemBLL bcSystemBLL = null;
+
         /// <summary>
         /// Gets the bc system BLL.
         /// </summary>
         /// <value>The bc system BLL.</value>
         public BCSystemBLL BCSystemBLL { get { return bcSystemBLL; } }
+
         /// <summary>
         /// Gets the line BLL.
         /// </summary>
         /// <value>The line BLL.</value>
         public LineBLL LineBLL { get { return lineBLL; } }
+
         /// <summary>
         /// The line BLL
         /// </summary>
         private LineBLL lineBLL = null;
+
         /// <summary>
         /// Gets the alarm BLL.
         /// </summary>
         /// <value>The alarm BLL.</value>
         public AlarmBLL AlarmBLL { get { return alarmBLL; } }
+
         /// <summary>
         /// The alarm BLL
         /// </summary>
         private AlarmBLL alarmBLL = null;
+
         /// <summary>
         /// The sequence BLL
         /// </summary>
         private SequenceBLL sequenceBLL = null;
+
         /// <summary>
         /// Gets the sequence BLL.
         /// </summary>
         /// <value>The sequence BLL.</value>
         public SequenceBLL SequenceBLL { get { return sequenceBLL; } }
+
         /// <summary>
         /// The event BLL
         /// </summary>
         private EventBLL eventBLL = null;
+
         /// <summary>
         /// Gets the event BLL.
         /// </summary>
@@ -518,6 +568,7 @@ namespace com.mirle.ibg3k0.sc.App
         /// The report BLL
         /// </summary>
         private ReportBLL reportBLL = null;
+
         /// <summary>
         /// Gets the report BLL.
         /// </summary>
@@ -591,9 +642,6 @@ namespace com.mirle.ibg3k0.sc.App
         private IManualPortEventService manualPortEventService = null;
         public IManualPortEventService ManualPortEventService { get { return manualPortEventService; } }
 
-
-
-
         private DataSyncBLL datasynBLL = null;
         public DataSyncBLL DataSyncBLL { get { return datasynBLL; } }
 
@@ -615,21 +663,23 @@ namespace com.mirle.ibg3k0.sc.App
         /// The bc system wif
         /// </summary>
         private BCSystemWIF bcSystemWIF = null;
+
         /// <summary>
         /// Gets the bc system wif.
         /// </summary>
         /// <value>The bc system wif.</value>
         public BCSystemWIF BCSystemWIF { get { return bcSystemWIF; } }
+
         /// <summary>
         /// The line wif
         /// </summary>
         private LineWIF lineWIF = null;
+
         /// <summary>
         /// Gets the line wif.
         /// </summary>
         /// <value>The line wif.</value>
         public LineWIF LineWIF { get { return lineWIF; } }
-
 
         private Guide routeGuide = null;
         public Guide RouteGuide { get { return routeGuide; } }
@@ -643,16 +693,17 @@ namespace com.mirle.ibg3k0.sc.App
         /// The indxer configuration
         /// </summary>
         private DataSet ohxcConfig = null;
+
         /// <summary>
         /// Gets the indxer configuration.
         /// </summary>
         /// <value>The indxer configuration.</value>
         public DataSet OHxCConfig { get { return ohxcConfig; } }
+
         public DataSet TranCmdPeriodicDataSet;
 
         public List<DataCollectionSetting> DataCollectionList { get; private set; }
         public List<ASECTION> CatchDataFromDB_Section { get; private set; }
-
 
         //BackgroundPLCWorkDriver
         /// <summary>
@@ -660,20 +711,22 @@ namespace com.mirle.ibg3k0.sc.App
         /// </summary>
         /// <value>The background work sample.</value>
         public BackgroundWorkDriver BackgroundWorkSample { get; private set; }              //A0.03
+
         public BackgroundWorkDriver BackgroundWorkBlockQueue { get; private set; } //A0.01
         public BackgroundWorkDriver BackgroundWorkProcVehiclePosition { get; private set; }              //A0.03
         public IScheduler Scheduler { get; private set; }
-
 
         //pool
         /// <summary>
         /// The v event list pool
         /// </summary>
         public ObjectPool<List<ValueRead>> vEventListPool = new ObjectPool<List<ValueRead>>(() => new List<ValueRead>());
+
         /// <summary>
         /// The v write list
         /// </summary>
         public ObjectPool<List<ValueWrite>> vWriteList = new ObjectPool<List<ValueWrite>>(() => new List<ValueWrite>());
+
         /// <summary>
         /// The convert value
         /// </summary>
@@ -695,6 +748,7 @@ namespace com.mirle.ibg3k0.sc.App
             fun_base.initial(_id);
             return fun_base;
         }
+
         public void putFunBaseObj<T>(PLC_FunBase put_obj)
         {
             if (put_obj == null) return;
@@ -706,17 +760,17 @@ namespace com.mirle.ibg3k0.sc.App
             dicPLC_FunBasePool[type_name].PutObject(put_obj);
         }
 
-
-
         //public SenderService ZabbixService { get; private set; }
         /// <summary>
         /// The string builder
         /// </summary>
         public ObjectPool<StringBuilder> stringBuilder = new ObjectPool<StringBuilder>(() => new StringBuilder(""));
+
         public string mqttTopic;
         public string mqttMsg;
         public MQTTControl mqttControl;
         public object park_lock_obj = new object();
+
         /// <summary>
         /// Prevents a default instance of the <see cref="SCApplication"/> class from being created.
         /// </summary>
@@ -724,22 +778,24 @@ namespace com.mirle.ibg3k0.sc.App
         {
             init();
         }
+
         /// <summary>
         /// The build value function
         /// </summary>
         private static BCFApplication.BuildValueEventDelegate buildValueFunc;
+
         /// <summary>
         /// Gets the instance.
         /// </summary>
         /// <param name="_buildValueFunc">The _build value function.</param>
-        /// 
-        /// 
-        /// 
-        /// 
-        /// 
-        /// 
-        /// 
-        /// 
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///
         /// <returns>SCApplication.</returns>
         public static SCApplication getInstance(string server_name, BCFApplication.BuildValueEventDelegate _buildValueFunc)
         {
@@ -849,12 +905,9 @@ namespace com.mirle.ibg3k0.sc.App
 
             initialRestfulServer();
 
-
             //
             //loadECDataToSystem();
             //bdTableWatcher = new DBTableWatcher(this);
-
-
         }
 
         private void initialRouteBan()
@@ -878,6 +931,7 @@ namespace com.mirle.ibg3k0.sc.App
                 NewRouteGuide.banRouteOneDirect(ito, ifrom);
             }
         }
+
         //A0.01
         private void initialReserveSectionAPI()
         {
@@ -916,6 +970,7 @@ namespace com.mirle.ibg3k0.sc.App
             reserveSectionAPI.VehicleWidth = vh_width;
             reserveSectionAPI.SensorLength = vh_sensor_wlength;
         }
+
         //A0.01
         private void LoadMapFiles(string addressPath = null, string sectionPath = null)
         {
@@ -930,7 +985,6 @@ namespace com.mirle.ibg3k0.sc.App
             }
             finally { }
         }
-
 
         private void initialFloydAlgorithm()
         {
@@ -957,7 +1011,6 @@ namespace com.mirle.ibg3k0.sc.App
 
         //DBTableWatcher bdTableWatcher = null;
 
-
         private void initialCatchDataFromDB()
         {
             CatchDataFromDB_Section = mapBLL.loadAllSection();
@@ -970,7 +1023,6 @@ namespace com.mirle.ibg3k0.sc.App
             var catch_vo = CatchDataFromDB_Section.Where(sec => sec.SEC_ID == section.SEC_ID).SingleOrDefault();
             catch_vo.SEC_DIS = section.SEC_DIS;
             catch_vo.LAST_TECH_TIME = section.LAST_TECH_TIME;
-
         }
 
         private List<DataCollectionSetting> loadDataCollectionSetting()
@@ -1011,8 +1063,8 @@ namespace com.mirle.ibg3k0.sc.App
             //not implement
         }
 
-
         #region SECS Agent Parameter Change
+
         /// <summary>
         /// Sets the secs agent device identifier.
         /// </summary>
@@ -1102,6 +1154,7 @@ namespace com.mirle.ibg3k0.sc.App
                 agent.refreshConnection();
             }
         }
+
         #endregion SECS Agent Parameter Change
 
         /// <summary>
@@ -1113,6 +1166,7 @@ namespace com.mirle.ibg3k0.sc.App
             BackgroundWorkBlockQueue = new BackgroundWorkDriver(new BackgroundWorkBlockQueue());            //A0.01
             BackgroundWorkProcVehiclePosition = new BackgroundWorkDriver(new BackgroundWorkProcVehiclePosition());            //A0.01
         }
+
         private void initScheduler()
         {
             Scheduler = StdSchedulerFactory.GetDefaultScheduler();
@@ -1143,7 +1197,6 @@ namespace com.mirle.ibg3k0.sc.App
             //Scheduler.ScheduleJob(zabbix_data_collection, zabbix_trigger);
             //Scheduler.ScheduleJob(mttf_mtbf_scheduler, three_min_trigger);
             Scheduler.ScheduleJob(db_manatain_scheduler, one_min_trigger);
-
         }
 
         /// <summary>
@@ -1305,24 +1358,20 @@ namespace com.mirle.ibg3k0.sc.App
                 //parser.MaxRows = 500;
                 //parser.TextQualifier = '\"';
 
-
                 DataTable dt = new System.Data.DataTable(tableName);
 
                 bool isfirst = true;
                 while (parser.Read())
                 {
-
                     int cs = parser.ColumnCount;
                     if (isfirst)
                     {
-
                         for (int i = 0; i < cs; i++)
                         {
                             dt.Columns.Add(parser.GetColumnName(i), typeof(string));
                         }
                         isfirst = false;
                     }
-
 
                     DataRow dr = dt.NewRow();
 
@@ -1343,6 +1392,7 @@ namespace com.mirle.ibg3k0.sc.App
                 ds.Tables.Add(dt);
             }
         }
+
         private void loadMapInfoCSVToDataset(DataSet ds, string tableName)
         {
             using (GenericParser parser = new GenericParser())
@@ -1362,24 +1412,20 @@ namespace com.mirle.ibg3k0.sc.App
                 //parser.MaxRows = 500;
                 //parser.TextQualifier = '\"';
 
-
                 DataTable dt = new System.Data.DataTable(tableName);
 
                 bool isfirst = true;
                 while (parser.Read())
                 {
-
                     int cs = parser.ColumnCount;
                     if (isfirst)
                     {
-
                         for (int i = 0; i < cs; i++)
                         {
                             dt.Columns.Add(parser.GetColumnName(i), typeof(string));
                         }
                         isfirst = false;
                     }
-
 
                     DataRow dr = dt.NewRow();
 
@@ -1400,18 +1446,17 @@ namespace com.mirle.ibg3k0.sc.App
                 ds.Tables.Add(dt);
             }
         }
+
         private void loadExcel2DataTable(ref DataSet dt, string filePath)
         {
             if (!File.Exists(filePath)) return;
             using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
             {
-
                 // Auto-detect format, supports:
                 //  - Binary Excel files (2.0-2003 format; *.xls)
                 //  - OpenXml Excel files (2007 format; *.xlsx)
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
-
                     // Choose one of either 1 or 2:
 
                     // 1. Use the reader methods
@@ -1426,23 +1471,21 @@ namespace com.mirle.ibg3k0.sc.App
                     // 2. Use the AsDataSet extension method
                     var result = reader.AsDataSet(new ExcelDataSetConfiguration()
                     {
-
-                        // Gets or sets a value indicating whether to set the DataColumn.DataType 
+                        // Gets or sets a value indicating whether to set the DataColumn.DataType
                         // property in a second pass.
                         UseColumnDataType = false,
 
-                        // Gets or sets a callback to obtain configuration options for a DataTable. 
+                        // Gets or sets a callback to obtain configuration options for a DataTable.
                         ConfigureDataTable = (tableReader) => new ExcelDataTableConfiguration()
                         {
-
                             // Gets or sets a value indicating the prefix of generated column names.
                             EmptyColumnNamePrefix = "Column",
 
-                            // Gets or sets a value indicating whether to use a row from the 
+                            // Gets or sets a value indicating whether to use a row from the
                             // data as column names.
                             UseHeaderRow = true,
 
-                            // Gets or sets a callback to determine which row is the header row. 
+                            // Gets or sets a callback to determine which row is the header row.
                             // Only called when UseHeaderRow = true.
                             //ReadHeaderRow = (rowReader) =>
                             //{
@@ -1461,6 +1504,7 @@ namespace com.mirle.ibg3k0.sc.App
             //DataSet ds = excelReader.AsDataSet();
             //excelReader.Close();
         }
+
         /// <summary>
         /// Initializes the BLL.
         /// </summary>
@@ -1505,7 +1549,6 @@ namespace com.mirle.ibg3k0.sc.App
             CassetteDataBLL = new CassetteDataBLL();
             ReserveBLL = new ReserveBLL(); //A0.01
         }
-
 
         public void initServer()
         {
@@ -1620,8 +1663,6 @@ namespace com.mirle.ibg3k0.sc.App
             mqttControl.MQTTPub(mqttTopic, mqttMsg);
         }
 
-
-
         /// <summary>
         /// 從AppSetting取得設定值，如果找不到該Key的設定值，將會回傳參數指定的預設值
         /// </summary>
@@ -1676,6 +1717,7 @@ namespace com.mirle.ibg3k0.sc.App
             }
             return rtn;
         }
+
         private double getDouble(string key, double defaultValue)
         {
             double rtn = defaultValue;
@@ -1697,6 +1739,7 @@ namespace com.mirle.ibg3k0.sc.App
             }
             return rtn;
         }
+
         /// <summary>
         /// Gets the long.
         /// </summary>
@@ -1740,7 +1783,6 @@ namespace com.mirle.ibg3k0.sc.App
             }
             return rtn;
         }
-
 
         /// <summary>
         /// Gets the database connection.
@@ -1820,7 +1862,6 @@ namespace com.mirle.ibg3k0.sc.App
         /// <param name="recoverFromDB">The recover from database.</param>
         public void startBuildEqpts(Boolean recoverFromDB)
         {
-
             eqObjCacheManager.start(/*eqptCss, nodeFlowRelCss, */recoverFromDB);      //啟動EQ Object Cache.. 將從DB取得Line資訊建立EQ Object
             commObjCacheManager.setPortDefsInfo();
             string shareMemoryInitClass = eqptCss.ShareMemoryInitClass;
@@ -1910,6 +1951,7 @@ namespace com.mirle.ibg3k0.sc.App
         {
             return eqObjCacheManager;
         }
+
         public CommObjCacheManager getCommObjCacheManager()
         {
             return commObjCacheManager;
@@ -1924,15 +1966,16 @@ namespace com.mirle.ibg3k0.sc.App
         {
             return natsManager;
         }
+
         public ElasticSearchManager getElasticSearchManager()
         {
             return elasticSearchManager;
         }
+
         public Mirle.Hlts.ReserveSection.Map.ViewModels.HltMapViewModel getReserveSectionAPI()//A0.01
         {
             return reserveSectionAPI;
         }
-
 
         //A0.07 Begin
         /// <summary>
@@ -1949,7 +1992,7 @@ namespace com.mirle.ibg3k0.sc.App
                 ALINE line = eqObjCacheManager.getLine();
                 line.Redis_Link_Stat = redisCacheManager.IsConnection ? SCAppConstants.LinkStatus.LinkOK : SCAppConstants.LinkStatus.LinkFail;
 
-                //foreach (Line line in lineDic.Values) 
+                //foreach (Line line in lineDic.Values)
                 //{
                 foreach (BCFAppConstants.RUN_LEVEL runLevel in Enum.GetValues(typeof(BCFAppConstants.RUN_LEVEL)))
                 {
@@ -1967,7 +2010,7 @@ namespace com.mirle.ibg3k0.sc.App
             }
         }
 
-        //public Line getLine() 
+        //public Line getLine()
         //{
         //    return mainLine;
         //}
@@ -1976,6 +2019,7 @@ namespace com.mirle.ibg3k0.sc.App
         /// The started
         /// </summary>
         private Boolean started = false;
+
         /// <summary>
         /// 是否已啟動SC Timer
         /// </summary>
@@ -2036,8 +2080,6 @@ namespace com.mirle.ibg3k0.sc.App
                 logger.Info("Start SECS Agent");
             }
         }
-
-
 
         /// <summary>
         /// 啟動TcpIp Agent
@@ -2100,6 +2142,7 @@ namespace com.mirle.ibg3k0.sc.App
                 logger.Info("Start TcpIp Agent");
             }
         }
+
         /// <summary>
         /// 開始執行
         /// </summary>
@@ -2166,6 +2209,7 @@ namespace com.mirle.ibg3k0.sc.App
                 logger.Info("Stop TcpIp Agent");
             }
         }
+
         /// <summary>
         /// 停止指定TcpIp Server
         /// </summary>
@@ -2178,7 +2222,6 @@ namespace com.mirle.ibg3k0.sc.App
             }
         }
 
-
         /// <summary>
         /// Stops the process.
         /// </summary>
@@ -2186,7 +2229,6 @@ namespace com.mirle.ibg3k0.sc.App
         {
             //not implement
             Scheduler.Shutdown(false);
-
         }
 
         /// <summary>
@@ -2206,10 +2248,12 @@ namespace com.mirle.ibg3k0.sc.App
                 started = false;
             }
         }
+
         public void CloseRedisConnection()
         {
             redisCacheManager.CloseRedisConnection();
         }
+
         /// <summary>
         /// Gets the message string.
         /// </summary>
@@ -2227,19 +2271,22 @@ namespace com.mirle.ibg3k0.sc.App
     /// </summary>
     public class SystemParameter
     {
-        //System EC Data 
+        //System EC Data
         /// <summary>
         /// The secs conversaction timeout
         /// </summary>
         public static int SECSConversactionTimeout = 60;
+
         /// <summary>
         /// The initial control state
         /// </summary>
         public static string InitialControlState = SECSConst.HostCrtMode_EQ_Off_line;
+
         /// <summary>
         /// The control state keep time sec
         /// </summary>
         public static int ControlStateKeepTimeSec = 0;
+
         /// <summary>
         /// The heart beat sec
         /// </summary>
@@ -2253,6 +2300,7 @@ namespace com.mirle.ibg3k0.sc.App
 
         public static int cmdPriorityAdd = 1;
         public static int cmdTimeOutToAlternate = 30;
+
         /// <summary>
         /// Sets the secs conversaction timeout.
         /// </summary>
@@ -2297,21 +2345,23 @@ namespace com.mirle.ibg3k0.sc.App
         {
             IsEnableIDReadFailScenario = isEnable;
         }
+
         public static void setPassAxisDistance(double passDistance)
         {
             PassAxisDistance = passDistance;
         }
+
         public static void setPreStageWatingTime_ms(int _preStageWatingTime_ms)
         {
             PreStageWatingTime_ms = _preStageWatingTime_ms;
         }
-
     }
 
     public class HAProxyConnectionTest
     {
-        iibg3k0.ttc.Common.TCPIP.TcpIpServer tcpIpServer;
-        Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private iibg3k0.ttc.Common.TCPIP.TcpIpServer tcpIpServer;
+        private Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public HAProxyConnectionTest(SCApplication app)
         {
             tcpIpServer = new iibg3k0.ttc.Common.TCPIP.TcpIpServer(6000, true, iibg3k0.ttc.Common.AppConstants.FrameBuilderType.PC_TYPE_MIRLE);
@@ -2344,11 +2394,11 @@ namespace com.mirle.ibg3k0.sc.App
         {
             tcpIpServer.Shutdown();
         }
+
         public void listen()
         {
             tcpIpServer.Listen();
         }
-
     }
 
     /// <summary>
@@ -2360,26 +2410,32 @@ namespace com.mirle.ibg3k0.sc.App
         /// The is test ignore 136 unload complete and 132 command complete
         /// </summary>
         public static Boolean ignore136UnloadComplete = false;
+
         /// <summary>
         /// The is test eap mode
         /// </summary>
         public static Boolean IsTestEAPMode = false;
+
         /// <summary>
         /// The disable synchronize time
         /// </summary>
         public static Boolean DisableSyncTime = false;
+
         /// <summary>
         /// The is debug mode
         /// </summary>
         public static Boolean IsDebugMode = false;
+
         /// <summary>
         /// The reject eq cim on req
         /// </summary>
         public static Boolean RejectEQCimOnReq = false;
+
         /// <summary>
         /// The reject reply eq s1 f1
         /// </summary>
         public static Boolean RejectReplyEQS1F1 = false;
+
         /// <summary>
         /// The reject eap online
         /// </summary>
@@ -2396,17 +2452,21 @@ namespace com.mirle.ibg3k0.sc.App
         public static CycleRunType cycleRunType;
 
         private static Boolean isforcedpassblockcontrol = false;
+
         public static Boolean isForcedPassBlockControl
         {
             set { isforcedpassblockcontrol = value; }
             get { return isforcedpassblockcontrol; }
         }
+
         public static Boolean isForcedRejectBlockControl = false;
         public static Boolean isTestCarrierInterfaceError = false;
+
         /// <summary>
         /// To reject or accept the reserve forced.
         /// </summary>
         public static Boolean isForcedPassReserve = false;
+
         public static Boolean isForcedRejectReserve = false;
 
         public enum CycleRunType
@@ -2416,6 +2476,5 @@ namespace com.mirle.ibg3k0.sc.App
             CV,
             NTB
         }
-
     }
 }
