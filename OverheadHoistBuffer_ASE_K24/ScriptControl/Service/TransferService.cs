@@ -6487,21 +6487,10 @@ namespace com.mirle.ibg3k0.sc.Service
 
             #region ReadStatus
 
-            if (carrierIDFail)
-            {
-                idReadStatus = IDreadStatus.CSTReadFail_BoxIsOK;
-            }
-
             if (boxIDFail)
             {
                 idReadStatus = IDreadStatus.BoxReadFail_CstIsOK;
             }
-
-            if (carrierIDFail && boxIDFail)
-            {
-                idReadStatus = IDreadStatus.failed;
-            }
-
             #endregion ReadStatus
 
             #endregion 卡匣讀不到檢查
@@ -6533,6 +6522,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         );
                         //readData.CSTID = CarrierReadFail(cstData.Carrier_LOC);
                         readData.BOXID = CarrierReadduplicate(cstData.BOXID);
+                        insertCassetteDuCst = false;
                     }
                 }
 
@@ -10822,22 +10812,199 @@ namespace com.mirle.ibg3k0.sc.Service
     {
         public bool CommandCompleteByIDMismatch(string vhID, string finishCommandID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                ACMD_OHTC ohtCmdData = cmdBLL.getCMD_OHTCByID(finishCommandID);
+                ACMD_MCS cmd = cmdBLL.getCMD_MCSByID(ohtCmdData.CMD_ID_MCS.Trim());
+                CassetteData dbCstData = cassette_dataBLL.loadCassetteDataByLoc(vhID.Trim());
+
+                CassetteData ohtBoxData = new CassetteData();
+                ohtBoxData.BOXID = cmd.CARRIER_ID_ON_CRANE.Trim();
+                ohtBoxData.Carrier_LOC = vhID.Trim();
+                ohtBoxData = IDRead(ohtBoxData);
+
+                if (dbCstData != null)
+                {
+                    if (ohtBoxData.BOXID != dbCstData.BOXID)
+                    {
+
+                        IDreadStatus idReadStatus = (IDreadStatus)int.Parse(ohtBoxData.ReadStatus);
+                        string resultCode = ResultCode.Successful;
+
+                        #region Log
+
+                        TransferServiceLogger.Info
+                        (
+                            DateTime.Now.ToString("HH:mm:ss.fff ")
+                            + "OHT >> OHB|OHT BOX 讀取異常:" + idReadStatus
+                            + "\n" + GetCmdLog(cmd)
+                            + "\nDBData:" + GetCstLog(dbCstData)
+                            + "\nOHTRead:" + GetCstLog(ohtBoxData)
+                        );
+
+                        #endregion Log
+                        resultCode = ResultCode.BoxID_Mismatch;
+                        idReadStatus = IDreadStatus.mismatch;
+
+                        reportBLL.ReportCarrierIDRead(ohtBoxData, ((int)idReadStatus).ToString());
+
+                        if (cmd.CMD_ID.Contains("SCAN") == false)
+                        {
+                            reportBLL.ReportTransferCompleted(cmd, dbCstData, resultCode);
+                        }
+                        HaveAccountHaveReal(dbCstData, ohtBoxData, idReadStatus);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "IDReadMismatchHappend");
+                return false;
+            }
+
+            return true;
         }
 
         public bool CommandCompleteByIDReadFail(string vhID, string finishCommandID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                ACMD_OHTC ohtCmdData = cmdBLL.getCMD_OHTCByID(finishCommandID);
+                ACMD_MCS cmd = cmdBLL.getCMD_MCSByID(ohtCmdData.CMD_ID_MCS.Trim());
+                CassetteData dbCstData = cassette_dataBLL.loadCassetteDataByLoc(vhID.Trim());
+
+                CassetteData ohtBoxData = new CassetteData();
+                ohtBoxData.BOXID = cmd.CARRIER_ID_ON_CRANE.Trim();
+                ohtBoxData.Carrier_LOC = vhID.Trim();
+                ohtBoxData = IDRead(ohtBoxData);
+
+                if (dbCstData != null)
+                {
+                    if (ohtBoxData.BOXID != dbCstData.BOXID)
+                    {
+
+                        IDreadStatus idReadStatus = (IDreadStatus)int.Parse(ohtBoxData.ReadStatus);
+                        string resultCode = ResultCode.Successful;
+
+                        #region Log
+
+                        TransferServiceLogger.Info
+                        (
+                            DateTime.Now.ToString("HH:mm:ss.fff ")
+                            + "OHT >> OHB|OHT BOX 讀取異常:" + idReadStatus
+                            + "\n" + GetCmdLog(cmd)
+                            + "\nDBData:" + GetCstLog(dbCstData)
+                            + "\nOHTRead:" + GetCstLog(ohtBoxData)
+                        );
+
+                        #endregion Log
+
+                        resultCode = ResultCode.IDReadFailed;
+
+                        reportBLL.ReportCarrierIDRead(ohtBoxData, ((int)idReadStatus).ToString());
+
+                        if (cmd.CMD_ID.Contains("SCAN") == false)
+                        {
+                            reportBLL.ReportTransferCompleted(cmd, dbCstData, resultCode);
+                        }
+
+
+                        HaveAccountHaveReal(dbCstData, ohtBoxData, idReadStatus);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "IDReadMismatchHappend");
+                return false;
+            }
+
+            return true;
         }
 
         public (bool isContinue, string RemaneBox) IDReadFailHappend(string vhID, string readBOXID)
         {
-            throw new NotImplementedException();
+            bool is_continue = false;
+            string rename_box = string.Empty;
+
+            try
+            {
+                AVEHICLE vh = scApp.VehicleBLL.cache.getVhByID(vhID);
+
+                if (SystemParameter.IsEnableIDReadFailScenario)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"BCR read fail happend,start abort command id:{vh.OHTC_CMD?.Trim()} and rename BOX id...",
+                           VehicleID: vh.VEHICLE_ID,
+                           CarrierID: vh.BOX_ID);
+
+                    is_continue = false;
+                    rename_box = CarrierReadFailAtTargetAGV(vh.VEHICLE_ID);
+                }
+                else
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"BCR read fail happend,continue excute command.",
+                           VehicleID: vh.VEHICLE_ID,
+                           CarrierID: vh.BOX_ID);
+
+                    ACMD_OHTC cmd_ohtc = scApp.CMDBLL.getCMD_OHTCByID(vh.OHTC_CMD);
+
+                    is_continue = true;
+                    rename_box = cmd_ohtc.BOX_ID;
+                }
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "IDReadMismatchHappend");
+                return (is_continue, rename_box);
+            }
+
+            return (is_continue, rename_box);
         }
 
         public (bool isContinue, string RemaneBox) IDReadMismatchHappend(string vhID, string readBOXID)
         {
-            throw new NotImplementedException();
+            bool is_continue = false;
+            string rename_box = string.Empty;
+
+            try
+            {
+                AVEHICLE vh = scApp.VehicleBLL.cache.getVhByID(vhID);
+
+                if (SystemParameter.IsEnableIDReadFailScenario)
+                {
+                    is_continue = false;
+                    rename_box = readBOXID;
+
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"BCR miss match happend,start abort command id:{vh.OHTC_CMD?.Trim()} and new cst id:{rename_box}",
+                       VehicleID: vh.VEHICLE_ID,
+                       CarrierID: vh.BOX_ID);
+                }
+                else
+                {
+                    ACMD_OHTC cmd_ohtc = scApp.CMDBLL.getCMD_OHTCByID(vh.OHTC_CMD);
+
+                    is_continue = true;
+                    rename_box = cmd_ohtc.BOX_ID;
+
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"BCR miss match happend,continue excute command:{vh.OHTC_CMD?.Trim()} and rename cst id:{readBOXID} to {rename_box}",
+                       VehicleID: vh.VEHICLE_ID,
+                       CarrierID: vh.BOX_ID);
+                }
+
+                scApp.VehicleBLL.updataVehicleBOXID(vhID, rename_box);
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "IDReadMismatchHappend");
+                return (is_continue, rename_box);
+            }
+
+            return (is_continue, rename_box);
         }
+
     }
 }

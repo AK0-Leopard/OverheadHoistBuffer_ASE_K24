@@ -11,6 +11,36 @@ namespace com.mirle.ibg3k0.sc
     {
         public static ConcurrentDictionary<string, ACMD_OHTC> CMD_OHTC_InfoList { get; private set; } = new ConcurrentDictionary<string, ACMD_OHTC>();
 
+        public (bool isDefine, string cstType) tryGetCSTType(BLL.PortStationBLL portStationBLL)
+        {
+            try
+            {
+                var port_station = portStationBLL.OperateCatch.getPortStation(SOURCE);
+                if (port_station == null)
+                {
+                    return (false, "");
+                }
+                if (!(port_station is MANUAL_PORTSTATION))
+                {
+                    return (false, "");
+                }
+                var manual_port = (port_station as MANUAL_PORTSTATION);
+                var cst_type = manual_port.getManualPortPLCInfo().CarrierType;
+                switch (cst_type)
+                {
+                    case Data.PLC_Functions.MGV.Enums.CstType.A:
+                    case Data.PLC_Functions.MGV.Enums.CstType.B:
+                        return (true, cst_type.ToString());
+                    default:
+                        return (false, "");
+                }
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception");
+                return (false, "");
+            }
+        }
         public string CARRIER_ID { get { return this.BOX_ID; } }
 
         public bool IsTransferCmdByMCS
