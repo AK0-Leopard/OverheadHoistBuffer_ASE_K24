@@ -455,15 +455,18 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
                 var alarmCode = function.AlarmCode;
 
-                if (function.IsRun)
+                if (alarmCode == 0)
                 {
-                    if (alarmCode == 0)
-                        OnAlarmClear?.Invoke(this, new ManualPortEventArgs(function));
-                    else
-                        WarningHappen(function);
+                    OnAlarmClear?.Invoke(this, new ManualPortEventArgs(function));
+                }
+                else if (function.IsRun)
+                {
+                    WarningHappen(function);
                 }
                 else
+                {
                     AlarmHappen(function);
+                }
             }
             catch (Exception ex)
             {
