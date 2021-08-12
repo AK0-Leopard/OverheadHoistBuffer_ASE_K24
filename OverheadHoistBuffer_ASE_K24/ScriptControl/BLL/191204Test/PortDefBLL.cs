@@ -375,6 +375,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return port_defs.Where(port => port.PortTypeIndex.HasValue && port.PortTypeIndex.Value == 1).
                                  ToList();
             }
+            public List<PortDef> loadSpecialCanAvoidPortDefs()
+            {
+                var port_defs = objCacheManager.getPortDefs();
+                return port_defs.Where(port => port.PortTypeIndex.HasValue && port.PortTypeIndex.Value == 2).
+                                 ToList();
+            }
 
             public List<PortDef> loadCVPortDefs()
             {

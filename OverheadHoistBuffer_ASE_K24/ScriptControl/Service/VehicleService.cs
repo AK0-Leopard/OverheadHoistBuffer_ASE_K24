@@ -1416,9 +1416,16 @@ namespace com.mirle.ibg3k0.sc.Service
             string vh_id = cmd.VH_ID;
             string cst_type = "";
             var cst_type_get_result = cmd.tryGetCSTType(scApp.PortStationBLL);
-            if (cst_type_get_result.isDefine)
+            if (!SCUtility.isEmpty(DebugParameter.CST_TYPE))
             {
-                cst_type = cst_type_get_result.cstType;
+                cst_type = SCUtility.Trim(DebugParameter.CST_TYPE, true);
+            }
+            else
+            {
+                if (cst_type_get_result.isDefine)
+                {
+                    cst_type = cst_type_get_result.cstType;
+                }
             }
             try
             {
@@ -1872,7 +1879,26 @@ namespace com.mirle.ibg3k0.sc.Service
                                         }
                                     }
                                 }
+                                var current_guide_sections = vh.WillPassSectionID;
+                                if (current_guide_sections != null && current_guide_sections.Count > 0)
+                                {
+                                    foreach (string sec in current_guide_sections)
+                                    {
+                                        var result = scApp.ReserveBLL.TryAddReservedSection(vh.VEHICLE_ID, sec,
+                                                         sensorDir: HltDirection.ForwardReverse,
+                                                         isAsk: true);
 
+                                        if (!result.OK)
+                                        {
+                                            if (!SCUtility.isEmpty(result.VehicleID))
+                                            {
+                                                //Task.Run(() => scApp.VehicleBLL.whenVhObstacle(result.VehicleID, vhID));
+                                                Task.Run(() => tryDriveOutTheVh(vh.VEHICLE_ID, result.VehicleID));
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -1949,17 +1975,27 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             //1.找看看是否有設定的固定避車點。
             //List<PortDef> can_avoid_cv_port = scApp.PortDefBLL.cache.loadCanAvoidCVPortDefs();
-            List<PortDef> can_avoid_port = scApp.PortDefBLL.cache.loadCanAvoidPortDefs();
+            //List<PortDef> can_avoid_port = scApp.PortDefBLL.cache.loadCanAvoidPortDefs();
+            List<PortDef> can_avoid_port = null;
+            can_avoid_port = scApp.PortDefBLL.cache.loadCanAvoidPortDefs();
+
+
             if (can_avoid_port == null || can_avoid_port.Count == 0)
             {
                 //1.2.如果沒有則就把全部的CV納入選擇。
                 can_avoid_port = scApp.PortDefBLL.cache.loadCVPortDefs();
             }
+            bool has_command_to_12206 = scApp.CMDBLL.cache.IsExcuteCmdByToAdr("12206");
             //2.找出離自己最近的一個CV點
-            var find_result = findTheNearestCVPort(willDrivenAwayVh, can_avoid_port);
-            if (find_result.isFind)
+            //var find_result = findTheNearestCVPort(willDrivenAwayVh, can_avoid_port);
+            if (has_command_to_12206)
+                can_avoid_port = can_avoid_port.Where(port => !SCUtility.isMatche(port.ADR_ID, "12206")).ToList();
+            var avoid_port = can_avoid_port.OrderBy(port => port.AvoidCount).FirstOrDefault();
+
+            if (avoid_port != null)
             {
-                return (true, find_result.PortDef.ADR_ID);
+                avoid_port.AvoidCount++;
+                return (true, avoid_port.ADR_ID);
             }
             else
             {
@@ -2060,6 +2096,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     break;
 
                 case EventType.BlockRelease:
+                    PositionReport_BlockRelease(bcfApp, vh, recive_str, seq_num);
                     replyTranEventReport(bcfApp, recive_str.EventType, vh, seq_num);
                     break;
 
@@ -2096,6 +2133,56 @@ namespace com.mirle.ibg3k0.sc.Service
                     break;
             }
         }
+        private void PositionReport_BlockRelease(BCFApplication bcfApp, AVEHICLE eqpt, ID_136_TRANS_EVENT_REP recive_str, int seq_num)
+        {
+            string release_adr = recive_str.ReleaseBlockAdrID;
+            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+               Data: $"Process block release,release address id:{release_adr}",
+               VehicleID: eqpt.VEHICLE_ID,
+               CarrierID: eqpt.CST_ID);
+            doBlockRelease(eqpt, release_adr);
+        }
+
+        private (bool hasRelease, ABLOCKZONEMASTER releaseBlockMaster) doBlockRelease(AVEHICLE eqpt, string release_adr)
+        {
+            ABLOCKZONEMASTER releaseBlockMaster = null;
+            bool hasRelease = false;
+            try
+            {
+                hasRelease = tryReleaseBlockZoneByReserveModule(eqpt.VEHICLE_ID, release_adr);
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Process block release, release address id:{release_adr}, release result:{hasRelease}",
+                   VehicleID: eqpt.VEHICLE_ID,
+                   CarrierID: eqpt.CST_ID);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: ex,
+                   VehicleID: eqpt.VEHICLE_ID,
+                   CarrierID: eqpt.CST_ID);
+                logger.Warn(ex, "Warn");
+            }
+            return (hasRelease, releaseBlockMaster);
+        }
+        public bool tryReleaseBlockZoneByReserveModule(string vh_id, string release_adr)
+        {
+            bool hasRelease = false;
+            AVEHICLE vh_vo = scApp.getEQObjCacheManager().getVehicletByVHID(vh_id);
+
+            var related_block_masters = scApp.BlockControlBLL.cache.loadBlockZoneMasterByReleaseAddress(release_adr);
+            foreach (var block_master in related_block_masters)
+            {
+                var block_detail_sections = block_master.GetBlockZoneDetailSectionIDs();
+                foreach (var detail_sec in block_detail_sections)
+                {
+                    scApp.ReserveBLL.RemoveManyReservedSectionsByVIDSID(vh_id, detail_sec);
+                    hasRelease = true;
+                }
+            }
+            return hasRelease;
+        }
+
 
         private const string CST_ID_ERROR_RENAME_SYMBOL = "UNKF";
         private const string CST_ID_ERROR_SYMBOL = "ERR";
@@ -2733,7 +2820,7 @@ namespace com.mirle.ibg3k0.sc.Service
                    Data: "test flag: Force reject block control is open, will driect reply to vh can't pass block",
                    VehicleID: eqpt.VEHICLE_ID,
                    CarrierID: eqpt.CST_ID);
-                return true;
+                return false;
             }
             else
             {

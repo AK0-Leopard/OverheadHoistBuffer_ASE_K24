@@ -47,5 +47,7 @@ namespace com.mirle.ibg3k0.sc
         public string LoadPositionBOX5;
         public string CassetteID;
         public bool FireAlarm;
+
+        public int AvoidCount;
     }
 }

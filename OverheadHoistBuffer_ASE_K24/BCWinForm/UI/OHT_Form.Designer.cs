@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnl_Map = new System.Windows.Forms.Panel();
@@ -125,6 +125,8 @@
             this.utilityLog_SECS = new com.mirle.ibg3k0.bc.winform.UI.Components.UtilityLog();
             this.timer_TimedUpdates = new System.Windows.Forms.Timer(this.components);
             this.vehicleObjToShowBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.txt_cstType = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -360,7 +362,7 @@
             this.cb_autoTip.Checked = true;
             this.cb_autoTip.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_autoTip.ForeColor = System.Drawing.Color.Transparent;
-            this.cb_autoTip.Location = new System.Drawing.Point(58, 827);
+            this.cb_autoTip.Location = new System.Drawing.Point(202, 865);
             this.cb_autoTip.Name = "cb_autoTip";
             this.cb_autoTip.Size = new System.Drawing.Size(127, 23);
             this.cb_autoTip.TabIndex = 1;
@@ -370,6 +372,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txt_cstType);
+            this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.txt_boxID);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.txt_cstID);
@@ -396,7 +400,7 @@
             this.groupBox1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.groupBox1.Location = new System.Drawing.Point(15, 174);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(329, 654);
+            this.groupBox1.Size = new System.Drawing.Size(329, 685);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Specify Path";
@@ -438,7 +442,7 @@
             // btn_parkZoneTypeChange
             // 
             this.btn_parkZoneTypeChange.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btn_parkZoneTypeChange.Location = new System.Drawing.Point(174, 567);
+            this.btn_parkZoneTypeChange.Location = new System.Drawing.Point(174, 606);
             this.btn_parkZoneTypeChange.Name = "btn_parkZoneTypeChange";
             this.btn_parkZoneTypeChange.Size = new System.Drawing.Size(44, 27);
             this.btn_parkZoneTypeChange.TabIndex = 8;
@@ -449,7 +453,7 @@
             // cb_parkZoneType
             // 
             this.cb_parkZoneType.FormattingEnabled = true;
-            this.cb_parkZoneType.Location = new System.Drawing.Point(10, 567);
+            this.cb_parkZoneType.Location = new System.Drawing.Point(10, 606);
             this.cb_parkZoneType.Name = "cb_parkZoneType";
             this.cb_parkZoneType.Size = new System.Drawing.Size(158, 27);
             this.cb_parkZoneType.TabIndex = 7;
@@ -458,7 +462,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(15, 545);
+            this.label6.Location = new System.Drawing.Point(15, 584);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(135, 19);
             this.label6.TabIndex = 6;
@@ -512,7 +516,7 @@
             // btn_pause
             // 
             this.btn_pause.ForeColor = System.Drawing.Color.Black;
-            this.btn_pause.Location = new System.Drawing.Point(21, 439);
+            this.btn_pause.Location = new System.Drawing.Point(21, 478);
             this.btn_pause.Name = "btn_pause";
             this.btn_pause.Size = new System.Drawing.Size(133, 29);
             this.btn_pause.TabIndex = 3;
@@ -523,7 +527,7 @@
             // btn_continuous
             // 
             this.btn_continuous.ForeColor = System.Drawing.Color.Black;
-            this.btn_continuous.Location = new System.Drawing.Point(21, 474);
+            this.btn_continuous.Location = new System.Drawing.Point(21, 513);
             this.btn_continuous.Name = "btn_continuous";
             this.btn_continuous.Size = new System.Drawing.Size(133, 30);
             this.btn_continuous.TabIndex = 3;
@@ -534,7 +538,7 @@
             // btn_AutoMove
             // 
             this.btn_AutoMove.ForeColor = System.Drawing.Color.Black;
-            this.btn_AutoMove.Location = new System.Drawing.Point(21, 510);
+            this.btn_AutoMove.Location = new System.Drawing.Point(21, 549);
             this.btn_AutoMove.Name = "btn_AutoMove";
             this.btn_AutoMove.Size = new System.Drawing.Size(133, 31);
             this.btn_AutoMove.TabIndex = 2;
@@ -546,7 +550,7 @@
             // 
             this.btn_start.Enabled = false;
             this.btn_start.ForeColor = System.Drawing.Color.Black;
-            this.btn_start.Location = new System.Drawing.Point(22, 406);
+            this.btn_start.Location = new System.Drawing.Point(22, 445);
             this.btn_start.Name = "btn_start";
             this.btn_start.Size = new System.Drawing.Size(133, 27);
             this.btn_start.TabIndex = 2;
@@ -591,7 +595,7 @@
             // cmb_fromSection
             // 
             this.cmb_fromSection.FormattingEnabled = true;
-            this.cmb_fromSection.Location = new System.Drawing.Point(9, 613);
+            this.cmb_fromSection.Location = new System.Drawing.Point(9, 652);
             this.cmb_fromSection.Name = "cmb_fromSection";
             this.cmb_fromSection.Size = new System.Drawing.Size(162, 27);
             this.cmb_fromSection.TabIndex = 1;
@@ -636,7 +640,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 596);
+            this.label1.Location = new System.Drawing.Point(14, 635);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(117, 19);
             this.label1.TabIndex = 0;
@@ -678,14 +682,14 @@
             this.dgv_vhStatus.AllowUserToDeleteRows = false;
             this.dgv_vhStatus.AutoGenerateColumns = false;
             this.dgv_vhStatus.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_vhStatus.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_vhStatus.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgv_vhStatus.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_vhStatus.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.vEHICLEIDDataGridViewTextBoxColumn,
@@ -1167,6 +1171,24 @@
             // 
             this.vehicleObjToShowBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ObjectRelay.VehicleObjToShow);
             // 
+            // txt_cstType
+            // 
+            this.txt_cstType.Location = new System.Drawing.Point(76, 413);
+            this.txt_cstType.Name = "txt_cstType";
+            this.txt_cstType.Size = new System.Drawing.Size(207, 26);
+            this.txt_cstType.TabIndex = 14;
+            this.txt_cstType.Text = "A";
+            this.txt_cstType.TextChanged += new System.EventHandler(this.txt_cstType_TextChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(21, 416);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(45, 19);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "Type";
+            // 
             // OHT_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
@@ -1313,5 +1335,7 @@
         private System.Windows.Forms.TextBox txt_boxID;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox txt_cstType;
+        private System.Windows.Forms.Label label9;
     }
 }

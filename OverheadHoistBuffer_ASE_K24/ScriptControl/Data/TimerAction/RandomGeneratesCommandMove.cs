@@ -91,35 +91,29 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                             !SCUtility.isEmpty(vh.CUR_ADR_ID) &&
                             !scApp.CMDBLL.isCMD_OHTCExcuteByVh(vh.VEHICLE_ID))
                         {
+                            List<PortDef> can_avoid_port = scApp.PortDefBLL.cache.loadCanAvoidPortDefs();
 
-                            List<TranTask> selectedTranTasks = null;
-                            string adr_id = null;
-                            if (SCUtility.isMatche(vh.VEHICLE_ID, "OHx12") ||
-                                SCUtility.isMatche(vh.VEHICLE_ID, "OHx14"))
+                            bool has_command_to_12206 = scApp.CMDBLL.cache.IsExcuteCmdByToAdr("12206");
+                            if (has_command_to_12206)
+                                can_avoid_port = can_avoid_port.Where(port => !SCUtility.isMatche(port.ADR_ID, "12206")).ToList();
+                            var avoid_port = can_avoid_port.OrderBy(port => port.AvoidCount).FirstOrDefault();
+                            string avoid_adr = ""; ;
+                            if (avoid_port != null)
                             {
-                                selectedTranTasks = tranTasks;
+                                avoid_adr = avoid_port.ADR_ID;
+                                avoid_port.AvoidCount++;
                             }
                             else
                             {
-                                selectedTranTasks = tranTasks.Where(task => task.CarType != "1").ToList();
+                                return;
                             }
-                            //do
-                            //{
-                            int task_RandomIndex = rnd_Index.Next(selectedTranTasks.Count - 1);
-                            var next_move_task = selectedTranTasks[task_RandomIndex];
-                            adr_id = next_move_task.SourcePort;
 
-                            //SpinWait.SpinUntil(() => false, 1);
-                            //} while (scApp.RouteGuide.checkRoadIsWalkable(adr_id, vh.CUR_ADR_ID));
 
-                            if (!SCUtility.isMatche(adr_id, vh.CUR_ADR_ID))
+                            if (!SCUtility.isMatche(avoid_adr, vh.CUR_ADR_ID))
                             {
-                                scApp.CMDBLL.doCreatTransferCommand(vh.VEHICLE_ID
-                                                              , string.Empty
-                                                              , string.Empty
-                                                              , E_CMD_TYPE.Move
-                                                              , string.Empty
-                                                              , adr_id, 0, 0);
+                                scApp.CMDBLL.doCreatTransferCommand(vh.VEHICLE_ID,
+                                                                    cmd_type: E_CMD_TYPE.Move,
+                                                                    destination_address: avoid_adr);
                             }
                         }
                     }

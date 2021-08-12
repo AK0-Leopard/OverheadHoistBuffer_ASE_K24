@@ -5484,6 +5484,20 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 return new ACMD_OHTC();
             }
+            public bool IsExcuteCmdByToAdr(string adrID)
+            {
+                try
+                {
+                    var get_cmd_by_adr_count = ACMD_OHTC.CMD_OHTC_InfoList.Values.Where(cmd => SCUtility.isMatche(cmd.DESTINATION_ADR, adrID)).Count();
+                    if (get_cmd_by_adr_count > 0) return true;
+                    else return false;
+                }
+
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
         }
     }
 

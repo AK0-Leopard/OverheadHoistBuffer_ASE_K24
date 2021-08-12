@@ -2469,6 +2469,7 @@ namespace com.mirle.ibg3k0.sc.App
 
         public static Boolean isForcedRejectReserve = false;
 
+        public static string CST_TYPE = "";
         public enum CycleRunType
         {
             AGVStation,

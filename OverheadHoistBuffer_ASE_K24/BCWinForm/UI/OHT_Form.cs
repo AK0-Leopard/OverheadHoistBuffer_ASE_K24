@@ -1330,5 +1330,10 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             if (vh == null) return;
             txt_cstID.Text = vh.HAS_CST == 1 ? SCUtility.Trim(vh.CST_ID, true) : "Manual_CST";
         }
+
+        private void txt_cstType_TextChanged(object sender, EventArgs e)
+        {
+            DebugParameter.CST_TYPE = txt_cstType.Text;
+        }
     }
 }
