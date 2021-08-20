@@ -395,10 +395,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         string cmdID = s2f49_transfer.REPITEMS.COMMINFO.COMMAINFO.COMMANDIDINFO.CommandID;
                         string priority = s2f49_transfer.REPITEMS.COMMINFO.COMMAINFO.PRIORITY.CPVAL;
                         //string cstID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.CARRIERIDINFO.CarrierID;
-                        string cstID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.BOXIDINFO.BoxID;
+                        string cstID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.CARRIERIDINFO.CarrierID;
                         //string cstType = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.CARRIERTYPEINFO.CarrierType;
                         string cstType = "";
-                        string boxID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.BOXIDINFO.BoxID;
+                        string boxID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.CARRIERIDINFO.CarrierID;
                         string source = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.SOUINFO.Source;
                         string dest = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.DESTINFO.Dest;
                         string lotID = s2f49_transfer.REPITEMS.CSTINFO.CARRINFO.LOTIDINFO.Lot_ID ?? "0";

@@ -876,7 +876,7 @@ namespace com.mirle.ibg3k0.sc.App
             initialCatchDataFromDB();
             commObjCacheManager.start(this);
 
-            var IpAndPort = ReportBLL.getZabbixServerIPAndPort();
+            //var IpAndPort = ReportBLL.getZabbixServerIPAndPort();
 
             //ZabbixService = new SenderService(IpAndPort.Item1, IpAndPort.Item2);
             //ReportBLL.ZabbixPush

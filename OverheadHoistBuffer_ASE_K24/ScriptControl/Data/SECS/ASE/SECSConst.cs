@@ -193,6 +193,13 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
         public static readonly string CIACK_Other_Error = "9";
         #endregion CIACK
 
+        #region 
+        public static readonly string HandoffType_Manual = "1";
+        public static readonly string HandoffType_Automated = "2";
+
+        #endregion 
+
+
         #region RCMD
         public const string RCMD_Resume = "RESUME";
         public const string RCMD_Cancel = "CANCEL";

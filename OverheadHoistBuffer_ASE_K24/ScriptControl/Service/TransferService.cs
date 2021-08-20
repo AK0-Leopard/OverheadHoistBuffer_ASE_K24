@@ -3329,7 +3329,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         {
                             reportBLL.ReportCarrierWaitOut(unLoadCstData, "1");
                             //reportBLL.ReportCarrierRemovedCompleted(unLoadCstData.CSTID, unLoadCstData.BOXID);
-                            reportBLL.ReportCarrierRemovedFromPort(unLoadCstData, "");
+                            reportBLL.ReportCarrierRemovedFromPort(unLoadCstData, SECSConst.HandoffType_Automated);
                             if (!DebugParameter.CanAutoRandomGeneratesCommand)
                                 cassette_dataBLL.DeleteCSTbyCstBoxID(unLoadCstData.CSTID, unLoadCstData.BOXID);
                             //cassette_dataBLL.DeleteCSTbyBoxId(unLoadCstData.BOXID);
@@ -6469,7 +6469,6 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             CassetteData readData = cstData.Clone();
             IDreadStatus idReadStatus = IDreadStatus.successful;
-            bool carrierIDFail = false;
             bool boxIDFail = false;
 
             #region 卡匣讀不到檢查
@@ -10821,28 +10820,30 @@ namespace com.mirle.ibg3k0.sc.Service
                 CassetteData ohtBoxData = new CassetteData();
                 ohtBoxData.BOXID = cmd.CARRIER_ID_ON_CRANE.Trim();
                 ohtBoxData.Carrier_LOC = vhID.Trim();
-                ohtBoxData = IDRead(ohtBoxData);
+                ohtBoxData.ReadStatus = ((int)IDreadStatus.mismatch).ToString();
+                //ohtBoxData = IDRead(ohtBoxData);
 
                 if (dbCstData != null)
                 {
+                    #region Log
+
+                    TransferServiceLogger.Info
+                    (
+                        DateTime.Now.ToString("HH:mm:ss.fff ")
+                        + "OHT >> OHB|OHT BOX 讀取異常:" + ResultCode.BoxID_Mismatch
+                        + "\n" + GetCmdLog(cmd)
+                        + "\nDBData:" + GetCstLog(dbCstData)
+                        + "\nOHTRead:" + GetCstLog(ohtBoxData)
+                    );
+
+                    #endregion Log
+
                     if (ohtBoxData.BOXID != dbCstData.BOXID)
                     {
 
                         IDreadStatus idReadStatus = (IDreadStatus)int.Parse(ohtBoxData.ReadStatus);
                         string resultCode = ResultCode.Successful;
 
-                        #region Log
-
-                        TransferServiceLogger.Info
-                        (
-                            DateTime.Now.ToString("HH:mm:ss.fff ")
-                            + "OHT >> OHB|OHT BOX 讀取異常:" + idReadStatus
-                            + "\n" + GetCmdLog(cmd)
-                            + "\nDBData:" + GetCstLog(dbCstData)
-                            + "\nOHTRead:" + GetCstLog(ohtBoxData)
-                        );
-
-                        #endregion Log
                         resultCode = ResultCode.BoxID_Mismatch;
                         idReadStatus = IDreadStatus.mismatch;
 

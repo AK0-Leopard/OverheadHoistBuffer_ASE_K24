@@ -117,13 +117,19 @@ namespace com.mirle.ibg3k0.sc.Common
 
         private string getHostTableIP(string ip)
         {
-            string return_ip = null;
-            var remoteipAdr = System.Net.Dns.GetHostAddresses(ip);
-            if (remoteipAdr != null && remoteipAdr.Count() > 0)
+            string return_ip = "127.0.0.1";
+            try
             {
-                return_ip = remoteipAdr[0].ToString();
+                var remoteipAdr = System.Net.Dns.GetHostAddresses(ip);
+                if (remoteipAdr != null && remoteipAdr.Count() > 0)
+                {
+                    return_ip = remoteipAdr[0].ToString();
+                }
             }
-
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception");
+            }
             return return_ip;
         }
 

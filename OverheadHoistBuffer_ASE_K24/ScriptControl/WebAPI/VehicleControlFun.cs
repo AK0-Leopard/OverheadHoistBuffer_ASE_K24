@@ -22,7 +22,7 @@ namespace com.mirle.ibg3k0.sc.WebAPI
             {
                 var info = new SegmentInfo();
                 info.ID = seg.SEG_NUM;
-                info.Note = seg.NOTE;
+                info.Note =  seg.NOTE??"";
                 info.Status = converTo(seg.STATUS);
                 var sec_ids = seg.Sections.Select(s => s.SEC_ID);
                 info.SecIds.AddRange(sec_ids);

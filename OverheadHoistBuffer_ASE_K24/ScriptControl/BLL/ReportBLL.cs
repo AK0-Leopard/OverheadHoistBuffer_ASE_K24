@@ -1133,13 +1133,21 @@ namespace com.mirle.ibg3k0.sc.BLL
         public Tuple<string, int> getZabbixServerIPAndPort()
         {
             DataCollectionSetting setting = dataCollectionDao.getDataCollectionFirstItem(scApp);
-            string ip = setting.IP;
-            var remoteipAdr = System.Net.Dns.GetHostAddresses(setting.IP);
-            if (remoteipAdr != null && remoteipAdr.Count() != 0)
+            string ip = "127.0.0.1";
+            int port = setting.Port;
+            try
             {
-                ip = remoteipAdr[0].ToString();
+                var remoteipAdr = System.Net.Dns.GetHostAddresses(setting.IP);
+                if (remoteipAdr != null && remoteipAdr.Count() != 0)
+                {
+                    ip = remoteipAdr[0].ToString();
+                }
             }
-            return new Tuple<string, int>(ip, setting.Port);
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception");
+            }
+            return new Tuple<string, int>(ip, port);
         }
 
         public string getZabbixHostName()

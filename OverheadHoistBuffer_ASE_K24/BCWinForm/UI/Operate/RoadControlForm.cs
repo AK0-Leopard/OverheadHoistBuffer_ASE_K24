@@ -28,7 +28,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         public RoadControlForm(BCMainForm _mainForm)
         {
             InitializeComponent();
-            this.TopMost = true;
 
             mainForm = _mainForm;
             bcApp = mainForm.BCApp;
