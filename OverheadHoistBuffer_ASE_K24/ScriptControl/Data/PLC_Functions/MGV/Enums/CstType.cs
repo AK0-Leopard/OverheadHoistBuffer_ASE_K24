@@ -3,8 +3,8 @@
     public enum CstType
     {
         PortHasNoCarrierNow = 0,
-        LiteCassete = 1,
-        Foup = 2,
+        B = 1,
+        A = 2,
         Undefined = 3,
     }
 }

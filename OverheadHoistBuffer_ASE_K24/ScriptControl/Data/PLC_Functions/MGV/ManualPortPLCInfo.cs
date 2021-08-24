@@ -88,10 +88,10 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV
         {
             if (CstTypes == (int)CstType.PortHasNoCarrierNow)
                 return CstType.PortHasNoCarrierNow;
-            else if (CstTypes == (int)CstType.LiteCassete)
-                return CstType.LiteCassete;
-            else if (CstTypes == (int)CstType.Foup)
-                return CstType.Foup;
+            else if (CstTypes == (int)CstType.B)
+                return CstType.B;
+            else if (CstTypes == (int)CstType.A)
+                return CstType.A;
             else
                 return CstType.Undefined;
         }

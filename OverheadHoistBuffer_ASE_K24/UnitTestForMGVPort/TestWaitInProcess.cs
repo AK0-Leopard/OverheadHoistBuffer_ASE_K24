@@ -59,7 +59,7 @@ namespace UnitTestForMGVPort
             return info;
         }
 
-        private CassetteData GetCarrierOnShelf(string carrierId, CstType type = CstType.LiteCassete)
+        private CassetteData GetCarrierOnShelf(string carrierId, CstType type = CstType.B)
         {
             var cassette = new CassetteData();
             cassette.Carrier_LOC = "100101";
@@ -70,7 +70,7 @@ namespace UnitTestForMGVPort
             return cassette;
         }
 
-        private CassetteData GetCarrierOnPort(string carrierId, int stage, CstType type = CstType.LiteCassete)
+        private CassetteData GetCarrierOnPort(string carrierId, int stage, CstType type = CstType.B)
         {
             var cassette = new CassetteData();
             cassette.Carrier_LOC = _otherPortName;
@@ -453,7 +453,7 @@ namespace UnitTestForMGVPort
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var carrierId = "A";
             var residueCarrierID = "B";
-            stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.LiteCassete);
+            stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.B);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
             var info = GetWaitInInfo(carrierId);
 
@@ -473,7 +473,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var residueCarrierID = "B";
             var info = GetWaitInInfo(carrierId);
-            stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.LiteCassete);
+            stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.B);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
 
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
@@ -492,7 +492,7 @@ namespace UnitTestForMGVPort
             var carrierId = "A";
             var residueCarrierID = "B";
             var info = GetWaitInInfo(carrierId);
-            stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.LiteCassete);
+            stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.B);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
 
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));

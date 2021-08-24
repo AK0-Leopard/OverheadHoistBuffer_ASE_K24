@@ -219,7 +219,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (subCarrierID == LITE_CASSETTE)
             {
-                if (plcType == CstType.LiteCassete)
+                if (plcType == CstType.B)
                 {
                     WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{LITE_CASSETTE}], which means it is a (Lite cassette). PLC Sensor is (Lite cassette) too.");
                     return false;
@@ -232,7 +232,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             else if (subCarrierID == FOUP)
             {
-                if (plcType == CstType.Foup)
+                if (plcType == CstType.A)
                 {
                     WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{FOUP}], which means it is a (Foup). PLC Sensor is (Foup) too.");
                     return false;
