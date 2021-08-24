@@ -31,6 +31,9 @@ namespace UnitTestForMGVPort
         private NStubObject GetStubObject()
         {
             var stubManualPortValueDefMapAction = Substitute.For<IManualPortValueDefMapAction>();
+            stubManualPortValueDefMapAction.PortName.Returns("Port1");
+            stubManualPortValueDefMapAction.SetMoveBackReasonAsync(Arg.Any<MoveBackReasons>()).Returns(System.Threading.Tasks.Task.CompletedTask);
+
             var reportBll = Substitute.For<IManualPortReportBLL>();
             var portBll = Substitute.For<IManualPortDefBLL>();
             var shelfBll = Substitute.For<IManualPortShelfDefBLL>();
@@ -55,6 +58,7 @@ namespace UnitTestForMGVPort
             info.CarrierIdOfStage1 = carrierId;
             info.IsBcrReadDone = true;
             info.IsWaitIn = true;
+            info.CstTypes = (int)CstType.B;
 
             return info;
         }
@@ -115,7 +119,7 @@ namespace UnitTestForMGVPort
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
 
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
@@ -130,7 +134,7 @@ namespace UnitTestForMGVPort
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
 
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
@@ -146,7 +150,7 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
 
             stub.ManualPortValueDefMapAction.OnWaitIn += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
@@ -166,7 +170,7 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
             stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
@@ -187,7 +191,7 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
             stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
@@ -208,7 +212,7 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
             stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
@@ -228,7 +232,7 @@ namespace UnitTestForMGVPort
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
             stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
@@ -248,7 +252,7 @@ namespace UnitTestForMGVPort
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
             stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
@@ -269,7 +273,7 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
             stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
@@ -291,7 +295,7 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
             stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
@@ -313,7 +317,7 @@ namespace UnitTestForMGVPort
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnShelf = GetCarrierOnShelf(carrierId);
             stub.CassetteDataBLL.Install(carrierOnShelf.Carrier_LOC, carrierOnShelf.BOXID, carrierOnShelf.CSTType.ToCstType());
@@ -339,7 +343,7 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
             stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID, carrierOnPort.CSTType.ToCstType());
@@ -360,7 +364,7 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
             stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID, carrierOnPort.CSTType.ToCstType());
@@ -381,7 +385,7 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
             stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID, carrierOnPort.CSTType.ToCstType());
@@ -403,7 +407,7 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
             stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID, carrierOnPort.CSTType.ToCstType());
@@ -425,7 +429,7 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
+            var carrierId = "12LC0001";
             var info = GetWaitInInfo(carrierId);
             var carrierOnPort = GetCarrierOnPort(carrierId, stage: 1);
             stub.CassetteDataBLL.Install(carrierOnPort.Carrier_LOC, carrierOnPort.BOXID, carrierOnPort.CSTType.ToCstType());
@@ -451,8 +455,8 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
-            var residueCarrierID = "B";
+            var carrierId = "12LC0001";
+            var residueCarrierID = "12LC9999";
             stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.B);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
             var info = GetWaitInInfo(carrierId);
@@ -470,8 +474,8 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
-            var residueCarrierID = "B";
+            var carrierId = "12LC0001";
+            var residueCarrierID = "12LC9999";
             var info = GetWaitInInfo(carrierId);
             stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.B);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
@@ -489,8 +493,8 @@ namespace UnitTestForMGVPort
             var mockReportBLL = new MockReportBLL();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, mockReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
-            var carrierId = "A";
-            var residueCarrierID = "B";
+            var carrierId = "12LC0001";
+            var residueCarrierID = "12LC9999";
             var info = GetWaitInInfo(carrierId);
             stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.B);
             stub.CommandBLL.GetCommandByBoxId(carrierId, out var _).Returns(false);
