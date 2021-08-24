@@ -29,6 +29,9 @@ namespace com.mirle.ibg3k0.sc.Service
         private IManualPortShelfDefBLL shelfDefBLL;
         private IManualPortCassetteDataBLL cassetteDataBLL;
 
+        private const string LITE_CASSETTE = "LC";
+        private const string FOUP = "BE";
+
         public ManualPortEventService()
         {
             WriteLog("");
@@ -38,12 +41,12 @@ namespace com.mirle.ibg3k0.sc.Service
         }
 
         public void Start(IEnumerable<IManualPortValueDefMapAction> ports,
-                                      IManualPortReportBLL reportBll,
-                                      IManualPortDefBLL portDefBLL,
-                                      IManualPortShelfDefBLL shelfDefBLL,
-                                      IManualPortCassetteDataBLL cassetteDataBLL,
-                                      IManualPortCMDBLL commandBLL,
-                                      IManualPortAlarmBLL alarmBLL)
+                          IManualPortReportBLL reportBll,
+                          IManualPortDefBLL portDefBLL,
+                          IManualPortShelfDefBLL shelfDefBLL,
+                          IManualPortCassetteDataBLL cassetteDataBLL,
+                          IManualPortCMDBLL commandBLL,
+                          IManualPortAlarmBLL alarmBLL)
         {
             this.reportBll = reportBll;
             this.portDefBLL = portDefBLL;
@@ -207,10 +210,44 @@ namespace com.mirle.ibg3k0.sc.Service
                 WaitInNormalProcess(logTitle, args.PortName, info);
         }
 
-        private bool HasCstTypeMismatch(string logTitle, ManualPortPLCInfo info)
+        public bool HasCstTypeMismatch(string logTitle, ManualPortPLCInfo info)
         {
-            WriteEventLog($"{logTitle} OHBC does not implement CstType mismatch check function.    Always return has no mismatch.");
-            return false;
+            var stage1CarrierId = info.CarrierIdOfStage1.Trim();
+
+            var subCarrierID = stage1CarrierId.Substring(2, 2);
+            var plcType = info.CarrierType;
+
+            if (subCarrierID == LITE_CASSETTE)
+            {
+                if (plcType == CstType.LiteCassete)
+                {
+                    WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{LITE_CASSETTE}], which means it is a (Lite cassette). PLC Sensor is (Lite cassette) too.");
+                    return false;
+                }
+                else
+                {
+                    WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{LITE_CASSETTE}], which means it is a (Lite cassette). PLC Sensor is ({plcType}). Type mismtach.  Execute Moveback ! ");
+                    return true;
+                }
+            }
+            else if (subCarrierID == FOUP)
+            {
+                if (plcType == CstType.Foup)
+                {
+                    WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{FOUP}], which means it is a (Foup). PLC Sensor is (Foup) too.");
+                    return false;
+                }
+                else
+                {
+                    WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{FOUP}], which means it is a (Foup). PLC Sensor is ({plcType}). Type mismtach.  Execute Moveback ! ");
+                    return true;
+                }
+            }
+            else
+            {
+                WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are neither [{LITE_CASSETTE}] nor [{FOUP}]. ");
+                return true;
+            }
         }
 
         private void WaitInDuplicateProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData)

@@ -53,7 +53,7 @@ namespace UnitTestForMGVPort
             info.CarrierIdOfStage1 = carrierId;
             info.IsBcrReadDone = false;
             info.IsWaitIn = false;
-            info.AlarmCode = "0000";
+            info.AlarmCode = 0;
             info.ErrorIndex = 1;
 
             return info;
@@ -73,7 +73,7 @@ namespace UnitTestForMGVPort
             info.CarrierIdOfStage1 = carrierId;
             info.IsBcrReadDone = false;
             info.IsWaitIn = false;
-            info.AlarmCode = alarmCode;
+            info.AlarmCode = (ushort)int.Parse(alarmCode);
             info.ErrorIndex = 1;
 
             return info;
@@ -93,7 +93,7 @@ namespace UnitTestForMGVPort
             info.CarrierIdOfStage1 = carrierId;
             info.IsBcrReadDone = false;
             info.IsWaitIn = false;
-            info.AlarmCode = alarmCode;
+            info.AlarmCode = (ushort)int.Parse(alarmCode);
             info.ErrorIndex = 1;
 
             return info;
@@ -113,7 +113,7 @@ namespace UnitTestForMGVPort
             info.CarrierIdOfStage1 = carrierId;
             info.IsBcrReadDone = false;
             info.IsWaitIn = false;
-            info.AlarmCode = "0000";
+            info.AlarmCode = 0;
             info.ErrorIndex = 1;
 
             return info;
@@ -133,7 +133,7 @@ namespace UnitTestForMGVPort
             info.CarrierIdOfStage1 = carrierId;
             info.IsBcrReadDone = false;
             info.IsWaitIn = false;
-            info.AlarmCode = alarmCode;
+            info.AlarmCode = (ushort)int.Parse(alarmCode);
             info.ErrorIndex = 1;
 
             return info;
@@ -153,7 +153,7 @@ namespace UnitTestForMGVPort
             info.CarrierIdOfStage1 = carrierId;
             info.IsBcrReadDone = false;
             info.IsWaitIn = false;
-            info.AlarmCode = alarmCode;
+            info.AlarmCode = (ushort)int.Parse(alarmCode);
             info.ErrorIndex = 1;
 
             return info;

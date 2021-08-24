@@ -7,9 +7,9 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Extension
         public static CstType ToCstType(this string cstType)
         {
             if (cstType.Trim() == "A")
-                return CstType.A;
+                return CstType.LiteCassete;
             else if (cstType.Trim() == "B")
-                return CstType.B;
+                return CstType.Foup;
             else
                 return CstType.Undefined;
         }

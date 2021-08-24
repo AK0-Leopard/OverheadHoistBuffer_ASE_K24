@@ -53,6 +53,7 @@
     <Compile Include="TestDirectionChangeProcess.cs" />
     <Compile Include="TestInServiceChangedProcess.cs" />
     <Compile Include="TestStageLoadPresenceChangedProcess.cs" />
+    <Compile Include="TestWaitInCstType.cs" />
     <Compile Include="TestWaitInProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
