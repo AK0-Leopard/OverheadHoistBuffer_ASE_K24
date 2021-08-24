@@ -19,7 +19,7 @@ namespace UnitTestForMGVPort
         #region Const
 
         private const string _portName = "M01";
-        private const string _alarmCode = "A001";
+        private const string _alarmCode = "41";
         private const string _ignoreCarrierId = "";
 
         #endregion Const
