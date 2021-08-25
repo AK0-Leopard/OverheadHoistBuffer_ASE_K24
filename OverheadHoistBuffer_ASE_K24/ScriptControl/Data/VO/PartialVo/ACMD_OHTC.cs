@@ -28,8 +28,8 @@ namespace com.mirle.ibg3k0.sc
                 var cst_type = manual_port.getManualPortPLCInfo().CarrierType;
                 switch (cst_type)
                 {
-                    case Data.PLC_Functions.MGV.Enums.CstType.LiteCassete:
-                    case Data.PLC_Functions.MGV.Enums.CstType.Foup:
+                    case Data.PLC_Functions.MGV.Enums.CstType.B:
+                    case Data.PLC_Functions.MGV.Enums.CstType.A:
                         return (true, cst_type.ToString());
                     default:
                         return (false, "");

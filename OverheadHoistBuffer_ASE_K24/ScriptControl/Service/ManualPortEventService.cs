@@ -105,7 +105,7 @@ namespace com.mirle.ibg3k0.sc.Service
             try
             {
                 var info = args.ManualPortPLCInfo;
-                var stage1CarrierId = info.CarrierIdOfStage1.Trim();
+                var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
                 if (info.LoadPosition1)
                 {
@@ -131,10 +131,13 @@ namespace com.mirle.ibg3k0.sc.Service
         private void StagePresenceOnProcess(string logTitle, string portName, ManualPortPLCInfo info)
         {
             if (info.Direction == DirectionType.InMode)
+            {
+                WriteEventLog($"{logTitle} The port direction is InMode. Do nothing.");
                 return;
+            }
 
             if (cassetteDataBLL.GetCarrierByPortName(portName, stage: 1, out var cassetteData) == false)
-                WriteEventLog($"{logTitle} The port direction is InMode. Cannot find carrier data at this port.");
+                WriteEventLog($"{logTitle} The port direction is OutMode. Cannot find carrier data at this port.");
 
             if (cassetteData == null)
                 return;
@@ -148,7 +151,10 @@ namespace com.mirle.ibg3k0.sc.Service
         private void StagePresenceOffProcess(string logTitle, string portName, ManualPortPLCInfo info)
         {
             if (info.Direction == DirectionType.InMode)
+            {
+                WriteEventLog($"{logTitle} The port direction is InMode. Do nothing.");
                 return;
+            }
 
             if (cassetteDataBLL.GetCarrierByPortName(portName, stage: 1, out var cassetteData) == false)
             {
@@ -158,13 +164,13 @@ namespace com.mirle.ibg3k0.sc.Service
 
             WriteEventLog($"{logTitle} The port direction is OutMode. Find a carrier data [{cassetteData.BOXID}] at this port.");
 
-            cassetteDataBLL.Delete(cassetteData.BOXID);
-            WriteEventLog($"{logTitle} Delete carrier data [{cassetteData.BOXID}].");
-
             if (reportBll.ReportCarrierRemoveFromManualPort(cassetteData.BOXID))
                 WriteEventLog($"{logTitle} Report MCS carrier remove From manual port success.");
             else
                 WriteEventLog($"{logTitle} Report MCS carrier remove From manual port Failed.");
+
+            cassetteDataBLL.Delete(cassetteData.BOXID);
+            WriteEventLog($"{logTitle} Delete carrier data [{cassetteData.BOXID}].");
         }
 
         #endregion LoadPresenceChanged
@@ -174,8 +180,8 @@ namespace com.mirle.ibg3k0.sc.Service
         private void Port_OnWaitIn(object sender, ManualPortEventArgs args)
         {
             var info = args.ManualPortPLCInfo;
-            var readResult = info.CarrierIdReadResult.Trim();
-            var stage1CarrierId = info.CarrierIdOfStage1.Trim();
+            var readResult = info.CarrierIdReadResult == null ? "" : info.CarrierIdReadResult.Trim();
+            var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
             var logTitle = $"PortName[{args.PortName}] WaitIn => ";
 
@@ -191,9 +197,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else
                 {
-                    plcPort.SetMoveBackReasonAsync(MoveBackReasons.Other);
-                    plcPort.MoveBackAsync();
-                    WriteEventLog($"{logTitle} Cannot find [IManualPortValueDefMapAction] Move Back   Reason:(Other).");
+                    WriteEventLog($"{logTitle} Cannot find [IManualPortValueDefMapAction]. Cannot execute Move Back.");
                 }
 
                 return;
@@ -212,14 +216,20 @@ namespace com.mirle.ibg3k0.sc.Service
 
         public bool HasCstTypeMismatch(string logTitle, ManualPortPLCInfo info)
         {
-            var stage1CarrierId = info.CarrierIdOfStage1.Trim();
+            var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
+
+            if (stage1CarrierId.Length <= 2)
+            {
+                WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. 長度過短.  Mismatch.  MoveBack.");
+                return true;
+            }
 
             var subCarrierID = stage1CarrierId.Substring(2, 2);
             var plcType = info.CarrierType;
 
             if (subCarrierID == LITE_CASSETTE)
             {
-                if (plcType == CstType.LiteCassete)
+                if (plcType == CstType.B)
                 {
                     WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{LITE_CASSETTE}], which means it is a (Lite cassette). PLC Sensor is (Lite cassette) too.");
                     return false;
@@ -232,7 +242,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             else if (subCarrierID == FOUP)
             {
-                if (plcType == CstType.Foup)
+                if (plcType == CstType.A)
                 {
                     WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{FOUP}], which means it is a (Foup). PLC Sensor is (Foup) too.");
                     return false;
@@ -282,7 +292,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
             CheckDuplicateCarrier(logTitle, duplicateCarrierData, out var needRemoveDuplicateShelf, out var unknownId);
 
-            var stage1CarrierId = info.CarrierIdOfStage1.Trim();
+            var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
             if (needRemoveDuplicateShelf)
             {
@@ -376,7 +386,7 @@ namespace com.mirle.ibg3k0.sc.Service
             cassetteDataBLL.Delete(duplicateCarrierData.BOXID);
             WriteEventLog($"{logTitle} Delete duplicate cassette data [{duplicateCarrierData.BOXID}].");
 
-            var stage1CarrierId = info.CarrierIdOfStage1.Trim();
+            var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
             cassetteDataBLL.Install(portName, stage1CarrierId, info.CarrierType);
             WriteEventLog($"{logTitle} Install cassette data [{stage1CarrierId}] Type[{info.CarrierType}] at this port.");
@@ -410,7 +420,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
             CheckResidualCassetteProcess(logTitle, portName);
 
-            var stage1CarrierId = info.CarrierIdOfStage1.Trim();
+            var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
             cassetteDataBLL.Install(portName, stage1CarrierId, info.CarrierType);
             WriteEventLog($"{logTitle} Install cassette data [{stage1CarrierId}] Type[{info.CarrierType}] at this port.");
@@ -495,7 +505,7 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 var info = args.ManualPortPLCInfo;
                 var readResult = info.CarrierIdReadResult.Trim();
-                var stage1CarrierId = info.CarrierIdOfStage1.Trim();
+                var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
                 WriteEventLog($"PortName[{args.PortName}] BcrReadDone => ReadResult[{readResult}] CarrierIdOfStage1[{stage1CarrierId}]");
             }
@@ -510,7 +520,7 @@ namespace com.mirle.ibg3k0.sc.Service
             try
             {
                 var info = args.ManualPortPLCInfo;
-                var stage1CarrierId = info.CarrierIdOfStage1.Trim();
+                var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
                 WriteEventLog($"PortName[{args.PortName}] WaitOut => CarrierIdOfStage1[{stage1CarrierId}]");
             }
@@ -525,7 +535,7 @@ namespace com.mirle.ibg3k0.sc.Service
             try
             {
                 var info = args.ManualPortPLCInfo;
-                var stage1CarrierId = info.CarrierIdOfStage1.Trim();
+                var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
                 WriteEventLog($"PortName[{args.PortName}] CstRemoved => CarrierIdOfStage1[{stage1CarrierId}]");
             }
@@ -548,7 +558,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 var logTitle = $"PortName[{args.PortName}] {newDirection} => ";
 
                 var info = args.ManualPortPLCInfo;
-                var stage1CarrierId = info.CarrierIdOfStage1.Trim();
+                var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
                 WriteEventLog($"{logTitle} CarrierIdOfStage1[{stage1CarrierId}]");
 
@@ -691,7 +701,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private ACMD_MCS GetCommandOfPort(ManualPortPLCInfo info)
         {
-            var stage1CarrierId = info.CarrierIdOfStage1.Trim();
+            var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
             var hasCommand = commandBLL.GetCommandByBoxId(stage1CarrierId, out var commandOfPort);
             if (hasCommand == false)

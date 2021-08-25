@@ -14,7 +14,7 @@ namespace UnitTestForMGVPort
             var log = "";
             var plcInfo = new ManualPortPLCInfo();
             var carrierID = "12LC0001";
-            plcInfo.CstTypes = (int)CstType.LiteCassete;
+            plcInfo.CstTypes = (int)CstType.B;
             plcInfo.CarrierIdOfStage1 = carrierID;
             plcInfo.CarrierIdReadResult = carrierID;
 
@@ -29,7 +29,7 @@ namespace UnitTestForMGVPort
             var manualPortService = new ManualPortEventService();
             var log = "";
             var plcInfo = new ManualPortPLCInfo();
-            plcInfo.CstTypes = (int)CstType.Foup;
+            plcInfo.CstTypes = (int)CstType.A;
             var carrierID = "12BE0001";
             plcInfo.CarrierIdOfStage1 = carrierID;
             plcInfo.CarrierIdReadResult = carrierID;
@@ -45,7 +45,7 @@ namespace UnitTestForMGVPort
             var manualPortService = new ManualPortEventService();
             var log = "";
             var plcInfo = new ManualPortPLCInfo();
-            plcInfo.CstTypes = (int)CstType.LiteCassete;
+            plcInfo.CstTypes = (int)CstType.B;
             var carrierID = "12BE0001";
             plcInfo.CarrierIdOfStage1 = carrierID;
             plcInfo.CarrierIdReadResult = carrierID;
@@ -61,7 +61,7 @@ namespace UnitTestForMGVPort
             var manualPortService = new ManualPortEventService();
             var log = "";
             var plcInfo = new ManualPortPLCInfo();
-            plcInfo.CstTypes = (int)CstType.Foup;
+            plcInfo.CstTypes = (int)CstType.A;
             var carrierID = "12LC0001";
             plcInfo.CarrierIdOfStage1 = carrierID;
             plcInfo.CarrierIdReadResult = carrierID;
