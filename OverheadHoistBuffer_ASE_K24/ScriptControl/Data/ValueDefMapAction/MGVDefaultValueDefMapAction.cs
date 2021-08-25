@@ -88,7 +88,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 switch (runLevel)
                 {
                     case BCFAppConstants.RUN_LEVEL.ZERO:
-
+                        initialPortInOutService();
                         break;
 
                     case BCFAppConstants.RUN_LEVEL.ONE:
@@ -104,6 +104,32 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception:");
+            }
+        }
+
+        private void initialPortInOutService()
+        {
+            var function = scApp.getFunBaseObj<ManualPortPLCInfo>(port.PORT_ID) as ManualPortPLCInfo;
+            try
+            {
+                //1.建立各個Function物件
+                function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
+                //2.read log
+                logger.Info(function.ToString());
+                E_PORT_STATUS port_status = function.IsRun ?
+                                    E_PORT_STATUS.InService : E_PORT_STATUS.OutOfService;
+                scApp.PortDefBLL.UpdataPortService(port.PORT_ID, port_status);
+
+                if (function.IsDown)
+                    OnInServiceChanged?.Invoke(this, new ManualPortEventArgs(function));
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+            finally
+            {
+                scApp.putFunBaseObj<ManualPortPLCInfo>(function);
             }
         }
 

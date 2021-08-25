@@ -1067,6 +1067,9 @@ namespace com.mirle.ibg3k0.bc.winform
             return null;
         }
 
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

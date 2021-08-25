@@ -478,6 +478,7 @@ namespace com.mirle.ibg3k0.bc.winform
             this.命令卡匣資料ToolStripMenuItem});
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
             resources.ApplyResources(this.testToolStripMenuItem, "testToolStripMenuItem");
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // 搬送模擬ToolStripMenuItem
             // 

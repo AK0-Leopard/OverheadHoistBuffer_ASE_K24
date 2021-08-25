@@ -761,6 +761,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
         }
         public void resetAllRailColor()
         {
+            if (m_DicSectionGroupRails == null) return;
             foreach (var keyValue in m_DicSectionGroupRails)
             {
                 keyValue.Value.GroupColorChange(RailOriginalColor);
@@ -963,6 +964,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Components
         }
         public void RemoveRailSelectedEvent(EventHandler eventHandler)
         {
+            if (m_objItemRail == null) return;
             foreach (uctlRail rail in m_objItemRail)
             {
                 rail.RailSelected -= eventHandler;

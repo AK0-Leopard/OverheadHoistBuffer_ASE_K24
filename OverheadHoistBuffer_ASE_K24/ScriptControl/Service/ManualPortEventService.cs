@@ -60,6 +60,7 @@ namespace com.mirle.ibg3k0.sc.Service
             RegisterEvent(ports);
         }
 
+
         private void RegisterEvent(IEnumerable<IManualPortValueDefMapAction> ports)
         {
             manualPorts = new ConcurrentDictionary<string, IManualPortValueDefMapAction>();

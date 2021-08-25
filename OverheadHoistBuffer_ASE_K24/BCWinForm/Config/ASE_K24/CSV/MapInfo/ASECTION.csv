@@ -51,6 +51,10 @@
 30103,10050,10001,1000,Horizontal,Forward
 30201,10048,10810,1000,Horizontal,Forward
 30301,10810,10811,1000,Horizontal,Forward
+32401,10823,10824,1000,Horizontal,Forward
+32502,10826,10827,1000,Horizontal,Forward
+32943,10394,10828,1000,Horizontal,Forward
+33101,10828,10829,1000,Horizontal,Forward
 33401,10434,10436,1000,Horizontal,Forward
 33402,10436,13437,1000,Horizontal,Forward
 33403,13437,12438,1000,Horizontal,Forward
@@ -210,9 +214,9 @@
 34236,12588,12589,1000,Horizontal,Forward
 34237,12589,14590,1000,Horizontal,Forward
 34238,14590,10591,1000,Horizontal,Forward
-34239,10591,10592,1000,Horizontal,Forward
+39201,10591,10592,1000,Horizontal,Forward
 34301,10513,10514,1000,Horizontal,Forward
-34302,10514,10592,1000,Horizontal,Forward
+34302,10514,10591,1000,Horizontal,Forward
 34401,10592,10594,1000,Horizontal,Forward
 34402,10594,12595,1000,Horizontal,Forward
 34403,12595,12596,1000,Horizontal,Forward
@@ -492,3 +496,8 @@
 39401,10876,10877,1000,Horizontal,Forward
 39402,10877,10878,1000,Horizontal,Forward
 39601,10878,10838,1000,Horizontal,Forward
+32801,10827,10828,1000,Horizontal,Forward
+31101,10146,12147,1000,Horizontal,Forward
+33102,10829,10830,1000,Horizontal,Forward
+33101,10828,10829,1000,Horizontal,Forward
+35202,10837,10838,1000,Horizontal,Forward
