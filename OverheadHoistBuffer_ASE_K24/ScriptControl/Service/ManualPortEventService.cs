@@ -714,17 +714,20 @@ namespace com.mirle.ibg3k0.sc.Service
                 var logTitle = $"PortName[{args.PortName}] InServiceChanged => ";
 
                 WriteEventLog($"{logTitle} IsRun[{info.IsRun}] IsDown[{info.IsDown}] IsAlarm[{info.IsAlarm}]");
-
+                E_PORT_STATUS port_status = E_PORT_STATUS.NoDefinition;
                 if (args.ManualPortPLCInfo.IsRun)
                 {
                     reportBll.ReportPortInServiceChanged(args.PortName, newStateIsInService: true);
                     WriteEventLog($"{logTitle} Report MCS PortInService");
+                    port_status = E_PORT_STATUS.InService;
                 }
                 else
                 {
                     reportBll.ReportPortInServiceChanged(args.PortName, newStateIsInService: false);
                     WriteEventLog($"{logTitle} Report MCS PortOutOfService");
+                    port_status = E_PORT_STATUS.OutOfService;
                 }
+                portDefBLL.UpdataPortService(args.PortName, port_status);
             }
             catch (Exception ex)
             {

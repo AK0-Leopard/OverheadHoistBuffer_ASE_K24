@@ -17,5 +17,6 @@
         bool ChangeDirectionToOutMode(string portName);
 
         bool GetPortDef(string portName, out PortDef portDef);
+        void UpdataPortService(string portID, E_PORT_STATUS service);
     }
 }
