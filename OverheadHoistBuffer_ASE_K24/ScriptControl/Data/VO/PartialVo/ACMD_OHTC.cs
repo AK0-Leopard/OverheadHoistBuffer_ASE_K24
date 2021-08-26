@@ -11,7 +11,10 @@ namespace com.mirle.ibg3k0.sc
     {
         public static ConcurrentDictionary<string, ACMD_OHTC> CMD_OHTC_InfoList { get; private set; } = new ConcurrentDictionary<string, ACMD_OHTC>();
 
-        public (bool isDefine, string cstType) tryGetCSTType(BLL.PortStationBLL portStationBLL)
+        const string LIGHT_CST_SIGN = "LC";
+        const string FOUP_SIGN = "BE";
+
+        public (bool isDefine, string cstType) tryGetCSTType(BLL.PortStationBLL portStationBLL, Service.TransferService transferService)
         {
             try
             {
@@ -20,6 +23,23 @@ namespace com.mirle.ibg3k0.sc
                 {
                     return (false, "");
                 }
+
+                if (transferService.isShelfPort(SOURCE))
+                {
+                    if (!Common.SCUtility.isEmpty(SOURCE))
+                    {
+                        if (SOURCE.Contains(FOUP_SIGN))
+                            return (true, Data.PLC_Functions.MGV.Enums.CstType.A.ToString());
+                        else if (SOURCE.Contains(LIGHT_CST_SIGN))
+                            return (true, Data.PLC_Functions.MGV.Enums.CstType.B.ToString());
+                        else
+                        {
+                            return (false, "");
+                        }
+                    }
+                }
+
+
                 if (!(port_station is MANUAL_PORTSTATION))
                 {
                     return (false, "");
