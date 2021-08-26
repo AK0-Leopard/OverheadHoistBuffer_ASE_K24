@@ -30,7 +30,9 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             manualPorts = new ConcurrentDictionary<string, IManualPortValueDefMapAction>();
             comingOutCarrierOfManualPorts = new ConcurrentDictionary<string, string>();
+            lastComingOutCarrierOfManualPorts = new ConcurrentDictionary<string, string>();
             readyToWaitOutCarrierOfManualPorts = new ConcurrentDictionary<string, List<string>>();
+            lastReadyToWaitOutCarrierOfManualPorts = new ConcurrentDictionary<string, List<string>>();
             stopWatchForCheckCommandingSignal = new ConcurrentDictionary<string, Stopwatch>();
 
             foreach (var port in ports)
@@ -41,8 +43,14 @@ namespace com.mirle.ibg3k0.sc.Service
                 comingOutCarrierOfManualPorts.TryAdd(port.PortName, string.Empty);
                 WriteLog($"Add Manual Port Control Coming Out Carrier Of Manual Ports Success ({port.PortName})");
 
+                lastComingOutCarrierOfManualPorts.TryAdd(port.PortName, string.Empty);
+                WriteLog($"Add Manual Port Control Last Coming Out Carrier Of Manual Ports Success ({port.PortName})");
+
                 readyToWaitOutCarrierOfManualPorts.TryAdd(port.PortName, new List<string>());
                 WriteLog($"Add Manual Port Control Ready To Wait Out Carrier Of Manual Ports Success ({port.PortName})");
+
+                lastReadyToWaitOutCarrierOfManualPorts.TryAdd(port.PortName, new List<string>());
+                WriteLog($"Add Manual Port Control Last Ready To Wait Out Carrier Of Manual Ports Success ({port.PortName})");
 
                 stopWatchForCheckCommandingSignal.TryAdd(port.PortName, new Stopwatch());
                 WriteLog($"Add Manual Port Control Stopwatch Of Manual Ports For Check Commanding Signal Success ({port.PortName})");
@@ -57,7 +65,11 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private ConcurrentDictionary<string, string> comingOutCarrierOfManualPorts { get; set; }
 
+        private ConcurrentDictionary<string, string> lastComingOutCarrierOfManualPorts { get; set; }
+
         private ConcurrentDictionary<string, List<string>> readyToWaitOutCarrierOfManualPorts { get; set; }
+
+        private ConcurrentDictionary<string, List<string>> lastReadyToWaitOutCarrierOfManualPorts { get; set; }
 
         private ConcurrentDictionary<string, Stopwatch> stopWatchForCheckCommandingSignal { get; set; }
 
@@ -121,56 +133,97 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private void ReflashReadyToWaitOutCarrier()
         {
-            foreach (var item in readyToWaitOutCarrierOfManualPorts)
+            try
             {
-                if (item.Value.Count == 0)
+                foreach (var item in readyToWaitOutCarrierOfManualPorts)
                 {
-                    manualPorts[item.Key].ShowReadyToWaitOutCarrierOnMonitorAsync(NO_CST, NO_CST);
+                    if (lastReadyToWaitOutCarrierOfManualPorts[item.Key].Count == item.Value.Count)
+                    {
+                        if (item.Value.Count == 1)
+                        {
+                            if (lastReadyToWaitOutCarrierOfManualPorts[item.Key].FirstOrDefault() == item.Value.FirstOrDefault())
+                                continue;
+                        }
+                        else if (item.Value.Count == 2)
+                        {
+                            if (lastReadyToWaitOutCarrierOfManualPorts[item.Key][0] == item.Value[0] &&
+                                lastReadyToWaitOutCarrierOfManualPorts[item.Key][1] == item.Value[1])
+                                continue;
+                        }
+                    }
+
+                    lastReadyToWaitOutCarrierOfManualPorts[item.Key].Clear();
+
+                    foreach (var carrierID in item.Value)
+                        lastReadyToWaitOutCarrierOfManualPorts[item.Key].Add(carrierID);
+
+                    if (item.Value.Count == 0)
+                    {
+                        manualPorts[item.Key].ShowReadyToWaitOutCarrierOnMonitorAsync(NO_CST, NO_CST);
+                    }
+                    else if (item.Value.Count == 1)
+                    {
+                        manualPorts[item.Key].ShowReadyToWaitOutCarrierOnMonitorAsync(item.Value[0], NO_CST);
+                        WriteLog($"{item.Key} Has one carrier that ready to WaitOut. Show PLC Monitor ({item.Value[0]})(NO_CST).");
+                    }
+                    else
+                    {
+                        manualPorts[item.Key].ShowReadyToWaitOutCarrierOnMonitorAsync(item.Value[0], item.Value[1]);
+                        WriteLog($"{item.Key} Has two carrier that ready to WaitOut. Show PLC Monitor ({item.Value[0]})({item.Value[1]}).");
+                    }
                 }
-                else if (item.Value.Count == 1)
-                {
-                    manualPorts[item.Key].ShowReadyToWaitOutCarrierOnMonitorAsync(item.Value[0], NO_CST);
-                    WriteLog($"{item.Key} Has one carrier that ready to WaitOut. Show PLC Monitor ({item.Value[0]})(NO_CST).");
-                }
-                else
-                {
-                    manualPorts[item.Key].ShowReadyToWaitOutCarrierOnMonitorAsync(item.Value[0], item.Value[1]);
-                    WriteLog($"{item.Key} Has two carrier that ready to WaitOut. Show PLC Monitor ({item.Value[0]})({item.Value[1]}).");
-                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
             }
         }
 
         private void ReflashComingOutCarrier()
         {
-            var commandsOfOHT = ACMD_OHTC.CMD_OHTC_InfoList;
-
-            foreach (var portItem in manualPorts)
+            try
             {
-                var portName = portItem.Key;
-                comingOutCarrierOfManualPorts[portName] = string.Empty;
+                var commandsOfOHT = ACMD_OHTC.CMD_OHTC_InfoList;
 
-                var cmds = commandsOfOHT.Where(c => SCUtility.isMatche(c.Value.DESTINATION, portName)).Select(c => c.Value).ToList();
-
-                if (cmds == null)
-                    continue;
-
-                var cmd = cmds.FirstOrDefault();
-
-                if (cmd == null)
-                    continue;
-
-                comingOutCarrierOfManualPorts[portName] = cmd.BOX_ID;
-            }
-
-            foreach (var item in comingOutCarrierOfManualPorts)
-            {
-                if (string.IsNullOrEmpty(item.Value))
-                    manualPorts[item.Key].ShowComingOutCarrierOnMonitorAsync(NO_CST);
-                else
+                foreach (var portItem in manualPorts)
                 {
-                    WriteLog($"{item.Key} Has carrier coming out. Show PLC Monitor ({item.Value}).");
-                    manualPorts[item.Key].ShowComingOutCarrierOnMonitorAsync(item.Value);
+                    var portName = portItem.Key;
+                    comingOutCarrierOfManualPorts[portName] = string.Empty;
+
+                    var cmds = commandsOfOHT.Where(c => SCUtility.isMatche(c.Value.DESTINATION, portName)).Select(c => c.Value).ToList();
+
+                    if (cmds == null)
+                        continue;
+
+                    var cmd = cmds.FirstOrDefault();
+
+                    if (cmd == null)
+                        continue;
+
+                    comingOutCarrierOfManualPorts[portName] = cmd.BOX_ID;
                 }
+
+                foreach (var item in comingOutCarrierOfManualPorts)
+                {
+                    var carrierId = item.Value;
+
+                    if (lastComingOutCarrierOfManualPorts[item.Key] == carrierId)
+                        continue;
+
+                    lastComingOutCarrierOfManualPorts[item.Key] = carrierId;
+
+                    if (string.IsNullOrEmpty(item.Value))
+                        manualPorts[item.Key].ShowComingOutCarrierOnMonitorAsync(NO_CST);
+                    else
+                    {
+                        WriteLog($"{item.Key} Has carrier coming out. Show PLC Monitor ({carrierId}).");
+                        manualPorts[item.Key].ShowComingOutCarrierOnMonitorAsync(carrierId);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
             }
         }
 
