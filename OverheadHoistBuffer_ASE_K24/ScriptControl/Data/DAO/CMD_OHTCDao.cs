@@ -206,6 +206,14 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                         select cmd;
             return query.Count();
         }
+        public int getExecuteByTargetPortID(DBConnection_EF con, string portID)
+        {
+            var query = from cmd in con.ACMD_OHTC
+                        where cmd.DESTINATION == portID.Trim() &&
+                        cmd.CMD_STAUS < E_CMD_STATUS.NormalEnd
+                        select cmd;
+            return query.Count();
+        }
         public int getExecuteByToAdrIsPark(DBConnection_EF con, string adr)
         {
             var query = from cmd in con.ACMD_OHTC

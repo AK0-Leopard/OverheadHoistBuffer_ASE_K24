@@ -3834,6 +3834,23 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return false;
             }
         }
+        public bool hasExcuteCMDByTargetPortID(string portID)
+        {
+            int count = 0;
+            try
+            {
+                using (DBConnection_EF con = new DBConnection_EF())
+                {
+                    count = cmd_ohtcDAO.getExecuteByTargetPortID(con, portID);
+                }
+                return count != 0;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
+        }
 
         public bool hasExcuteCMDWantToParkAdr(string adr_id)
         {
