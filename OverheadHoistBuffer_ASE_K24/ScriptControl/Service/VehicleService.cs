@@ -1415,7 +1415,7 @@ namespace com.mirle.ibg3k0.sc.Service
             string cmd_id = cmd.CMD_ID;
             string vh_id = cmd.VH_ID;
             string cst_type = "";
-            var cst_type_get_result = cmd.tryGetCSTType(scApp.PortStationBLL);
+            var cst_type_get_result = cmd.tryGetCSTType(scApp.PortStationBLL,scApp.TransferService);
             if (!SCUtility.isEmpty(DebugParameter.CST_TYPE))
             {
                 cst_type = SCUtility.Trim(DebugParameter.CST_TYPE, true);
