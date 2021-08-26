@@ -73,7 +73,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private ConcurrentDictionary<string, Stopwatch> stopWatchForCheckCommandingSignal { get; set; }
 
-        private const string NO_CST = " - ";
+        private const string NO_CST = " ";
 
         private const int timeoutElapsedMillisecondsForOffCommandingSignal = 12_000;
 
