@@ -10,6 +10,7 @@ using NLog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Reflection;
 using static com.mirle.ibg3k0.sc.ACMD_MCS;
 
 namespace com.mirle.ibg3k0.sc.Service
@@ -59,7 +60,6 @@ namespace com.mirle.ibg3k0.sc.Service
 
             RegisterEvent(ports);
         }
-
 
         private void RegisterEvent(IEnumerable<IManualPortValueDefMapAction> ports)
         {
@@ -126,6 +126,7 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 logger.Error(ex, "");
+                WriteEventLog($"Port[{args.PortName}]  {MethodBase.GetCurrentMethod()}  Exception ! 【{ex}】");
             }
         }
 
@@ -165,7 +166,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
             WriteEventLog($"{logTitle} The port direction is OutMode. Find a carrier data [{cassetteData.BOXID}] at this port.");
 
-            if (reportBll.ReportCarrierRemoveFromManualPort(cassetteData.BOXID))
+            if (reportBll.ReportCarrierRemoveFromManualPort(cassetteData))
                 WriteEventLog($"{logTitle} Report MCS carrier remove From manual port success.");
             else
                 WriteEventLog($"{logTitle} Report MCS carrier remove From manual port Failed.");
@@ -180,39 +181,47 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private void Port_OnWaitIn(object sender, ManualPortEventArgs args)
         {
-            var info = args.ManualPortPLCInfo;
-            var readResult = info.CarrierIdReadResult == null ? "" : info.CarrierIdReadResult.Trim();
-            var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
-
-            var logTitle = $"PortName[{args.PortName}] WaitIn => ";
-
-            WriteEventLog($"{logTitle} ReadResult[{readResult}] CarrierIdOfStage1[{stage1CarrierId}] CstType[{info.CstTypes}]({info.CarrierType})");
-
-            if (HasCstTypeMismatch(logTitle, info))
+            try
             {
-                if (manualPorts.TryGetValue(args.PortName, out var plcPort))
+                var info = args.ManualPortPLCInfo;
+                var readResult = info.CarrierIdReadResult == null ? "" : info.CarrierIdReadResult.Trim();
+                var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
+
+                var logTitle = $"PortName[{args.PortName}] WaitIn => ";
+
+                WriteEventLog($"{logTitle} ReadResult[{readResult}] CarrierIdOfStage1[{stage1CarrierId}] CstType[{info.CstTypes}]({info.CarrierType})");
+
+                if (HasCstTypeMismatch(logTitle, info))
                 {
-                    plcPort.SetMoveBackReasonAsync(MoveBackReasons.TypeMismatch);
-                    plcPort.MoveBackAsync();
-                    WriteEventLog($"{logTitle} Move Back  Reason:(TypeMismatch).");
-                }
-                else
-                {
-                    WriteEventLog($"{logTitle} Cannot find [IManualPortValueDefMapAction]. Cannot execute Move Back.");
+                    if (manualPorts.TryGetValue(args.PortName, out var plcPort))
+                    {
+                        plcPort.SetMoveBackReasonAsync(MoveBackReasons.TypeMismatch);
+                        plcPort.MoveBackAsync();
+                        WriteEventLog($"{logTitle} Move Back  Reason:(TypeMismatch).");
+                    }
+                    else
+                    {
+                        WriteEventLog($"{logTitle} Cannot find [IManualPortValueDefMapAction]. Cannot execute Move Back.");
+                    }
+
+                    return;
                 }
 
-                return;
-            }
-
-            if (cassetteDataBLL.GetCarrierByBoxId(stage1CarrierId, out var duplicateCarrierId))
-            {
-                if (duplicateCarrierId.Carrier_LOC != args.PortName)
-                    WaitInDuplicateProcess(logTitle, args.PortName, info, duplicateCarrierId);
+                if (cassetteDataBLL.GetCarrierByBoxId(stage1CarrierId, out var duplicateCarrierId))
+                {
+                    if (duplicateCarrierId.Carrier_LOC != args.PortName)
+                        WaitInDuplicateProcess(logTitle, args.PortName, info, duplicateCarrierId);
+                    else
+                        WaitInNormalProcess(logTitle, args.PortName, info);
+                }
                 else
                     WaitInNormalProcess(logTitle, args.PortName, info);
             }
-            else
-                WaitInNormalProcess(logTitle, args.PortName, info);
+            catch (Exception ex)
+            {
+                logger.Error(ex, "");
+                WriteEventLog($"Port[{args.PortName}]  {MethodBase.GetCurrentMethod()}  Exception ! 【{ex}】");
+            }
         }
 
         public bool HasCstTypeMismatch(string logTitle, ManualPortPLCInfo info)
@@ -513,6 +522,7 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 logger.Error(ex, "");
+                WriteEventLog($"Port[{args.PortName}]  {MethodBase.GetCurrentMethod()}  Exception ! 【{ex}】");
             }
         }
 
@@ -528,6 +538,7 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 logger.Error(ex, "");
+                WriteEventLog($"Port[{args.PortName}]  {MethodBase.GetCurrentMethod()}  Exception ! 【{ex}】");
             }
         }
 
@@ -538,11 +549,12 @@ namespace com.mirle.ibg3k0.sc.Service
                 var info = args.ManualPortPLCInfo;
                 var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
-                WriteEventLog($"PortName[{args.PortName}] CstRemoved => CarrierIdOfStage1[{stage1CarrierId}]");
+                WriteEventLog($"PortName[{args.PortName}] CstRemoved Bit ON => CarrierIdOfStage1[{stage1CarrierId}]");
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "");
+                WriteEventLog($"Port[{args.PortName}]  {MethodBase.GetCurrentMethod()}  Exception ! 【{ex}】");
             }
         }
 
@@ -601,6 +613,7 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 logger.Error(ex, "");
+                WriteEventLog($"Port[{args.PortName}]  {MethodBase.GetCurrentMethod()}  Exception ! 【{ex}】");
             }
         }
 
@@ -642,6 +655,7 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 logger.Error(ex, "");
+                WriteEventLog($"Port[{args.PortName}]  {MethodBase.GetCurrentMethod()}  Exception ! 【{ex}】");
             }
         }
 
@@ -684,6 +698,7 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 logger.Error(ex, "");
+                WriteEventLog($"Port[{args.PortName}]  {MethodBase.GetCurrentMethod()}  Exception ! 【{ex}】");
             }
         }
 
@@ -743,6 +758,7 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 logger.Error(ex, "");
+                WriteEventLog($"Port[{args.PortName}]  {MethodBase.GetCurrentMethod()}  Exception ! 【{ex}】");
             }
         }
 
@@ -761,6 +777,7 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 logger.Error(ex, "");
+                WriteEventLog($"Port[{args.PortName}]  {MethodBase.GetCurrentMethod()}  Exception ! 【{ex}】");
             }
         }
     }

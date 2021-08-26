@@ -40,7 +40,7 @@
 
         bool ReportCarrierInstall(CassetteData cassetteData);
 
-        bool ReportCarrierRemoveFromManualPort(string carrierId);
+        bool ReportCarrierRemoveFromManualPort(CassetteData cassetteData);
 
         bool ReportPortDirectionChanged(string portName, bool newDirectionIsInMode);
 
