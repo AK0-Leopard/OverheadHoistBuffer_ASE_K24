@@ -6,6 +6,9 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Extension
     {
         public static CstType ToCstType(this string cstType)
         {
+            if (cstType == null)
+                return CstType.Undefined;
+
             if (cstType.Trim() == "A")
                 return CstType.B;
             else if (cstType.Trim() == "B")

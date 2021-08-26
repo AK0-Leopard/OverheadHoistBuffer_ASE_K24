@@ -366,12 +366,40 @@ namespace com.mirle.ibg3k0.sc.BLL
     {
         public void SetEmpty(string shelfId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    var shelf = con.ShelfDef.Where(x => x.ShelfID == shelfId).FirstOrDefault();
+
+                    shelf.ShelfState = ShelfDef.E_ShelfState.EmptyShelf;
+
+                    shelfdefDao.UpdateShelfDef(con);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
         }
 
         public void SetStored(string shelfId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    var shelf = con.ShelfDef.Where(x => x.ShelfID == shelfId).FirstOrDefault();
+
+                    shelf.ShelfState = ShelfDef.E_ShelfState.Stored;
+
+                    shelfdefDao.UpdateShelfDef(con);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
         }
     }
 }
