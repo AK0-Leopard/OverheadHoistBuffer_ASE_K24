@@ -149,6 +149,23 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                         }
                     }
 
+                    foreach (var shelf in shelfDefs.ToList())
+                    {
+                        if (scApp.CMDBLL.hasExcuteCMDByTargetPortID(shelf.ShelfID))
+                        {
+                            shelfDefs.Remove(shelf);
+                        }
+                    }
+
+
+                    foreach (var cst in cassetteDatas.ToList())
+                    {
+                        if (scApp.CMDBLL.hasExcuteCMDByBoxID(cst.BOXID))
+                            cassetteDatas.Remove(cst);
+                    }
+
+
+
                     //隨機找出一個要放置的shelf
                     CassetteData process_cst = cassetteDatas[0];
                     int task_RandomIndex = rnd_Index.Next(shelfDefs.Count - 1);
