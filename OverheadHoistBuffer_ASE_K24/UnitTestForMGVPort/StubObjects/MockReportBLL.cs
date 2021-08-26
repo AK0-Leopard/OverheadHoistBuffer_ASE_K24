@@ -51,11 +51,6 @@ namespace UnitTestForMGVPort.StubObjects
             return true;
         }
 
-        public bool ReportCarrierRemoveFromManualPort(string carrierId)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public bool ReportAlarmSet(ALARM alarm)
         {
             throw new System.NotImplementedException();
@@ -90,6 +85,11 @@ namespace UnitTestForMGVPort.StubObjects
         {
             InstallCassetteData = cassetteData;
             return true;
+        }
+
+        public bool ReportCarrierRemoveFromManualPort(CassetteData cassetteData)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

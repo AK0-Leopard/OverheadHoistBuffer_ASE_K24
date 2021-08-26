@@ -207,7 +207,7 @@ namespace UnitTestForMGVPort
 
             stub.ManualPortValueDefMapAction.OnLoadPresenceChanged += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
-            stub.ReportBLL.Received().ReportCarrierRemoveFromManualPort(carrierId);
+            stub.ReportBLL.Received().ReportCarrierRemoveFromManualPort(carrierDataOnPort);
         }
 
         #endregion Port 變成無物
