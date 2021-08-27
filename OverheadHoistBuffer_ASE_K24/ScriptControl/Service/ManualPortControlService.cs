@@ -39,6 +39,7 @@ namespace com.mirle.ibg3k0.sc.Service
             readyToWaitOutCarrierOfManualPorts = new ConcurrentDictionary<string, List<string>>();
             lastReadyToWaitOutCarrierOfManualPorts = new ConcurrentDictionary<string, List<string>>();
             stopWatchForCheckCommandingSignal = new ConcurrentDictionary<string, Stopwatch>();
+            LogOfCheckCommandingSignal = new ConcurrentDictionary<string, bool>();
 
             foreach (var port in ports)
             {
@@ -59,6 +60,9 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 stopWatchForCheckCommandingSignal.TryAdd(port.PortName, new Stopwatch());
                 WriteLog($"Add Manual Port Control Stopwatch Of Manual Ports For Check Commanding Signal Success ({port.PortName})");
+
+                LogOfCheckCommandingSignal.TryAdd(port.PortName, false);
+                WriteLog($"Add Manual Port Control ConcurrentDictionary (Log Of Check Commanding Signal) Success ({port.PortName})");
             }
         }
 
@@ -77,6 +81,8 @@ namespace com.mirle.ibg3k0.sc.Service
         private ConcurrentDictionary<string, List<string>> lastReadyToWaitOutCarrierOfManualPorts { get; set; }
 
         private ConcurrentDictionary<string, Stopwatch> stopWatchForCheckCommandingSignal { get; set; }
+
+        private ConcurrentDictionary<string, bool> LogOfCheckCommandingSignal { get; set; }
 
         private const string NO_CST = " ";
 
@@ -295,7 +301,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         stopWatchForCheckCommandingSignal[portName].Reset();
                         stopWatchForCheckCommandingSignal[portName].Stop();
-
+                        LogOfCheckCommandingSignal[portName] = false;
                         continue;
                     }
 
@@ -305,7 +311,12 @@ namespace com.mirle.ibg3k0.sc.Service
                         {
                             portItem.Value.SetCommandingAsync(setOn: false);
                             stopWatchForCheckCommandingSignal[portName].Reset();
-                            WriteLog($"{portName}, CheckCommandingSignal(), 發現有預約 Bit 但沒有相關命令的狀況且觀察 {timeoutElapsedMillisecondsForOffCommandingSignal} 毫秒後情況一樣，因此強制將預約的 Bit 解開。");
+
+                            if (LogOfCheckCommandingSignal[portName] == false)
+                            {
+                                WriteLog($"{portName}, CheckCommandingSignal(), 沒有相關命令且觀察 {timeoutElapsedMillisecondsForOffCommandingSignal} 毫秒後一樣沒命令，因此強制將預約的 Bit OFF，避免殘留。");
+                                LogOfCheckCommandingSignal[portName] = true;
+                            }
                         }
                     }
                     else
