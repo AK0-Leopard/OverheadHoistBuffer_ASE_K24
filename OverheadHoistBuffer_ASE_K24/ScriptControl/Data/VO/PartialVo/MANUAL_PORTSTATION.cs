@@ -134,6 +134,13 @@ namespace com.mirle.ibg3k0.sc
             manualPortValueDefMapAction.TimeCalibrationAsync();
         }
 
+        public void UpdateHeartBeat(bool setOn)
+        {
+            var manualPortValueDefMapAction = getIManualPortValueDefMapAction();
+            if (manualPortValueDefMapAction == null) return;
+            manualPortValueDefMapAction.HeartBeatAsync(setOn);
+        }
+
         public void SetCommandingOnAsync()
         {
             var manualPortValueDefMapAction = getIManualPortValueDefMapAction();

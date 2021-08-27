@@ -50,6 +50,9 @@
             this.button15 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox_ManualPortHeartBeat = new System.Windows.Forms.GroupBox();
+            this.button_ManualPortHeartBeat_Off = new System.Windows.Forms.Button();
+            this.button_ManualPortHeartBeat_On = new System.Windows.Forms.Button();
             this.button_TimeCalibration = new System.Windows.Forms.Button();
             this.groupBox_Commanding = new System.Windows.Forms.GroupBox();
             this.button_Commanding_OFF = new System.Windows.Forms.Button();
@@ -83,6 +86,7 @@
             this.button_StopBuzzer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
+            this.groupBox_ManualPortHeartBeat.SuspendLayout();
             this.groupBox_Commanding.SuspendLayout();
             this.groupBox_MoveBack.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -304,6 +308,7 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.groupBox_ManualPortHeartBeat);
             this.panel1.Controls.Add(this.button_TimeCalibration);
             this.panel1.Controls.Add(this.groupBox_Commanding);
             this.panel1.Controls.Add(this.groupBox_MoveBack);
@@ -320,12 +325,46 @@
             this.panel1.Size = new System.Drawing.Size(1362, 426);
             this.panel1.TabIndex = 30;
             // 
+            // groupBox_ManualPortHeartBeat
+            // 
+            this.groupBox_ManualPortHeartBeat.Controls.Add(this.button_ManualPortHeartBeat_Off);
+            this.groupBox_ManualPortHeartBeat.Controls.Add(this.button_ManualPortHeartBeat_On);
+            this.groupBox_ManualPortHeartBeat.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.groupBox_ManualPortHeartBeat.Location = new System.Drawing.Point(1169, 323);
+            this.groupBox_ManualPortHeartBeat.Name = "groupBox_ManualPortHeartBeat";
+            this.groupBox_ManualPortHeartBeat.Size = new System.Drawing.Size(129, 85);
+            this.groupBox_ManualPortHeartBeat.TabIndex = 51;
+            this.groupBox_ManualPortHeartBeat.TabStop = false;
+            this.groupBox_ManualPortHeartBeat.Text = "Manual Port HeartBeat";
+            // 
+            // button_ManualPortHeartBeat_Off
+            // 
+            this.button_ManualPortHeartBeat_Off.Font = new System.Drawing.Font("微軟正黑體", 11F);
+            this.button_ManualPortHeartBeat_Off.Location = new System.Drawing.Point(68, 45);
+            this.button_ManualPortHeartBeat_Off.Name = "button_ManualPortHeartBeat_Off";
+            this.button_ManualPortHeartBeat_Off.Size = new System.Drawing.Size(46, 27);
+            this.button_ManualPortHeartBeat_Off.TabIndex = 43;
+            this.button_ManualPortHeartBeat_Off.Text = "OFF";
+            this.button_ManualPortHeartBeat_Off.UseVisualStyleBackColor = true;
+            this.button_ManualPortHeartBeat_Off.Click += new System.EventHandler(this.button_ManualPortHeartBeat_Off_Click);
+            // 
+            // button_ManualPortHeartBeat_On
+            // 
+            this.button_ManualPortHeartBeat_On.Font = new System.Drawing.Font("微軟正黑體", 11F);
+            this.button_ManualPortHeartBeat_On.Location = new System.Drawing.Point(16, 45);
+            this.button_ManualPortHeartBeat_On.Name = "button_ManualPortHeartBeat_On";
+            this.button_ManualPortHeartBeat_On.Size = new System.Drawing.Size(46, 27);
+            this.button_ManualPortHeartBeat_On.TabIndex = 52;
+            this.button_ManualPortHeartBeat_On.Text = "ON";
+            this.button_ManualPortHeartBeat_On.UseVisualStyleBackColor = true;
+            this.button_ManualPortHeartBeat_On.Click += new System.EventHandler(this.button_ManualPortHeartBeat_On_Click);
+            // 
             // button_TimeCalibration
             // 
             this.button_TimeCalibration.Font = new System.Drawing.Font("微軟正黑體", 9F);
-            this.button_TimeCalibration.Location = new System.Drawing.Point(985, 386);
+            this.button_TimeCalibration.Location = new System.Drawing.Point(1217, 211);
             this.button_TimeCalibration.Name = "button_TimeCalibration";
-            this.button_TimeCalibration.Size = new System.Drawing.Size(178, 22);
+            this.button_TimeCalibration.Size = new System.Drawing.Size(81, 93);
             this.button_TimeCalibration.TabIndex = 43;
             this.button_TimeCalibration.Text = "向 PLC 對時";
             this.button_TimeCalibration.UseVisualStyleBackColor = true;
@@ -338,7 +377,7 @@
             this.groupBox_Commanding.Font = new System.Drawing.Font("微軟正黑體", 10F);
             this.groupBox_Commanding.Location = new System.Drawing.Point(989, 321);
             this.groupBox_Commanding.Name = "groupBox_Commanding";
-            this.groupBox_Commanding.Size = new System.Drawing.Size(174, 59);
+            this.groupBox_Commanding.Size = new System.Drawing.Size(174, 87);
             this.groupBox_Commanding.TabIndex = 50;
             this.groupBox_Commanding.TabStop = false;
             this.groupBox_Commanding.Text = "預約 Manual Port 方向";
@@ -346,7 +385,7 @@
             // button_Commanding_OFF
             // 
             this.button_Commanding_OFF.Font = new System.Drawing.Font("微軟正黑體", 11F);
-            this.button_Commanding_OFF.Location = new System.Drawing.Point(89, 24);
+            this.button_Commanding_OFF.Location = new System.Drawing.Point(91, 32);
             this.button_Commanding_OFF.Name = "button_Commanding_OFF";
             this.button_Commanding_OFF.Size = new System.Drawing.Size(46, 27);
             this.button_Commanding_OFF.TabIndex = 42;
@@ -357,7 +396,7 @@
             // button_Commanding_ON
             // 
             this.button_Commanding_ON.Font = new System.Drawing.Font("微軟正黑體", 11F);
-            this.button_Commanding_ON.Location = new System.Drawing.Point(37, 24);
+            this.button_Commanding_ON.Location = new System.Drawing.Point(39, 32);
             this.button_Commanding_ON.Name = "button_Commanding_ON";
             this.button_Commanding_ON.Size = new System.Drawing.Size(46, 27);
             this.button_Commanding_ON.TabIndex = 41;
@@ -594,7 +633,7 @@
             this.dataGridView5.Name = "dataGridView5";
             this.dataGridView5.ReadOnly = true;
             this.dataGridView5.RowTemplate.Height = 24;
-            this.dataGridView5.Size = new System.Drawing.Size(627, 119);
+            this.dataGridView5.Size = new System.Drawing.Size(598, 119);
             this.dataGridView5.TabIndex = 35;
             // 
             // button25
@@ -701,6 +740,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBox_ManualPortHeartBeat.ResumeLayout(false);
             this.groupBox_Commanding.ResumeLayout(false);
             this.groupBox_MoveBack.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -769,5 +809,8 @@
         private System.Windows.Forms.Button button_Commanding_ON;
         private System.Windows.Forms.Button button_TimeCalibration;
         private System.Windows.Forms.Button button_StopBuzzer;
+        private System.Windows.Forms.GroupBox groupBox_ManualPortHeartBeat;
+        private System.Windows.Forms.Button button_ManualPortHeartBeat_Off;
+        private System.Windows.Forms.Button button_ManualPortHeartBeat_On;
     }
 }

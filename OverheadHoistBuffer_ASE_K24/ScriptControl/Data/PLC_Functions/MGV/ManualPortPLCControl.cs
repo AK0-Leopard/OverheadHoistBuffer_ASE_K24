@@ -23,6 +23,9 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV
         [PLCElement(ValueName = "OHxC_TO_MGV_MOVEBACK")]
         public bool IsMoveBack;
 
+        [PLCElement(ValueName = "OHxC_TO_MGV_HEARTBEAT")]
+        public bool IsHeartBeatOn;
+
         [PLCElement(ValueName = "OHxC_TO_MGV_INMODE")]
         public bool IsChangeToInMode;
 

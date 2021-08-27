@@ -538,6 +538,33 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
         }
 
+        public bool IsPlcHeartbeatOn => IsHeartbeatOn();
+
+        private bool IsHeartbeatOn()
+        {
+            var function = scApp.getFunBaseObj<ManualPortPLCInfo>(port.PORT_ID) as ManualPortPLCInfo;
+
+            try
+            {
+                //1.建立各個Function物件
+                function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
+
+                //2.read log
+                logger.Info(function.ToString());
+
+                return function.IsHeartBeatOn;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
+            finally
+            {
+                scApp.putFunBaseObj<ManualPortPLCInfo>(function);
+            }
+        }
+
         #region Control
 
         public Task SetMoveBackReasonAsync(MoveBackReasons reason)
@@ -728,6 +755,18 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     function.TimeCalibrationIndex = (UInt16)(function.OhbcErrorIndex + 1);
                 else
                     function.TimeCalibrationIndex = 1;
+
+                CommitChange(function);
+            });
+        }
+
+        public Task HeartBeatAsync(bool setOn)
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+
+                function.IsHeartBeatOn = setOn;
 
                 CommitChange(function);
             });
