@@ -113,7 +113,8 @@ namespace com.mirle.ibg3k0.bc.winform
 
             dataGridView4.Rows.Add("BCR 讀取結果", "CarrierIdReadResult");       //0
             dataGridView4.Rows.Add("CST Type", "CarrierType");                  //1
-            dataGridView4.Rows.Add("是否開門中", "Door Open");                  //1
+            dataGridView4.Rows.Add("是否開門中", "Door Open");                  //2
+            dataGridView4.Rows.Add("心跳", "Heartbeat");                  //2
 
             dataGridView4.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView4.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
@@ -197,6 +198,7 @@ namespace com.mirle.ibg3k0.bc.winform
             var read_result = "";
             var carrier_type = "";
             var isDoorOpen = "";
+            var isHeartbeatOn = "";
 
             if (port is MANUAL_PORTSTATION)
             {
@@ -204,32 +206,28 @@ namespace com.mirle.ibg3k0.bc.winform
                 read_result = manual_port_info.CarrierIdReadResult;
                 carrier_type = manual_port_info.CarrierType.ToString();
                 isDoorOpen = manual_port_info.IsDoorOpen.ToString();
+                isHeartbeatOn = manual_port_info.IsHeartBeatOn.ToString();
             }
 
             dataGridView4.Rows[0].Cells[2].Value = read_result;
             dataGridView4.Rows[1].Cells[2].Value = carrier_type;
             dataGridView4.Rows[2].Cells[2].Value = isDoorOpen;
+            dataGridView4.Rows[3].Cells[2].Value = isHeartbeatOn;
 
             #endregion dataGridView4
 
-            dataGridView5.DataSource = BCApp.SCApplication.VehicleBLL.cache.loadVhs().Select(data =>
-                                    new
-                                    {
-                                        data.VEHICLE_ID
-                                        ,
-                                        data.HAS_CST
-                                        ,
-                                        data.BOX_ID
-                                        ,
-                                        data.CST_ID
-                                        ,
-                                        data.ACT_STATUS
-                                        ,
-                                        data.MCS_CMD
-                                        ,
-                                        data.CMD_CST_ID
-                                    }
-                                                                                            ).ToList();
+            dataGridView5.DataSource = BCApp.SCApplication.VehicleBLL.cache
+                .loadVhs()
+                .Select(data => new
+                {
+                    data.VEHICLE_ID,
+                    data.HAS_CST,
+                    data.BOX_ID,
+                    data.CST_ID,
+                    data.ACT_STATUS,
+                    data.MCS_CMD,
+                    data.CMD_CST_ID
+                }).ToList();
 
             TimeSpan timeOut = DateTime.Now - openTime;
             if (timeOut.Minutes > 5)
@@ -599,6 +597,40 @@ namespace com.mirle.ibg3k0.bc.winform
             port.StopBuzzer();
 
             MessageBox.Show($"Port ID:{comboBox1.Text} 已執行 關閉蜂鳴器", "Message", MessageBoxButtons.OK);
+        }
+
+        private void button_ManualPortHeartBeat_On_Click(object sender, EventArgs e)
+        {
+            var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
+            if (port is MANUAL_PORTSTATION)
+            {
+                var manual_port = port as MANUAL_PORTSTATION;
+                manual_port.UpdateHeartBeat(setOn: true);
+                MessageBox.Show($"Port ID:{comboBox1.Text} 已執行 [ON] HeatBeat", "Message", MessageBoxButtons.OK);
+            }
+            else
+            {
+                MessageBox.Show($"Port ID:{comboBox1.Text} 並不是 Manual Port，無法執行 [ON] HeatBeat", "Message",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button_ManualPortHeartBeat_Off_Click(object sender, EventArgs e)
+        {
+            var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
+            if (port is MANUAL_PORTSTATION)
+            {
+                var manual_port = port as MANUAL_PORTSTATION;
+                manual_port.UpdateHeartBeat(setOn: false);
+                MessageBox.Show($"Port ID:{comboBox1.Text} 已執行 [OFF] HeatBeat", "Message", MessageBoxButtons.OK);
+            }
+            else
+            {
+                MessageBox.Show($"Port ID:{comboBox1.Text} 並不是 Manual Port，無法執行 [OFF] HeatBeat", "Message",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+            }
         }
     }
 }

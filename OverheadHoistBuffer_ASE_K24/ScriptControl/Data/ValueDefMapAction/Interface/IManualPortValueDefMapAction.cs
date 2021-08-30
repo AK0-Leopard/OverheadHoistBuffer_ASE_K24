@@ -28,6 +28,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface
 
         event ManualPortEventHandler OnDoorOpen;
 
+        bool IsPlcHeartbeatOn { get; }
+
         Task MoveBackAsync();
 
         Task SetMoveBackReasonAsync(MoveBackReasons reason);
@@ -37,5 +39,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface
         Task ShowComingOutCarrierOnMonitorAsync(string carrierId);
 
         Task TimeCalibrationAsync();
+
+        Task HeartBeatAsync(bool setOn);
     }
 }

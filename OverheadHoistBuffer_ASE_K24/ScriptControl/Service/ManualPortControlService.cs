@@ -18,12 +18,17 @@ namespace com.mirle.ibg3k0.sc.Service
         public ManualPortControlService()
         {
             WriteLog($"ManualPortControlService Initial");
+            HeartBeatStopwatch = new Stopwatch();
         }
 
         public void Start(IEnumerable<IManualPortValueDefMapAction> ports)
         {
             WriteLog($"ManualPortControlService Start");
+
             RegisterPort(ports);
+
+            HeartBeatStopwatch.Start();
+            WriteLog($"HeartBeat Stopwatch Start");
         }
 
         private void RegisterPort(IEnumerable<IManualPortValueDefMapAction> ports)
@@ -34,6 +39,7 @@ namespace com.mirle.ibg3k0.sc.Service
             readyToWaitOutCarrierOfManualPorts = new ConcurrentDictionary<string, List<string>>();
             lastReadyToWaitOutCarrierOfManualPorts = new ConcurrentDictionary<string, List<string>>();
             stopWatchForCheckCommandingSignal = new ConcurrentDictionary<string, Stopwatch>();
+            LogOfCheckCommandingSignal = new ConcurrentDictionary<string, bool>();
 
             foreach (var port in ports)
             {
@@ -54,6 +60,9 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 stopWatchForCheckCommandingSignal.TryAdd(port.PortName, new Stopwatch());
                 WriteLog($"Add Manual Port Control Stopwatch Of Manual Ports For Check Commanding Signal Success ({port.PortName})");
+
+                LogOfCheckCommandingSignal.TryAdd(port.PortName, false);
+                WriteLog($"Add Manual Port Control ConcurrentDictionary (Log Of Check Commanding Signal) Success ({port.PortName})");
             }
         }
 
@@ -73,9 +82,15 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private ConcurrentDictionary<string, Stopwatch> stopWatchForCheckCommandingSignal { get; set; }
 
+        private ConcurrentDictionary<string, bool> LogOfCheckCommandingSignal { get; set; }
+
         private const string NO_CST = " ";
 
         private const int timeoutElapsedMillisecondsForOffCommandingSignal = 12_000;
+
+        private const int CheckHeartbeatMilliseconds = 4_000;
+
+        private Stopwatch HeartBeatStopwatch;
 
         #region Log
 
@@ -89,11 +104,39 @@ namespace com.mirle.ibg3k0.sc.Service
 
         public void ReflashState()
         {
+            HeartBeat();
             var allCommands = ACMD_MCS.MCS_CMD_InfoList;
             ReflashPlcMonitor(allCommands);
             ReflashReadyToWaitOutCarrier();
             ReflashComingOutCarrier();
             CheckCommandingSignal(allCommands);
+        }
+
+        private void HeartBeat()
+        {
+            try
+            {
+                if (HeartBeatStopwatch.ElapsedMilliseconds < CheckHeartbeatMilliseconds)
+                    return;
+
+                foreach (var portItem in manualPorts)
+                {
+                    var port = portItem.Value;
+
+                    if (port.IsPlcHeartbeatOn)
+                        port.HeartBeatAsync(setOn: false);
+                    else
+                        port.HeartBeatAsync(setOn: true);
+                }
+
+                HeartBeatStopwatch.Reset();
+                HeartBeatStopwatch.Start();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                WriteLog($"{MethodBase.GetCurrentMethod()}, Exception Happen: (( {ex} ))");
+            }
         }
 
         private void ReflashPlcMonitor(ConcurrentDictionary<string, ACMD_MCS> allCommands)
@@ -106,7 +149,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                     readyToWaitOutCarrierOfManualPorts[portName].Clear();
 
-                    var commandsOfManualPort = allCommands.Where(c => c.Value.HOSTDESTINATION == portName);
+                    var commandsOfManualPort = allCommands.Where(c => c.Value.HOSTDESTINATION.Trim() == portName);
 
                     var manualPortcommands = new List<ACMD_MCS>();
 
@@ -128,6 +171,7 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception");
+                WriteLog($"{MethodBase.GetCurrentMethod()}, Exception Happen: (( {ex} ))");
             }
         }
 
@@ -139,7 +183,9 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     if (lastReadyToWaitOutCarrierOfManualPorts[item.Key].Count == item.Value.Count)
                     {
-                        if (item.Value.Count == 1)
+                        if (item.Value.Count == 0)
+                            continue;
+                        else if (item.Value.Count == 1)
                         {
                             if (lastReadyToWaitOutCarrierOfManualPorts[item.Key].FirstOrDefault() == item.Value.FirstOrDefault())
                                 continue;
@@ -160,22 +206,24 @@ namespace com.mirle.ibg3k0.sc.Service
                     if (item.Value.Count == 0)
                     {
                         manualPorts[item.Key].ShowReadyToWaitOutCarrierOnMonitorAsync(NO_CST, NO_CST);
+                        WriteLog($"{item.Key} Has no carrier that ready to WaitOut. Show PLC Monitor ({NO_CST})({NO_CST}). 沒有「準備出庫」的 ID");
                     }
                     else if (item.Value.Count == 1)
                     {
                         manualPorts[item.Key].ShowReadyToWaitOutCarrierOnMonitorAsync(item.Value[0], NO_CST);
-                        WriteLog($"{item.Key} Has one carrier that ready to WaitOut. Show PLC Monitor ({item.Value[0]})(NO_CST).");
+                        WriteLog($"{item.Key} Has one carrier that ready to WaitOut. Show PLC Monitor ({item.Value[0]})(NO_CST).  有一個「準備出庫」的 ID");
                     }
                     else
                     {
                         manualPorts[item.Key].ShowReadyToWaitOutCarrierOnMonitorAsync(item.Value[0], item.Value[1]);
-                        WriteLog($"{item.Key} Has two carrier that ready to WaitOut. Show PLC Monitor ({item.Value[0]})({item.Value[1]}).");
+                        WriteLog($"{item.Key} Has two carrier that ready to WaitOut. Show PLC Monitor ({item.Value[0]})({item.Value[1]}).  有兩個「準備出庫」的 ID");
                     }
                 }
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception");
+                WriteLog($"{MethodBase.GetCurrentMethod()}, Exception Happen: (( {ex} ))");
             }
         }
 
@@ -190,7 +238,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     var portName = portItem.Key;
                     comingOutCarrierOfManualPorts[portName] = string.Empty;
 
-                    var cmds = commandsOfOHT.Where(c => SCUtility.isMatche(c.Value.DESTINATION, portName)).Select(c => c.Value).ToList();
+                    var cmds = commandsOfOHT.Where(c => SCUtility.isMatche(c.Value.DESTINATION.Trim(), portName)).Select(c => c.Value).ToList();
 
                     if (cmds == null)
                         continue;
@@ -200,7 +248,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     if (cmd == null)
                         continue;
 
-                    comingOutCarrierOfManualPorts[portName] = cmd.BOX_ID;
+                    comingOutCarrierOfManualPorts[portName] = cmd.BOX_ID.Trim();
                 }
 
                 foreach (var item in comingOutCarrierOfManualPorts)
@@ -213,10 +261,13 @@ namespace com.mirle.ibg3k0.sc.Service
                     lastComingOutCarrierOfManualPorts[item.Key] = carrierId;
 
                     if (string.IsNullOrEmpty(item.Value))
+                    {
                         manualPorts[item.Key].ShowComingOutCarrierOnMonitorAsync(NO_CST);
+                        WriteLog($"{item.Key} Has no carrier coming out. Show PLC Monitor ({NO_CST}).  沒有「正在出庫」的 ID");
+                    }
                     else
                     {
-                        WriteLog($"{item.Key} Has carrier coming out. Show PLC Monitor ({carrierId}).");
+                        WriteLog($"{item.Key} Has carrier coming out. Show PLC Monitor ({carrierId}).  有「正在出庫的」的 ID");
                         manualPorts[item.Key].ShowComingOutCarrierOnMonitorAsync(carrierId);
                     }
                 }
@@ -224,6 +275,7 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception");
+                WriteLog($"{MethodBase.GetCurrentMethod()}, Exception Happen: (( {ex} ))");
             }
         }
 
@@ -243,13 +295,13 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     var portName = portItem.Key;
 
-                    var commandsOfManualPort = allCommands.Where(c => c.Value.HOSTDESTINATION == portName || c.Value.HOSTSOURCE == portName);
+                    var commandsOfManualPort = allCommands.Where(c => c.Value.HOSTDESTINATION.Trim() == portName || c.Value.HOSTSOURCE.Trim() == portName);
 
                     if (commandsOfManualPort != null || commandsOfManualPort.Count() > 0)
                     {
                         stopWatchForCheckCommandingSignal[portName].Reset();
                         stopWatchForCheckCommandingSignal[portName].Stop();
-
+                        LogOfCheckCommandingSignal[portName] = false;
                         continue;
                     }
 
@@ -259,6 +311,12 @@ namespace com.mirle.ibg3k0.sc.Service
                         {
                             portItem.Value.SetCommandingAsync(setOn: false);
                             stopWatchForCheckCommandingSignal[portName].Reset();
+
+                            if (LogOfCheckCommandingSignal[portName] == false)
+                            {
+                                WriteLog($"{portName}, CheckCommandingSignal(), 沒有相關命令且觀察 {timeoutElapsedMillisecondsForOffCommandingSignal} 毫秒後一樣沒命令，因此強制將預約的 Bit OFF，避免殘留。");
+                                LogOfCheckCommandingSignal[portName] = true;
+                            }
                         }
                     }
                     else
@@ -268,6 +326,7 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception");
+                WriteLog($"{MethodBase.GetCurrentMethod()}, Exception Happen: (( {ex} ))");
             }
         }
 

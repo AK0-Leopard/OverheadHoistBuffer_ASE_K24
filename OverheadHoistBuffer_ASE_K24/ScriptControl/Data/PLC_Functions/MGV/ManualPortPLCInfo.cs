@@ -32,6 +32,9 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV
         [PLCElement(ValueName = "MGV_TO_OHxC_WAITOUT")]
         public bool IsWaitOut;
 
+        [PLCElement(ValueName = "MGV_TO_OHxC_HEARTBEAT")]
+        public bool IsHeartBeatOn;
+
         [PLCElement(ValueName = "MGV_TO_OHxC_LOADOK")]
         public bool IsLoadOK;
 
