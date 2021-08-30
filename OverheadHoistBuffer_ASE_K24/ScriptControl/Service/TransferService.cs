@@ -1303,7 +1303,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         (SCAppConstants.NATS_SUBJECT_TRANSFER_COMMAND_CHANGE, tran_info_serialize);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception");
             }
@@ -2003,42 +2003,55 @@ namespace com.mirle.ibg3k0.sc.Service
                         {
                             TimeSpan cstTimeSpan = DateTime.Now - DateTime.Parse(cst.TrnDT);
 
+                            //if (cstTimeSpan.TotalSeconds >= cstTimeOut)   //停在Port上 30秒(之後要設成可調)，自動搬到儲位上
                             if (cstTimeSpan.TotalSeconds >= cstTimeOut)   //停在Port上 30秒(之後要設成可調)，自動搬到儲位上
                             {
                                 ACMD_MCS cmd = cmdBLL.getCMD_ByBoxID(cst.BOXID);
                                 cassette_dataBLL.UpdateCST_DateTime(cst.BOXID, UpdateCassetteTimeType.TrnDT);
 
+
                                 if (cmd == null)
                                 {
-                                    List<ShelfDef> shelfData = shelfDefBLL.GetEmptyAndEnableShelf();    // 20/08/08，士偉提出不需要再設定到哪個ZONE，直接找空儲位搬
-
-                                    //string timeOutZone = portINIData[cst.Carrier_LOC.Trim()].timeOutForAutoInZone;
-                                    //List<ShelfDef> shelfData = shelfDefBLL.GetEmptyAndEnableShelfByZone(timeOutZone);
-
-                                    string shelfID = GetShelfRecentLocation(shelfData, cst.Carrier_LOC.Trim());
-
-                                    if (string.IsNullOrWhiteSpace(shelfID) == false)
+                                    bool has_cmd_excute_by_box_id = scApp.CMDBLL.hasExcuteCMDByBoxID(cst.BOXID);
+                                    if (!has_cmd_excute_by_box_id)
                                     {
-                                        TransferServiceLogger.Info
-                                        (
-                                            DateTime.Now.ToString("HH:mm:ss.fff ")
-                                            + "OHB >> OHB| 卡匣停留 " + cstTimeOut + " 秒，60命令 " + GetCstLog(cst)
-                                        );
+                                        List<ShelfDef> shelfData = shelfDefBLL.GetEmptyAndEnableShelf();    // 20/08/08，士偉提出不需要再設定到哪個ZONE，直接找空儲位搬
+                                        //string timeOutZone = portINIData[cst.Carrier_LOC.Trim()].timeOutForAutoInZone;
+                                        //List<ShelfDef> shelfData = shelfDefBLL.GetEmptyAndEnableShelfByZone(timeOutZone);
 
-                                        string cmdSource = cst.Carrier_LOC.Trim();
-                                        string cmdDest = shelfID;
+                                        string shelfID = GetShelfRecentLocation(shelfData, cst.Carrier_LOC.Trim());
 
-                                        Manual_InsertCmd(cmdSource, cmdDest, 5, "cstTimeOut", CmdType.OHBC);
-                                        //portINIData[cst.Carrier_LOC.Trim()].timeOutForAutoInZone = "";
+                                        if (string.IsNullOrWhiteSpace(shelfID) == false)
+                                        {
+                                            TransferServiceLogger.Info
+                                            (
+                                                DateTime.Now.ToString("HH:mm:ss.fff ")
+                                                + "OHB >> OHB| 卡匣停留 " + cstTimeOut + " 秒，60命令 " + GetCstLog(cst)
+                                            );
+
+                                            string cmdSource = cst.Carrier_LOC.Trim();
+                                            string cmdDest = shelfID;
+
+                                            Manual_InsertCmd(cmdSource, cmdDest, 5, "cstTimeOut", CmdType.OHBC);
+                                            //portINIData[cst.Carrier_LOC.Trim()].timeOutForAutoInZone = "";
+                                        }
+                                        else
+                                        {
+                                            //string log = portINIData[cst.Carrier_LOC.Trim()].timeOutForAutoInZone;
+
+                                            TransferServiceLogger.Info
+                                            (
+                                                DateTime.Now.ToString("HH:mm:ss.fff ")
+                                                + "OHB >> OHB| 卡匣停留 " + cstTimeOut + " 秒，尚未搬走，找不到空儲位可搬，停留卡匣為：" + GetCstLog(cst)
+                                            );
+                                        }
                                     }
                                     else
                                     {
-                                        //string log = portINIData[cst.Carrier_LOC.Trim()].timeOutForAutoInZone;
-
                                         TransferServiceLogger.Info
                                         (
                                             DateTime.Now.ToString("HH:mm:ss.fff ")
-                                            + "OHB >> OHB| 卡匣停留 " + cstTimeOut + " 秒，尚未搬走，找不到空儲位可搬，停留卡匣為：" + GetCstLog(cst)
+                                            + "OHB >> OHB| 卡匣停留 " + cstTimeOut + " 秒，尚未搬走，有cmd_ohtc命令正在執行 "
                                         );
                                     }
                                 }

@@ -28,9 +28,9 @@ namespace com.mirle.ibg3k0.sc
                 {
                     if (!Common.SCUtility.isEmpty(SOURCE))
                     {
-                        if (SOURCE.Contains(FOUP_SIGN))
+                        if (BOX_ID.Contains(FOUP_SIGN))
                             return (true, Data.PLC_Functions.MGV.Enums.CstType.A.ToString());
-                        else if (SOURCE.Contains(LIGHT_CST_SIGN))
+                        else if (BOX_ID.Contains(LIGHT_CST_SIGN))
                             return (true, Data.PLC_Functions.MGV.Enums.CstType.B.ToString());
                         else
                         {
