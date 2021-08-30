@@ -54,5 +54,48 @@ namespace com.mirle.ibg3k0.sc
                 return 0;
             }
         }
+
+        public void put(ShelfDef ortherValue)
+        {
+            this.Enable = ortherValue.Enable;
+        }
+
+
+        public string BayID
+        {
+            get
+            {
+                if (Common.SCUtility.isEmpty(ShelfID))
+                {
+                    return "";
+                }
+                if (ShelfID.Length < 6)
+                {
+                    return "";
+                }
+                //從倒數第二個字取出兩個
+                //100101
+                string bay_id = ShelfID.Substring(ShelfID.Length - 2, 2);
+                return bay_id;
+            }
+        }
+
+        public string SeqNo
+        {
+            get
+            {
+                if (Common.SCUtility.isEmpty(ShelfID))
+                {
+                    return "";
+                }
+                if (ShelfID.Length < 6)
+                {
+                    return "";
+                }
+                //100101
+                string seq_no = ShelfID.Substring(ShelfID.Length - 5, 3);
+                return seq_no;
+            }
+        }
     }
 }

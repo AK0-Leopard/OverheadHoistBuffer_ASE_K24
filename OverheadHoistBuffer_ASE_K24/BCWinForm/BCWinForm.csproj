@@ -304,6 +304,12 @@
     <Compile Include="UI\Components\WPFComponents\uctlMapWPF.xaml.cs">
       <DependentUpon>uctlMapWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Maintenance\ShelfMaintenanceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Maintenance\ShelfMaintenanceForm.Designer.cs">
+      <DependentUpon>ShelfMaintenanceForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\OHT_FormNew.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -978,6 +984,9 @@
     <EmbeddedResource Include="Properties\Resources.zh-TW.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.zh-TW.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Maintenance\ShelfMaintenanceForm.resx">
+      <DependentUpon>ShelfMaintenanceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OHT_FormNew.resx">
       <DependentUpon>OHT_FormNew.cs</DependentUpon>

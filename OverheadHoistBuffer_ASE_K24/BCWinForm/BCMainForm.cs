@@ -1071,5 +1071,10 @@ namespace com.mirle.ibg3k0.bc.winform
         {
 
         }
+
+        private void shelfToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openForm(typeof(ShelfMaintenanceForm).Name, true, false);
+        }
     }
 }

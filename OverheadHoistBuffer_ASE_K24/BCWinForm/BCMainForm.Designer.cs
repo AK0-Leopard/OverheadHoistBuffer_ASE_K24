@@ -107,6 +107,8 @@ namespace com.mirle.ibg3k0.bc.winform
             this.搬送模擬ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.port內容值ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.命令卡匣資料ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.shelfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.CMS_OnLineMode.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -365,7 +367,9 @@ namespace com.mirle.ibg3k0.bc.winform
             this.toolStripSeparator1,
             this.transferCommandToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.reserveInfoToolStripMenuItem});
+            this.reserveInfoToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.shelfToolStripMenuItem});
             this.mataToolStripMenuItem.Name = "mataToolStripMenuItem";
             resources.ApplyResources(this.mataToolStripMenuItem, "mataToolStripMenuItem");
             // 
@@ -497,6 +501,17 @@ namespace com.mirle.ibg3k0.bc.winform
             resources.ApplyResources(this.命令卡匣資料ToolStripMenuItem, "命令卡匣資料ToolStripMenuItem");
             this.命令卡匣資料ToolStripMenuItem.Name = "命令卡匣資料ToolStripMenuItem";
             this.命令卡匣資料ToolStripMenuItem.Click += new System.EventHandler(this.命令卡匣資料ToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
+            // 
+            // shelfToolStripMenuItem
+            // 
+            this.shelfToolStripMenuItem.Name = "shelfToolStripMenuItem";
+            resources.ApplyResources(this.shelfToolStripMenuItem, "shelfToolStripMenuItem");
+            this.shelfToolStripMenuItem.Click += new System.EventHandler(this.shelfToolStripMenuItem_Click);
             // 
             // BCMainForm
             // 
@@ -653,6 +668,8 @@ namespace com.mirle.ibg3k0.bc.winform
         private System.Windows.Forms.ToolStripMenuItem 搬送模擬ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem port內容值ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 命令卡匣資料ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem shelfToolStripMenuItem;
     }
 
     /// <summary>
