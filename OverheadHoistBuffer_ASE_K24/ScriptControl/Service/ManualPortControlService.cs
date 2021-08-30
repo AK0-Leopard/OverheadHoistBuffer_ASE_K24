@@ -88,7 +88,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private const int timeoutElapsedMillisecondsForOffCommandingSignal = 12_000;
 
-        private const int CheckHeartbeatMilliseconds = 4_000;
+        private const int CheckHeartbeatMilliseconds = 1_000;
 
         private Stopwatch HeartBeatStopwatch;
 
