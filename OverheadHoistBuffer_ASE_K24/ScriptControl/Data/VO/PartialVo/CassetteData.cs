@@ -25,9 +25,14 @@ namespace com.mirle.ibg3k0.sc
             return (CassetteData)this.MemberwiseClone();
         }
 
-        public bool AtShelf { get => Int32.TryParse(Carrier_LOC, out var _) ? true : false; }
-
         public string CSTID { get { return BOXID; } }
+
+        public bool hasCommandExcute(BLL.CMDBLL cmdBLL)
+        {
+            bool has_cmd_excute = cmdBLL.hasExcuteCMDByBoxID(BOXID);
+            return has_cmd_excute;
+        }
+
 
     }
 }

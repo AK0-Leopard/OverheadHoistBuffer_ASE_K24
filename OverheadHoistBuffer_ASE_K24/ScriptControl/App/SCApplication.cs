@@ -2474,6 +2474,7 @@ namespace com.mirle.ibg3k0.sc.App
         {
             AGVStation,
             shelf,
+            shelfByOrder,
             CV,
             NTB
         }

@@ -44,7 +44,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
         List<ShelfDef> shelfDefs = null;
         List<APORT> AllTestAGVStationPorts = null;
         List<APORT> willTestAGVStationPorts = null;
-
+        Dictionary<string, List<string>> cycleRunRecord_VhAndShelf = new Dictionary<string, List<string>>();
         Random rnd_Index = new Random(Guid.NewGuid().GetHashCode());
 
         /// <summary>
@@ -88,6 +88,9 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     {
                         case DebugParameter.CycleRunType.shelf:
                             ShelfTest();
+                            break;
+                        case DebugParameter.CycleRunType.shelfByOrder:
+                            ShelfTestByOrder();
                             break;
                         case DebugParameter.CycleRunType.AGVStation:
                             AGVStationTest();
@@ -182,7 +185,75 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 }
             }
         }
+        private void ShelfTestByOrder()
+        {
+            List<AVEHICLE> vhs = scApp.VehicleBLL.cache.loadVhs();
+            foreach (AVEHICLE vh in vhs)
+            {
+                if (vh.isTcpIpConnect &&
+                    vh.MODE_STATUS == ProtocolFormat.OHTMessage.VHModeStatus.AutoRemote &&
+                    vh.ACT_STATUS == ProtocolFormat.OHTMessage.VHActionStatus.NoCommand &&
+                    !SCUtility.isEmpty(vh.CUR_ADR_ID) &&
+                    vh.HAS_BOX == 0 &&
+                    !scApp.CMDBLL.isCMD_OHTCExcuteByVh(vh.VEHICLE_ID))
+                {
+                    List<string> vh_has_been_excuted_shelf = cycleRunRecord_VhAndShelf[vh.VEHICLE_ID];
+                    List<CassetteData> cassetteDatas = scApp.CassetteDataBLL.loadCassetteData();
+                    if (cassetteDatas == null || cassetteDatas.Count() == 0) return;
+                    //找一份目前儲位的列表
+                    shelfDefs = scApp.ShelfDefBLL.LoadEnableShelf();
+                    //如果取完還是空的 就跳出去
+                    if (shelfDefs == null || shelfDefs.Count == 0)
+                        return;
+                    //去除掉該vh已經跑過的shelf
+                    shelfDefs = shelfDefs.Where(s => !vh_has_been_excuted_shelf.Contains(s.ShelfID))
+                                         .OrderBy(s => s.ShelfID)
+                                         .ToList();
 
+
+                    //取得目前當前在線內的Carrier
+                    //找出在儲位中的Cassette
+                    cassetteDatas = cassetteDatas.
+                        Where(cst => scApp.TransferService.isShelfPort(cst.Carrier_LOC)).ToList();
+                    List<string> current_cst_at_shelf_id = cassetteDatas.
+                        Select(cst => SCUtility.Trim(cst.Carrier_LOC, true)).
+                        ToList();
+                    foreach (var shelf in shelfDefs.ToList())
+                    {
+                        if (current_cst_at_shelf_id.Contains(shelf.ShelfID))
+                        {
+                            shelfDefs.Remove(shelf);
+                        }
+                    }
+
+                    //刪除已經在搬送的
+                    foreach (var cst in cassetteDatas.ToList())
+                    {
+                        if (cst.hasCommandExcute(scApp.CMDBLL))
+                        {
+                            cassetteDatas.Remove(cst);
+                        }
+                    }
+                    //隨機找出一個要放置的shelf
+                    CassetteData process_cst = cassetteDatas[0];
+                    //int task_RandomIndex = rnd_Index.Next(shelfDefs.Count - 1);
+                    ShelfDef target_shelf_def = shelfDefs.First();
+                    scApp.MapBLL.getAddressID(process_cst.Carrier_LOC, out string from_adr);
+                    bool isSuccess = true;
+
+                    isSuccess &= scApp.CMDBLL.doCreatTransferCommand(vh.VEHICLE_ID, "", process_cst.CSTID.Trim(),
+                                        E_CMD_TYPE.LoadUnload,
+                                        process_cst.Carrier_LOC,
+                                        target_shelf_def.ShelfID, 0, 0,
+                                        process_cst.BOXID.Trim(), process_cst.LotID,
+                                        from_adr, target_shelf_def.ADR_ID);
+                    if (isSuccess)
+                    {
+                        cycleRunRecord_VhAndShelf[vh.VEHICLE_ID].Add(target_shelf_def.ShelfID);
+                    }
+                }
+            }
+        }
         private void AGVStationTest()
         {
             List<AVEHICLE> vhs = scApp.VehicleBLL.cache.loadVhs();
