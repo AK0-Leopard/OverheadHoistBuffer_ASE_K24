@@ -30,7 +30,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
     /// Class AlarmMapDao.
     /// </summary>
     /// <seealso cref="com.mirle.ibg3k0.bcf.Data.DaoBase" />
-    public class EQCstTypeMapDao : DaoBase
+    public class PortCstTypeMapDao : DaoBase
     {
         /// <summary>
         /// The logger
@@ -43,23 +43,23 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
         /// <param name="object_id">The eqpt_real_id.</param>
         /// <param name="vhID">The alarm_id.</param>
         /// <returns>AlarmMap.</returns>
-        public EQCstTypeMap getEqCstTypeInfo(SCApplication app, string eqID)
+        public PortCstTypeMap getPortCstTypeInfo(SCApplication app, string portID)
         {
             try
             {
-                DataTable dt = app.OHxCConfig.Tables["EQCSTTYPEMAP"];
+                DataTable dt = app.OHxCConfig.Tables["PORTCSTTYPEMAP"];
                 var query = from c in dt.AsEnumerable()
-                            where c.Field<string>("EQ_ID").Trim() == eqID.Trim()
-                            select new EQCstTypeMap
+                            where c.Field<string>("PORT_ID").Trim() == portID.Trim()
+                            select new PortCstTypeMap
                             {
-                                EQ_ID = c.Field<string>("EQ_ID"),
+                                PORT_ID = c.Field<string>("PORT_ID"),
                                 CST_TYPE = c.Field<string>("CST_TYPE")
                             };
                 return query.SingleOrDefault();
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"get cst type fail,eq id:{eqID}");
+                logger.Error(ex, $"get cst type fail,eq id:{portID}");
                 throw;
             }
         }

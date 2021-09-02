@@ -34,20 +34,20 @@
             this.ADR_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.btn_enable = new System.Windows.Forms.Button();
-            this.btn_disable = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_bay_id = new System.Windows.Forms.Label();
             this.cmb_bay_id = new System.Windows.Forms.ComboBox();
             this.lbl_zoneID = new System.Windows.Forms.Label();
             this.cmb_zoneID = new System.Windows.Forms.ComboBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.btn_enable = new System.Windows.Forms.Button();
+            this.btn_disable = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_shelfData)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgv_shelfData
@@ -60,13 +60,13 @@
             this.Column1});
             this.tableLayoutPanel3.SetColumnSpan(this.dgv_shelfData, 4);
             this.dgv_shelfData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_shelfData.Location = new System.Drawing.Point(3, 42);
+            this.dgv_shelfData.Location = new System.Drawing.Point(3, 41);
             this.dgv_shelfData.MultiSelect = false;
             this.dgv_shelfData.Name = "dgv_shelfData";
             this.dgv_shelfData.ReadOnly = true;
             this.dgv_shelfData.RowTemplate.Height = 24;
             this.dgv_shelfData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_shelfData.Size = new System.Drawing.Size(517, 686);
+            this.dgv_shelfData.Size = new System.Drawing.Size(517, 687);
             this.dgv_shelfData.TabIndex = 0;
             this.dgv_shelfData.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgv_shelfData_RowPrePaint);
             // 
@@ -108,59 +108,6 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Shelf";
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 92.85714F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(535, 825);
-            this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.btn_enable, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btn_disable, 1, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 769);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(529, 53);
-            this.tableLayoutPanel2.TabIndex = 1;
-            // 
-            // btn_enable
-            // 
-            this.btn_enable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_enable.Location = new System.Drawing.Point(3, 3);
-            this.btn_enable.Name = "btn_enable";
-            this.btn_enable.Size = new System.Drawing.Size(94, 47);
-            this.btn_enable.TabIndex = 0;
-            this.btn_enable.Text = "Enable";
-            this.btn_enable.UseVisualStyleBackColor = true;
-            this.btn_enable.Click += new System.EventHandler(this.btn_enable_Click);
-            // 
-            // btn_disable
-            // 
-            this.btn_disable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_disable.Location = new System.Drawing.Point(103, 3);
-            this.btn_disable.Name = "btn_disable";
-            this.btn_disable.Size = new System.Drawing.Size(94, 47);
-            this.btn_disable.TabIndex = 1;
-            this.btn_disable.Text = "Disable";
-            this.btn_disable.UseVisualStyleBackColor = true;
-            this.btn_disable.Click += new System.EventHandler(this.btn_disable_Click);
             // 
             // tableLayoutPanel3
             // 
@@ -224,6 +171,59 @@
             this.cmb_zoneID.TabIndex = 4;
             this.cmb_zoneID.Visible = false;
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 92.85714F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(535, 825);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.btn_enable, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btn_disable, 1, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 769);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(529, 53);
+            this.tableLayoutPanel2.TabIndex = 1;
+            // 
+            // btn_enable
+            // 
+            this.btn_enable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_enable.Location = new System.Drawing.Point(3, 3);
+            this.btn_enable.Name = "btn_enable";
+            this.btn_enable.Size = new System.Drawing.Size(94, 47);
+            this.btn_enable.TabIndex = 0;
+            this.btn_enable.Text = "Enable";
+            this.btn_enable.UseVisualStyleBackColor = true;
+            this.btn_enable.Click += new System.EventHandler(this.btn_enable_Click);
+            // 
+            // btn_disable
+            // 
+            this.btn_disable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_disable.Location = new System.Drawing.Point(103, 3);
+            this.btn_disable.Name = "btn_disable";
+            this.btn_disable.Size = new System.Drawing.Size(94, 47);
+            this.btn_disable.TabIndex = 1;
+            this.btn_disable.Text = "Disable";
+            this.btn_disable.UseVisualStyleBackColor = true;
+            this.btn_disable.Click += new System.EventHandler(this.btn_disable_Click);
+            // 
             // ShelfMaintenanceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -237,10 +237,10 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ShelfMaintenanceForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_shelfData)).EndInit();
             this.groupBox1.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

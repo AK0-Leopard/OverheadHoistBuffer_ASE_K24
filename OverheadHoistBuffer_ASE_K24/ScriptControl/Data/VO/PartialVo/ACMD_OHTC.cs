@@ -14,7 +14,7 @@ namespace com.mirle.ibg3k0.sc
         const string LIGHT_CST_SIGN = "LC";
         const string FOUP_SIGN = "BE";
 
-        public (bool isDefine, string cstType) tryGetCSTType(BLL.PortStationBLL portStationBLL, Service.TransferService transferService)
+        public (bool isDefine, string cstType) tryGetCSTType(BLL.PortStationBLL portStationBLL, BLL.EquipmentBLL equipmentBLL, Service.TransferService transferService)
         {
             try
             {
@@ -38,22 +38,32 @@ namespace com.mirle.ibg3k0.sc
                         }
                     }
                 }
-
-
-                if (!(port_station is MANUAL_PORTSTATION))
+                else if (port_station is MANUAL_PORTSTATION)
                 {
-                    return (false, "");
+                    var manual_port = (port_station as MANUAL_PORTSTATION);
+                    var cst_type = manual_port.getManualPortPLCInfo().CarrierType;
+                    switch (cst_type)
+                    {
+                        case Data.PLC_Functions.MGV.Enums.CstType.A:
+                        case Data.PLC_Functions.MGV.Enums.CstType.B:
+                            return (true, cst_type.ToString());
+                        default:
+                            return (false, "");
+                    }
                 }
-                var manual_port = (port_station as MANUAL_PORTSTATION);
-                var cst_type = manual_port.getManualPortPLCInfo().CarrierType;
-                switch (cst_type)
+                else if (port_station.IsEqPort(equipmentBLL))
                 {
-                    case Data.PLC_Functions.MGV.Enums.CstType.B:
-                    case Data.PLC_Functions.MGV.Enums.CstType.A:
-                        return (true, cst_type.ToString());
-                    default:
+                    if (sc.Common.SCUtility.isEmpty(port_station.CARRIER_CST_TYPE))
+                    {
+                        NLog.LogManager.GetCurrentClassLogger().Warn($"EQPT_ID:{SOURCE} no define cst type map.");
                         return (false, "");
+                    }
+                    else
+                    {
+                        return (true, sc.Common.SCUtility.Trim(port_station.CARRIER_CST_TYPE, true));
+                    }
                 }
+                return (false, "");
             }
             catch (Exception ex)
             {

@@ -1414,19 +1414,7 @@ namespace com.mirle.ibg3k0.sc.Service
             bool isSuccess = true;
             string cmd_id = cmd.CMD_ID;
             string vh_id = cmd.VH_ID;
-            string cst_type = "";
-            var cst_type_get_result = cmd.tryGetCSTType(scApp.PortStationBLL,scApp.TransferService);
-            if (!SCUtility.isEmpty(DebugParameter.CST_TYPE))
-            {
-                cst_type = SCUtility.Trim(DebugParameter.CST_TYPE, true);
-            }
-            else
-            {
-                if (cst_type_get_result.isDefine)
-                {
-                    cst_type = cst_type_get_result.cstType;
-                }
-            }
+            string cst_type = getCSTType(cmd);
             try
             {
                 List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
@@ -1464,6 +1452,25 @@ namespace com.mirle.ibg3k0.sc.Service
                 isSuccess = false;
             }
             return isSuccess;
+        }
+
+        private string getCSTType(ACMD_OHTC cmd)
+        {
+            string cst_type = "";
+            var cst_type_get_result = cmd.tryGetCSTType(scApp.PortStationBLL, scApp.EquipmentBLL, scApp.TransferService);
+            if (!SCUtility.isEmpty(DebugParameter.CST_TYPE))
+            {
+                cst_type = SCUtility.Trim(DebugParameter.CST_TYPE, true);
+            }
+            else
+            {
+                if (cst_type_get_result.isDefine)
+                {
+                    cst_type = cst_type_get_result.cstType;
+                }
+            }
+
+            return cst_type;
         }
 
         public bool TransferRequset(string vh_id, string cmd_id, string mcs_cmd_id, ActiveType activeType, string cst_id, string box_id, string lot_id,

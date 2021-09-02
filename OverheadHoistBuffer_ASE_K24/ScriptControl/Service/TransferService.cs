@@ -10960,7 +10960,7 @@ namespace com.mirle.ibg3k0.sc.Service
                            CarrierID: vh.BOX_ID);
 
                     is_continue = false;
-                    rename_box = CarrierReadFailAtTargetAGV(vh.VEHICLE_ID);
+                    rename_box = CarrierReadFail(vh.VEHICLE_ID);
                 }
                 else
                 {

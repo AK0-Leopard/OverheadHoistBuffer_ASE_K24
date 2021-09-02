@@ -640,7 +640,7 @@
     <None Include="Config\ASE_K24\CSV\ECDATAMAP.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Config\ASE_K24\CSV\EQCSTTYPEMAP.csv">
+    <None Include="Config\ASE_K24\CSV\PORTCSTTYPEMAP.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Config\ASE_K24\CSV\EQPTLOCATIONINFO.csv">

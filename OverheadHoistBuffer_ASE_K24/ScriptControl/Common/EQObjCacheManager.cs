@@ -455,7 +455,6 @@ namespace com.mirle.ibg3k0.sc.Common
                         int Type = eqptConfig.EQPT_Type;
 
 
-                        string carrier_cst_type = getEqCstCarrierType(eqpt_id);
 
                         List<AUNIT> unitListOfEQPT = new List<AUNIT>();
 
@@ -567,6 +566,8 @@ namespace com.mirle.ibg3k0.sc.Common
                             _lockPorStationtDic.Add(port_id, new Object());
                             E_VH_TYPE load_vh_type = (E_VH_TYPE)portStationConfig.Load_Vh_Type;
                             E_VH_TYPE unload_vh_type = (E_VH_TYPE)portStationConfig.Unload_Vh_Type;
+                            string carrier_cst_type = getPortCstCarrierType(eqpt_id);
+
                             if (eqptType == SCAppConstants.EqptType.MANUALPORT)
                             {
                                 portStationList.Add(new MANUAL_PORTSTATION()
@@ -775,9 +776,9 @@ namespace com.mirle.ibg3k0.sc.Common
             return setting;
         }
 
-        private string getEqCstCarrierType(string eqID)
+        private string getPortCstCarrierType(string portID)
         {
-            var setting = scApp.EQCstTypeMapDao.getEqCstTypeInfo(scApp, eqID);
+            var setting = scApp.EQCstTypeMapDao.getPortCstTypeInfo(scApp, portID);
             if (setting == null)
             {
                 return "";

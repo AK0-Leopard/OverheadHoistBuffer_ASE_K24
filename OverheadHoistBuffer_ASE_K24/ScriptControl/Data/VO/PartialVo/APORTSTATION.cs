@@ -100,5 +100,16 @@ namespace com.mirle.ibg3k0.sc
             if (portValueDefMapAction == null) return;
             portValueDefMapAction.SetControllerErrorIndexAsync(index);
         }
+
+        public bool IsEqPort(BLL.EquipmentBLL equipmentBLL)
+        {
+            var eq = equipmentBLL.cache.getEqpt(EQPT_ID);
+            if (eq == null)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Warn($"EQPT_ID:{EQPT_ID} no define");
+                return false;
+            }
+            return eq.Type == SCAppConstants.EqptType.Equipment;
+        }
     }
 }

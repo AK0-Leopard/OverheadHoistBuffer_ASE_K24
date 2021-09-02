@@ -494,8 +494,8 @@ namespace com.mirle.ibg3k0.sc.App
         public HCMD_MCSDao HCMD_MCSDao { get { return hcmd_mcsDao; } }
         private HCMD_OHTCDao hcmd_ohtcDao = null;
         public HCMD_OHTCDao HCMD_OHTCDao { get { return hcmd_ohtcDao; } }
-        private EQCstTypeMapDao eqCstTypeMapDao = null;
-        public EQCstTypeMapDao EQCstTypeMapDao { get { return eqCstTypeMapDao; } }
+        private PortCstTypeMapDao eqCstTypeMapDao = null;
+        public PortCstTypeMapDao EQCstTypeMapDao { get { return eqCstTypeMapDao; } }
 
         //BLL
         /// <summary>
@@ -1287,7 +1287,7 @@ namespace com.mirle.ibg3k0.sc.App
             hcmd_mcsDao = new HCMD_MCSDao();
             hcmd_ohtcDao = new HCMD_OHTCDao();
             flexsimcommandDao = new FlexsimCommandDao();
-            eqCstTypeMapDao = new EQCstTypeMapDao();
+            eqCstTypeMapDao = new PortCstTypeMapDao();
         }
 
         /// <summary>
@@ -1306,7 +1306,7 @@ namespace com.mirle.ibg3k0.sc.App
                 loadCSVToDataset(ohxcConfig, "RETURNCODEMAP");
                 loadCSVToDataset(ohxcConfig, "EQPTLOCATIONINFO");
                 loadCSVToDataset(ohxcConfig, "RESERVEENHANCEINFO");
-                loadCSVToDataset(ohxcConfig, "EQCSTTYPEMAP");
+                loadCSVToDataset(ohxcConfig, "PORTCSTTYPEMAP");
 
                 loadMapInfoCSVToDataset(ohxcConfig, "AADDRESS");
                 loadMapInfoCSVToDataset(ohxcConfig, "ASECTION");

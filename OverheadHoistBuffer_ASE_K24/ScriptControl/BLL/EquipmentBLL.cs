@@ -52,6 +52,13 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 this.eqObjCacheManager = eqObjCacheManager;
             }
+            public AEQPT getEqpt(string eqID)
+            {
+                var eqpt = eqObjCacheManager.getAllEquipment().
+                                  Where(eq => SCUtility.isMatche(eq.EQPT_ID, eqID)).
+                                  FirstOrDefault();
+                return eqpt;
+            }
 
             public bool IsInMatainSpace(string adrID)
             {

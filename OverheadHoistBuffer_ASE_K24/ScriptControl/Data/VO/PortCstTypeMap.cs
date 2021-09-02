@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.Data.VO
 {
-    public class EQCstTypeMap
+    public class PortCstTypeMap
     {
-        public string EQ_ID, CST_TYPE;
+        public string PORT_ID, CST_TYPE;
     }
 }
