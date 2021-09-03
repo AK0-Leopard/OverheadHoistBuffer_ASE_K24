@@ -80,8 +80,11 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public void startMapAction()
         {
-            cost_mcsDefaultMapAction = scApp.getEQObjCacheManager().
-                getLine().getMapActionByIdentityKey(typeof(ASEMCSDefaultMapAction).Name) as ASEMCSDefaultMapAction;
+            cost_mcsDefaultMapAction = scApp
+                .getEQObjCacheManager()
+                .getLine()
+                .getMapActionByIdentityKey(typeof(ASEMCSDefaultMapAction).Name) as ASEMCSDefaultMapAction;
+
             if (cost_mcsDefaultMapAction != null)
             {
                 iBSEMDriver = cost_mcsDefaultMapAction;
@@ -1897,9 +1900,9 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public bool ReportForcedRemoveCarrier(CassetteData cassetteData)
         {
-            bool isSuccsess = true;
-            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendCarrierRemovedCompleted(cassetteData, null);
-            return isSuccsess;
+            var driver = iBSEMDriver as ASEMCSDefaultMapAction;
+            var result = driver.SimplySendCarrierRemovedCompleted(cassetteData);
+            return result;
         }
 
         public bool ReportPortDirectionChanged(string portName, bool newDirectionIsInMode)
