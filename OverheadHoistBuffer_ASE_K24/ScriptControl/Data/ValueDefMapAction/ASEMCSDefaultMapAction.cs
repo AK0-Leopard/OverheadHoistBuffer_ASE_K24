@@ -4769,6 +4769,32 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             }
         }
 
+        public bool SimplySendCarrierRemovedCompleted(CassetteData cassette)
+        {
+            try
+            {
+                var vids = new VIDCollection();
+
+                var zonename = scApp.CassetteDataBLL.GetZoneName(cassette.Carrier_LOC);
+
+                vids.VIDITEM_54_DVVAL_CarrierID.CARRIER_ID = cassette.CSTID;
+                vids.VIDITEM_56_DVVAL_CarrierLoc.CARRIER_LOC = cassette.Carrier_LOC;
+                vids.VIDITEM_370_DVVAL_CarrierZoneName.CARRIER_ZONE_NAME = zonename;
+                vids.VIDITEM_179_DVVAL_BOXID.BOX_ID = cassette.BOXID;
+
+                var mcs_queue = S6F11BulibMessage(SECSConst.CEID_Carrier_Removed_Completed, vids);
+
+                S6F11SendMessage(mcs_queue);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(ASEMCSDefaultMapAction), Device: DEVICE_NAME_MCS, Data: ex);
+                return false;
+            }
+        }
+
         //public override bool S6F11SendCarrierInstalled(string vhID, string carrierID, string transferPort, List<AMCSREPORTQUEUE> reportQueues = null)
         //{
         //    try
