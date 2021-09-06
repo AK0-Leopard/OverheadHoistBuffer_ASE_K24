@@ -56,6 +56,7 @@ namespace com.mirle.ibg3k0.sc
         {
             return new PortPLCInfo()
             {
+                EQ_ID = mgvPortInfo.EQ_ID,
                 OpAutoMode = mgvPortInfo.IsRun,
                 OpManualMode = mgvPortInfo.IsDown,
                 OpError = mgvPortInfo.IsAlarm,

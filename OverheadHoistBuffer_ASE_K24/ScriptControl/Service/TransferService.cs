@@ -6593,23 +6593,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     || idRead == IDreadStatus.CSTReadFail_BoxIsOK
                         )
                 {
-                    //if (idRead == IDreadStatus.CSTReadFail_BoxIsOK)
-                    //{
-                    //    newData.CSTID = CarrierReadFail(newData.Carrier_LOC.Trim());
-                    //}
-
-                    //if (idRead == IDreadStatus.BoxReadFail_CstIsOK)
-                    //{
-                    //    newData.BOXID = CarrierReadFail(newData.Carrier_LOC.Trim());
-                    //    newData.CSTID = newData.BOXID;
-                    //}
-
-                    //if (idRead == IDreadStatus.mismatch)
-                    //{
-                    //    newData.BOXID = bcrcsid.BOXID;
-                    //    newData.CSTID = CarrierReadFail(newData.Carrier_LOC.Trim());
-                    //}
-
+                   
                     if (newData.BOXID.Contains("UNKF") && isUnitType(dbData.Carrier_LOC, UnitType.CRANE)
                       )
                     {
@@ -6791,9 +6775,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else if (vehicle != null)
                 {
-                    if (cassette_dataBLL.loadCassetteDataByBoxID(datainfo.BOXID) != null
-                           || cassette_dataBLL.loadCassetteDataByBoxID(datainfo.CSTID) != null
-                         )
+                    if (cassette_dataBLL.loadCassetteDataByBoxID(datainfo.BOXID) != null)
                     {
                         Duplicate(datainfo);
                     }

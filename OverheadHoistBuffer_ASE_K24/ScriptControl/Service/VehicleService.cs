@@ -2293,20 +2293,45 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     if (has_cst_on_vh)
                     {
+                        var carrier_data = scApp.CassetteDataBLL.loadCassetteDataByLoc(eqpt.VEHICLE_ID);
                         if (is_bcr_read_fail)
                         {
-                            var carrier_data = scApp.CassetteDataBLL.loadCassetteDataByLoc(eqpt.VEHICLE_ID);
                             if (carrier_data != null)
                             {
                                 final_cst_id = carrier_data.BOXID;
+                                TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 非在執行命令中，身上有CST但CST ID為unknwon:{cstID}，故使用DB中的帳將其rename為:{final_cst_id}");
+                            }
+                            else
+                            {
+                                string new_carrier_id =
+                                  $"UNKF{eqpt.Real_ID.Trim()}{DateTime.Now.ToString(SCAppConstants.TimestampFormat_12)}";
+                                final_cst_id = new_carrier_id;
+                                scApp.TransferService.OHBC_InsertCassette(new_carrier_id, eqpt.VEHICLE_ID, "TransferReportInitial");
+                                TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 非在執行命令中，身上有CST但CST ID為unknwon:{cstID}，故將其rename為unknown id:{final_cst_id}");
                             }
                         }
                         else
                         {
-                            string new_carrier_id =
-                              $"UNKF{eqpt.Real_ID.Trim()}{DateTime.Now.ToString(SCAppConstants.TimestampFormat_12)}";
-                            final_cst_id = new_carrier_id;
-                            scApp.TransferService.OHBC_InsertCassette(new_carrier_id, eqpt.VEHICLE_ID, "TransferReportInitial");
+                            if (carrier_data != null)
+                            {
+                                if (SCUtility.isMatche(carrier_data.BOXID, cstID))
+                                {
+                                    //not thing...
+                                    TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 非在執行命令中，身上有CST但CST ID為:{cstID}，與原本在身上的ID一致，故不進行調整");
+                                }
+                                else
+                                {
+                                    final_cst_id = cstID;
+                                    scApp.TransferService.OHBC_InsertCassette( final_cst_id, eqpt.VEHICLE_ID, "TransferReportInitial");
+                                    TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 非在執行命令中，身上有CST但CST ID為:{cstID}，與資料庫的不一樣db cst id:{carrier_data.BOXID},故將其進行對資料庫的rename");
+                                }
+                            }
+                            else
+                            {
+                                final_cst_id = cstID;
+                                scApp.TransferService.OHBC_InsertCassette(final_cst_id, eqpt.VEHICLE_ID, "TransferReportInitial");
+                                TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 非在執行命令中，身上有CST但CST ID為:{cstID}，但db中無該vh的帳料，進行建帳");
+                            }
                         }
                     }
                     else
@@ -2315,6 +2340,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         if (carrier_data != null)
                         {
                             scApp.TransferService.ForceDeleteCst(carrier_data.BOXID, "TransferReportInitial");
+                            TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 非在執行命令中，身上無CST，但db中有該vh的帳料:{carrier_data.BOXID}，進行刪除帳料");
                         }
                     }
                     replyTranEventReport(bcfApp, eventType, eqpt, seq_num,
