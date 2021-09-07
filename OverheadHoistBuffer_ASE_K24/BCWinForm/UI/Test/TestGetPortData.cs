@@ -462,11 +462,11 @@ namespace com.mirle.ibg3k0.bc.winform
         {
             try
             {
-                foreach (DataGridViewCell v in dataGridView5.SelectedCells)
-                {
-                    string portName = dataGridView5.Rows[v.RowIndex].Cells["VEHICLE_ID"].Value.ToString();
-                    transferService.iniOHTData(portName, "UI_TestGetPortData");
-                }
+                //foreach (DataGridViewCell v in dataGridView5.SelectedCells)
+                //{
+                //    string portName = dataGridView5.Rows[v.RowIndex].Cells["VEHICLE_ID"].Value.ToString();
+                //    transferService.iniOHTData(portName, "UI_TestGetPortData");
+                //}
             }
             catch
             {

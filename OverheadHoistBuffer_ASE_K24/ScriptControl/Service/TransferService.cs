@@ -670,110 +670,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        public void iniOHTData(string craneName, string apiSource)
-        {
-            TransferServiceLogger.Info
-            (DateTime.Now.ToString("HH:mm:ss.fff ")
-                + craneName + " iniOHTData 初始化開始，誰呼叫: " + apiSource);
 
-            AVEHICLE vehicle = scApp.VehicleService.GetVehicleDataByVehicleID(craneName);
-            //vehicle.CUR_ADR_ID    //存放車子現在位置
-            if (vehicle.isTcpIpConnect == false)
-            {
-                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + craneName + " 連線狀態(isTcpIpConnect) : " + vehicle.isTcpIpConnect + " iniOHTData 初始化失敗 ");
-                return;
-            }
-
-            #region 命令
-
-            foreach (var mcsCmd in cmdBLL.getCMD_ByOHTName(craneName))
-            {
-                bool deleteCmd = false;
-                string log = "";
-
-                if (vehicle.ACT_STATUS == VHActionStatus.NoCommand)
-                {
-                    log = " 沒有命令";
-                    deleteCmd = true;
-                }
-                else
-                {
-                    if (vehicle.MCS_CMD.Trim() != mcsCmd.CMD_ID.Trim())
-                    {
-                        log = " 命令名稱不一樣，vehicle.MCS_CMD: " + vehicle.MCS_CMD;
-                        deleteCmd = true;
-                    }
-                }
-
-                if (deleteCmd)
-                {
-                    TransferServiceLogger.Info
-                    (DateTime.Now.ToString("HH:mm:ss.fff ")
-                        + "iniOHTData " + craneName + log + "，刪除:" + GetCmdLog(mcsCmd)
-                    );
-
-                    Manual_DeleteCmd(mcsCmd.CMD_ID, "iniOHTData");
-
-                    Task.Run(() =>
-                    {
-                        cmdBLL.forceUpdataCmdStatus2FnishByVhID(craneName); // Force finish Cmd
-                    });
-                }
-            }
-
-            if (vehicle.ACT_STATUS == VHActionStatus.NoCommand && string.IsNullOrWhiteSpace(vehicle.MCS_CMD) == false)
-            {
-                Task.Run(() =>
-                {
-                    cmdBLL.forceUpdataCmdStatus2FnishByVhID(craneName); // Force finish Cmd
-                });
-            }
-
-            #endregion 命令
-
-            #region 卡匣
-
-            CassetteData dbOHT_CSTdata = cassette_dataBLL.loadCassetteDataByLoc(craneName);
-
-            if (vehicle.HAS_CST == 1)
-            {
-                CassetteData nowOHT_CSTdata = new CassetteData();
-                //nowOHT_CSTdata.CSTID = "ERROR1";
-                nowOHT_CSTdata.BOXID = vehicle.BOX_ID.Trim();
-                nowOHT_CSTdata.Carrier_LOC = craneName;
-
-                nowOHT_CSTdata = IDRead(nowOHT_CSTdata);
-
-                if (dbOHT_CSTdata != null)
-                {
-                    if (vehicle.BOX_ID.Trim() != dbOHT_CSTdata.BOXID.Trim())
-                    {
-                        DeleteCst(dbOHT_CSTdata.CSTID, dbOHT_CSTdata.BOXID, "iniOHTData");
-
-                        OHBC_InsertCassette(nowOHT_CSTdata.BOXID, nowOHT_CSTdata.Carrier_LOC, "iniOHTData");
-                    }
-                }
-                else
-                {
-                    OHBC_InsertCassette(nowOHT_CSTdata.BOXID, nowOHT_CSTdata.Carrier_LOC, "iniOHTData");
-                }
-            }
-            else
-            {
-                if (dbOHT_CSTdata != null)
-                {
-                    DeleteCst(dbOHT_CSTdata.CSTID, dbOHT_CSTdata.BOXID, "iniOHTData");
-                }
-            }
-
-            #endregion 卡匣
-
-            //
-            //ACMD_MCS cmd = cmdBLL.getCMD_ByOHTName(craneName).FirstOrDefault();
-
-            //    AVEHICLE.HAS_BOX
-            //    AVEHICLE.HAS_CST 車上有沒有料
-        }
 
         public void iniCstData()    //卡匣資料初始化，刪除殘帳
         {
@@ -4588,59 +4485,6 @@ namespace com.mirle.ibg3k0.sc.Service
 
                         if (service == E_PORT_STATUS.InService)
                         {
-                            if (isUnitType(portDB.PLCPortID, UnitType.AGV))
-                            {
-                                if (portDB.PortType == E_PortType.In)
-                                {
-                                    reportBLL.ReportTypeInput(portDB.PLCPortID.Trim());
-
-                                    ACMD_MCS agvStationCmd = cmdBLL.GetCmdDataByAGVtoSHELF(portDB.PLCPortID);
-
-                                    if (agvStationCmd != null)
-                                    {
-                                        #region Log
-
-                                        TransferServiceLogger.Info
-                                        (
-                                            DateTime.Now.ToString("HH:mm:ss.fff ")
-                                            + " PLC >> OHB|取消退空 BOX 命令  " + GetCmdLog(agvStationCmd)
-                                        );
-
-                                        #endregion Log
-
-                                        if (agvStationCmd.TRANSFERSTATE == E_TRAN_STATUS.Queue)
-                                        {
-                                            Manual_DeleteCmd(agvStationCmd.CMD_ID, "AGV 狀態 InService，取消退空 BOX 命令");
-                                            //DeleteCst(agvStationCmd.CARRIER_ID, agvStationCmd.BOX_ID, "AGV 狀態 InService，取消退空 BOX 命令");
-                                        }
-                                    }
-                                }
-
-                                if (portDB.PortType == E_PortType.Out)
-                                {
-                                    reportBLL.ReportPortTypeOutput(portDB.PLCPortID.Trim());
-
-                                    ACMD_MCS agvStationCmd = cmdBLL.GetCmdDataBySHELFtoAGV(portDB.PLCPortID);
-
-                                    if (agvStationCmd != null)
-                                    {
-                                        #region Log
-
-                                        TransferServiceLogger.Info
-                                        (
-                                            DateTime.Now.ToString("HH:mm:ss.fff ")
-                                            + " PLC >> OHB|取消補空 BOX 命令  " + GetCmdLog(agvStationCmd)
-                                        );
-
-                                        #endregion Log
-
-                                        if (agvStationCmd.TRANSFERSTATE == E_TRAN_STATUS.Queue)
-                                        {
-                                            Manual_DeleteCmd(agvStationCmd.CMD_ID, "AGV 狀態 InService，取消補空 BOX 命令");
-                                        }
-                                    }
-                                }
-                            }
 
                             reportBLL.ReportPortInService(portName);
                         }
@@ -4651,15 +4495,6 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                     else
                     {
-                        if (isUnitType(portName, UnitType.AGV) && service == E_PORT_STATUS.InService)
-                        {
-                            string AGVZone = portINIData[portName].Group;
-
-                            if (portINIData[AGVZone].openAGVZone == E_PORT_STATUS.InService)
-                            {
-                                OpenAGV_Station(portName, false, "PortInOutService");
-                            }
-                        }
 
                         if (iniStatus == false)
                         {
@@ -5362,138 +5197,6 @@ namespace com.mirle.ibg3k0.sc.Service
                         }
                     }
 
-                    foreach (var v in AGVPortGroup)
-                    {
-                        if (portName == v.PLCPortID.Trim())
-                        {
-                            continue;
-                        }
-
-                        #region Log
-
-                        TransferServiceLogger.Info
-                        (
-                            DateTime.Now.ToString("HH:mm:ss.fff ")
-                            + "IsOutputMode: " + v.IsOutputMode
-                            + "PortWaitOut: " + v.PortWaitOut
-                            + "LoadPosition1: " + v.LoadPosition1
-                            + "IsCSTPresence: " + v.IsCSTPresence
-                        );
-
-                        #endregion Log
-
-                        #region 流向對調
-
-                        #region 檢查有沒有命令要搬到其他 AGV Port
-
-                        ACMD_MCS cmdDest = cmdBLL.GetCmdDataByDest(v.PLCPortID).FirstOrDefault();
-
-                        if (cmdDest != null)
-                        {
-                            if (v.PortType == E_PortType.Out)
-                            {
-                                //發現有命令要搬到OutMode
-                                SetPortTypeCmd(portName, E_PortType.Out);
-                                check = true;
-
-                                #region Log
-
-                                TransferServiceLogger.Info
-                                (
-                                    DateTime.Now.ToString("HH:mm:ss.fff ")
-                                    + "有命令要搬到其他 AGV Port， "
-                                    + portName + " 自動切 Out"
-                                );
-
-                                #endregion Log
-
-                                break;
-                            }
-                        }
-
-                        #endregion 檢查有沒有命令要搬到其他 AGV Port
-
-                        #region 檢查其他 AGV Port 是否為 OutMode 且 WaitOut
-
-                        if (v.IsOutputMode && v.PortWaitOut)
-                        {
-                            SetPortTypeCmd(portName, E_PortType.Out);
-                            check = true;
-
-                            #region Log
-
-                            TransferServiceLogger.Info
-                            (
-                                DateTime.Now.ToString("HH:mm:ss.fff ")
-                                + "其他 AGV Port 是否為 OutMode 且 WaitOut， "
-                                + portName + " 自動切 Out"
-                            );
-
-                            #endregion Log
-
-                            break;
-                        }
-
-                        #endregion 檢查其他 AGV Port 是否為 OutMode 且 WaitOut
-
-                        #region 檢查其他 AGV Port 是否為 OutMode ，上面有空 BOX
-
-                        if (v.IsOutputMode && v.LoadPosition1 && v.IsCSTPresence == false)
-                        {
-                            ACMD_MCS cmdSource = cmdBLL.GetCmdDataBySource(v.PLCPortID);
-
-                            if (cmdSource != null)
-                            {
-                                if (cmdSource.CMDTYPE == CmdType.AGVStation.ToString())
-                                {
-                                    if (cmdSource.TRANSFERSTATE == E_TRAN_STATUS.Queue)
-                                    {
-                                        Manual_DeleteCmd(cmdSource.CMD_ID, "流向對調，取消退");
-
-                                        SetPortTypeCmd(v.PLCPortID, E_PortType.In);
-                                        SetPortTypeCmd(portName, E_PortType.Out);
-                                        check = true;
-
-                                        #region Log
-
-                                        TransferServiceLogger.Info
-                                        (
-                                            DateTime.Now.ToString("HH:mm:ss.fff ")
-                                            + "刪除退BOX命令，其他 AGV Port 是否為 OutMode ，上面有空 BOX， "
-                                            + portName + " 自動切 Out"
-                                        );
-
-                                        #endregion Log
-
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                SetPortTypeCmd(v.PLCPortID, E_PortType.In);
-                                SetPortTypeCmd(portName, E_PortType.Out);
-                                check = true;
-
-                                #region Log
-
-                                TransferServiceLogger.Info
-                                (
-                                    DateTime.Now.ToString("HH:mm:ss.fff ")
-                                    + "其他 AGV Port 是否為 OutMode ，上面有空 BOX， "
-                                    + portName + " 自動切 Out"
-                                );
-
-                                #endregion Log
-
-                                break;
-                            }
-                        }
-
-                        #endregion 檢查其他 AGV Port 是否為 OutMode ，上面有空 BOX
-
-                        #endregion 流向對調
-                    }
                 }
 
                 if (plcInfo.IsOutputMode && plcInfo.LoadPosition1 && plcInfo.IsCSTPresence == false)   //PLC 目前為 InputMode 且上面 有空BOX
@@ -5551,73 +5254,6 @@ namespace com.mirle.ibg3k0.sc.Service
 
                             #endregion Log
                         }
-                    }
-
-                    foreach (var v in AGVPortGroup)
-                    {
-                        if (portName == v.PLCPortID.Trim())
-                        {
-                            continue;
-                        }
-
-                        #region Log
-
-                        TransferServiceLogger.Info
-                        (
-                            DateTime.Now.ToString("HH:mm:ss.fff ")
-                            + "IsInputMode: " + v.IsInputMode
-                            + "PortWaitIn: " + v.PortWaitIn
-                            + "LoadPosition1: " + v.LoadPosition1
-                        );
-
-                        #endregion Log
-
-                        #region 流向對調
-
-                        #region 檢查其他 AGV Port 是否為 InMode 且 WaitIn
-
-                        if (v.IsInputMode && v.PortWaitIn)
-                        {
-                            SetPortTypeCmd(portName, E_PortType.In);
-                            check = true;
-                            break;
-                        }
-
-                        #endregion 檢查其他 AGV Port 是否為 InMode 且 WaitIn
-
-                        #region 檢查其他 AGV Port 是否為 InMode ，上面沒 BOX
-
-                        if (v.IsInputMode && v.LoadPosition1 == false)
-                        {
-                            ACMD_MCS cmdDest = cmdBLL.GetCmdDataByDest(v.PLCPortID).FirstOrDefault();
-
-                            if (cmdDest != null)
-                            {
-                                if (cmdDest.CMDTYPE == CmdType.AGVStation.ToString())
-                                {
-                                    if (cmdDest.TRANSFERSTATE == E_TRAN_STATUS.Queue)
-                                    {
-                                        Manual_DeleteCmd(cmdDest.CMD_ID, "流向對調，取消補");
-
-                                        SetPortTypeCmd(v.PLCPortID, E_PortType.Out);
-                                        SetPortTypeCmd(portName, E_PortType.In);
-                                        check = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                SetPortTypeCmd(v.PLCPortID, E_PortType.Out);
-                                SetPortTypeCmd(portName, E_PortType.In);
-                                check = true;
-                                break;
-                            }
-                        }
-
-                        #endregion 檢查其他 AGV Port 是否為 InMode ，上面沒 BOX
-
-                        #endregion 流向對調
                     }
                 }
                 return check;
@@ -5740,47 +5376,47 @@ namespace com.mirle.ibg3k0.sc.Service
 
         public void PLC_AGV_CancelCmd(string portID) //取消補退BOX的命令
         {
-            string portName = portID.Trim();
-            ACMD_MCS cmdAGVtoSHELF = cmdBLL.GetCmdDataByAGVtoSHELF(portName);
-            ACMD_MCS cmdSHELFtoAGV = cmdBLL.GetCmdDataBySHELFtoAGV(portName);
+            //string portName = portID.Trim();
+            //ACMD_MCS cmdAGVtoSHELF = cmdBLL.GetCmdDataByAGVtoSHELF(portName);
+            //ACMD_MCS cmdSHELFtoAGV = cmdBLL.GetCmdDataBySHELFtoAGV(portName);
 
-            if (cmdAGVtoSHELF != null)
-            {
-                if (cmdAGVtoSHELF.TRANSFERSTATE == E_TRAN_STATUS.Queue)
-                {
-                    #region Log
+            //if (cmdAGVtoSHELF != null)
+            //{
+            //    if (cmdAGVtoSHELF.TRANSFERSTATE == E_TRAN_STATUS.Queue)
+            //    {
+            //        #region Log
 
-                    TransferServiceLogger.Info
-                    (
-                        DateTime.Now.ToString("HH:mm:ss.fff ") +
-                        "PLC >> OHB|PLC_AGV_CancelCmd 取消退 BOX 命令\n"
-                        + GetCmdLog(cmdAGVtoSHELF)
-                    );
+            //        TransferServiceLogger.Info
+            //        (
+            //            DateTime.Now.ToString("HH:mm:ss.fff ") +
+            //            "PLC >> OHB|PLC_AGV_CancelCmd 取消退 BOX 命令\n"
+            //            + GetCmdLog(cmdAGVtoSHELF)
+            //        );
 
-                    #endregion Log
+            //        #endregion Log
 
-                    Manual_DeleteCmd(cmdAGVtoSHELF.CMD_ID, "取消退 BOX 命令");
-                }
-            }
+            //        Manual_DeleteCmd(cmdAGVtoSHELF.CMD_ID, "取消退 BOX 命令");
+            //    }
+            //}
 
-            if (cmdSHELFtoAGV != null)
-            {
-                if (cmdSHELFtoAGV.TRANSFERSTATE == E_TRAN_STATUS.Queue)
-                {
-                    #region Log
+            //if (cmdSHELFtoAGV != null)
+            //{
+            //    if (cmdSHELFtoAGV.TRANSFERSTATE == E_TRAN_STATUS.Queue)
+            //    {
+            //        #region Log
 
-                    TransferServiceLogger.Info
-                    (
-                        DateTime.Now.ToString("HH:mm:ss.fff ") +
-                        "PLC >> OHB|PLC_AGV_CancelCmd 取消補 BOX 命令\n"
-                        + GetCmdLog(cmdSHELFtoAGV)
-                    );
+            //        TransferServiceLogger.Info
+            //        (
+            //            DateTime.Now.ToString("HH:mm:ss.fff ") +
+            //            "PLC >> OHB|PLC_AGV_CancelCmd 取消補 BOX 命令\n"
+            //            + GetCmdLog(cmdSHELFtoAGV)
+            //        );
 
-                    #endregion Log
+            //        #endregion Log
 
-                    Manual_DeleteCmd(cmdSHELFtoAGV.CMD_ID, "取消補 BOX 命令");
-                }
-            }
+            //        Manual_DeleteCmd(cmdSHELFtoAGV.CMD_ID, "取消補 BOX 命令");
+            //    }
+            //}
         }
 
         #endregion 補BOX、退BOX，控制處理
@@ -6380,18 +6016,27 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else if (cmdData.TRANSFERSTATE == E_TRAN_STATUS.Canceling)
                 {
-                    ForcedEndCmd(cmdData);
+                    ForcedEndCmdByCancelingOrAborting(cmdData);
                 }
                 else if (cmdData.TRANSFERSTATE == E_TRAN_STATUS.Aborting)
                 {
-                    ForcedEndCmd(cmdData);
+                    ForcedEndCmdByCancelingOrAborting(cmdData);
                 }
                 else
                 {
                     if (cmdData.COMMANDSTATE < COMMAND_STATUS_BIT_INDEX_UNLOAD_COMPLETE)
                     {
                         reportBLL.ReportOperatorInitiatedAction(cmdData.CMD_ID, reportMCSCommandType.Abort.ToString());
-                        scApp.VehicleService.doCancelOrAbortCommandByMCSCmdID(cmdData.CMD_ID, CMDCancelType.CmdAbort);
+
+                        AVEHICLE crane = scApp.VehicleBLL.cache.getVhByID(cmdData.CRANE);
+                        if (crane == null || crane.isTcpIpConnect == false || sc.Common.SCUtility.isMatche(crane.MCS_CMD, cmdData.CMD_ID) == false)
+                        {
+                            ForcedEndCmd(cmdData);
+                        }
+                        else
+                        {
+                            scApp.VehicleService.doCancelOrAbortCommandByMCSCmdID(cmdData.CMD_ID, CMDCancelType.CmdAbort);
+                        }
                     }
                     else
                     {
@@ -6410,8 +6055,14 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
             }
         }
-
         public void ForcedEndCmd(ACMD_MCS cmdData)
+        {
+            scApp.CMDBLL.updateCMD_MCS_TranStatus(cmdData.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+            scApp.ReportBLL.ReportTransferAbortInitiated(cmdData.CMD_ID);
+            scApp.ReportBLL.ReportTransferAbortCompleted(cmdData.CMD_ID);
+
+        }
+        public void ForcedEndCmdByCancelingOrAborting(ACMD_MCS cmdData)
         {
             AVEHICLE vehicle = scApp.VehicleService.GetVehicleDataByVehicleID(cmdData.CRANE.Trim());
 
@@ -6593,7 +6244,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     || idRead == IDreadStatus.CSTReadFail_BoxIsOK
                         )
                 {
-                   
+
                     if (newData.BOXID.Contains("UNKF") && isUnitType(dbData.Carrier_LOC, UnitType.CRANE)
                       )
                     {
@@ -10840,23 +10491,20 @@ namespace com.mirle.ibg3k0.sc.Service
 
                     #endregion Log
 
-                    if (ohtBoxData.BOXID != dbCstData.BOXID)
+
+                    IDreadStatus idReadStatus = (IDreadStatus)int.Parse(ohtBoxData.ReadStatus);
+                    string resultCode = ResultCode.Successful;
+
+                    resultCode = ResultCode.BoxID_Mismatch;
+                    idReadStatus = IDreadStatus.mismatch;
+
+                    reportBLL.ReportCarrierIDRead(ohtBoxData, ((int)idReadStatus).ToString());
+
+                    if (cmd.CMD_ID.Contains("SCAN") == false)
                     {
-
-                        IDreadStatus idReadStatus = (IDreadStatus)int.Parse(ohtBoxData.ReadStatus);
-                        string resultCode = ResultCode.Successful;
-
-                        resultCode = ResultCode.BoxID_Mismatch;
-                        idReadStatus = IDreadStatus.mismatch;
-
-                        reportBLL.ReportCarrierIDRead(ohtBoxData, ((int)idReadStatus).ToString());
-
-                        if (cmd.CMD_ID.Contains("SCAN") == false)
-                        {
-                            reportBLL.ReportTransferCompleted(cmd, dbCstData, resultCode);
-                        }
-                        HaveAccountHaveReal(dbCstData, ohtBoxData, idReadStatus);
+                        reportBLL.ReportTransferCompleted(cmd, dbCstData, resultCode);
                     }
+                    HaveAccountHaveReal(dbCstData, ohtBoxData, idReadStatus);
                 }
             }
             catch (Exception ex)

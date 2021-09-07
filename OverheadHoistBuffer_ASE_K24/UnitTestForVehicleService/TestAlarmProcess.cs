@@ -27,7 +27,7 @@ namespace UnitTestForMGVPort
         #endregion GET
 
         [Test]
-        public void 發生Alarm_InMode無物無命令__上報MCS_AlarmSet()
+        public void 車子上報_MISMATCH_是否()
         {
 
         }
