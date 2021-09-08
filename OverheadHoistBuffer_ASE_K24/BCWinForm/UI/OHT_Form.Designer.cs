@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnl_Map = new System.Windows.Forms.Panel();
@@ -48,6 +48,8 @@
             this.ck_montor_vh = new System.Windows.Forms.CheckBox();
             this.cb_autoTip = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txt_cstType = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.txt_boxID = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.txt_cstID = new System.Windows.Forms.TextBox();
@@ -125,8 +127,6 @@
             this.utilityLog_SECS = new com.mirle.ibg3k0.bc.winform.UI.Components.UtilityLog();
             this.timer_TimedUpdates = new System.Windows.Forms.Timer(this.components);
             this.vehicleObjToShowBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.txt_cstType = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -405,6 +405,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Specify Path";
             // 
+            // txt_cstType
+            // 
+            this.txt_cstType.Location = new System.Drawing.Point(76, 413);
+            this.txt_cstType.Name = "txt_cstType";
+            this.txt_cstType.Size = new System.Drawing.Size(207, 26);
+            this.txt_cstType.TabIndex = 14;
+            this.txt_cstType.TextChanged += new System.EventHandler(this.txt_cstType_TextChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(21, 416);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(45, 19);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "Type";
+            // 
             // txt_boxID
             // 
             this.txt_boxID.Location = new System.Drawing.Point(76, 373);
@@ -682,14 +699,14 @@
             this.dgv_vhStatus.AllowUserToDeleteRows = false;
             this.dgv_vhStatus.AutoGenerateColumns = false;
             this.dgv_vhStatus.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_vhStatus.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_vhStatus.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_vhStatus.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_vhStatus.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.vEHICLEIDDataGridViewTextBoxColumn,
@@ -1170,24 +1187,6 @@
             // vehicleObjToShowBindingSource
             // 
             this.vehicleObjToShowBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ObjectRelay.VehicleObjToShow);
-            // 
-            // txt_cstType
-            // 
-            this.txt_cstType.Location = new System.Drawing.Point(76, 413);
-            this.txt_cstType.Name = "txt_cstType";
-            this.txt_cstType.Size = new System.Drawing.Size(207, 26);
-            this.txt_cstType.TabIndex = 14;
-            this.txt_cstType.Text = "A";
-            this.txt_cstType.TextChanged += new System.EventHandler(this.txt_cstType_TextChanged);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(21, 416);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(45, 19);
-            this.label9.TabIndex = 13;
-            this.label9.Text = "Type";
             // 
             // OHT_Form
             // 

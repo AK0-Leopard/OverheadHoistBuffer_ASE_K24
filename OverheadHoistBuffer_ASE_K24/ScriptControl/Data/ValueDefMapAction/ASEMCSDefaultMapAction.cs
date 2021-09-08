@@ -1735,8 +1735,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             //List<PortDef> port_station = scApp.PortDefBLL.GetOHB_PortData(ohbName);
             List<PortDef> port_station = scApp.PortDefBLL.GetOHB_CVPortData(ohbName);
 
-            int port_count = port_station.Count;
 
+
+            int port_count = port_station.Count;
             string control_state = SCAppConstants.LineHostControlState.convert2MES(line.Host_Control_State);
             S6F11.RPTINFO.RPTITEM.VIDITEM_118_SV viditem_118 = new S6F11.RPTINFO.RPTITEM.VIDITEM_118_SV();
             viditem_118.PORT_INFO_OBJ = new S6F11.RPTINFO.RPTITEM.VIDITEM_354_SV[port_count];

@@ -566,7 +566,7 @@ namespace com.mirle.ibg3k0.sc.Common
                             _lockPorStationtDic.Add(port_id, new Object());
                             E_VH_TYPE load_vh_type = (E_VH_TYPE)portStationConfig.Load_Vh_Type;
                             E_VH_TYPE unload_vh_type = (E_VH_TYPE)portStationConfig.Unload_Vh_Type;
-                            string carrier_cst_type = getPortCstCarrierType(eqpt_id);
+                            string carrier_cst_type = getPortCstCarrierType(port_id);
 
                             if (eqptType == SCAppConstants.EqptType.MANUALPORT)
                             {
@@ -680,12 +680,23 @@ namespace com.mirle.ibg3k0.sc.Common
 
         private PortDef getPortDefObj(string lineID, string zoneName, PortStationConfigSection portStationConfig, SCAppConstants.EqptType eqptType)
         {
+            E_PORT_STATUS port_status = E_PORT_STATUS.OutOfService;
+            if (eqptType == SCAppConstants.EqptType.Equipment)
+            {
+                port_status = E_PORT_STATUS.InService;
+            }
+            else
+            {
+                port_status = E_PORT_STATUS.OutOfService;
+            }
+
             return new PortDef()
             {
                 PLCPortID = portStationConfig.Port_ID,
                 UnitType = getPortDefUnitType(eqptType),
                 OHBName = lineID,
-                State = E_PORT_STATUS.OutOfService,
+                //State = E_PORT_STATUS.OutOfService,
+                State = port_status,
                 Stage = 1,
                 AGVState = E_PORT_STATUS.NoDefinition,
                 HostEQPortID = null,
@@ -1796,14 +1807,16 @@ namespace com.mirle.ibg3k0.sc.Common
             }
         }
 
-        public void put(APORTSTATION portStation)
+        public void put(APORTSTATION portStationDB)
         {
-            if (portStation == null) { return; }
-            APORTSTATION port_station = getPortStation(portStation.PORT_ID);
-            if (port_station == null) { return; }
-            lock (_lockPorStationtDic[port_station.PORT_ID])
+            if (portStationDB == null) { return; }
+            APORTSTATION port_station_vo = getPortStation(portStationDB.PORT_ID);
+            if (port_station_vo == null) { return; }
+            lock (_lockPorStationtDic[port_station_vo.PORT_ID])
             {
-                setValueToPropety<APORTSTATION>(ref portStation, ref port_station);
+                //setValueToPropety<APORTSTATION>(ref portStationDB, ref port_station_vo);
+                port_station_vo.PORT_SERVICE_STATUS = portStationDB.PORT_SERVICE_STATUS;
+                port_station_vo.PORT_STATUS = portStationDB.PORT_STATUS;
             }
         }
 

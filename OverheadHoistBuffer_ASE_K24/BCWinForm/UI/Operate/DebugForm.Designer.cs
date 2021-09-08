@@ -123,6 +123,7 @@
             this.label18 = new System.Windows.Forms.Label();
             this.cb_PortID = new System.Windows.Forms.ComboBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.btn_block_test = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.btn_blocked_sec_refresh = new System.Windows.Forms.Button();
             this.btn_release_block = new System.Windows.Forms.Button();
             this.lbl_BlockedVh = new System.Windows.Forms.Label();
@@ -214,6 +215,31 @@
             this.cb_Cache_data_Name = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.groupBox18 = new System.Windows.Forms.GroupBox();
+            this.btn_cmp_vh_complete = new System.Windows.Forms.Button();
+            this.btn_cmp_vh_abort = new System.Windows.Forms.Button();
+            this.btn_idReadError = new System.Windows.Forms.Button();
+            this.btn_cmpIdMismatch = new System.Windows.Forms.Button();
+            this.label79 = new System.Windows.Forms.Label();
+            this.txt_mcsReportTestCmdID = new System.Windows.Forms.TextBox();
+            this.label80 = new System.Windows.Forms.Label();
+            this.txt_mcsReportTestCstID = new System.Windows.Forms.TextBox();
+            this.btn_alarmClear = new System.Windows.Forms.Button();
+            this.btn_alarmtSet = new System.Windows.Forms.Button();
+            this.btn_bcrReadError = new System.Windows.Forms.Button();
+            this.btn_bcrReadMismatch = new System.Windows.Forms.Button();
+            this.btn_cmp_InterlockError = new System.Windows.Forms.Button();
+            this.btn_cancelFail = new System.Windows.Forms.Button();
+            this.btn_cancel_cmp = new System.Windows.Forms.Button();
+            this.btn_id_bcr_read = new System.Windows.Forms.Button();
+            this.btn_vhunloading = new System.Windows.Forms.Button();
+            this.btn_unloadComplete = new System.Windows.Forms.Button();
+            this.btn_unloadArrivals = new System.Windows.Forms.Button();
+            this.btn_vhloading = new System.Windows.Forms.Button();
+            this.btn_loadComplete = new System.Windows.Forms.Button();
+            this.btn_loadArrivals = new System.Windows.Forms.Button();
+            this.label81 = new System.Windows.Forms.Label();
+            this.cmb_mcsReportTestVHID = new System.Windows.Forms.ComboBox();
             this.txt_remove_loc_id = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.txt_remove_cst_id = new System.Windows.Forms.TextBox();
@@ -352,7 +378,7 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.btn_block_test = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_initial = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -378,6 +404,7 @@
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_cache_object_data)).BeginInit();
             this.tabPage3.SuspendLayout();
+            this.groupBox18.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.grb_lft_info.SuspendLayout();
@@ -1491,6 +1518,16 @@
             this.groupBox6.TabIndex = 24;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Block Manager";
+            // 
+            // btn_block_test
+            // 
+            this.btn_block_test.Location = new System.Drawing.Point(177, 180);
+            this.btn_block_test.Name = "btn_block_test";
+            this.btn_block_test.Size = new System.Drawing.Size(135, 39);
+            this.btn_block_test.TabIndex = 60;
+            this.btn_block_test.Text = "Block Test";
+            this.btn_block_test.UseVisualStyleBackColor = true;
+            this.btn_block_test.Click += new System.EventHandler(this.btn_block_test_Click);
             // 
             // btn_blocked_sec_refresh
             // 
@@ -2698,6 +2735,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.groupBox18);
             this.tabPage3.Controls.Add(this.txt_remove_loc_id);
             this.tabPage3.Controls.Add(this.label20);
             this.tabPage3.Controls.Add(this.txt_remove_cst_id);
@@ -2711,6 +2749,260 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // groupBox18
+            // 
+            this.groupBox18.Controls.Add(this.btn_initial);
+            this.groupBox18.Controls.Add(this.btn_cmp_vh_complete);
+            this.groupBox18.Controls.Add(this.btn_cmp_vh_abort);
+            this.groupBox18.Controls.Add(this.btn_idReadError);
+            this.groupBox18.Controls.Add(this.btn_cmpIdMismatch);
+            this.groupBox18.Controls.Add(this.label79);
+            this.groupBox18.Controls.Add(this.txt_mcsReportTestCmdID);
+            this.groupBox18.Controls.Add(this.label80);
+            this.groupBox18.Controls.Add(this.txt_mcsReportTestCstID);
+            this.groupBox18.Controls.Add(this.btn_alarmClear);
+            this.groupBox18.Controls.Add(this.btn_alarmtSet);
+            this.groupBox18.Controls.Add(this.btn_bcrReadError);
+            this.groupBox18.Controls.Add(this.btn_bcrReadMismatch);
+            this.groupBox18.Controls.Add(this.btn_cmp_InterlockError);
+            this.groupBox18.Controls.Add(this.btn_cancelFail);
+            this.groupBox18.Controls.Add(this.btn_cancel_cmp);
+            this.groupBox18.Controls.Add(this.btn_id_bcr_read);
+            this.groupBox18.Controls.Add(this.btn_vhunloading);
+            this.groupBox18.Controls.Add(this.btn_unloadComplete);
+            this.groupBox18.Controls.Add(this.btn_unloadArrivals);
+            this.groupBox18.Controls.Add(this.btn_vhloading);
+            this.groupBox18.Controls.Add(this.btn_loadComplete);
+            this.groupBox18.Controls.Add(this.btn_loadArrivals);
+            this.groupBox18.Controls.Add(this.label81);
+            this.groupBox18.Controls.Add(this.cmb_mcsReportTestVHID);
+            this.groupBox18.Location = new System.Drawing.Point(349, 23);
+            this.groupBox18.Name = "groupBox18";
+            this.groupBox18.Size = new System.Drawing.Size(588, 698);
+            this.groupBox18.TabIndex = 38;
+            this.groupBox18.TabStop = false;
+            this.groupBox18.Text = "MCS Report Test";
+            // 
+            // btn_cmp_vh_complete
+            // 
+            this.btn_cmp_vh_complete.Location = new System.Drawing.Point(52, 461);
+            this.btn_cmp_vh_complete.Name = "btn_cmp_vh_complete";
+            this.btn_cmp_vh_complete.Size = new System.Drawing.Size(176, 31);
+            this.btn_cmp_vh_complete.TabIndex = 53;
+            this.btn_cmp_vh_complete.Text = "Cmp-Vh Complete";
+            this.btn_cmp_vh_complete.UseVisualStyleBackColor = true;
+            // 
+            // btn_cmp_vh_abort
+            // 
+            this.btn_cmp_vh_abort.Location = new System.Drawing.Point(234, 461);
+            this.btn_cmp_vh_abort.Name = "btn_cmp_vh_abort";
+            this.btn_cmp_vh_abort.Size = new System.Drawing.Size(176, 31);
+            this.btn_cmp_vh_abort.TabIndex = 52;
+            this.btn_cmp_vh_abort.Text = "Cmp-Vh Abort";
+            this.btn_cmp_vh_abort.UseVisualStyleBackColor = true;
+            this.btn_cmp_vh_abort.Click += new System.EventHandler(this.btn_cmp_vh_abort_Click);
+            // 
+            // btn_idReadError
+            // 
+            this.btn_idReadError.Location = new System.Drawing.Point(234, 546);
+            this.btn_idReadError.Name = "btn_idReadError";
+            this.btn_idReadError.Size = new System.Drawing.Size(201, 30);
+            this.btn_idReadError.TabIndex = 51;
+            this.btn_idReadError.Text = "Cmp-ID Read Error";
+            this.btn_idReadError.UseVisualStyleBackColor = true;
+            this.btn_idReadError.Click += new System.EventHandler(this.btn_idReadError_Click);
+            // 
+            // btn_cmpIdMismatch
+            // 
+            this.btn_cmpIdMismatch.Location = new System.Drawing.Point(234, 510);
+            this.btn_cmpIdMismatch.Name = "btn_cmpIdMismatch";
+            this.btn_cmpIdMismatch.Size = new System.Drawing.Size(201, 30);
+            this.btn_cmpIdMismatch.TabIndex = 50;
+            this.btn_cmpIdMismatch.Text = "Cmp-ID MIsmatch";
+            this.btn_cmpIdMismatch.UseVisualStyleBackColor = true;
+            this.btn_cmpIdMismatch.Click += new System.EventHandler(this.btn_cmpIdMismatch_Click);
+            // 
+            // label79
+            // 
+            this.label79.AutoSize = true;
+            this.label79.Location = new System.Drawing.Point(405, 26);
+            this.label79.Name = "label79";
+            this.label79.Size = new System.Drawing.Size(70, 22);
+            this.label79.TabIndex = 49;
+            this.label79.Text = "CMD ID";
+            // 
+            // txt_mcsReportTestCmdID
+            // 
+            this.txt_mcsReportTestCmdID.Location = new System.Drawing.Point(435, 51);
+            this.txt_mcsReportTestCmdID.Name = "txt_mcsReportTestCmdID";
+            this.txt_mcsReportTestCmdID.Size = new System.Drawing.Size(147, 30);
+            this.txt_mcsReportTestCmdID.TabIndex = 48;
+            this.txt_mcsReportTestCmdID.Text = "1";
+            // 
+            // label80
+            // 
+            this.label80.AutoSize = true;
+            this.label80.Location = new System.Drawing.Point(218, 26);
+            this.label80.Name = "label80";
+            this.label80.Size = new System.Drawing.Size(70, 22);
+            this.label80.TabIndex = 47;
+            this.label80.Text = "CST ID";
+            // 
+            // txt_mcsReportTestCstID
+            // 
+            this.txt_mcsReportTestCstID.Location = new System.Drawing.Point(256, 51);
+            this.txt_mcsReportTestCstID.Name = "txt_mcsReportTestCstID";
+            this.txt_mcsReportTestCstID.Size = new System.Drawing.Size(147, 30);
+            this.txt_mcsReportTestCstID.TabIndex = 46;
+            this.txt_mcsReportTestCstID.Text = "CST001";
+            // 
+            // btn_alarmClear
+            // 
+            this.btn_alarmClear.Location = new System.Drawing.Point(41, 639);
+            this.btn_alarmClear.Name = "btn_alarmClear";
+            this.btn_alarmClear.Size = new System.Drawing.Size(201, 30);
+            this.btn_alarmClear.TabIndex = 45;
+            this.btn_alarmClear.Text = "Alarm Clear";
+            this.btn_alarmClear.UseVisualStyleBackColor = true;
+            // 
+            // btn_alarmtSet
+            // 
+            this.btn_alarmtSet.Location = new System.Drawing.Point(41, 603);
+            this.btn_alarmtSet.Name = "btn_alarmtSet";
+            this.btn_alarmtSet.Size = new System.Drawing.Size(201, 30);
+            this.btn_alarmtSet.TabIndex = 44;
+            this.btn_alarmtSet.Text = "Alarm Set";
+            this.btn_alarmtSet.UseVisualStyleBackColor = true;
+            // 
+            // btn_bcrReadError
+            // 
+            this.btn_bcrReadError.Location = new System.Drawing.Point(238, 187);
+            this.btn_bcrReadError.Name = "btn_bcrReadError";
+            this.btn_bcrReadError.Size = new System.Drawing.Size(199, 30);
+            this.btn_bcrReadError.TabIndex = 43;
+            this.btn_bcrReadError.Text = "BCR Read(Error)";
+            this.btn_bcrReadError.UseVisualStyleBackColor = true;
+            this.btn_bcrReadError.Click += new System.EventHandler(this.btn_bcrReadError_Click);
+            // 
+            // btn_bcrReadMismatch
+            // 
+            this.btn_bcrReadMismatch.Location = new System.Drawing.Point(236, 151);
+            this.btn_bcrReadMismatch.Name = "btn_bcrReadMismatch";
+            this.btn_bcrReadMismatch.Size = new System.Drawing.Size(199, 30);
+            this.btn_bcrReadMismatch.TabIndex = 42;
+            this.btn_bcrReadMismatch.Text = "BCR Read(Mismatch)";
+            this.btn_bcrReadMismatch.UseVisualStyleBackColor = true;
+            this.btn_bcrReadMismatch.Click += new System.EventHandler(this.btn_bcrReadMismatch_Click);
+            // 
+            // btn_cmp_InterlockError
+            // 
+            this.btn_cmp_InterlockError.Location = new System.Drawing.Point(52, 498);
+            this.btn_cmp_InterlockError.Name = "btn_cmp_InterlockError";
+            this.btn_cmp_InterlockError.Size = new System.Drawing.Size(176, 54);
+            this.btn_cmp_InterlockError.TabIndex = 40;
+            this.btn_cmp_InterlockError.Text = "Cmp-Interlock Error";
+            this.btn_cmp_InterlockError.UseVisualStyleBackColor = true;
+            // 
+            // btn_cancelFail
+            // 
+            this.btn_cancelFail.Location = new System.Drawing.Point(52, 410);
+            this.btn_cancelFail.Name = "btn_cancelFail";
+            this.btn_cancelFail.Size = new System.Drawing.Size(176, 30);
+            this.btn_cancelFail.TabIndex = 39;
+            this.btn_cancelFail.Text = "Cancel Fail";
+            this.btn_cancelFail.UseVisualStyleBackColor = true;
+            // 
+            // btn_cancel_cmp
+            // 
+            this.btn_cancel_cmp.Location = new System.Drawing.Point(52, 374);
+            this.btn_cancel_cmp.Name = "btn_cancel_cmp";
+            this.btn_cancel_cmp.Size = new System.Drawing.Size(176, 30);
+            this.btn_cancel_cmp.TabIndex = 38;
+            this.btn_cancel_cmp.Text = "Cancel Complete";
+            this.btn_cancel_cmp.UseVisualStyleBackColor = true;
+            // 
+            // btn_id_bcr_read
+            // 
+            this.btn_id_bcr_read.Location = new System.Drawing.Point(52, 164);
+            this.btn_id_bcr_read.Name = "btn_id_bcr_read";
+            this.btn_id_bcr_read.Size = new System.Drawing.Size(176, 30);
+            this.btn_id_bcr_read.TabIndex = 8;
+            this.btn_id_bcr_read.Text = "BCR Read";
+            this.btn_id_bcr_read.UseVisualStyleBackColor = true;
+            // 
+            // btn_vhunloading
+            // 
+            this.btn_vhunloading.Location = new System.Drawing.Point(52, 286);
+            this.btn_vhunloading.Name = "btn_vhunloading";
+            this.btn_vhunloading.Size = new System.Drawing.Size(176, 30);
+            this.btn_vhunloading.TabIndex = 7;
+            this.btn_vhunloading.Text = "Vhunloading";
+            this.btn_vhunloading.UseVisualStyleBackColor = true;
+            // 
+            // btn_unloadComplete
+            // 
+            this.btn_unloadComplete.Location = new System.Drawing.Point(52, 322);
+            this.btn_unloadComplete.Name = "btn_unloadComplete";
+            this.btn_unloadComplete.Size = new System.Drawing.Size(176, 30);
+            this.btn_unloadComplete.TabIndex = 6;
+            this.btn_unloadComplete.Text = "Unload Complete";
+            this.btn_unloadComplete.UseVisualStyleBackColor = true;
+            this.btn_unloadComplete.Click += new System.EventHandler(this.btn_unloadComplete_Click);
+            // 
+            // btn_unloadArrivals
+            // 
+            this.btn_unloadArrivals.Location = new System.Drawing.Point(52, 250);
+            this.btn_unloadArrivals.Name = "btn_unloadArrivals";
+            this.btn_unloadArrivals.Size = new System.Drawing.Size(176, 30);
+            this.btn_unloadArrivals.TabIndex = 5;
+            this.btn_unloadArrivals.Text = "Unload Arrivals";
+            this.btn_unloadArrivals.UseVisualStyleBackColor = true;
+            // 
+            // btn_vhloading
+            // 
+            this.btn_vhloading.Location = new System.Drawing.Point(52, 128);
+            this.btn_vhloading.Name = "btn_vhloading";
+            this.btn_vhloading.Size = new System.Drawing.Size(176, 30);
+            this.btn_vhloading.TabIndex = 4;
+            this.btn_vhloading.Text = "Vhloading";
+            this.btn_vhloading.UseVisualStyleBackColor = true;
+            this.btn_vhloading.Click += new System.EventHandler(this.btn_vhloading_Click);
+            // 
+            // btn_loadComplete
+            // 
+            this.btn_loadComplete.Location = new System.Drawing.Point(52, 200);
+            this.btn_loadComplete.Name = "btn_loadComplete";
+            this.btn_loadComplete.Size = new System.Drawing.Size(176, 30);
+            this.btn_loadComplete.TabIndex = 3;
+            this.btn_loadComplete.Text = "Load Complete";
+            this.btn_loadComplete.UseVisualStyleBackColor = true;
+            // 
+            // btn_loadArrivals
+            // 
+            this.btn_loadArrivals.Location = new System.Drawing.Point(52, 92);
+            this.btn_loadArrivals.Name = "btn_loadArrivals";
+            this.btn_loadArrivals.Size = new System.Drawing.Size(176, 30);
+            this.btn_loadArrivals.TabIndex = 2;
+            this.btn_loadArrivals.Text = "Load Arrivals";
+            this.btn_loadArrivals.UseVisualStyleBackColor = true;
+            // 
+            // label81
+            // 
+            this.label81.AutoSize = true;
+            this.label81.Location = new System.Drawing.Point(6, 26);
+            this.label81.Name = "label81";
+            this.label81.Size = new System.Drawing.Size(60, 22);
+            this.label81.TabIndex = 1;
+            this.label81.Text = "Vh ID";
+            // 
+            // cmb_mcsReportTestVHID
+            // 
+            this.cmb_mcsReportTestVHID.FormattingEnabled = true;
+            this.cmb_mcsReportTestVHID.Location = new System.Drawing.Point(52, 51);
+            this.cmb_mcsReportTestVHID.Name = "cmb_mcsReportTestVHID";
+            this.cmb_mcsReportTestVHID.Size = new System.Drawing.Size(176, 30);
+            this.cmb_mcsReportTestVHID.TabIndex = 0;
             // 
             // txt_remove_loc_id
             // 
@@ -4303,15 +4595,15 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // btn_block_test
+            // btn_initial
             // 
-            this.btn_block_test.Location = new System.Drawing.Point(177, 180);
-            this.btn_block_test.Name = "btn_block_test";
-            this.btn_block_test.Size = new System.Drawing.Size(135, 39);
-            this.btn_block_test.TabIndex = 60;
-            this.btn_block_test.Text = "Block Test";
-            this.btn_block_test.UseVisualStyleBackColor = true;
-            this.btn_block_test.Click += new System.EventHandler(this.btn_block_test_Click);
+            this.btn_initial.Location = new System.Drawing.Point(383, 639);
+            this.btn_initial.Name = "btn_initial";
+            this.btn_initial.Size = new System.Drawing.Size(199, 30);
+            this.btn_initial.TabIndex = 54;
+            this.btn_initial.Text = "Initial";
+            this.btn_initial.UseVisualStyleBackColor = true;
+            this.btn_initial.Click += new System.EventHandler(this.btn_initial_Click);
             // 
             // DebugForm
             // 
@@ -4367,6 +4659,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_cache_object_data)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.groupBox18.ResumeLayout(false);
+            this.groupBox18.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.groupBox11.ResumeLayout(false);
@@ -4724,5 +5018,31 @@
         private System.Windows.Forms.Label label78;
         private System.Windows.Forms.NumericUpDown num_preStageWatingTime;
         private Components.uctlButton btn_block_test;
+        private System.Windows.Forms.GroupBox groupBox18;
+        private System.Windows.Forms.Button btn_cmp_vh_complete;
+        private System.Windows.Forms.Button btn_cmp_vh_abort;
+        private System.Windows.Forms.Button btn_idReadError;
+        private System.Windows.Forms.Button btn_cmpIdMismatch;
+        private System.Windows.Forms.Label label79;
+        private System.Windows.Forms.TextBox txt_mcsReportTestCmdID;
+        private System.Windows.Forms.Label label80;
+        private System.Windows.Forms.TextBox txt_mcsReportTestCstID;
+        private System.Windows.Forms.Button btn_alarmClear;
+        private System.Windows.Forms.Button btn_alarmtSet;
+        private System.Windows.Forms.Button btn_bcrReadError;
+        private System.Windows.Forms.Button btn_bcrReadMismatch;
+        private System.Windows.Forms.Button btn_cmp_InterlockError;
+        private System.Windows.Forms.Button btn_cancelFail;
+        private System.Windows.Forms.Button btn_cancel_cmp;
+        private System.Windows.Forms.Button btn_id_bcr_read;
+        private System.Windows.Forms.Button btn_vhunloading;
+        private System.Windows.Forms.Button btn_unloadComplete;
+        private System.Windows.Forms.Button btn_unloadArrivals;
+        private System.Windows.Forms.Button btn_vhloading;
+        private System.Windows.Forms.Button btn_loadComplete;
+        private System.Windows.Forms.Button btn_loadArrivals;
+        private System.Windows.Forms.Label label81;
+        private System.Windows.Forms.ComboBox cmb_mcsReportTestVHID;
+        private System.Windows.Forms.Button btn_initial;
     }
 }

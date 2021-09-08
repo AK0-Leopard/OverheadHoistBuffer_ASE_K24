@@ -2824,7 +2824,6 @@ namespace com.mirle.ibg3k0.sc.Service
                     case COMMAND_STATUS_BIT_INDEX_VEHICLE_ABORT:
                         reportBLL.ReportCraneIdle(ohtName, cmd.CMD_ID);
                         reportBLL.ReportTransferCompleted(cmd, null, ResultCode.InterlockError);   //  20/04/13 MCS 反應說不要報 1 ，改報64
-
                         cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                         EmptyShelf();
                         break;
@@ -6144,7 +6143,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
             #region 卡匣讀不到檢查
 
-            if (readData.BOXID.Contains("ERROR1") || readData.BOXID.Contains("NORD01") || string.IsNullOrWhiteSpace(readData.BOXID))
+            if (readData.BOXID.ToUpper().Contains("ERROR") || readData.BOXID.ToUpper().Contains("NORD01") || string.IsNullOrWhiteSpace(readData.BOXID))
             {
                 //B0.03
                 scApp.TransferService.OHBC_AlarmSet(readData.Carrier_LOC, ((int)AlarmLst.PORT_BOXID_READ_FAIL).ToString());
@@ -6154,12 +6153,16 @@ namespace com.mirle.ibg3k0.sc.Service
                 readData.BOXID = CarrierReadFail(readData.Carrier_LOC);
                 boxIDFail = true;
             }
+            else if (readData.BOXID.ToUpper().Contains("UNK"))
+            {
+                boxIDFail = true;
+            }
 
             #region ReadStatus
 
             if (boxIDFail)
             {
-                idReadStatus = IDreadStatus.BoxReadFail_CstIsOK;
+                idReadStatus = IDreadStatus.failed;
             }
             #endregion ReadStatus
 
@@ -6245,15 +6248,15 @@ namespace com.mirle.ibg3k0.sc.Service
                         )
                 {
 
-                    if (newData.BOXID.Contains("UNKF") && isUnitType(dbData.Carrier_LOC, UnitType.CRANE)
-                      )
-                    {
-                        cassette_dataBLL.DeleteCSTbyCstBoxID(dbData.CSTID, dbData.BOXID);
-                    }
-                    else
-                    {
-                        reportBLL.ReportCarrierRemovedCompleted(dbData.CSTID, dbData.BOXID);
-                    }
+                    //if (newData.BOXID.Contains("UNKF") && isUnitType(dbData.Carrier_LOC, UnitType.CRANE)
+                    //  )
+                    //{
+                    //    cassette_dataBLL.DeleteCSTbyCstBoxID(dbData.CSTID, dbData.BOXID);
+                    //}
+                    //else
+                    //{
+                    reportBLL.ReportCarrierRemovedCompleted(dbData.CSTID, dbData.BOXID);
+                    //}
 
                     OHBC_InsertCassette(newData.BOXID, newData.Carrier_LOC, "有帳有料 " + idRead);
                 }
@@ -6400,14 +6403,14 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         datainfo.CSTState = E_CSTState.Installed;
                         cassette_dataBLL.insertCassetteData(datainfo);
-                        if (datainfo.BOXID.Contains("UNKF"))
-                        {
-                            reportBLL.ReportCarrierBoxIDRename(datainfo.CSTID, datainfo.BOXID, datainfo.Carrier_LOC);
-                        }
-                        else
-                        {
-                            reportBLL.ReportCarrierInstallCompleted(datainfo);
-                        }
+                        //if (datainfo.BOXID.Contains("UNKF"))
+                        //{
+                        //    reportBLL.ReportCarrierBoxIDRename(datainfo.CSTID, datainfo.BOXID, datainfo.Carrier_LOC);
+                        //}
+                        //else
+                        //{
+                        reportBLL.ReportCarrierInstallCompleted(datainfo);
+                        //}
                     }
                     //else if (isUnitType(portName, UnitType.AGV))
                     //{
@@ -10502,6 +10505,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                     if (cmd.CMD_ID.Contains("SCAN") == false)
                     {
+                        cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                         reportBLL.ReportTransferCompleted(cmd, dbCstData, resultCode);
                     }
                     HaveAccountHaveReal(dbCstData, ohtBoxData, idReadStatus);
@@ -10556,6 +10560,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                         if (cmd.CMD_ID.Contains("SCAN") == false)
                         {
+                            cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                             reportBLL.ReportTransferCompleted(cmd, dbCstData, resultCode);
                         }
 

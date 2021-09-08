@@ -1329,5 +1329,85 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             bool can_block_pass = bcApp.SCApplication.VehicleService.ProcessBlockReqByReserveModule(null, noticeCar, entry_section);
 
         }
+
+        private void btn_bcrReadMismatch_Click(object sender, EventArgs e)
+        {
+            var report_event = sc.ProtocolFormat.OHTMessage.EventType.Bcrread;
+            McsReportEventTest(report_event, sc.ProtocolFormat.OHTMessage.BCRReadResult.BcrMisMatch);
+        }
+
+        private void btn_bcrReadError_Click(object sender, EventArgs e)
+        {
+            var report_event = sc.ProtocolFormat.OHTMessage.EventType.Bcrread;
+            McsReportEventTest(report_event, sc.ProtocolFormat.OHTMessage.BCRReadResult.BcrReadFail);
+        }
+
+        private void btn_cmpIdMismatch_Click(object sender, EventArgs e)
+        {
+            var completeStatus = sc.ProtocolFormat.OHTMessage.CompleteStatus.CmpStatusIdcsttypeMismatch;
+            McsCommandCompleteTest(completeStatus);
+        }
+
+        private void btn_idReadError_Click(object sender, EventArgs e)
+        {
+            var completeStatus = sc.ProtocolFormat.OHTMessage.CompleteStatus.CmpStatusIdreadFailed;
+            McsCommandCompleteTest(completeStatus);
+        }
+        private void McsReportEventTest(sc.ProtocolFormat.OHTMessage.EventType report_event,
+            sc.ProtocolFormat.OHTMessage.BCRReadResult bCRReadResult = sc.ProtocolFormat.OHTMessage.BCRReadResult.BcrNormal)
+        {
+            string cst_id = txt_mcsReportTestCstID.Text;
+            string cmd_id = txt_mcsReportTestCmdID.Text;
+            AVEHICLE test_report_vh = bcApp.SCApplication.VehicleBLL.cache.getVhByID(cmb_mcsReportTestVHID.Text);
+            var id_136 = new sc.ProtocolFormat.OHTMessage.ID_136_TRANS_EVENT_REP()
+            {
+                EventType = report_event,
+                BOXID = cst_id,
+                BCRReadResult = bCRReadResult,
+            };
+            var bcfApp = bcApp.SCApplication.getBCFApplication();
+            Task.Run(() =>
+            {
+                dynamic recive_processor = bcApp.SCApplication.VehicleService;
+                //bcApp.SCApplication.VehicleService.Receive.TranEventReport(bcfApp, test_report_vh, id_136, 0);
+                recive_processor.TranEventReport(bcfApp, test_report_vh, id_136, 0);
+            });
+        }
+        private void McsCommandCompleteTest(sc.ProtocolFormat.OHTMessage.CompleteStatus completeStatus)
+        {
+            string cmd_id = txt_mcsReportTestCmdID.Text;
+            string cst_id = txt_mcsReportTestCstID.Text;
+            AVEHICLE test_report_vh = bcApp.SCApplication.VehicleBLL.cache.getVhByID(cmb_mcsReportTestVHID.Text);
+            var id_132 = new sc.ProtocolFormat.OHTMessage.ID_132_TRANS_COMPLETE_REPORT()
+            {
+                CmdID = cmd_id,
+                CSTID = cst_id,
+                CmpStatus = completeStatus
+            };
+            var bcfApp = bcApp.SCApplication.getBCFApplication();
+            Task.Run(() => bcApp.SCApplication.VehicleService.CommandCompleteReport("", bcfApp, test_report_vh, id_132, 0));
+        }
+
+        private void btn_cmp_vh_abort_Click(object sender, EventArgs e)
+        {
+            var completeStatus = sc.ProtocolFormat.OHTMessage.CompleteStatus.CmpStatusVehicleAbort;
+            McsCommandCompleteTest(completeStatus);
+        }
+
+        private void btn_unloadComplete_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_vhloading_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_initial_Click(object sender, EventArgs e)
+        {
+            var report_event = sc.ProtocolFormat.OHTMessage.EventType.Initial;
+            McsReportEventTest(report_event, sc.ProtocolFormat.OHTMessage.BCRReadResult.BcrMisMatch);
+        }
     }
 }
