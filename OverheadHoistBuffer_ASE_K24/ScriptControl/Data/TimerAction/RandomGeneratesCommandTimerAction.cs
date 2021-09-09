@@ -194,7 +194,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     vh.MODE_STATUS == ProtocolFormat.OHTMessage.VHModeStatus.AutoRemote &&
                     vh.ACT_STATUS == ProtocolFormat.OHTMessage.VHActionStatus.NoCommand &&
                     !SCUtility.isEmpty(vh.CUR_ADR_ID) &&
-                    vh.HAS_BOX == 0 &&
+                    vh.HAS_CST == 0 &&
                     !scApp.CMDBLL.isCMD_OHTCExcuteByVh(vh.VEHICLE_ID))
                 {
                     List<string> vh_has_been_excuted_shelf = cycleRunRecord_VhAndShelf[vh.VEHICLE_ID];

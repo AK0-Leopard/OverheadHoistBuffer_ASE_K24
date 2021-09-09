@@ -948,67 +948,67 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     // B0.04 補上原地取貨狀態之說明
                     // B0.04 若取貨之section address 為空 (原地取貨) 則在該guide section 與 guide address 去補上該車目前之位置資訊(因為目前新架構OHT版本需要至少一段section 去判定
-                    if (minRouteSec_Vh2From == null || minRouteAdr_Vh2From == null)
-                    {
-                        if (assignVH.CUR_SEC_ID != null && assignVH.CUR_ADR_ID != null)
-                        {
-                            string start_sec_id = assignVH.CUR_SEC_ID;
-                            if (assignVH.IsOnAdr)
-                            {
-                                start_sec_id = assignVH.getVIEW_SEC_ID(scApp.SectionBLL);
-                            }
+                    //if (minRouteSec_Vh2From == null || minRouteAdr_Vh2From == null)
+                    //{
+                    //    if (assignVH.CUR_SEC_ID != null && assignVH.CUR_ADR_ID != null)
+                    //    {
+                    //        string start_sec_id = assignVH.CUR_SEC_ID;
+                    //        if (assignVH.IsOnAdr)
+                    //        {
+                    //            start_sec_id = assignVH.getVIEW_SEC_ID(scApp.SectionBLL);
+                    //        }
 
-                            //minRouteSec_Vh2From = new string[] { assignVH.CUR_SEC_ID };
-                            minRouteSec_Vh2From = new string[] { start_sec_id };
-                            minRouteAdr_Vh2From = new string[] { assignVH.CUR_ADR_ID };
-                        }
-                        else
-                        {
-                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: string.Empty,
-                               Data: $"can't generate command road data, something is null,id:{SCUtility.Trim(cmd.CMD_ID)},vh id:{SCUtility.Trim(cmd.VH_ID)} current status not allowed." +
-                               $"assignVH.CUR_ADR_ID:{assignVH.CUR_ADR_ID }, assignVH.CUR_SEC_ID:{assignVH.CUR_SEC_ID } , current assign ohtc cmd id:{assignVH.OHTC_CMD}." +
-                               $"assignVH.ACT_STATUS:{assignVH.ACT_STATUS}.");
-                            return isSuccess;
-                        }
-                    }
+                    //        //minRouteSec_Vh2From = new string[] { assignVH.CUR_SEC_ID };
+                    //        minRouteSec_Vh2From = new string[] { start_sec_id };
+                    //        minRouteAdr_Vh2From = new string[] { assignVH.CUR_ADR_ID };
+                    //    }
+                    //    else
+                    //    {
+                    //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: string.Empty,
+                    //           Data: $"can't generate command road data, something is null,id:{SCUtility.Trim(cmd.CMD_ID)},vh id:{SCUtility.Trim(cmd.VH_ID)} current status not allowed." +
+                    //           $"assignVH.CUR_ADR_ID:{assignVH.CUR_ADR_ID }, assignVH.CUR_SEC_ID:{assignVH.CUR_SEC_ID } , current assign ohtc cmd id:{assignVH.OHTC_CMD}." +
+                    //           $"assignVH.ACT_STATUS:{assignVH.ACT_STATUS}.");
+                    //        return isSuccess;
+                    //    }
+                    //}
                     // B0.04 補上 LoadUnload 原地放貨狀態之說明 與修改
                     // B0.04 若放貨之section address 為空 (原地放貨) 則在該guide section 與 guide address 去補上該車需要之資訊
                     if (activeType == ActiveType.Loadunload)
                     {
-                        if (minRouteSec_From2To == null || minRouteAdr_From2To == null)
-                        {
-                            // B0.04 對該string array 補上要去 load 路徑資訊的最後一段address與 section 資料
-                            minRouteSec_From2To = new string[] { minRouteSec_Vh2From[minRouteSec_Vh2From.Length - 1] };
-                            minRouteAdr_From2To = new string[] { minRouteAdr_Vh2From[minRouteAdr_Vh2From.Length - 1] };
-                        }
+                        //if (minRouteSec_From2To == null || minRouteAdr_From2To == null)
+                        //{
+                        //    // B0.04 對該string array 補上要去 load 路徑資訊的最後一段address與 section 資料
+                        //    minRouteSec_From2To = new string[] { minRouteSec_Vh2From[minRouteSec_Vh2From.Length - 1] };
+                        //    minRouteAdr_From2To = new string[] { minRouteAdr_Vh2From[minRouteAdr_Vh2From.Length - 1] };
+                        //}
                     }
                 }
                 // B0.04 補上 Unload 原地放貨狀態之說明 與修改
                 // B0.04 若放貨之section address 為空 (原地放貨) 則在該guide section 與 guide address 去補上該車需要之資訊
                 if (activeType == ActiveType.Unload) //B0.04 若為單獨放貨命令，在該空值處補上該車當下之位置資訊。
                 {
-                    if (minRouteSec_From2To == null || minRouteAdr_From2To == null)
-                    {
-                        if (assignVH.CUR_SEC_ID != null && assignVH.CUR_ADR_ID != null)
-                        {
-                            string start_sec_id = assignVH.CUR_SEC_ID;
-                            if (assignVH.IsOnAdr)
-                            {
-                                start_sec_id = assignVH.getVIEW_SEC_ID(scApp.SectionBLL);
-                            }
-                            //minRouteSec_From2To = new string[] { assignVH.CUR_SEC_ID };
-                            minRouteSec_From2To = new string[] { start_sec_id };
-                            minRouteAdr_From2To = new string[] { assignVH.CUR_ADR_ID };
-                        }
-                        else
-                        {
-                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: string.Empty,
-                               Data: $"can't generate command road data, something is null,id:{SCUtility.Trim(cmd.CMD_ID)},vh id:{SCUtility.Trim(cmd.VH_ID)} current status not allowed." +
-                               $"assignVH.CUR_ADR_ID:{assignVH.CUR_ADR_ID }, assignVH.CUR_SEC_ID:{assignVH.CUR_SEC_ID } , current assign ohtc cmd id:{assignVH.OHTC_CMD}." +
-                               $"assignVH.ACT_STATUS:{assignVH.ACT_STATUS}.");
-                            return isSuccess;
-                        }
-                    }
+                    //if (minRouteSec_From2To == null || minRouteAdr_From2To == null)
+                    //{
+                    //    if (assignVH.CUR_SEC_ID != null && assignVH.CUR_ADR_ID != null)
+                    //    {
+                    //        string start_sec_id = assignVH.CUR_SEC_ID;
+                    //        if (assignVH.IsOnAdr)
+                    //        {
+                    //            start_sec_id = assignVH.getVIEW_SEC_ID(scApp.SectionBLL);
+                    //        }
+                    //        //minRouteSec_From2To = new string[] { assignVH.CUR_SEC_ID };
+                    //        minRouteSec_From2To = new string[] { start_sec_id };
+                    //        minRouteAdr_From2To = new string[] { assignVH.CUR_ADR_ID };
+                    //    }
+                    //    else
+                    //    {
+                    //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: string.Empty,
+                    //           Data: $"can't generate command road data, something is null,id:{SCUtility.Trim(cmd.CMD_ID)},vh id:{SCUtility.Trim(cmd.VH_ID)} current status not allowed." +
+                    //           $"assignVH.CUR_ADR_ID:{assignVH.CUR_ADR_ID }, assignVH.CUR_SEC_ID:{assignVH.CUR_SEC_ID } , current assign ohtc cmd id:{assignVH.OHTC_CMD}." +
+                    //           $"assignVH.ACT_STATUS:{assignVH.ACT_STATUS}.");
+                    //        return isSuccess;
+                    //    }
+                    //}
                 }
 
                 //產生成功，則將該命令下達給車子，並更新車子執行命令的狀態
@@ -1304,7 +1304,8 @@ namespace com.mirle.ibg3k0.sc.Service
                    CarrierID: assign_vh?.CST_ID);
 
                 CMDCancelType cancel_type_to_vh = CMDCancelType.CmdCancel;
-                if(assign_vh.HAS_BOX == 1)
+                //if (assign_vh.HAS_BOX == 1)
+                if (assign_vh.HAS_CST == 1)
                 {
                     cancel_type_to_vh = CMDCancelType.CmdAbort;
                 }
