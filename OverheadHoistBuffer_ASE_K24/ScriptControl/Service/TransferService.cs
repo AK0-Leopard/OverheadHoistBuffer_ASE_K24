@@ -7745,7 +7745,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         #region 命令操作
 
-        public string Manual_InsertCmd(string source, string dest, int priority = 5, string sourceCmd = "UI", CmdType cmdType = CmdType.Manual)   //手動搬送，sourceCmd : 誰呼叫
+        public string Manual_InsertCmd(string source, string dest, int priority = 5, string sourceCmd = "UI", CmdType cmdType = CmdType.Manual, string craneID = "")   //手動搬送，sourceCmd : 誰呼叫
         {
             try
             {
@@ -7798,7 +7798,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
 
                 #region 新增 MCS 命令
-
+                bool is_specify_vh = !SCUtility.isEmpty(craneID);
                 bool cmdExist = true;
                 int cmdNo = 1;
 
@@ -7821,7 +7821,6 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 datainfo.BOX_ID = sourceData.BOXID;
                 datainfo.CMD_INSER_TIME = DateTime.Now;
-                datainfo.TRANSFERSTATE = E_TRAN_STATUS.Queue;
                 datainfo.COMMANDSTATE = ACMD_MCS.COMMAND_iIdle;
                 datainfo.PRIORITY = priority;
                 datainfo.HOSTSOURCE = source;
@@ -7834,8 +7833,16 @@ namespace com.mirle.ibg3k0.sc.Service
                 datainfo.PRIORITY_SUM = datainfo.PRIORITY + datainfo.TIME_PRIORITY + datainfo.PORT_PRIORITY;
                 datainfo.LOT_ID = sourceData.LotID?.Trim() ?? "";
                 datainfo.CMDTYPE = cmdType.ToString();
-                datainfo.CRANE = "";
-
+                if (is_specify_vh)
+                {
+                    datainfo.TRANSFERSTATE = E_TRAN_STATUS.Transferring;
+                    datainfo.CRANE = craneID;
+                }
+                else
+                {
+                    datainfo.TRANSFERSTATE = E_TRAN_STATUS.Queue;
+                    datainfo.CRANE = "";
+                }
                 if (cmdBLL.getCMD_ByBoxID(datainfo.BOX_ID) != null)
                 {
                     return datainfo.BOX_ID + " 已存在搬送命令";
@@ -7843,6 +7850,21 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 if (cmdBLL.creatCommand_MCS(datainfo))
                 {
+                    if (is_specify_vh)
+                    {
+                        scApp.MapBLL.getAddressID(source, out string from_adr);
+                        scApp.MapBLL.getAddressID(dest, out string to_adr);
+
+                        scApp.CMDBLL.doCreatTransferCommand
+                                            (craneID,
+                                             cmd_id_mcs: cmdID,
+                                             cmd_type: E_CMD_TYPE.LoadUnload,
+                                             source: source,
+                                             destination: dest,
+                                             box_id: sourceData.BOXID,
+                                             source_address: from_adr,
+                                             destination_address: to_adr);
+                    }
                     reportBLL.ReportOperatorInitiatedAction(datainfo.CMD_ID, reportMCSCommandType.Transfer.ToString());
                     return "OK";
                 }

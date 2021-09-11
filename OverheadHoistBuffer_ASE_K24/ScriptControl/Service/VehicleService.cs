@@ -734,10 +734,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     SystemTime = DateTime.Now.ToString(SCAppConstants.TimestampFormat_16)
                 };
-                LogHelper.RecordReportInfo(scApp.CMDBLL, vh, send_gpp, 0);
+                LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, send_gpp, 0);
                 isSuccess = vh.send_S43(send_gpp, out receive_gpp);
                 if (isSuccess)
-                    LogHelper.RecordReportInfo(scApp.CMDBLL, vh, receive_gpp, 0);
+                    LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, receive_gpp, 0);
                 if (isSync && isSuccess)
                 {
                     string current_adr_id = receive_gpp.CurrentAdrID;
@@ -841,9 +841,9 @@ namespace com.mirle.ibg3k0.sc.Service
                 PauseType = pauseType,
                 EventType = pause_event
             };
-            LogHelper.RecordReportInfo(scApp.CMDBLL, vh, send_gpp, 0);
+            LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, send_gpp, 0);
             isSuccess = vh.sned_Str39(send_gpp, out receive_gpp);
-            LogHelper.RecordReportInfo(scApp.CMDBLL, vh, receive_gpp, 0);
+            LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, receive_gpp, 0);
             return isSuccess;
         }
 
@@ -1475,9 +1475,9 @@ namespace com.mirle.ibg3k0.sc.Service
                     send_gpb.GuideAddressStartToLoad.AddRange(minRouteAdr_Vh2From);
                 if (minRouteAdr_From2To != null)
                     send_gpb.GuideAddressToDestination.AddRange(minRouteAdr_From2To);
-                LogHelper.RecordReportInfo(scApp.CMDBLL, vh, send_gpb, 0);
+                LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, send_gpb, 0);
                 isSuccess = vh.sned_Str31(send_gpb, out receive_gpp, out reason);
-                LogHelper.RecordReportInfo(scApp.CMDBLL, vh, receive_gpp, 0);
+                LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, receive_gpp, 0);
             }
             if (isSuccess)
             {
@@ -2038,7 +2038,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             if (scApp.getEQObjCacheManager().getLine().ServerPreStop)
                 return;
-            LogHelper.RecordReportInfo(scApp.CMDBLL, vh, recive_str, seq_num);
+            LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, recive_str, seq_num);
             EventType eventType = recive_str.EventType;
             string current_adr_id = recive_str.CurrentAdrID;
             string current_sec_id = recive_str.CurrentSecID;
@@ -2176,14 +2176,14 @@ namespace com.mirle.ibg3k0.sc.Service
             string final_cst_id = cstID;
             try
             {
-                TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} current cst ID:{cstID}, 開始 initial 流程...");
+                TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} current cst ID:{cstID}, 開始 initial 流程...");
 
                 bool is_cmd_excute = !SCUtility.isEmpty(eqpt.OHTC_CMD);
                 bool has_cst_on_vh = !SCUtility.isEmpty(cstID);
                 bool is_bcr_read_fail = cstID != null && cstID.ToUpper().Contains(CST_ID_ERROR_SYMBOL);
                 if (is_cmd_excute)
                 {
-                    TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} 有命令在執行中，ohtc cmd id:{eqpt.OHTC_CMD},mcs cmd id:{eqpt.MCS_CMD}");
+                    TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 有命令在執行中，ohtc cmd id:{eqpt.OHTC_CMD},mcs cmd id:{eqpt.MCS_CMD}");
 
                     ACMD_OHTC cmd_ohtc = scApp.CMDBLL.getCMD_OHTCByID(eqpt.OHTC_CMD);
                     if (cmd_ohtc.IsTransferCmdByMCS)
@@ -2199,7 +2199,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                 scApp.CassetteDataBLL.UpdateCSTLoc(cmdOHT_CSTdata.BOXID, cmdOHT_CSTdata.Carrier_LOC, 1);
                                 scApp.CassetteDataBLL.UpdateCSTState(cmdOHT_CSTdata.BOXID, (int)E_CSTState.Installed);
                                 scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial");
-                                TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，cst id 讀取失敗，使用原本的cst id回復OHT");
+                                TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} initial 流程，cst id 讀取失敗，使用原本的cst id回復OHT");
                             }
                             else
                             {
@@ -2216,7 +2216,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                         cmdOHT_CSTdata.Carrier_LOC = eqpt.VEHICLE_ID;
                                         scApp.TransferService.ForceDeleteCstAndCmd(cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial", ACMD_MCS.ResultCode.IDmismatch);
                                         scApp.TransferService.OHBC_InsertCassette(nowOHT_CSTdata.BOXID, nowOHT_CSTdata.Carrier_LOC, "TransferReportInitial");
-                                        TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，發生mismatch initial cst id:{cstID},命令cst id:{cmdOHT_CSTdata.BOXID}");
+                                        TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} initial 流程，發生mismatch initial cst id:{cstID},命令cst id:{cmdOHT_CSTdata.BOXID}");
                                     }
                                     else
                                     {
@@ -2224,14 +2224,14 @@ namespace com.mirle.ibg3k0.sc.Service
                                         scApp.CassetteDataBLL.UpdateCSTLoc(cmdOHT_CSTdata.BOXID, cmdOHT_CSTdata.Carrier_LOC, 1);
                                         scApp.CassetteDataBLL.UpdateCSTState(cmdOHT_CSTdata.BOXID, (int)E_CSTState.Installed);
                                         scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial");
-                                        TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，強制將 cst id:{cmdOHT_CSTdata.BOXID}過帳至車上");
+                                        TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} initial 流程，強制將 cst id:{cmdOHT_CSTdata.BOXID}過帳至車上");
                                     }
                                 }
                                 else
                                 {
                                     scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, null, "TransferReportInitial");
                                     scApp.TransferService.OHBC_InsertCassette(nowOHT_CSTdata.BOXID, nowOHT_CSTdata.Carrier_LOC, "TransferReportInitial");
-                                    TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，cst id:{cstID} 並無帳料於系統中，進行強制建帳");
+                                    TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} initial 流程，cst id:{cstID} 並無帳料於系統中，進行強制建帳");
                                 }
                             }
                         }
@@ -2243,7 +2243,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                 scApp.CassetteDataBLL.UpdateCSTLoc(cmdOHT_CSTdata.BOXID, cmdOHT_CSTdata.Carrier_LOC, 1);
                                 scApp.CassetteDataBLL.UpdateCSTState(cmdOHT_CSTdata.BOXID, (int)E_CSTState.WaitIn);
                                 scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial");
-                                TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，命令在進行Loading中，但cst 不再車上 將帳料強制更新回source port");
+                                TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} initial 流程，命令在進行Loading中，但cst 不再車上 將帳料強制更新回source port");
                             }
                             else if (cmd_mcs.isUnloading)
                             {
@@ -2252,12 +2252,12 @@ namespace com.mirle.ibg3k0.sc.Service
                                 scApp.CassetteDataBLL.UpdateCSTState(cmdOHT_CSTdata.BOXID, (int)E_CSTState.Completed);
                                 scApp.TransferService.ForceFinishMCSCmd
                                     (cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial", ACMD_MCS.ResultCode.Successful);
-                                TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，命令在進行Unloading中，但cst 不再車上 將帳料強制更新回desc port");
+                                TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} initial 流程，命令在進行Unloading中，但cst 不再車上 將帳料強制更新回desc port");
                             }
                             else
                             {
                                 scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial");
-                                TransferServiceLogger.Debug($"vh id:{eqpt.VEHICLE_ID} initial 流程，但cst 不再車上 將命令強制結束");
+                                TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} initial 流程，但cst 不再車上 將命令強制結束");
                             }
                         }
                     }
@@ -3130,7 +3130,7 @@ namespace com.mirle.ibg3k0.sc.Service
             };
 
             Boolean resp_cmp = vh.sendMessage(wrapper, true);
-            LogHelper.RecordReportInfo(scApp.CMDBLL, vh, send_str, seq_num);
+            LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, send_str, seq_num);
             return resp_cmp;
         }
 
@@ -3241,7 +3241,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             if (scApp.getEQObjCacheManager().getLine().ServerPreStop)
                 return;
-            LogHelper.RecordReportInfo(scApp.CMDBLL, eqpt, recive_str, seq_num);
+            LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, eqpt, recive_str, seq_num);
 
             string current_adr = recive_str.CurrentAdrID;
             VHModeStatus modeStat = DecideVhModeStatus(eqpt.VEHICLE_ID, current_adr, recive_str.ModeStatus);
@@ -3460,7 +3460,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             if (scApp.getEQObjCacheManager().getLine().ServerPreStop)
                 return;
-            LogHelper.RecordReportInfo(scApp.CMDBLL, vh, recive_str, seq_num);
+            LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, recive_str, seq_num);
             string vh_id = vh.VEHICLE_ID;
             string finish_ohxc_cmd = vh.OHTC_CMD;
             string finish_mcs_cmd = vh.MCS_CMD;
@@ -3586,7 +3586,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 TranCmpResp = send_str
             };
             Boolean resp_cmp = vh.sendMessage(wrapper, true);
-            LogHelper.RecordReportInfo(scApp.CMDBLL, vh, send_str, seq_num);
+            LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, send_str, seq_num);
             return resp_cmp;
         }
 

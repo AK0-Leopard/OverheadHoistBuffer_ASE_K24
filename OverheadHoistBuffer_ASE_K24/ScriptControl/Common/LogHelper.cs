@@ -227,6 +227,12 @@ namespace com.mirle.ibg3k0.sc.Common
             }
             return name;
         }
+        public static void RecordReportInfoByQueue(sc.App.SCApplication scApp, sc.BLL.CMDBLL cmdBLL, AVEHICLE vh, IMessage message, int seqNum, [CallerMemberName] string Method = "")
+        {
+            var workItem = new com.mirle.ibg3k0.bcf.Data.BackgroundWorkItem(cmdBLL, vh, message, seqNum, Method);//A0.05
+            scApp.BackgroundWorkProcRecordReportInfo.triggerBackgroundWork($"BlockQueue_{vh.VEHICLE_ID}", workItem);//A0.05
+        }
+
         public static void RecordReportInfo(sc.BLL.CMDBLL cmdBLL, AVEHICLE vh, IMessage message, int seqNum, [CallerMemberName] string Method = "")
         {
             Logger logger = LogManager.GetLogger("RecordReportInfo");
@@ -311,9 +317,9 @@ namespace com.mirle.ibg3k0.sc.Common
             {
                 var id_134 = message as ID_134_TRANS_EVENT_REP;
                 var attenion_vaule = new { secID = id_134.CurrentSecID, adrID = id_134.CurrentSecID, distance = id_134.SecDistance };
-                logger.WithProperty("msgDetail", detail).Info(vh, "{vhID}|{method}|{seqNum} {@attenion_vaule}"
-                                                                , vhID
+                logger.WithProperty("msgDetail", detail).Info(vh, "{method} | {vhID} | {seqNum} {@attenion_vaule}"
                                                                 , function
+                                                                , vhID
                                                                 , seqNum
                                                                 , attenion_vaule);
             }

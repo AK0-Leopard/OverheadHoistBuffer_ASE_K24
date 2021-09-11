@@ -33,6 +33,20 @@ namespace com.mirle.ibg3k0.sc
             return has_cmd_excute;
         }
 
-
+        public string CurrentBayID(sc.App.SCApplication scApp)
+        {
+            if (scApp.TransferService.isShelfPort(Carrier_LOC))
+            {
+                if (Carrier_LOC.Length < 6)
+                {
+                    return "";
+                }
+                //從倒數第二個字取出兩個
+                //100101
+                string bay_id = Carrier_LOC.Substring(Carrier_LOC.Length - 2, 2);
+                return bay_id;
+            }
+            return "";
+        }
     }
 }

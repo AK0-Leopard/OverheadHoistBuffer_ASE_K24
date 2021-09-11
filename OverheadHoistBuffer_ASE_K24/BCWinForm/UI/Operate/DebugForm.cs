@@ -101,6 +101,12 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_Cache_data_Name.Items.Add("APORTSTATION");
             dgv_cache_object_data.AutoGenerateColumns = false;
             comboBox_HID_control.SelectedIndex = 0;
+
+            var shelfDefs = bcApp.SCApplication.ShelfDefBLL.LoadShelf();
+
+            List<string> current_bay_ids = shelfDefs.Select(s => s.BayID).Distinct().OrderBy(s => s).ToList();
+
+            cmb_cycleRunBayID.DataSource = current_bay_ids;
         }
 
         private void DebugForm_Load(object sender, EventArgs e)
@@ -1284,6 +1290,15 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             Enum.TryParse(combox_cycle_type.SelectedValue.ToString(), out DebugParameter.CycleRunType type);
 
             DebugParameter.cycleRunType = type;
+
+            if (type == DebugParameter.CycleRunType.shelfByOrder)
+            {
+                cmb_cycleRunBayID.Visible = true;
+            }
+            else
+            {
+                cmb_cycleRunBayID.Visible = false;
+            }
         }
         //*************************************
         //A0.01
@@ -1408,6 +1423,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             var report_event = sc.ProtocolFormat.OHTMessage.EventType.Initial;
             McsReportEventTest(report_event, sc.ProtocolFormat.OHTMessage.BCRReadResult.BcrMisMatch);
+        }
+
+        private void cmb_cycleRunBayID_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DebugParameter.cycleRunBay = cmb_cycleRunBayID.Text;
         }
     }
 }

@@ -216,6 +216,7 @@
             this.label22 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
+            this.btn_initial = new System.Windows.Forms.Button();
             this.btn_cmp_vh_complete = new System.Windows.Forms.Button();
             this.btn_cmp_vh_abort = new System.Windows.Forms.Button();
             this.btn_idReadError = new System.Windows.Forms.Button();
@@ -378,7 +379,7 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.btn_initial = new System.Windows.Forms.Button();
+            this.cmb_cycleRunBayID = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1311,6 +1312,7 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.cmb_cycleRunBayID);
             this.tabPage1.Controls.Add(this.num_preStageWatingTime);
             this.tabPage1.Controls.Add(this.label78);
             this.tabPage1.Controls.Add(this.label77);
@@ -2717,7 +2719,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(207, 8);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(207, 3);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2783,6 +2785,16 @@
             this.groupBox18.TabIndex = 38;
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "MCS Report Test";
+            // 
+            // btn_initial
+            // 
+            this.btn_initial.Location = new System.Drawing.Point(383, 639);
+            this.btn_initial.Name = "btn_initial";
+            this.btn_initial.Size = new System.Drawing.Size(199, 30);
+            this.btn_initial.TabIndex = 54;
+            this.btn_initial.Text = "Initial";
+            this.btn_initial.UseVisualStyleBackColor = true;
+            this.btn_initial.Click += new System.EventHandler(this.btn_initial_Click);
             // 
             // btn_cmp_vh_complete
             // 
@@ -4595,15 +4607,14 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // btn_initial
+            // cmb_cycleRunBayID
             // 
-            this.btn_initial.Location = new System.Drawing.Point(383, 639);
-            this.btn_initial.Name = "btn_initial";
-            this.btn_initial.Size = new System.Drawing.Size(199, 30);
-            this.btn_initial.TabIndex = 54;
-            this.btn_initial.Text = "Initial";
-            this.btn_initial.UseVisualStyleBackColor = true;
-            this.btn_initial.Click += new System.EventHandler(this.btn_initial_Click);
+            this.cmb_cycleRunBayID.FormattingEnabled = true;
+            this.cmb_cycleRunBayID.Location = new System.Drawing.Point(1305, 10);
+            this.cmb_cycleRunBayID.Name = "cmb_cycleRunBayID";
+            this.cmb_cycleRunBayID.Size = new System.Drawing.Size(121, 30);
+            this.cmb_cycleRunBayID.TabIndex = 58;
+            this.cmb_cycleRunBayID.SelectedIndexChanged += new System.EventHandler(this.cmb_cycleRunBayID_SelectedIndexChanged);
             // 
             // DebugForm
             // 
@@ -5044,5 +5055,6 @@
         private System.Windows.Forms.Label label81;
         private System.Windows.Forms.ComboBox cmb_mcsReportTestVHID;
         private System.Windows.Forms.Button btn_initial;
+        private System.Windows.Forms.ComboBox cmb_cycleRunBayID;
     }
 }

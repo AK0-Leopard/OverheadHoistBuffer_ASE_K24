@@ -714,6 +714,7 @@ namespace com.mirle.ibg3k0.sc.App
 
         public BackgroundWorkDriver BackgroundWorkBlockQueue { get; private set; } //A0.01
         public BackgroundWorkDriver BackgroundWorkProcVehiclePosition { get; private set; }              //A0.03
+        public BackgroundWorkDriver BackgroundWorkProcRecordReportInfo { get; private set; }              //A0.03
         public IScheduler Scheduler { get; private set; }
 
         //pool
@@ -1165,6 +1166,7 @@ namespace com.mirle.ibg3k0.sc.App
             BackgroundWorkSample = new BackgroundWorkDriver(new BackgroundWorkSample());            //A0.03
             BackgroundWorkBlockQueue = new BackgroundWorkDriver(new BackgroundWorkBlockQueue());            //A0.01
             BackgroundWorkProcVehiclePosition = new BackgroundWorkDriver(new BackgroundWorkProcVehiclePosition());            //A0.01
+            BackgroundWorkProcRecordReportInfo = new BackgroundWorkDriver(new BackgroundWorkProcRecordReportInfo());            //A0.01
         }
 
         private void initScheduler()
@@ -1571,7 +1573,7 @@ namespace com.mirle.ibg3k0.sc.App
             gRPC_With_VehicleControlFun = new Grpc.Core.Server()
             {
                 Services = { com.mirle.AK0.ProtocolFormat.VehicleControlFun.BindService(new WebAPI.VehicleControlFun()) },
-                Ports = { new Grpc.Core.ServerPort("0.0.0.0", 7001, Grpc.Core.ServerCredentials.Insecure) },
+                Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7001, Grpc.Core.ServerCredentials.Insecure) },
             };
         }
 
@@ -2450,6 +2452,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean Is_136_retry_test = false;
 
         public static CycleRunType cycleRunType;
+        public static string cycleRunBay ="";
 
         private static Boolean isforcedpassblockcontrol = false;
 

@@ -32,7 +32,7 @@ namespace com.mirle.ibg3k0.sc.Data
     /// Class BackgroundWorkSample.
     /// </summary>
     /// <seealso cref="com.mirle.ibg3k0.bcf.Schedule.IBackgroundWork" />
-    public class BackgroundWorkProcVehiclePosition : IBackgroundWork
+    public class BackgroundWorkProcRecordReportInfo : IBackgroundWork
     {
         /// <summary>
         /// The logger
@@ -45,7 +45,7 @@ namespace com.mirle.ibg3k0.sc.Data
         /// <returns>System.Int64.</returns>
         public long getMaxBackgroundQueueCount()
         {
-            return 1000;
+            return 50;
         }
 
         /// <summary>
@@ -66,46 +66,12 @@ namespace com.mirle.ibg3k0.sc.Data
         {
             try
             {
-                App.SCApplication scapp = item.Param[0] as App.SCApplication;
+                sc.BLL.CMDBLL cmdBLL = item.Param[0] as sc.BLL.CMDBLL;
                 AVEHICLE vh = item.Param[1] as AVEHICLE;
-                ProtocolFormat.OHTMessage.ID_134_TRANS_EVENT_REP recive_str = item.Param[2] as ProtocolFormat.OHTMessage.ID_134_TRANS_EVENT_REP;
-                LogHelper.RecordReportInfoByQueue(scapp, scapp.CMDBLL, vh, recive_str, 0);
-                //Do something.
-                EventType eventType = recive_str.EventType;
-                string current_adr_id = SCUtility.isEmpty(recive_str.CurrentAdrID) ? string.Empty : recive_str.CurrentAdrID;
-                string current_sec_id = SCUtility.isEmpty(recive_str.CurrentSecID) ? string.Empty : recive_str.CurrentSecID;
-                uint sec_dis = recive_str.SecDistance;
-                if (sec_dis == 0 || SCUtility.isEmpty(current_sec_id))
-                {
-                    current_sec_id = "";
-
-                }
-                ASECTION current_sec = scapp.SectionBLL.cache.GetSection(current_sec_id);
-                string current_seg_id = "";
-                if (current_sec != null)
-                {
-                    current_seg_id = current_sec.SEG_NUM;
-                }
-                else
-                {
-                    current_sec = scapp.SectionBLL.cache.GetSectionsByToAddress(current_adr_id).FirstOrDefault();
-                    current_seg_id = current_sec.SEG_NUM;
-                }
-
-                string last_adr_id = vh.CUR_ADR_ID;
-                string last_sec_id = vh.CUR_SEC_ID;
-                string last_seg_id = "";
-                if (!vh.IsOnAdr)
-                {
-                    ASECTION lase_sec = scapp.SectionBLL.cache.GetSection(last_sec_id);
-                    last_seg_id = lase_sec == null ? string.Empty : lase_sec.SEG_NUM;
-                }
-                else
-                {
-                    last_seg_id = vh.CUR_SEG_ID;
-                }
-                scapp.VehicleService.doUpdateVheiclePositionAndCmdSchedule
-                    (vh, current_adr_id, current_sec_id, current_seg_id, last_adr_id, last_sec_id, last_seg_id, sec_dis, eventType);
+                Google.Protobuf.IMessage recive_str = item.Param[2] as Google.Protobuf.IMessage;
+                int seq_num = (int)item.Param[3];
+                string Method = item.Param[4] as string;
+                LogHelper.RecordReportInfo(cmdBLL, vh, recive_str, seq_num, Method);
             }
             catch (Exception ex)
             {
