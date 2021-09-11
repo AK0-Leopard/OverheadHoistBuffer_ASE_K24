@@ -207,6 +207,23 @@ namespace com.mirle.ibg3k0.sc.Service
                     return;
                 }
 
+                if (IsFOUPTypeCSTWaitIn(logTitle, info))
+                {
+                    WriteEventLog($"{logTitle} 由於在測試階段，因此暫時強制拒絕Foup進入.");
+                    if (manualPorts.TryGetValue(args.PortName, out var plcPort))
+                    {
+                        plcPort.SetMoveBackReasonAsync(MoveBackReasons.Other);
+                        plcPort.MoveBackAsync();
+                        WriteEventLog($"{logTitle} Move Back  Reason:(Other).");
+                    }
+                    else
+                    {
+                        WriteEventLog($"{logTitle} Cannot find [IManualPortValueDefMapAction]. Cannot execute Move Back.");
+                    }
+
+                    return;
+                }
+
                 if (cassetteDataBLL.GetCarrierByBoxId(stage1CarrierId, out var duplicateCarrierId))
                 {
                     if (duplicateCarrierId.Carrier_LOC != args.PortName)
@@ -222,6 +239,19 @@ namespace com.mirle.ibg3k0.sc.Service
                 logger.Error(ex, "");
                 WriteEventLog($"Port[{args.PortName}]  {MethodBase.GetCurrentMethod()}  Exception ! 【{ex}】");
             }
+        }
+
+        private bool IsFOUPTypeCSTWaitIn(string logTitle, ManualPortPLCInfo info)
+        {
+            var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
+            var subCarrierID = stage1CarrierId.Substring(2, 2);
+            var plcType = info.CarrierType;
+            if (subCarrierID == FOUP || plcType == CstType.A)
+            {
+                WriteEventLog($"{logTitle} 判斷到 Foup CST Wait in CST ID:{stage1CarrierId}, subCarrierID:{subCarrierID},PLC type:{plcType}.");
+                return true;
+            }
+            return false;
         }
 
         public bool HasCstTypeMismatch(string logTitle, ManualPortPLCInfo info)
@@ -269,6 +299,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 return true;
             }
         }
+
+
 
         private void WaitInDuplicateProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData)
         {
