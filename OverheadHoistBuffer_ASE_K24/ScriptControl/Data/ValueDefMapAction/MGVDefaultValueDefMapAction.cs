@@ -601,15 +601,27 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             return Task.Run(() =>
             {
-                var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
-                function.IsMoveBack = true;
-                CommitChange(function);
+                var function = scApp.getFunBaseObj<ManualPortPLCControl_MoveBack>(port.PORT_ID) as ManualPortPLCControl_MoveBack;
+                try
+                {
+                    function.IsMoveBack = true;
+                    function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
+                    logger.Info(function.ToString());
 
-                Task.Delay(3_000).Wait();
+                    Task.Delay(3_000).Wait();
 
-                function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
-                function.IsMoveBack = false;
-                CommitChange(function);
+                    function.IsMoveBack = false;
+                    function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
+                    logger.Info(function.ToString());
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    scApp.putFunBaseObj<ManualPortPLCControl_MoveBack>(function);
+                }
             });
         }
 
@@ -681,9 +693,21 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             return Task.Run(() =>
             {
-                var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
-                function.IsCommanding = setOn;
-                CommitChange(function);
+                var function = scApp.getFunBaseObj<ManualPortPLCControl_Commanding>(port.PORT_ID) as ManualPortPLCControl_Commanding;
+                try
+                {
+                    function.IsCommanding = setOn;
+                    function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
+                    logger.Info(function.ToString());
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    scApp.putFunBaseObj<ManualPortPLCControl_Commanding>(function);
+                }
             });
         }
 

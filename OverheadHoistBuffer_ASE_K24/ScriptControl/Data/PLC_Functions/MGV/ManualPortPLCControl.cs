@@ -17,11 +17,11 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV
         [PLCElement(ValueName = "OHxC_TO_MGV_STOP")]
         public bool IsSetStop;
 
-        [PLCElement(ValueName = "OHxC_TO_MGV_COMMANDING")]
-        public bool IsCommanding;
+        //[PLCElement(ValueName = "OHxC_TO_MGV_COMMANDING")]
+        //public bool IsCommanding;
 
-        [PLCElement(ValueName = "OHxC_TO_MGV_MOVEBACK")]
-        public bool IsMoveBack;
+        //[PLCElement(ValueName = "OHxC_TO_MGV_MOVEBACK")]
+        //public bool IsMoveBack;
 
         [PLCElement(ValueName = "OHxC_TO_MGV_HEARTBEAT")]
         public bool IsHeartBeatOn;
@@ -68,5 +68,16 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV
             else
                 return MoveBackReasons.Other;
         }
+    }
+
+    public class ManualPortPLCControl_MoveBack : PLC_FunBase
+    {
+        [PLCElement(ValueName = "OHxC_TO_MGV_MOVEBACK")]
+        public bool IsMoveBack;
+    }
+    public class ManualPortPLCControl_Commanding : PLC_FunBase
+    {
+        [PLCElement(ValueName = "OHxC_TO_MGV_COMMANDING")]
+        public bool IsCommanding;
     }
 }
