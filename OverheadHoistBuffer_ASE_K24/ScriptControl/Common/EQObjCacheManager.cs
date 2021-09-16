@@ -633,6 +633,7 @@ namespace com.mirle.ibg3k0.sc.Common
 
         private ShelfDef getShelfDefObj(string zoneID, PortStationConfigSection portStationConfig)
         {
+            bool is_enable = !SCUtility.isMatche(portStationConfig.Address_ID, "99999");
             return new ShelfDef()
             {
                 StockerID = "1",
@@ -645,7 +646,7 @@ namespace com.mirle.ibg3k0.sc.Common
                 ShelfType = 2,
                 ShelfState = "N",
                 ZoneID = zoneID,
-                Enable = "Y",
+                Enable = is_enable ? "Y" : "N",
                 OldEnableSts = "1",
                 EmptyBlockFlag = "1",
                 HoldState = 1,

@@ -2016,7 +2016,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             if (vh.WillPassSectionID != null)
                 vh_gpp.WillPassSectionID.AddRange(vh.WillPassSectionID);
             if (vh.Alarms != null)
-                vh_gpp.Alarms.AddRange(vh.WillPassSectionID);
+                vh_gpp.Alarms.AddRange(vh.Alarms);
             LogManager.GetLogger("VehicleHistoricalInfo").Trace(vh_gpp.ToString());
 
             byte[] arrayByte = new byte[vh_gpp.CalculateSize()];

@@ -103,13 +103,9 @@
             this.uctl_SendFun21 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.uctl_SendFun23 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_forceReleaseAllBlock = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.num_preStageWatingTime = new System.Windows.Forms.NumericUpDown();
-            this.label78 = new System.Windows.Forms.Label();
-            this.label77 = new System.Windows.Forms.Label();
-            this.num_pass_distance = new System.Windows.Forms.NumericUpDown();
+            this.cmb_cycleRunBayID = new System.Windows.Forms.ComboBox();
             this.combox_cycle_type = new System.Windows.Forms.ComboBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.txt_vh_order_in_segment = new System.Windows.Forms.TextBox();
@@ -122,14 +118,6 @@
             this.btn_portInServeice = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
             this.cb_PortID = new System.Windows.Forms.ComboBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.btn_block_test = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_blocked_sec_refresh = new System.Windows.Forms.Button();
-            this.btn_release_block = new System.Windows.Forms.Button();
-            this.lbl_BlockedVh = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.cb_block_section = new System.Windows.Forms.ComboBox();
             this.gb_blockControl = new System.Windows.Forms.GroupBox();
             this.cb_FroceReserveReject = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -379,7 +367,9 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.cmb_cycleRunBayID = new System.Windows.Forms.ComboBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.cb_passDriveOutByAreaSensor = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -392,11 +382,8 @@
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.num_preStageWatingTime)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.num_pass_distance)).BeginInit();
             this.groupBox12.SuspendLayout();
             this.groupBox7.SuspendLayout();
-            this.groupBox6.SuspendLayout();
             this.gb_blockControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -420,6 +407,7 @@
             this.tableLayoutPanel5.SuspendLayout();
             this.groupBox13.SuspendLayout();
             this.groupBox10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // cb_FroceReservePass
@@ -1282,16 +1270,6 @@
             this.uctl_SendAllFun.UseVisualStyleBackColor = true;
             this.uctl_SendAllFun.Click += new System.EventHandler(this.uctl_SendAllFun_Click);
             // 
-            // btn_forceReleaseAllBlock
-            // 
-            this.btn_forceReleaseAllBlock.Location = new System.Drawing.Point(1100, 155);
-            this.btn_forceReleaseAllBlock.Name = "btn_forceReleaseAllBlock";
-            this.btn_forceReleaseAllBlock.Size = new System.Drawing.Size(284, 41);
-            this.btn_forceReleaseAllBlock.TabIndex = 22;
-            this.btn_forceReleaseAllBlock.Text = "Force Release All Block";
-            this.btn_forceReleaseAllBlock.UseVisualStyleBackColor = true;
-            this.btn_forceReleaseAllBlock.Click += new System.EventHandler(this.btn_forceReleaseALLBlock_Click);
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -1312,18 +1290,15 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.cb_passDriveOutByAreaSensor);
+            this.tabPage1.Controls.Add(this.label12);
+            this.tabPage1.Controls.Add(this.numericUpDown1);
             this.tabPage1.Controls.Add(this.cmb_cycleRunBayID);
-            this.tabPage1.Controls.Add(this.num_preStageWatingTime);
-            this.tabPage1.Controls.Add(this.label78);
-            this.tabPage1.Controls.Add(this.label77);
-            this.tabPage1.Controls.Add(this.num_pass_distance);
             this.tabPage1.Controls.Add(this.combox_cycle_type);
             this.tabPage1.Controls.Add(this.groupBox12);
             this.tabPage1.Controls.Add(this.groupBox7);
-            this.tabPage1.Controls.Add(this.groupBox6);
             this.tabPage1.Controls.Add(this.gb_blockControl);
             this.tabPage1.Controls.Add(this.groupBox4);
-            this.tabPage1.Controls.Add(this.btn_forceReleaseAllBlock);
             this.tabPage1.Controls.Add(this.cb_StartGenAntoCmd);
             this.tabPage1.Location = new System.Drawing.Point(4, 31);
             this.tabPage1.Name = "tabPage1";
@@ -1333,59 +1308,14 @@
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // num_preStageWatingTime
+            // cmb_cycleRunBayID
             // 
-            this.num_preStageWatingTime.Increment = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.num_preStageWatingTime.Location = new System.Drawing.Point(1242, 459);
-            this.num_preStageWatingTime.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.num_preStageWatingTime.Name = "num_preStageWatingTime";
-            this.num_preStageWatingTime.Size = new System.Drawing.Size(138, 30);
-            this.num_preStageWatingTime.TabIndex = 57;
-            this.num_preStageWatingTime.ValueChanged += new System.EventHandler(this.num_preStageWatingTime_ValueChanged);
-            // 
-            // label78
-            // 
-            this.label78.AutoSize = true;
-            this.label78.Location = new System.Drawing.Point(1238, 434);
-            this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(230, 22);
-            this.label78.TabIndex = 56;
-            this.label78.Text = "Pre Stage Waiting Time";
-            // 
-            // label77
-            // 
-            this.label77.AutoSize = true;
-            this.label77.Location = new System.Drawing.Point(1090, 434);
-            this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(140, 22);
-            this.label77.TabIndex = 5;
-            this.label77.Text = "Pass Distance";
-            // 
-            // num_pass_distance
-            // 
-            this.num_pass_distance.Increment = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.num_pass_distance.Location = new System.Drawing.Point(1088, 459);
-            this.num_pass_distance.Maximum = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
-            this.num_pass_distance.Name = "num_pass_distance";
-            this.num_pass_distance.Size = new System.Drawing.Size(138, 30);
-            this.num_pass_distance.TabIndex = 55;
-            this.num_pass_distance.ValueChanged += new System.EventHandler(this.num_pass_distance_ValueChanged);
+            this.cmb_cycleRunBayID.FormattingEnabled = true;
+            this.cmb_cycleRunBayID.Location = new System.Drawing.Point(1305, 10);
+            this.cmb_cycleRunBayID.Name = "cmb_cycleRunBayID";
+            this.cmb_cycleRunBayID.Size = new System.Drawing.Size(121, 30);
+            this.cmb_cycleRunBayID.TabIndex = 58;
+            this.cmb_cycleRunBayID.SelectedIndexChanged += new System.EventHandler(this.cmb_cycleRunBayID_SelectedIndexChanged);
             // 
             // combox_cycle_type
             // 
@@ -1504,90 +1434,6 @@
             this.cb_PortID.Name = "cb_PortID";
             this.cb_PortID.Size = new System.Drawing.Size(170, 30);
             this.cb_PortID.TabIndex = 0;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.btn_block_test);
-            this.groupBox6.Controls.Add(this.btn_blocked_sec_refresh);
-            this.groupBox6.Controls.Add(this.btn_release_block);
-            this.groupBox6.Controls.Add(this.lbl_BlockedVh);
-            this.groupBox6.Controls.Add(this.label16);
-            this.groupBox6.Controls.Add(this.label12);
-            this.groupBox6.Controls.Add(this.cb_block_section);
-            this.groupBox6.Location = new System.Drawing.Point(1100, 196);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(349, 230);
-            this.groupBox6.TabIndex = 24;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Block Manager";
-            // 
-            // btn_block_test
-            // 
-            this.btn_block_test.Location = new System.Drawing.Point(177, 180);
-            this.btn_block_test.Name = "btn_block_test";
-            this.btn_block_test.Size = new System.Drawing.Size(135, 39);
-            this.btn_block_test.TabIndex = 60;
-            this.btn_block_test.Text = "Block Test";
-            this.btn_block_test.UseVisualStyleBackColor = true;
-            this.btn_block_test.Click += new System.EventHandler(this.btn_block_test_Click);
-            // 
-            // btn_blocked_sec_refresh
-            // 
-            this.btn_blocked_sec_refresh.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_blocked_sec_refresh.Location = new System.Drawing.Point(6, 29);
-            this.btn_blocked_sec_refresh.Name = "btn_blocked_sec_refresh";
-            this.btn_blocked_sec_refresh.Size = new System.Drawing.Size(98, 39);
-            this.btn_blocked_sec_refresh.TabIndex = 4;
-            this.btn_blocked_sec_refresh.Text = "Refresh";
-            this.btn_blocked_sec_refresh.UseVisualStyleBackColor = true;
-            this.btn_blocked_sec_refresh.Click += new System.EventHandler(this.btn_blocked_sec_refresh_Click);
-            // 
-            // btn_release_block
-            // 
-            this.btn_release_block.Location = new System.Drawing.Point(6, 180);
-            this.btn_release_block.Name = "btn_release_block";
-            this.btn_release_block.Size = new System.Drawing.Size(156, 39);
-            this.btn_release_block.TabIndex = 4;
-            this.btn_release_block.Text = "Retry Release";
-            this.btn_release_block.UseVisualStyleBackColor = true;
-            this.btn_release_block.Click += new System.EventHandler(this.btn_release_block_Click);
-            // 
-            // lbl_BlockedVh
-            // 
-            this.lbl_BlockedVh.AutoSize = true;
-            this.lbl_BlockedVh.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbl_BlockedVh.Location = new System.Drawing.Point(6, 147);
-            this.lbl_BlockedVh.Name = "lbl_BlockedVh";
-            this.lbl_BlockedVh.Size = new System.Drawing.Size(122, 24);
-            this.lbl_BlockedVh.TabIndex = 3;
-            this.lbl_BlockedVh.Text = "           ";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(2, 125);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(160, 22);
-            this.label16.TabIndex = 2;
-            this.label16.Text = "Get Block Of Vh";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(2, 67);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(160, 22);
-            this.label12.TabIndex = 1;
-            this.label12.Text = "Blocked Section";
-            // 
-            // cb_block_section
-            // 
-            this.cb_block_section.FormattingEnabled = true;
-            this.cb_block_section.Location = new System.Drawing.Point(6, 93);
-            this.cb_block_section.Name = "cb_block_section";
-            this.cb_block_section.Size = new System.Drawing.Size(251, 30);
-            this.cb_block_section.TabIndex = 0;
-            this.cb_block_section.SelectedIndexChanged += new System.EventHandler(this.cb_block_section_SelectedIndexChanged);
             // 
             // gb_blockControl
             // 
@@ -2719,7 +2565,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(207, 3);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(207, 8);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -4607,14 +4453,39 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // cmb_cycleRunBayID
+            // numericUpDown1
             // 
-            this.cmb_cycleRunBayID.FormattingEnabled = true;
-            this.cmb_cycleRunBayID.Location = new System.Drawing.Point(1305, 10);
-            this.cmb_cycleRunBayID.Name = "cmb_cycleRunBayID";
-            this.cmb_cycleRunBayID.Size = new System.Drawing.Size(121, 30);
-            this.cmb_cycleRunBayID.TabIndex = 58;
-            this.cmb_cycleRunBayID.SelectedIndexChanged += new System.EventHandler(this.cmb_cycleRunBayID_SelectedIndexChanged);
+            this.numericUpDown1.Location = new System.Drawing.Point(1100, 186);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 30);
+            this.numericUpDown1.TabIndex = 59;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(1096, 161);
+            this.label12.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(230, 22);
+            this.label12.TabIndex = 16;
+            this.label12.Text = "Pre Drive Out Distance";
+            // 
+            // cb_passDriveOutByAreaSensor
+            // 
+            this.cb_passDriveOutByAreaSensor.AutoSize = true;
+            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1100, 234);
+            this.cb_passDriveOutByAreaSensor.Name = "cb_passDriveOutByAreaSensor";
+            this.cb_passDriveOutByAreaSensor.Size = new System.Drawing.Size(319, 26);
+            this.cb_passDriveOutByAreaSensor.TabIndex = 60;
+            this.cb_passDriveOutByAreaSensor.Text = "Pass Drive Out By Area Sensor";
+            this.cb_passDriveOutByAreaSensor.UseVisualStyleBackColor = true;
+            this.cb_passDriveOutByAreaSensor.CheckedChanged += new System.EventHandler(this.cb_passDriveOutByAreaSensor_CheckedChanged);
             // 
             // DebugForm
             // 
@@ -4648,14 +4519,10 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.num_preStageWatingTime)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.num_pass_distance)).EndInit();
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             this.gb_blockControl.ResumeLayout(false);
             this.gb_blockControl.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -4698,6 +4565,7 @@
             this.groupBox13.PerformLayout();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4736,7 +4604,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button btn_forceReleaseAllBlock;
         private System.Windows.Forms.Button btn_ForceReleaseBlock;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label6;
@@ -4823,13 +4690,6 @@
         private System.Windows.Forms.Label Power_Mode_Value;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Label lbl_BlockedVh;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.ComboBox cb_block_section;
-        private System.Windows.Forms.Button btn_release_block;
-        private System.Windows.Forms.Button btn_blocked_sec_refresh;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Button btn_portOutOfServeice;
         private System.Windows.Forms.Button btn_portInServeice;
@@ -5024,11 +4884,6 @@
         private System.Windows.Forms.NumericUpDown num_vh_y;
         private System.Windows.Forms.Label label75;
         private System.Windows.Forms.NumericUpDown num_vh_x;
-        private System.Windows.Forms.NumericUpDown num_pass_distance;
-        private System.Windows.Forms.Label label77;
-        private System.Windows.Forms.Label label78;
-        private System.Windows.Forms.NumericUpDown num_preStageWatingTime;
-        private Components.uctlButton btn_block_test;
         private System.Windows.Forms.GroupBox groupBox18;
         private System.Windows.Forms.Button btn_cmp_vh_complete;
         private System.Windows.Forms.Button btn_cmp_vh_abort;
@@ -5056,5 +4911,8 @@
         private System.Windows.Forms.ComboBox cmb_mcsReportTestVHID;
         private System.Windows.Forms.Button btn_initial;
         private System.Windows.Forms.ComboBox cmb_cycleRunBayID;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.CheckBox cb_passDriveOutByAreaSensor;
     }
 }

@@ -75,7 +75,15 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 //{
                 try
                 {
-                    scApp.VehicleService.CheckObstacleStatusByVehicleView();
+                    if (!DebugParameter.isPassDriveOutByAreaSensor)
+                        scApp.VehicleService.CheckObstacleStatusByVehicleView();
+                    var vhs = scApp.VehicleBLL.cache.loadVhs();
+                    foreach (var vh in vhs)
+                    {
+                        if (vh.ACT_STATUS == VHActionStatus.NoCommand) continue;
+                        scApp.VehicleService.tryDriveOutTheVhByLocationChange(vh);
+                    }
+
                 }
                 catch (Exception ex)
                 {

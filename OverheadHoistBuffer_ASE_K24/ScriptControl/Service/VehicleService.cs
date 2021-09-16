@@ -316,9 +316,55 @@ namespace com.mirle.ibg3k0.sc.Service
                 leave_block.Leave(vh.VEHICLE_ID);
             }
 
-            if (vh.WillPassSectionID != null && leave_section != null)
+            //if (vh.WillPassSectionID != null && leave_section != null)
+            //{
+            //    vh.WillPassSectionID.Remove(SCUtility.Trim(leave_section.SEC_ID, true));
+            //}
+            //tryDriveOutTheVhByLocationChange(vh);
+
+
+        }
+        const int ADVANCE_DRIVE_OUT_DISTANCE_MM = 20000;
+
+
+        public void tryDriveOutTheVhByLocationChange(AVEHICLE vh)
+        {
+            if (vh.WillPassSectionID == null || vh.WillPassSectionID.Count == 0) return;
+            string current_section = "";
+            if (SCUtility.isEmpty(vh.CUR_SEC_ID))
             {
-                vh.WillPassSectionID.Remove(SCUtility.Trim(leave_section.SEC_ID, true));
+                ASECTION from_sec = scApp.SectionBLL.cache.GetSectionsByFromAddress(vh.CUR_ADR_ID).FirstOrDefault();
+                if (from_sec == null)
+                {
+                    return;
+                }
+                else
+                {
+                    current_section = from_sec.SEC_ID;
+                }
+            }
+            else
+            {
+                current_section = vh.CUR_SEC_ID;
+            }
+            int sec_index = vh.WillPassSectionID.IndexOf(current_section);
+            if (sec_index < 0) return;
+            double checked_distance = 0;
+            //for (int start_index = sec_index; checked_distance < ADVANCE_DRIVE_OUT_DISTANCE_MM; start_index++)
+            for (int start_index = sec_index; checked_distance < DebugParameter.PreDriveOutDistance_MM; start_index++)
+            {
+                string sec_id = vh.WillPassSectionID[start_index];
+                ASECTION sec_obj = scApp.SectionBLL.cache.GetSection(sec_id);
+                var reserve_result = scApp.ReserveBLL.TryAddReservedSection
+                                    (vh.VEHICLE_ID, sec_id, isAsk: true);
+                if (!reserve_result.OK)
+                {
+                    tryDriveOutTheVh(vh.VEHICLE_ID, reserve_result.VehicleID);
+                    return;
+                }
+                checked_distance += sec_obj.SEC_DIS;
+                if (checked_distance > ADVANCE_DRIVE_OUT_DISTANCE_MM)
+                    return;
             }
         }
 
@@ -1642,35 +1688,7 @@ namespace com.mirle.ibg3k0.sc.Service
             scApp.BackgroundWorkProcVehiclePosition.triggerBackgroundWork(eqpt.VEHICLE_ID, workItem);
         }
 
-        //const double PASS_AXIS_DISTANCE = 50;
 
-        /// <summary>
-        /// 當X、
-        /// </summary>
-        /// <param name="vhID"></param>
-        /// <param name="curAdrID"></param>
-        /// <param name="real_x_axis"></param>
-        /// <param name="real_y_axis"></param>
-        /// <returns></returns>
-        private (double after_check_x_axis, double after_check_y_axis) checkVehicleAxis(string vhID, string curAdrID, double real_x_axis, double real_y_axis)
-        {
-            if (SystemParameter.PassAxisDistance <= 0)
-                return (real_x_axis, real_y_axis);
-            var adrObject = scApp.ReserveBLL.GetHltMapAddress(curAdrID);
-            if (!adrObject.isExist)
-                return (real_x_axis, real_y_axis);
-            double distance = getDistance(adrObject.x, adrObject.y, real_x_axis, real_y_axis);
-            if (distance > SystemParameter.PassAxisDistance)
-                return (real_x_axis, real_y_axis);
-            else
-            {
-                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                   Data: $"vh:{vhID} of report x:{real_x_axis} y:{real_y_axis} and cur adr:{curAdrID} distance:{SystemParameter.PassAxisDistance} " +
-                         $"less than distance:{SystemParameter.PassAxisDistance} fource change to x:{adrObject.x} y:{adrObject.y}",
-                   VehicleID: vhID);
-                return (adrObject.x, adrObject.y);
-            }
-        }
 
         private double getDistance(double x1, double y1, double x2, double y2)
         {
@@ -2108,7 +2126,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     break;
 
                 case EventType.ReserveReq:
-                    TranEventReportPathReserveReqNew(bcfApp, vh, seq_num, reserveInfos);
+                    replyTranEventReport(bcfApp, recive_str.EventType, vh, seq_num);
                     break;
 
                 case EventType.Initial:
@@ -2359,42 +2377,6 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private object reserve_lock = new object();
 
-        private void TranEventReportPathReserveReqNew(BCFApplication bcfApp, AVEHICLE eqpt, int seqNum, RepeatedField<ReserveInfo> reserveInfos)
-        {
-            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-               Data: $"Process path reserve request,request path id:{reserveInfos.ToString()}",
-               VehicleID: eqpt.VEHICLE_ID,
-               CarrierID: eqpt.CST_ID);
-
-            lock (reserve_lock)
-            {
-                //B0.02 var ReserveResult = IsReserveSuccessNew(eqpt.VEHICLE_ID, reserveInfos);
-                var ReserveResult = IsMultiReserveSuccess(eqpt.VEHICLE_ID, reserveInfos);//B0.02
-                if (ReserveResult.isSuccess)
-                {
-                    //not thing...
-                }
-                else
-                {
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                       Data: $"Reserve section fail,start try drive out vh:{ReserveResult.reservedVhID}",
-                       VehicleID: eqpt.VEHICLE_ID,
-                       CarrierID: eqpt.CST_ID);
-                    //List<string> reserve_fail_sections = reserveInfos.Select(reserve => reserve.ReserveSectionID).ToList();
-                    //Task.Run(() => tryNotifyVhAvoid_New(eqpt.VEHICLE_ID, ReserveResult.reservedVhID, reserve_fail_sections));
-
-                    //在預約失敗以後，會嘗試看能不能將車子趕走
-                    ALINE line = scApp.getEQObjCacheManager().getLine();
-                    if (!IsCMD_MCSCanProcess() ||
-                        line.SCStats == ALINE.TSCState.PAUSED)
-                    {
-                        Task.Run(() => tryDriveOutTheVh(eqpt.VEHICLE_ID, ReserveResult.reservedVhID));
-                    }
-                }
-                //B0.02 replyTranEventReport(bcfApp, EventType.ReserveReq, eqpt, seqNum, canReservePass: ReserveResult.isSuccess, reserveInfos: reserveInfos);
-                replyTranEventReport(bcfApp, EventType.ReserveReq, eqpt, seqNum, canReservePass: ReserveResult.isSuccess, reserveInfos: ReserveResult.reserveSuccessInfos);//B0.02
-            }
-        }
 
         private enum CAN_NOT_AVOID_RESULT
         {

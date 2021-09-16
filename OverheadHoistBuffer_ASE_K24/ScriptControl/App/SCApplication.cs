@@ -2452,7 +2452,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean Is_136_retry_test = false;
 
         public static CycleRunType cycleRunType;
-        public static string cycleRunBay ="";
+        public static string cycleRunBay = "";
 
         private static Boolean isforcedpassblockcontrol = false;
 
@@ -2471,6 +2471,8 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean isForcedPassReserve = false;
 
         public static Boolean isForcedRejectReserve = false;
+        public static Boolean isPassDriveOutByAreaSensor = false;
+        public static int PreDriveOutDistance_MM = 20_000;
 
         public static string CST_TYPE = "";
         public enum CycleRunType

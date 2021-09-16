@@ -37,8 +37,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             mainForm = _mainForm;
             bcApp = mainForm.BCApp;
 
-            num_pass_distance.Value = (int)sc.App.SystemParameter.PassAxisDistance;
-            num_preStageWatingTime.Value = (int)sc.App.SystemParameter.PreStageWatingTime_ms;
             cb_StartGenAntoCmd.Checked = DebugParameter.CanAutoRandomGeneratesCommand;
             cb_FroceReservePass.Checked = DebugParameter.isForcedPassReserve;
             cb_FroceReserveReject.Checked = DebugParameter.isForcedRejectBlockControl;
@@ -69,7 +67,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             string[] ohcv_devices_id = ohcvDevices.Select(eq => eq.EQPT_ID).ToArray();
             BCUtility.setComboboxDataSource(cb_cv_ids, ohcv_devices_id.ToArray());
 
-
+            numericUpDown1.Value = DebugParameter.PreDriveOutDistance_MM;
+            cb_passDriveOutByAreaSensor.Checked = DebugParameter.isPassDriveOutByAreaSensor;
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
             cb_PwrMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingPowerMode));
@@ -474,28 +473,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             //});
         }
 
-        private void btn_blocked_sec_refresh_Click(object sender, EventArgs e)
-        {
-            cb_block_section.Text = "";
-            blocked_queues = bcApp.SCApplication.MapBLL.loadAllUsingBlockQueue();
-
-            var block_master = bcApp.SCApplication.BlockControlBLL.cache.loadAllBlockZoneMaster();
-
-            cb_block_section.DataSource = block_master;
-            cb_block_section.DisplayMember = "ENTRY_SEC_ID";
-        }
-
-        private void btn_release_block_Click(object sender, EventArgs e)
-        {
-            int index = cb_block_section.SelectedIndex;
-            BLOCKZONEQUEUE queue = blocked_queues[index];
-        }
-
-        private void cb_block_section_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int index = cb_block_section.SelectedIndex;
-            lbl_BlockedVh.Text = blocked_queues[index].CAR_ID;
-        }
 
         private void btn_portInServeice_Click(object sender, EventArgs e)
         {
@@ -1325,25 +1302,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             bcApp.SCApplication.VehicleBLL.setAndPublishPositionReportInfo2Redis(vh_id, current_sec_id, "", distance, x_axis, y_axis);
         }
 
-        private void num_pass_distance_ValueChanged(object sender, EventArgs e)
-        {
-            double pass_distanve = (int)num_pass_distance.Value;
-            sc.App.SystemParameter.setPassAxisDistance(pass_distanve);
-        }
-
-        private void num_preStageWatingTime_ValueChanged(object sender, EventArgs e)
-        {
-            int pre_stage_wating_time = (int)num_preStageWatingTime.Value;
-            sc.App.SystemParameter.setPreStageWatingTime_ms(pre_stage_wating_time);
-        }
-
-        private void btn_block_test_Click(object sender, EventArgs e)
-        {
-            string entry_section = cb_block_section.Text;
-
-            bool can_block_pass = bcApp.SCApplication.VehicleService.ProcessBlockReqByReserveModule(null, noticeCar, entry_section);
-
-        }
 
         private void btn_bcrReadMismatch_Click(object sender, EventArgs e)
         {
@@ -1428,6 +1386,16 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cmb_cycleRunBayID_SelectedIndexChanged(object sender, EventArgs e)
         {
             DebugParameter.cycleRunBay = cmb_cycleRunBayID.Text;
+        }
+
+        private void cb_passDriveOutByAreaSensor_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.isPassDriveOutByAreaSensor = cb_passDriveOutByAreaSensor.Checked;
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            DebugParameter.PreDriveOutDistance_MM = (int)numericUpDown1.Value;
         }
     }
 }
