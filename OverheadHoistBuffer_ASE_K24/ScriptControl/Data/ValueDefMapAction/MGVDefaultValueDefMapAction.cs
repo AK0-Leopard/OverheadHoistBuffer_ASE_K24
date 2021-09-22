@@ -769,18 +769,31 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             return Task.Run(() =>
             {
-                var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+                var function = scApp.getFunBaseObj<ManualPortPLCControl_TimeCalibration>(port.PORT_ID) as ManualPortPLCControl_TimeCalibration;
+                try
+                {
 
-                function.TimeCalibrationBcdYearMonth = (UInt16)((DateTime.Now.Year.ToBCD() - 2000) * 256 + DateTime.Now.Month.ToBCD());
-                function.TimeCalibrationBcdDayHour = (UInt16)(DateTime.Now.Day.ToBCD() * 256 + DateTime.Now.Hour.ToBCD());
-                function.TimeCalibrationBcdMinuteSecond = (UInt16)(DateTime.Now.Minute.ToBCD() * 256 + DateTime.Now.Second.ToBCD());
+                    function.TimeCalibrationBcdYearMonth = (UInt16)((DateTime.Now.Year.ToBCD() - 2000) * 256 + DateTime.Now.Month.ToBCD());
+                    function.TimeCalibrationBcdDayHour = (UInt16)(DateTime.Now.Day.ToBCD() * 256 + DateTime.Now.Hour.ToBCD());
+                    function.TimeCalibrationBcdMinuteSecond = (UInt16)(DateTime.Now.Minute.ToBCD() * 256 + DateTime.Now.Second.ToBCD());
 
-                if (function.TimeCalibrationIndex < 65535)
-                    function.TimeCalibrationIndex = (UInt16)(function.OhbcErrorIndex + 1);
-                else
-                    function.TimeCalibrationIndex = 1;
+                    if (function.TimeCalibrationIndex < 65535)
+                        function.TimeCalibrationIndex = (UInt16)(function.OhbcErrorIndex + 1);
+                    else
+                        function.TimeCalibrationIndex = 1;
 
-                CommitChange(function);
+                    function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
+                    logger.Info(function.ToString());
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    scApp.putFunBaseObj<ManualPortPLCControl_TimeCalibration>(function);
+                }
+
             });
         }
 
@@ -788,11 +801,21 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             return Task.Run(() =>
             {
-                var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
-
-                function.IsHeartBeatOn = setOn;
-
-                CommitChange(function);
+                var function = scApp.getFunBaseObj<ManualPortPLCControl_HeartBeat>(port.PORT_ID) as ManualPortPLCControl_HeartBeat;
+                try
+                {
+                    function.IsHeartBeatOn = setOn;
+                    function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
+                    logger.Info(function.ToString());
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    scApp.putFunBaseObj<ManualPortPLCControl_HeartBeat>(function);
+                }
             });
         }
 

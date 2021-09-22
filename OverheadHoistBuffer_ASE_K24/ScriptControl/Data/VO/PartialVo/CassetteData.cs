@@ -48,5 +48,15 @@ namespace com.mirle.ibg3k0.sc
             }
             return "";
         }
+        public string CurrentAdrID(sc.App.SCApplication scApp)
+        {
+
+            if (scApp.TransferService.isShelfPort(Carrier_LOC))
+            {
+                return scApp.TransferService.portINIData[Carrier_LOC].ADR_ID.ToString();
+            }
+            return "";
+        }
+
     }
 }

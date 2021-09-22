@@ -327,7 +327,7 @@ namespace com.mirle.ibg3k0.sc.Service
         const int ADVANCE_DRIVE_OUT_DISTANCE_MM = 20000;
 
 
-        public void tryDriveOutTheVhByLocationChange(AVEHICLE vh)
+        public void tryDriveOutTheVhByAdvance(AVEHICLE vh)
         {
             if (vh.WillPassSectionID == null || vh.WillPassSectionID.Count == 0) return;
             string current_section = "";
@@ -1980,11 +1980,11 @@ namespace com.mirle.ibg3k0.sc.Service
                 //1.2.如果沒有則就把全部的CV納入選擇。
                 can_avoid_port = scApp.PortDefBLL.cache.loadCVPortDefs();
             }
-            bool has_command_to_12206 = scApp.CMDBLL.cache.IsExcuteCmdByToAdr("12206");
             //2.找出離自己最近的一個CV點
             //var find_result = findTheNearestCVPort(willDrivenAwayVh, can_avoid_port);
-            if (has_command_to_12206)
-                can_avoid_port = can_avoid_port.Where(port => !SCUtility.isMatche(port.ADR_ID, "12206")).ToList();
+
+            can_avoid_port = can_avoid_port.Where(port => !SCUtility.isMatche(port.ADR_ID, willDrivenAwayVh.CUR_ADR_ID)).ToList();
+
             var avoid_port = can_avoid_port.OrderBy(port => port.AvoidCount).FirstOrDefault();
 
             if (avoid_port != null)

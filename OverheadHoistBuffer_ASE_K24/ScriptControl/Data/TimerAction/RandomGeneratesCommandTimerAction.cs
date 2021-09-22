@@ -106,6 +106,9 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                         case DebugParameter.CycleRunType.NTB:
                             NTBPortTest(); // A0.01
                             break;
+                        case DebugParameter.CycleRunType.shelfByManualCMD:
+                            ShelfByManualMCS();
+                            break;
                     }
                 }
                 catch (Exception ex)
@@ -190,7 +193,88 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 }
             }
         }
+        private void ShelfByManualMCS()
+        {
+            List<AVEHICLE> vhs = scApp.VehicleBLL.cache.loadVhs();
+            int ready_vh_count = vhs.Where(vh => vh.IsReady()).Count();
+            int current_mcs_cmd = scApp.CMDBLL.getCMD_MCSIsUnfinishedCount();
+            if (ready_vh_count > current_mcs_cmd)
+            {
+                List<CassetteData> cassetteDatas = scApp.CassetteDataBLL.loadCassetteData();
+                if (cassetteDatas == null || cassetteDatas.Count() == 0) return;
+                //找一份目前儲位的列表
+                if (shelfDefs == null || shelfDefs.Count == 0)
+                    shelfDefs = scApp.ShelfDefBLL.LoadEnableShelf();
+                //如果取完還是空的 就跳出去
+                if (shelfDefs == null || shelfDefs.Count == 0)
+                    return;
+                shelfDefs = shelfDefs.Where(s => !SCUtility.isMatche(s.ADR_ID, "99999")).ToList();
 
+                //取得目前當前在線內的Carrier
+                //找出在儲位中的Cassette
+                cassetteDatas = cassetteDatas.Where(cst => cst.Carrier_LOC.StartsWith("10") ||
+                                                           cst.Carrier_LOC.StartsWith("11") ||
+                                                           cst.Carrier_LOC.StartsWith("21") ||
+                                                           cst.Carrier_LOC.StartsWith("20") ||
+                                                           cst.Carrier_LOC.Contains("OHB01_CR")).
+                                                           ToList();
+                cassetteDatas = cassetteDatas.Where(cst => !SCUtility.isMatche(cst.CurrentAdrID(scApp), "99999")).ToList();
+
+                List<string> current_cst_at_shelf_id = cassetteDatas.
+                    Select(cst => SCUtility.Trim(cst.Carrier_LOC, true)).
+                    ToList();
+                //刪除目前cst所在的儲位，讓他排除在Cycle Run的列表中
+                foreach (var shelf in shelfDefs.ToList())
+                {
+                    if (current_cst_at_shelf_id.Contains(SCUtility.Trim(shelf.ShelfID)))
+                    {
+                        shelfDefs.Remove(shelf);
+                    }
+                }
+
+                foreach (var shelf in shelfDefs.ToList())
+                {
+                    if (scApp.CMDBLL.getCMD_MCSIsUnfinishedCountByPortID(shelf.ShelfID) > 0)
+                    {
+                        shelfDefs.Remove(shelf);
+                    }
+                }
+
+
+                foreach (var cst in cassetteDatas.ToList())
+                {
+                    if (scApp.CMDBLL.getCMD_MCSIsUnfinishedCountByBoxID(cst.BOXID) > 0)
+                        cassetteDatas.Remove(cst);
+                }
+                if (cassetteDatas == null || cassetteDatas.Count == 0)
+                {
+                    return;
+                }
+
+                //隨機找出一個要放置的shelf
+                CassetteData process_cst = cassetteDatas[0];
+
+                int cst_adr_id = scApp.TransferService.portINIData[process_cst.Carrier_LOC].ADR_ID;
+
+                int shelf_adr_id = scApp.TransferService.portINIData[process_cst.Carrier_LOC].ADR_ID;
+
+
+                int task_RandomIndex = rnd_Index.Next(shelfDefs.Count - 1);
+                ShelfDef target_shelf_def = shelfDefs[task_RandomIndex];
+                string result = scApp.TransferService.Manual_InsertCmd
+                     (
+                         source: process_cst.Carrier_LOC,
+                         dest: target_shelf_def.ShelfID,
+                         sourceCmd: "ShelfByManualMCS"
+                     );
+                if (SCUtility.isMatche(result, "OK"))
+                {
+                    shelfDefs.Remove(target_shelf_def);
+                }
+            }
+
+
+        }
         private void ShelfTestByOrder()
         {
             var mcs_cmds = scApp.CMDBLL.loadACMD_MCSIsUnfinished();

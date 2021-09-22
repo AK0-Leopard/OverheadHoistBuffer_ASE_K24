@@ -237,6 +237,14 @@ namespace com.mirle.ibg3k0.sc.Data.DAO.EntityFramework
                         select cmd;
             return query.Count();
         }
+        public int getCMD_MCSIsUnfinishedCount(DBConnection_EF con)
+        {
+            var query = from cmd in con.ACMD_MCS
+                        where cmd.TRANSFERSTATE >= E_TRAN_STATUS.Queue
+                        && cmd.TRANSFERSTATE < E_TRAN_STATUS.Canceling
+                        select cmd;
+            return query.Count();
+        }
 
         public int getCMD_MCSInserCountLastHour(DBConnection_EF con, int hours)
         {

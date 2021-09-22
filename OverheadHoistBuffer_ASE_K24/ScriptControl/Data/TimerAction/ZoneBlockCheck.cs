@@ -81,7 +81,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     foreach (var vh in vhs)
                     {
                         if (vh.ACT_STATUS == VHActionStatus.NoCommand) continue;
-                        scApp.VehicleService.tryDriveOutTheVhByLocationChange(vh);
+                        scApp.VehicleService.tryDriveOutTheVhByAdvance(vh);
                     }
 
                 }

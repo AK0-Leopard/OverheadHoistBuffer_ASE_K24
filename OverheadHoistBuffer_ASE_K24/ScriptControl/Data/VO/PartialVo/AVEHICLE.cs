@@ -806,6 +806,13 @@ namespace com.mirle.ibg3k0.sc
             return IsListening;
         }
 
+        public bool IsReady()
+        {
+            return this.isTcpIpConnect &&
+             this.MODE_STATUS == ProtocolFormat.OHTMessage.VHModeStatus.AutoRemote &&
+             IS_INSTALLED &&
+             !SCUtility.isEmpty(this.CUR_ADR_ID);
+        }
 
         public int getPortNum(BCFApplication bcfApp)
         {

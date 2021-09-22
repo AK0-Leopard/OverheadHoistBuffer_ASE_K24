@@ -2051,6 +2051,21 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return 0;
             }
         }
+        public int getCMD_MCSIsUnfinishedCount()
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    return cmd_mcsDao.getCMD_MCSIsUnfinishedCount(con);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return 0;
+            }
+        }
 
         public int getCMD_MCSIsUnfinishedCountByCarrierID(string carrier_id)
         {
