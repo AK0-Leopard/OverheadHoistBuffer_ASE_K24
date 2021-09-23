@@ -7857,7 +7857,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                         scApp.CMDBLL.doCreatTransferCommand
                                             (craneID,
-                                             cmd_id_mcs: cmdID,
+                                             cmd_id_mcs: datainfo.CMD_ID,
                                              cmd_type: E_CMD_TYPE.LoadUnload,
                                              source: source,
                                              destination: dest,

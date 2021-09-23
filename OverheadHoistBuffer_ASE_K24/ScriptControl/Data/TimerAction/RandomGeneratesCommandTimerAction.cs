@@ -12,18 +12,13 @@
 // <summary></summary>
 // 2020/04/17    Jason Wu       N/A            A0.01   加入NTB Type 選項與處理內容
 // ***********************************************************************
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using com.mirle.ibg3k0.bcf.Data.TimerAction;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Common;
-using com.mirle.ibg3k0.sc.Data.DAO;
-using com.mirle.ibg3k0.sc.Data.SECS;
 using NLog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace com.mirle.ibg3k0.sc.Data.TimerAction
 {
@@ -189,10 +184,10 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                                         process_cst.BOXID.Trim(), process_cst.LotID,
                                         from_adr, target_shelf_def.ADR_ID);
                     shelfDefs.Remove(target_shelf_def);
-
                 }
             }
         }
+
         private void ShelfByManualMCS()
         {
             List<AVEHICLE> vhs = scApp.VehicleBLL.cache.loadVhs();
@@ -251,7 +246,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     return;
                 }
 
-                //隨機找出一個要放置的shelf
+                //隨機找出一個要放置的 shelf
                 CassetteData process_cst = cassetteDatas[0];
 
                 int cst_adr_id = scApp.TransferService.portINIData[process_cst.Carrier_LOC].ADR_ID;
@@ -272,12 +267,23 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     shelfDefs.Remove(target_shelf_def);
                 }
             }
-
-
         }
         private void ShelfTestByOrder()
         {
             var mcs_cmds = scApp.CMDBLL.loadACMD_MCSIsUnfinished();
+            string cycle_run_vh = DebugParameter.cycleRunVh;
+            AVEHICLE vh = scApp.VehicleBLL.cache.getVhByID(cycle_run_vh);
+            if (vh == null) return;
+            if (vh.IS_INSTALLED)
+            {
+                return;
+            }
+            bool has_cmd_excute = scApp.CMDBLL.isCMD_OHTCExcuteByVh(vh.VEHICLE_ID);
+            if (has_cmd_excute)
+            {
+                return;
+            }
+
             int mcs_cmds_excute_by_bay = mcs_cmds.Where(cmd =>
             {
                 bool is_shelf = scApp.TransferService.isShelfPort(cmd.HOSTDESTINATION);
@@ -315,7 +321,8 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                  (
                      source: process_cst.Carrier_LOC,
                      dest: next_cycle_run_shelf.ShelfID,
-                     sourceCmd: "ShelfTestByOrder"
+                     sourceCmd: "ShelfTestByOrder",
+                     craneID: vh.VEHICLE_ID
                  );
             if (SCUtility.isMatche(result, "OK"))
             {

@@ -48,6 +48,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             BCUtility.setComboboxDataSource(cmb_tcpipctr_Vehicle, allVh);
             BCUtility.setComboboxDataSource(cmb_plcctr_Vehicle, allVh.ToArray());
             BCUtility.setComboboxDataSource(cmb_car_out_vh, allVh.ToArray());
+            BCUtility.setComboboxDataSource(cmb_cycleRunVhId, allVh.ToArray());
 
             List<ASEGMENT> segments = bcApp.SCApplication.SegmentBLL.cache.GetSegments();
             string[] segment_ids = segments.Select(seg => seg.SEG_NUM).ToArray();
@@ -69,6 +70,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             numericUpDown1.Value = DebugParameter.PreDriveOutDistance_MM;
             cb_passDriveOutByAreaSensor.Checked = DebugParameter.isPassDriveOutByAreaSensor;
+            cmb_cycleRunVhId.SelectedItem = DebugParameter.cycleRunVh;
+            cmb_cycleRunBayID.SelectedItem = DebugParameter.cycleRunBay;
+
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
             cb_PwrMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingPowerMode));
@@ -1385,7 +1389,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void cmb_cycleRunBayID_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DebugParameter.cycleRunBay = cmb_cycleRunBayID.Text;
         }
 
         private void cb_passDriveOutByAreaSensor_CheckedChanged(object sender, EventArgs e)
@@ -1396,6 +1399,20 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             DebugParameter.PreDriveOutDistance_MM = (int)numericUpDown1.Value;
+        }
+
+        private void cmb_cycleRunVhId_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void cmb_cycleRunVhId_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            DebugParameter.cycleRunVh = cmb_cycleRunVhId.SelectedValue as string;
+        }
+
+        private void cmb_cycleRunBayID_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            DebugParameter.cycleRunBay = cmb_cycleRunBayID.SelectedValue as string;
         }
     }
 }

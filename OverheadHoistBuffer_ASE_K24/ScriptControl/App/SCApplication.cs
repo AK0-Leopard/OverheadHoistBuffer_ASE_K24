@@ -2453,6 +2453,7 @@ namespace com.mirle.ibg3k0.sc.App
 
         public static CycleRunType cycleRunType;
         public static string cycleRunBay = "";
+        public static string cycleRunVh = "";
 
         private static Boolean isforcedpassblockcontrol = false;
 

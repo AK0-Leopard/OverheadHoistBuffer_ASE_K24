@@ -105,6 +105,9 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cb_passDriveOutByAreaSensor = new System.Windows.Forms.CheckBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.cmb_cycleRunBayID = new System.Windows.Forms.ComboBox();
             this.combox_cycle_type = new System.Windows.Forms.ComboBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
@@ -367,9 +370,11 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label12 = new System.Windows.Forms.Label();
-            this.cb_passDriveOutByAreaSensor = new System.Windows.Forms.CheckBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label77 = new System.Windows.Forms.Label();
+            this.cmb_cycleRunVhId = new System.Windows.Forms.ComboBox();
+            this.label78 = new System.Windows.Forms.Label();
+            this.gb_cycleRunInfo = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -382,6 +387,7 @@
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox12.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.gb_blockControl.SuspendLayout();
@@ -407,7 +413,7 @@
             this.tableLayoutPanel5.SuspendLayout();
             this.groupBox13.SuspendLayout();
             this.groupBox10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.gb_cycleRunInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // cb_FroceReservePass
@@ -615,7 +621,7 @@
             // cb_StartGenAntoCmd
             // 
             this.cb_StartGenAntoCmd.AutoSize = true;
-            this.cb_StartGenAntoCmd.Location = new System.Drawing.Point(1100, 39);
+            this.cb_StartGenAntoCmd.Location = new System.Drawing.Point(1039, 184);
             this.cb_StartGenAntoCmd.Name = "cb_StartGenAntoCmd";
             this.cb_StartGenAntoCmd.Size = new System.Drawing.Size(349, 26);
             this.cb_StartGenAntoCmd.TabIndex = 18;
@@ -700,7 +706,7 @@
             this.groupBox4.Controls.Add(this.uctl_SendAllFun);
             this.groupBox4.Location = new System.Drawing.Point(6, 6);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(1076, 806);
+            this.groupBox4.Size = new System.Drawing.Size(1027, 806);
             this.groupBox4.TabIndex = 21;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Specify Vehicle Action";
@@ -709,7 +715,7 @@
             // label76
             // 
             this.label76.AutoSize = true;
-            this.label76.Location = new System.Drawing.Point(810, 689);
+            this.label76.Location = new System.Drawing.Point(795, 689);
             this.label76.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label76.Name = "label76";
             this.label76.Size = new System.Drawing.Size(20, 22);
@@ -723,7 +729,7 @@
             0,
             0,
             0});
-            this.num_vh_y.Location = new System.Drawing.Point(834, 686);
+            this.num_vh_y.Location = new System.Drawing.Point(819, 686);
             this.num_vh_y.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -737,7 +743,7 @@
             // label75
             // 
             this.label75.AutoSize = true;
-            this.label75.Location = new System.Drawing.Point(810, 650);
+            this.label75.Location = new System.Drawing.Point(795, 650);
             this.label75.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label75.Name = "label75";
             this.label75.Size = new System.Drawing.Size(20, 22);
@@ -751,7 +757,7 @@
             0,
             0,
             0});
-            this.num_vh_x.Location = new System.Drawing.Point(834, 647);
+            this.num_vh_x.Location = new System.Drawing.Point(819, 647);
             this.num_vh_x.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -765,7 +771,7 @@
             // Ignore136UnloadComplete
             // 
             this.Ignore136UnloadComplete.AutoSize = true;
-            this.Ignore136UnloadComplete.Location = new System.Drawing.Point(831, 112);
+            this.Ignore136UnloadComplete.Location = new System.Drawing.Point(767, 112);
             this.Ignore136UnloadComplete.Name = "Ignore136UnloadComplete";
             this.Ignore136UnloadComplete.Size = new System.Drawing.Size(249, 26);
             this.Ignore136UnloadComplete.TabIndex = 56;
@@ -775,7 +781,7 @@
             // 
             // txt_current_sec_id
             // 
-            this.txt_current_sec_id.Location = new System.Drawing.Point(834, 551);
+            this.txt_current_sec_id.Location = new System.Drawing.Point(819, 551);
             this.txt_current_sec_id.Name = "txt_current_sec_id";
             this.txt_current_sec_id.Size = new System.Drawing.Size(172, 30);
             this.txt_current_sec_id.TabIndex = 55;
@@ -787,7 +793,7 @@
             0,
             0,
             0});
-            this.num_section_dis.Location = new System.Drawing.Point(834, 592);
+            this.num_section_dis.Location = new System.Drawing.Point(819, 592);
             this.num_section_dis.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -801,7 +807,7 @@
             // ck_retry
             // 
             this.ck_retry.AutoSize = true;
-            this.ck_retry.Location = new System.Drawing.Point(834, 515);
+            this.ck_retry.Location = new System.Drawing.Point(819, 515);
             this.ck_retry.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ck_retry.Name = "ck_retry";
             this.ck_retry.Size = new System.Drawing.Size(119, 26);
@@ -876,7 +882,7 @@
             // cb_test_duplicate
             // 
             this.cb_test_duplicate.AutoSize = true;
-            this.cb_test_duplicate.Location = new System.Drawing.Point(831, 69);
+            this.cb_test_duplicate.Location = new System.Drawing.Point(767, 69);
             this.cb_test_duplicate.Name = "cb_test_duplicate";
             this.cb_test_duplicate.Size = new System.Drawing.Size(169, 26);
             this.cb_test_duplicate.TabIndex = 47;
@@ -886,7 +892,7 @@
             // 
             // btn_changeToRemove
             // 
-            this.btn_changeToRemove.Location = new System.Drawing.Point(828, 189);
+            this.btn_changeToRemove.Location = new System.Drawing.Point(813, 189);
             this.btn_changeToRemove.Name = "btn_changeToRemove";
             this.btn_changeToRemove.Size = new System.Drawing.Size(169, 43);
             this.btn_changeToRemove.TabIndex = 46;
@@ -896,7 +902,7 @@
             // 
             // btn_changeToInstall
             // 
-            this.btn_changeToInstall.Location = new System.Drawing.Point(831, 240);
+            this.btn_changeToInstall.Location = new System.Drawing.Point(816, 240);
             this.btn_changeToInstall.Name = "btn_changeToInstall";
             this.btn_changeToInstall.Size = new System.Drawing.Size(169, 43);
             this.btn_changeToInstall.TabIndex = 45;
@@ -906,7 +912,7 @@
             // 
             // btn_changeToAutoLocal
             // 
-            this.btn_changeToAutoLocal.Location = new System.Drawing.Point(834, 364);
+            this.btn_changeToAutoLocal.Location = new System.Drawing.Point(819, 364);
             this.btn_changeToAutoLocal.Name = "btn_changeToAutoLocal";
             this.btn_changeToAutoLocal.Size = new System.Drawing.Size(166, 45);
             this.btn_changeToAutoLocal.TabIndex = 44;
@@ -916,7 +922,7 @@
             // 
             // btn_changeToAutoMTL
             // 
-            this.btn_changeToAutoMTL.Location = new System.Drawing.Point(834, 464);
+            this.btn_changeToAutoMTL.Location = new System.Drawing.Point(819, 464);
             this.btn_changeToAutoMTL.Name = "btn_changeToAutoMTL";
             this.btn_changeToAutoMTL.Size = new System.Drawing.Size(166, 45);
             this.btn_changeToAutoMTL.TabIndex = 43;
@@ -926,7 +932,7 @@
             // 
             // btn_changeToAutoMTS
             // 
-            this.btn_changeToAutoMTS.Location = new System.Drawing.Point(834, 413);
+            this.btn_changeToAutoMTS.Location = new System.Drawing.Point(819, 413);
             this.btn_changeToAutoMTS.Name = "btn_changeToAutoMTS";
             this.btn_changeToAutoMTS.Size = new System.Drawing.Size(166, 45);
             this.btn_changeToAutoMTS.TabIndex = 42;
@@ -936,7 +942,7 @@
             // 
             // btn_changeToAutoRemote
             // 
-            this.btn_changeToAutoRemote.Location = new System.Drawing.Point(834, 313);
+            this.btn_changeToAutoRemote.Location = new System.Drawing.Point(819, 313);
             this.btn_changeToAutoRemote.Name = "btn_changeToAutoRemote";
             this.btn_changeToAutoRemote.Size = new System.Drawing.Size(166, 45);
             this.btn_changeToAutoRemote.TabIndex = 41;
@@ -947,7 +953,7 @@
             // ck_CycleRunTest
             // 
             this.ck_CycleRunTest.AutoSize = true;
-            this.ck_CycleRunTest.Location = new System.Drawing.Point(831, 28);
+            this.ck_CycleRunTest.Location = new System.Drawing.Point(767, 28);
             this.ck_CycleRunTest.Name = "ck_CycleRunTest";
             this.ck_CycleRunTest.Size = new System.Drawing.Size(169, 26);
             this.ck_CycleRunTest.TabIndex = 38;
@@ -1055,7 +1061,7 @@
             this.groupBox8.Controls.Add(this.button9);
             this.groupBox8.Location = new System.Drawing.Point(496, 12);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(314, 165);
+            this.groupBox8.Size = new System.Drawing.Size(265, 165);
             this.groupBox8.TabIndex = 25;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Func 37";
@@ -1290,10 +1296,11 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.gb_cycleRunInfo);
+            this.tabPage1.Controls.Add(this.label16);
             this.tabPage1.Controls.Add(this.cb_passDriveOutByAreaSensor);
             this.tabPage1.Controls.Add(this.label12);
             this.tabPage1.Controls.Add(this.numericUpDown1);
-            this.tabPage1.Controls.Add(this.cmb_cycleRunBayID);
             this.tabPage1.Controls.Add(this.combox_cycle_type);
             this.tabPage1.Controls.Add(this.groupBox12);
             this.tabPage1.Controls.Add(this.groupBox7);
@@ -1308,19 +1315,54 @@
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // cb_passDriveOutByAreaSensor
+            // 
+            this.cb_passDriveOutByAreaSensor.AutoSize = true;
+            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1039, 364);
+            this.cb_passDriveOutByAreaSensor.Name = "cb_passDriveOutByAreaSensor";
+            this.cb_passDriveOutByAreaSensor.Size = new System.Drawing.Size(319, 26);
+            this.cb_passDriveOutByAreaSensor.TabIndex = 60;
+            this.cb_passDriveOutByAreaSensor.Text = "Pass Drive Out By Area Sensor";
+            this.cb_passDriveOutByAreaSensor.UseVisualStyleBackColor = true;
+            this.cb_passDriveOutByAreaSensor.CheckedChanged += new System.EventHandler(this.cb_passDriveOutByAreaSensor_CheckedChanged);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(1035, 303);
+            this.label12.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(230, 22);
+            this.label12.TabIndex = 16;
+            this.label12.Text = "Pre Drive Out Distance";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(1039, 328);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 30);
+            this.numericUpDown1.TabIndex = 59;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
             // cmb_cycleRunBayID
             // 
             this.cmb_cycleRunBayID.FormattingEnabled = true;
-            this.cmb_cycleRunBayID.Location = new System.Drawing.Point(1305, 10);
+            this.cmb_cycleRunBayID.Location = new System.Drawing.Point(6, 57);
             this.cmb_cycleRunBayID.Name = "cmb_cycleRunBayID";
-            this.cmb_cycleRunBayID.Size = new System.Drawing.Size(121, 30);
+            this.cmb_cycleRunBayID.Size = new System.Drawing.Size(189, 30);
             this.cmb_cycleRunBayID.TabIndex = 58;
             this.cmb_cycleRunBayID.SelectedIndexChanged += new System.EventHandler(this.cmb_cycleRunBayID_SelectedIndexChanged);
+            this.cmb_cycleRunBayID.SelectionChangeCommitted += new System.EventHandler(this.cmb_cycleRunBayID_SelectionChangeCommitted);
             // 
             // combox_cycle_type
             // 
             this.combox_cycle_type.FormattingEnabled = true;
-            this.combox_cycle_type.Location = new System.Drawing.Point(1100, 10);
+            this.combox_cycle_type.Location = new System.Drawing.Point(1038, 58);
             this.combox_cycle_type.Name = "combox_cycle_type";
             this.combox_cycle_type.Size = new System.Drawing.Size(186, 30);
             this.combox_cycle_type.TabIndex = 27;
@@ -1439,7 +1481,7 @@
             // 
             this.gb_blockControl.Controls.Add(this.cb_FroceReserveReject);
             this.gb_blockControl.Controls.Add(this.cb_FroceReservePass);
-            this.gb_blockControl.Location = new System.Drawing.Point(1100, 71);
+            this.gb_blockControl.Location = new System.Drawing.Point(1039, 213);
             this.gb_blockControl.Name = "gb_blockControl";
             this.gb_blockControl.Size = new System.Drawing.Size(257, 73);
             this.gb_blockControl.TabIndex = 23;
@@ -2565,7 +2607,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(207, 8);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(207, 3);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -4453,39 +4495,55 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // numericUpDown1
+            // label16
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(1100, 186);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 30);
-            this.numericUpDown1.TabIndex = 59;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(1035, 33);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(160, 22);
+            this.label16.TabIndex = 61;
+            this.label16.Text = "Cycle Run Type:";
             // 
-            // label12
+            // label77
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(1096, 161);
-            this.label12.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(230, 22);
-            this.label12.TabIndex = 16;
-            this.label12.Text = "Pre Drive Out Distance";
+            this.label77.AutoSize = true;
+            this.label77.Location = new System.Drawing.Point(18, 33);
+            this.label77.Name = "label77";
+            this.label77.Size = new System.Drawing.Size(150, 22);
+            this.label77.TabIndex = 62;
+            this.label77.Text = "Cycle Run Bay:";
             // 
-            // cb_passDriveOutByAreaSensor
+            // cmb_cycleRunVhId
             // 
-            this.cb_passDriveOutByAreaSensor.AutoSize = true;
-            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1100, 234);
-            this.cb_passDriveOutByAreaSensor.Name = "cb_passDriveOutByAreaSensor";
-            this.cb_passDriveOutByAreaSensor.Size = new System.Drawing.Size(319, 26);
-            this.cb_passDriveOutByAreaSensor.TabIndex = 60;
-            this.cb_passDriveOutByAreaSensor.Text = "Pass Drive Out By Area Sensor";
-            this.cb_passDriveOutByAreaSensor.UseVisualStyleBackColor = true;
-            this.cb_passDriveOutByAreaSensor.CheckedChanged += new System.EventHandler(this.cb_passDriveOutByAreaSensor_CheckedChanged);
+            this.cmb_cycleRunVhId.FormattingEnabled = true;
+            this.cmb_cycleRunVhId.Location = new System.Drawing.Point(6, 114);
+            this.cmb_cycleRunVhId.Name = "cmb_cycleRunVhId";
+            this.cmb_cycleRunVhId.Size = new System.Drawing.Size(189, 30);
+            this.cmb_cycleRunVhId.TabIndex = 63;
+            this.cmb_cycleRunVhId.SelectedIndexChanged += new System.EventHandler(this.cmb_cycleRunVhId_SelectedIndexChanged);
+            this.cmb_cycleRunVhId.SelectionChangeCommitted += new System.EventHandler(this.cmb_cycleRunVhId_SelectionChangeCommitted);
+            // 
+            // label78
+            // 
+            this.label78.AutoSize = true;
+            this.label78.Location = new System.Drawing.Point(18, 90);
+            this.label78.Name = "label78";
+            this.label78.Size = new System.Drawing.Size(140, 22);
+            this.label78.TabIndex = 64;
+            this.label78.Text = "Cycle Run Vh:";
+            // 
+            // gb_cycleRunInfo
+            // 
+            this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleRunVhId);
+            this.gb_cycleRunInfo.Controls.Add(this.label78);
+            this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleRunBayID);
+            this.gb_cycleRunInfo.Controls.Add(this.label77);
+            this.gb_cycleRunInfo.Location = new System.Drawing.Point(1230, 18);
+            this.gb_cycleRunInfo.Name = "gb_cycleRunInfo";
+            this.gb_cycleRunInfo.Size = new System.Drawing.Size(201, 160);
+            this.gb_cycleRunInfo.TabIndex = 65;
+            this.gb_cycleRunInfo.TabStop = false;
+            this.gb_cycleRunInfo.Text = "Cycle Run Info";
             // 
             // DebugForm
             // 
@@ -4519,6 +4577,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -4565,7 +4624,8 @@
             this.groupBox13.PerformLayout();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.gb_cycleRunInfo.ResumeLayout(false);
+            this.gb_cycleRunInfo.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -4914,5 +4974,10 @@
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.CheckBox cb_passDriveOutByAreaSensor;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label78;
+        private System.Windows.Forms.ComboBox cmb_cycleRunVhId;
+        private System.Windows.Forms.Label label77;
+        private System.Windows.Forms.GroupBox gb_cycleRunInfo;
     }
 }
