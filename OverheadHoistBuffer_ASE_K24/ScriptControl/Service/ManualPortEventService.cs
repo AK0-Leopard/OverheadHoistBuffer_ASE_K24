@@ -207,22 +207,22 @@ namespace com.mirle.ibg3k0.sc.Service
                     return;
                 }
 
-                if (IsFOUPTypeCSTWaitIn(logTitle, info))
-                {
-                    WriteEventLog($"{logTitle} 由於在測試階段，因此暫時強制拒絕Foup進入.");
-                    if (manualPorts.TryGetValue(args.PortName, out var plcPort))
-                    {
-                        plcPort.SetMoveBackReasonAsync(MoveBackReasons.Other);
-                        plcPort.MoveBackAsync();
-                        WriteEventLog($"{logTitle} Move Back  Reason:(Other).");
-                    }
-                    else
-                    {
-                        WriteEventLog($"{logTitle} Cannot find [IManualPortValueDefMapAction]. Cannot execute Move Back.");
-                    }
+                //if (IsFOUPTypeCSTWaitIn(logTitle, info))
+                //{
+                //    WriteEventLog($"{logTitle} 由於在測試階段，因此暫時強制拒絕Foup進入.");
+                //    if (manualPorts.TryGetValue(args.PortName, out var plcPort))
+                //    {
+                //        plcPort.SetMoveBackReasonAsync(MoveBackReasons.Other);
+                //        plcPort.MoveBackAsync();
+                //        WriteEventLog($"{logTitle} Move Back  Reason:(Other).");
+                //    }
+                //    else
+                //    {
+                //        WriteEventLog($"{logTitle} Cannot find [IManualPortValueDefMapAction]. Cannot execute Move Back.");
+                //    }
 
-                    return;
-                }
+                //    return;
+                //}
 
                 if (cassetteDataBLL.GetCarrierByBoxId(stage1CarrierId, out var duplicateCarrierId))
                 {
