@@ -849,6 +849,7 @@ namespace com.mirle.ibg3k0.sc.App
             SystemParameter.SECSConversactionTimeout = getInt("SECSConversactionTimeout", 60);
 
             SystemParameter.setIsEnableIDReadFailScenarioFlag(getBoolean("IsEnableIDReadFailScenario", false));
+            SystemParameter.setIsEnableIDReadMismatchScenarioFlag(getBoolean("IsEnableIDReadMismatchScenario", true));
 
             initDao();      //Initial DAO
             initBLL();      //Initial BLL
@@ -1768,7 +1769,7 @@ namespace com.mirle.ibg3k0.sc.App
         /// <param name="key">The key.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>System.String.</returns>
-        private string getString(string key, string defaultValue)
+        public string getString(string key, string defaultValue)
         {
             string rtn = defaultValue;
             try
@@ -2298,6 +2299,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static double PassAxisDistance = 250;
         public static int PreStageWatingTime_ms = 3000;
 
+        public static bool IsEnableIDReadMismatchScenario { private set; get; } = false;
         public static bool IsEnableIDReadFailScenario { private set; get; } = false;
 
         public static int cmdPriorityAdd = 1;
@@ -2346,6 +2348,10 @@ namespace com.mirle.ibg3k0.sc.App
         public static void setIsEnableIDReadFailScenarioFlag(bool isEnable)
         {
             IsEnableIDReadFailScenario = isEnable;
+        }
+        public static void setIsEnableIDReadMismatchScenarioFlag(bool isEnable)
+        {
+            IsEnableIDReadMismatchScenario = isEnable;
         }
 
         public static void setPassAxisDistance(double passDistance)

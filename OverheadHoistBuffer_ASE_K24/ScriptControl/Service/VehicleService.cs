@@ -2270,6 +2270,10 @@ namespace com.mirle.ibg3k0.sc.Service
                                 scApp.CassetteDataBLL.UpdateCSTState(cmdOHT_CSTdata.BOXID, (int)E_CSTState.Completed);
                                 scApp.TransferService.ForceFinishMCSCmd
                                     (cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial", ACMD_MCS.ResultCode.Successful);
+
+                                //scApp.ReportBLL.ReportCarrierRemovedFromPort(cmdOHT_CSTdata, SECSConst.HandoffType_Automated);
+                                //scApp.CassetteDataBLL.DeleteCSTbyCstBoxID(cmdOHT_CSTdata.CSTID, cmdOHT_CSTdata.BOXID);
+
                                 TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} initial 流程，命令在進行Unloading中，但cst 不再車上 將帳料強制更新回desc port");
                             }
                             else

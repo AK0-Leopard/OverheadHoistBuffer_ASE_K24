@@ -1852,7 +1852,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 viditem_51.ENHANCED_CARRIER_INFO[i].INSTALL_TIME_OBJ.INSTALLTIME = DateTime.Parse(cassettedata[i].CSTInDT).ToString("yyyyMMddHHmmss");
                 viditem_51.ENHANCED_CARRIER_INFO[i].CARRIER_STATE.Carrier_State = ((int)cassettedata[i].CSTState).ToString();
                 viditem_51.ENHANCED_CARRIER_INFO[i].BOX_ID_OBJ.BOX_ID = cassettedata[i].BOXID;
-                viditem_51.ENHANCED_CARRIER_INFO[i].CARRIER_TYPE_OBJ.CarrierType = cassettedata[i].CSTType;
+                //viditem_51.ENHANCED_CARRIER_INFO[i].CARRIER_TYPE_OBJ.CarrierType = cassettedata[i].CSTType;
             }
             return viditem_51;
         }
@@ -3159,7 +3159,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 //if (!isSend()) return true;
                 VIDCollection Vids = new VIDCollection();
-                string zonename = scApp.CassetteDataBLL.GetZoneName(cst.Carrier_LOC);
 
                 Vids.VIDITEM_54_DVVAL_CarrierID.CARRIER_ID = cst.CSTID;
                 Vids.VIDITEM_179_DVVAL_BOXID.BOX_ID = cst.BOXID;

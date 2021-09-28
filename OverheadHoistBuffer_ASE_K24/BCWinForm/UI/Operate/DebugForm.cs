@@ -1274,11 +1274,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             if (type == DebugParameter.CycleRunType.shelfByOrder)
             {
-                cmb_cycleRunBayID.Visible = true;
+                gb_cycleRunInfo.Visible = true;
             }
             else
             {
-                cmb_cycleRunBayID.Visible = false;
+                gb_cycleRunInfo.Visible = false;
             }
         }
         //*************************************

@@ -2927,11 +2927,9 @@ namespace com.mirle.ibg3k0.sc.Service
                         break;
 
                     case COMMAND_STATUS_BIT_INDEX_COMMNAD_FINISH: //命令完成
-
                         reportBLL.ReportCraneIdle(ohtName, cmd.CMD_ID);
 
                         break;
-
                     case COMMAND_STATUS_BIT_INDEX_DOUBLE_STORAGE: //二重格異常
 
                         break;
@@ -2947,6 +2945,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         break;
 
                     case COMMAND_STATUS_BIT_INDEX_VEHICLE_ABORT:
+                    case COMMAND_STATUS_BIT_INDEX_InterlockError:
                         cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
 
                         reportBLL.ReportCraneIdle(ohtName, cmd.CMD_ID);
@@ -3246,8 +3245,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             reportBLL.ReportCarrierWaitOut(unLoadCstData, "1");
                             //reportBLL.ReportCarrierRemovedCompleted(unLoadCstData.CSTID, unLoadCstData.BOXID);
                             reportBLL.ReportCarrierRemovedFromPort(unLoadCstData, SECSConst.HandoffType_Automated);
-                            if (!DebugParameter.CanAutoRandomGeneratesCommand)
-                                cassette_dataBLL.DeleteCSTbyCstBoxID(unLoadCstData.CSTID, unLoadCstData.BOXID);
+                            cassette_dataBLL.DeleteCSTbyCstBoxID(unLoadCstData.CSTID, unLoadCstData.BOXID);
                             //cassette_dataBLL.DeleteCSTbyBoxId(unLoadCstData.BOXID);
                             TransferServiceLogger.Info($"{DateTime.Now.ToString("HH:mm:ss.fff")} OHT_UnLoadCompleted 位置在:{dest}, 故直接將其移除");
                         }
@@ -10650,7 +10648,7 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 AVEHICLE vh = scApp.VehicleBLL.cache.getVhByID(vhID);
 
-                if (SystemParameter.IsEnableIDReadFailScenario)
+                if (SystemParameter.IsEnableIDReadMismatchScenario)
                 {
                     is_continue = false;
                     rename_box = readBOXID;

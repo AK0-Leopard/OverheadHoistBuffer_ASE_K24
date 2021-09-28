@@ -730,21 +730,32 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             return Task.Run(() =>
             {
-                var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+                var function = scApp.getFunBaseObj<ManualPortPLCControl_WaitOutCarrierId>(port.PORT_ID) as ManualPortPLCControl_WaitOutCarrierId;
+                try
+                {
+                    carrierId_1 = carrierId_1.Trim();
+                    carrierId_2 = carrierId_2.Trim();
 
-                carrierId_1 = carrierId_1.Trim();
-                carrierId_2 = carrierId_2.Trim();
+                    if (carrierId_1.Length > 14)
+                        carrierId_1 = carrierId_1.Substring(0, 14);
 
-                if (carrierId_1.Length > 14)
-                    carrierId_1 = carrierId_1.Substring(0, 14);
+                    if (carrierId_2.Length > 14)
+                        carrierId_2 = carrierId_2.Substring(0, 14);
 
-                if (carrierId_2.Length > 14)
-                    carrierId_2 = carrierId_2.Substring(0, 14);
+                    function.ReadyToWaitOutCarrierId1 = carrierId_1;
+                    function.ReadyToWaitOutCarrierId2 = carrierId_2;
 
-                function.ReadyToWaitOutCarrierId1 = carrierId_1;
-                function.ReadyToWaitOutCarrierId2 = carrierId_2;
-
-                CommitChange(function);
+                    function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
+                    logger.Info(function.ToString());
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    scApp.putFunBaseObj<ManualPortPLCControl_ComingOutCarrierId>(function);
+                }
             });
         }
 
@@ -752,16 +763,27 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             return Task.Run(() =>
             {
-                var function = scApp.getFunBaseObj<ManualPortPLCControl>(port.PORT_ID) as ManualPortPLCControl;
+                var function = scApp.getFunBaseObj<ManualPortPLCControl_ComingOutCarrierId>(port.PORT_ID) as ManualPortPLCControl_ComingOutCarrierId;
+                try
+                {
+                    carrierId = carrierId.Trim();
 
-                carrierId = carrierId.Trim();
+                    if (carrierId.Length > 14)
+                        carrierId = carrierId.Substring(0, 14);
 
-                if (carrierId.Length > 14)
-                    carrierId = carrierId.Substring(0, 14);
+                    function.ComingOutCarrierId = carrierId;
 
-                function.ComingOutCarrierId = carrierId;
-
-                CommitChange(function);
+                    function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
+                    logger.Info(function.ToString());
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    scApp.putFunBaseObj<ManualPortPLCControl_ComingOutCarrierId>(function);
+                }
             });
         }
 

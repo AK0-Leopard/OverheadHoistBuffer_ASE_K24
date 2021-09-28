@@ -450,6 +450,13 @@ message Timestamp {
 	BCR_MisMatch = 2;
   }
 
+//Start Track Info
+enum TrackDir{
+    TrackDir_None = 0;
+    TrackDir_Straight = 1;
+    TrackDir_Curve = 2;
+}
+
    message ID_136_TRANS_EVENT_REP {
     EventType EventType = 1;
 	repeated ReserveInfo ReserveInfos = 2;
@@ -478,9 +485,9 @@ message Timestamp {
 	string RenameLOTID = 7;
 	CMDCancelType ReplyActiveType = 8;
 	int32 ReplyCode = 9;				  
-
+	TrackDir TrackDir = 10;
 	EventType EventType = 99;
-  }
+}
 
   message ID_37_TRANS_CANCEL_REQUEST {
   	string Cmd_ID = 1;

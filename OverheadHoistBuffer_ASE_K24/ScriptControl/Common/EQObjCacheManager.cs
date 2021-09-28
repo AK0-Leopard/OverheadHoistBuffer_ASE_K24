@@ -455,13 +455,34 @@ namespace com.mirle.ibg3k0.sc.Common
                         int Type = eqptConfig.EQPT_Type;
 
 
-
                         List<AUNIT> unitListOfEQPT = new List<AUNIT>();
+                        //Unit
+                        //Remove Unit Config From Eqpt.config                      
+                        foreach (UnitConfigSection unitConfig in eqptConfig.UnitConfigList)
+                        {
+                            string unit_id = unitConfig.Unit_ID.Trim();
+                            _lockUnitDic.Add(unit_id, new Object());
+                            string unit_cate = unitConfig.Unit_Cate.Trim();
+                            string eqpt_type = unitConfig.EQPT_Type.Trim();
+                            int capacity = unitConfig.Capacity;
+                            unitListOfEQPT.Add(new AUNIT()
+                            {
+                                UNIT_ID = unit_id,
+                                Real_ID = "",
+                                UNIT_NUM = unitConfig.Unit_Num,
+                                EQPT_ID = eqpt_id,
+                                UNIT_CATE = unit_cate,
+                                EQPT_TYPE = eqpt_type,
+                                CAPACITY = capacity,
+                                SECSAgentName = unitConfig.SECSAgentName 
+                            });
+                        }
 
                         if (unitListOfEQPT.Count > 0)
                         {
                             unitList.AddRange(unitListOfEQPT);
                         }
+
                         AEQPT eqTemp = null;
                         SCAppConstants.EqptType eqptType = (SCAppConstants.EqptType)Type;
                         if (eqptType == SCAppConstants.EqptType.MTL)

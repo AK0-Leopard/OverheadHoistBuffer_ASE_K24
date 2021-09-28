@@ -860,6 +860,7 @@
     <Compile Include="Data\TimerAction\OHxCAliveTimer.cs" />
     <Compile Include="Data\TimerAction\PLCAliveTimer.cs" />
     <Compile Include="Data\TimerAction\PLCTimeCalibrationTimer.cs" />
+    <Compile Include="Data\TimerAction\TrackTimerAction.cs" />
     <Compile Include="Data\TimerAction\PortTimerAction.cs" />
     <Compile Include="Data\TimerAction\RandomGeneratesCommandByHasCSTPortTimerAction.cs" />
     <Compile Include="Data\TimerAction\RandomGeneratesCommandMove.cs" />
@@ -959,6 +960,7 @@
     <Compile Include="Data\VO\APSetting.cs" />
     <Compile Include="Data\VO\DeviceConnectionInfo.cs" />
     <Compile Include="Data\VO\MTSSetting.cs" />
+    <Compile Include="Data\VO\Track.cs" />
     <Compile Include="Data\VO\UserOperationLog.cs" />
     <Compile Include="Data\VO\VEHICLEMAP.cs" />
     <Compile Include="EventAction\ImmediateNotificationRegister.cs" />
@@ -1112,6 +1114,7 @@
     </Compile>
     <Compile Include="WebAPI\CSTBoxControl.cs" />
     <Compile Include="WebAPI\MTSMTLInfo.cs" />
+    <Compile Include="WebAPI\TrackInfoClient.cs" />
     <Compile Include="WebAPI\TransferManagement.cs" />
     <Compile Include="WebAPI\ConnectionInfo.cs" />
     <Compile Include="WebAPI\UserControl.cs" />

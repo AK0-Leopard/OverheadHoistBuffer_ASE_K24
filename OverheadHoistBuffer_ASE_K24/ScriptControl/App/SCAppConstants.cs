@@ -1091,7 +1091,8 @@ namespace com.mirle.ibg3k0.sc.App
             ZONE = 12,
             AGVZONE = 13,
             LINE = 14,
-            MANUALPORT = 15
+            MANUALPORT = 15,
+            TRACK = 16,
         }
         #endregion Eqpt Type
 
