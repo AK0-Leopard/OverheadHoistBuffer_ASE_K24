@@ -2794,7 +2794,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        public bool ProcessBlockReqByReserveModule(BCFApplication bcfApp, AVEHICLE eqpt, string req_block_id)
+        public (bool isSuccess, TrackDir TrackDir) ProcessBlockReqByReserveModule(BCFApplication bcfApp, AVEHICLE eqpt, string req_block_id)
         {
             string vhID = eqpt.VEHICLE_ID;
             LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
@@ -2807,7 +2807,7 @@ namespace com.mirle.ibg3k0.sc.Service
                    Data: "test flag: Force pass block control is open, will driect reply to vh can pass block",
                    VehicleID: eqpt.VEHICLE_ID,
                    CarrierID: eqpt.CST_ID);
-                return true;
+                return (true, TrackDir.None);
             }
             else if (DebugParameter.isForcedRejectBlockControl)
             {
@@ -2815,7 +2815,7 @@ namespace com.mirle.ibg3k0.sc.Service
                    Data: "test flag: Force reject block control is open, will driect reply to vh can't pass block",
                    VehicleID: eqpt.VEHICLE_ID,
                    CarrierID: eqpt.CST_ID);
-                return false;
+                return (false, TrackDir.None);
             }
             else
             {
@@ -2826,7 +2826,7 @@ namespace com.mirle.ibg3k0.sc.Service
                        Data: $"Vh:{eqpt.VEHICLE_ID} ask block:{req_block_id},but this block id not exist!",
                        VehicleID: eqpt.VEHICLE_ID,
                        CarrierID: eqpt.CST_ID);
-                    return false;
+                    return (false, TrackDir.None);
                 }
                 var block_detail_section = block_master.GetBlockZoneDetailSectionIDs();
                 if (block_detail_section == null || block_detail_section.Count == 0)
@@ -2835,12 +2835,12 @@ namespace com.mirle.ibg3k0.sc.Service
                        Data: $"Vh:{eqpt.VEHICLE_ID} ask block:{req_block_id},but this block id of detail is null!",
                        VehicleID: eqpt.VEHICLE_ID,
                        CarrierID: eqpt.CST_ID);
-                    return false;
+                    return (false, TrackDir.None);
                 }
                 bool is_first_vh = isNextPassVh(eqpt, req_block_id);
                 if (!is_first_vh)
                 {
-                    return false;
+                    return (false, TrackDir.None);
                 }
                 foreach (var detail in block_detail_section)
                 {
@@ -2865,7 +2865,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             //Task.Run(() => scApp.VehicleBLL.whenVhObstacle(result.VehicleID, vhID));
                             Task.Run(() => tryDriveOutTheVh(vhID, result.VehicleID));
                         }
-                        return false;
+                        return (false, TrackDir.None);
                     }
                 }
                 foreach (var detail in block_detail_section)
@@ -2875,7 +2875,30 @@ namespace com.mirle.ibg3k0.sc.Service
                                                                          sensorDir: hltDirection,
                                                                          isAsk: false);
                 }
-                return true;
+                TrackDir track_dir = TrackDir.None;
+                if (DebugParameter.IsForceNonStraightPass)
+                {
+                    track_dir = TrackDir.None;
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"test flag: Force non straight is open, will driect reply to vh TrackDir:{track_dir}",
+                       VehicleID: eqpt.VEHICLE_ID,
+                       CarrierID: eqpt.CST_ID);
+                }
+                else if (DebugParameter.IsForceStraightPass)
+                {
+                    track_dir = TrackDir.Straight;
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"test flag: Force straight is open, will driect reply to vh TrackDir:{track_dir}",
+                       VehicleID: eqpt.VEHICLE_ID,
+                       CarrierID: eqpt.CST_ID);
+                }
+                else
+                {
+                    bool is_all_track_ready_straight = block_master.IsAllTrackReadyStraight();
+                    track_dir = is_all_track_ready_straight ? TrackDir.Straight : TrackDir.None;
+                }
+
+                return (true, track_dir);
             }
         }
 
@@ -3093,7 +3116,8 @@ namespace com.mirle.ibg3k0.sc.Service
         public bool replyTranEventReport(BCFApplication bcfApp, EventType eventType, AVEHICLE vh, int seq_num,
                                           bool canBlockPass = false, bool canHIDPass = false, bool canReservePass = false,
                                           string renameCarrierID = "", CMDCancelType cancelType = CMDCancelType.CmdNone,
-                                          RepeatedField<ReserveInfo> reserveInfos = null)
+                                          RepeatedField<ReserveInfo> reserveInfos = null,
+                                          TrackDir trackDir = TrackDir.None)
         {
             ID_36_TRANS_EVENT_RESPONSE send_str = new ID_36_TRANS_EVENT_RESPONSE
             {
@@ -3103,7 +3127,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 ReplyCode = 0,
                 RenameBOXID = renameCarrierID,
                 ReplyActiveType = cancelType,
-                EventType = eventType
+                EventType = eventType,
+                TrackDir = trackDir
             };
             if (reserveInfos != null)
             {

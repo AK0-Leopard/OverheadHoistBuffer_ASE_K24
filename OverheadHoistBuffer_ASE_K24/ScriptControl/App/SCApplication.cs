@@ -496,6 +496,8 @@ namespace com.mirle.ibg3k0.sc.App
         public HCMD_OHTCDao HCMD_OHTCDao { get { return hcmd_ohtcDao; } }
         private PortCstTypeMapDao eqCstTypeMapDao = null;
         public PortCstTypeMapDao EQCstTypeMapDao { get { return eqCstTypeMapDao; } }
+        private BlockTrackMapDao blockTrackMapDao = null;
+        public BlockTrackMapDao BlockTrackMapDao { get { return blockTrackMapDao; } }
 
         //BLL
         /// <summary>
@@ -657,6 +659,7 @@ namespace com.mirle.ibg3k0.sc.App
         public ShelfDefBLL ShelfDefBLL { get; private set; } = null;
         public CassetteDataBLL CassetteDataBLL { get; private set; } = null;
         public ReserveBLL ReserveBLL { get; private set; } = null; //A0.01
+        public UnitBLL UnitBLL { get; private set; } = null; //A0.01
 
         //WIF
         /// <summary>
@@ -687,6 +690,8 @@ namespace com.mirle.ibg3k0.sc.App
         public IRouteGuide NewRouteGuide { get { return newrouteGuide; } }
 
         private Grpc.Core.Server gRPC_With_VehicleControlFun;
+
+        public WebAPI.TrackInfoClient TrackInfoClient { get; private set; }
 
         //config
         /// <summary>
@@ -1291,6 +1296,7 @@ namespace com.mirle.ibg3k0.sc.App
             hcmd_ohtcDao = new HCMD_OHTCDao();
             flexsimcommandDao = new FlexsimCommandDao();
             eqCstTypeMapDao = new PortCstTypeMapDao();
+            blockTrackMapDao = new BlockTrackMapDao();
         }
 
         /// <summary>
@@ -1310,6 +1316,7 @@ namespace com.mirle.ibg3k0.sc.App
                 loadCSVToDataset(ohxcConfig, "EQPTLOCATIONINFO");
                 loadCSVToDataset(ohxcConfig, "RESERVEENHANCEINFO");
                 loadCSVToDataset(ohxcConfig, "PORTCSTTYPEMAP");
+                loadCSVToDataset(ohxcConfig, "BLOCKTRACKMAP");
 
                 loadMapInfoCSVToDataset(ohxcConfig, "AADDRESS");
                 loadMapInfoCSVToDataset(ohxcConfig, "ASECTION");
@@ -1551,6 +1558,7 @@ namespace com.mirle.ibg3k0.sc.App
             ShelfDefBLL = new ShelfDefBLL();
             CassetteDataBLL = new CassetteDataBLL();
             ReserveBLL = new ReserveBLL(); //A0.01
+            UnitBLL = new UnitBLL(); //A0.01
         }
 
         public void initServer()
@@ -1576,6 +1584,7 @@ namespace com.mirle.ibg3k0.sc.App
                 Services = { com.mirle.AK0.ProtocolFormat.VehicleControlFun.BindService(new WebAPI.VehicleControlFun()) },
                 Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7001, Grpc.Core.ServerCredentials.Insecure) },
             };
+            TrackInfoClient = new WebAPI.TrackInfoClient(this);
         }
 
         /// <summary>
@@ -1620,6 +1629,7 @@ namespace com.mirle.ibg3k0.sc.App
             ShelfDefBLL.start(this);
             CassetteDataBLL.start(this);
             ReserveBLL.start(this); //A0.01
+            UnitBLL.start(this); //A0.01
         }
 
         private void startService()
@@ -1867,6 +1877,7 @@ namespace com.mirle.ibg3k0.sc.App
         {
             eqObjCacheManager.start(/*eqptCss, nodeFlowRelCss, */recoverFromDB);      //啟動EQ Object Cache.. 將從DB取得Line資訊建立EQ Object
             commObjCacheManager.setPortDefsInfo();
+            commObjCacheManager.setBlockAndTrack();
             string shareMemoryInitClass = eqptCss.ShareMemoryInitClass;
             try
             {
@@ -2462,7 +2473,6 @@ namespace com.mirle.ibg3k0.sc.App
         public static string cycleRunVh = "";
 
         private static Boolean isforcedpassblockcontrol = false;
-
         public static Boolean isForcedPassBlockControl
         {
             set { isforcedpassblockcontrol = value; }
@@ -2491,5 +2501,9 @@ namespace com.mirle.ibg3k0.sc.App
             CV,
             NTB
         }
+
+        public static Boolean IsForceStraightPass = false;
+        public static Boolean IsForceNonStraightPass = false;
+
     }
 }

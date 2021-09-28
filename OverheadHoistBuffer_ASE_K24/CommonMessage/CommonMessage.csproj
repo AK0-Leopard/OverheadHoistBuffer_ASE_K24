@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ProtocolFormat\TrackFun.proto" />
     <None Remove="ProtocolFormat\VehicleControlFun.proto" />
     <None Remove="ProtocolFormat\VehicleControlPublishMessage.proto" />
   </ItemGroup>
@@ -22,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="ProtocolFormat\TrackFun.proto" />
     <Protobuf Include="ProtocolFormat\VehicleControlFun.proto" />
     <Protobuf Include="ProtocolFormat\VehicleControlPublishMessage.proto" />
   </ItemGroup>

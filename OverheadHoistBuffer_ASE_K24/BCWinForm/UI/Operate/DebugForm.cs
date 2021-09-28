@@ -72,6 +72,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_passDriveOutByAreaSensor.Checked = DebugParameter.isPassDriveOutByAreaSensor;
             cmb_cycleRunVhId.SelectedItem = DebugParameter.cycleRunVh;
             cmb_cycleRunBayID.SelectedItem = DebugParameter.cycleRunBay;
+            cb_ForceStraightPass.Checked = DebugParameter.IsForceStraightPass;
+            cb_ForceNonStraightPass.Checked = DebugParameter.IsForceNonStraightPass;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -110,6 +112,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             List<string> current_bay_ids = shelfDefs.Select(s => s.BayID).Distinct().OrderBy(s => s).ToList();
 
             cmb_cycleRunBayID.DataSource = current_bay_ids;
+
+
         }
 
         private void DebugForm_Load(object sender, EventArgs e)
@@ -1413,6 +1417,16 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cmb_cycleRunBayID_SelectionChangeCommitted(object sender, EventArgs e)
         {
             DebugParameter.cycleRunBay = cmb_cycleRunBayID.SelectedValue as string;
+        }
+
+        private void cb_ForceStraightPass_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsForceStraightPass = cb_ForceStraightPass.Checked;
+        }
+
+        private void cb_ForceNonStraightPass_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsForceNonStraightPass = cb_ForceNonStraightPass.Checked;
         }
     }
 }

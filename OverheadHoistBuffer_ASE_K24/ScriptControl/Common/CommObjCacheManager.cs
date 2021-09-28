@@ -86,11 +86,33 @@ namespace com.mirle.ibg3k0.sc.Common
             CommonInfo = new CommonInfo();
         }
 
+        private List<Track> GetTracksByBlock(string entrySectionID)
+        {
+            var block_track_map = scApp.BlockTrackMapDao.getBlockTrackInfo(scApp, entrySectionID);
+            if (block_track_map == null)
+            {
+                return new List<Track>();
+            }
+            List<Track> tracks = new List<Track>();
+            foreach (var track_id in block_track_map.TRACKS_ID)
+            {
+                Track track = scApp.UnitBLL.cache.GetTrack(track_id);
+                tracks.Add(track);
+            }
+            return tracks;
+        }
 
         public void setPortDefsInfo()
         {
             //PortDefs = scApp.PortDefBLL.GetOHB_CVPortData(scApp.getEQObjCacheManager().getLine().LINE_ID);
             PortDefs = scApp.PortDefBLL.GetOHB_PortData(scApp.getEQObjCacheManager().getLine().LINE_ID);
+        }
+        public void setBlockAndTrack()
+        {
+            foreach (ABLOCKZONEMASTER block_zone_master in BlockZoneMasters)
+            {
+                block_zone_master.setRelatedTracks(GetTracksByBlock(block_zone_master.ENTRY_SEC_ID));
+            }
         }
 
 

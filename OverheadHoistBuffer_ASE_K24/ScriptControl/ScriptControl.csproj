@@ -552,6 +552,7 @@
     <Compile Include="BLL\CycleRunBLL.cs" />
     <Compile Include="BLL\CEIDBLL.cs" />
     <Compile Include="BLL\DataSyncBLL.cs" />
+    <Compile Include="BLL\UnitBLL.cs" />
     <Compile Include="BLL\VIDBLL.cs" />
     <Compile Include="BLL\NetworkQualityBLL.cs" />
     <Compile Include="BLL\SysExcuteQualityBLL.cs" />
@@ -597,6 +598,7 @@
     <Compile Include="Data\DAO\EntityFramework\HCMD_OHTCDao.cs" />
     <Compile Include="Data\DAO\EqptLocationInfoDao.cs" />
     <Compile Include="Data\DAO\191204Test\PortDefDao.cs" />
+    <Compile Include="Data\DAO\BlockTrackMapDao.cs" />
     <Compile Include="Data\DAO\PortCstTypeMapDao.cs" />
     <Compile Include="Data\DAO\ReserveEnhanceInfoDao.cs" />
     <Compile Include="Data\DAO\VCMD_MCSDao.cs" />
@@ -920,6 +922,7 @@
     <Compile Include="Data\VO\PartialVo\ShelfDef.cs" />
     <Compile Include="Data\VO\PartialVo\CassetteData.cs" />
     <Compile Include="Data\VO\PartialVo\ZoneDef.cs" />
+    <Compile Include="Data\VO\BlockTrackMap.cs" />
     <Compile Include="Data\VO\PortCstTypeMap.cs" />
     <Compile Include="Data\VO\ReserveEnhanceInfo.cs" />
     <Compile Include="Data\VO\ReturnCodeMap.cs" />

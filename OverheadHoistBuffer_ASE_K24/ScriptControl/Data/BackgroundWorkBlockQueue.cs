@@ -59,14 +59,23 @@ namespace com.mirle.ibg3k0.sc.Data
                 int seqNum = (int)item.Param[3];
                 string req_block_id = item.Param[4] as string;
                 string req_hid_secid = item.Param[5] as string;
+
+                TrackDir trackDir = TrackDir.None;
                 //can_block_pass = scApp.VehicleService.ProcessBlockReqNewNew(bcfApp, eqpt, req_block_id);
-                can_block_pass = scApp.VehicleService.ProcessBlockReqByReserveModule(bcfApp, eqpt, req_block_id);
+                //can_block_pass = scApp.VehicleService.ProcessBlockReqByReserveModule(bcfApp, eqpt, req_block_id);
+                var pass_check_result = scApp.VehicleService.ProcessBlockReqByReserveModule(bcfApp, eqpt, req_block_id);
+                can_block_pass = pass_check_result.isSuccess;
+                trackDir = pass_check_result.TrackDir;
                 if (!can_block_pass)
                 {
                     eqpt.LastBlockRequestFailInterval.Restart();
                 }
 
-                isSuccess = scApp.VehicleService.replyTranEventReport(bcfApp, eventType, eqpt, seqNum, canBlockPass: can_block_pass, canHIDPass: can_hid_pass);
+
+                isSuccess = scApp.VehicleService.replyTranEventReport(bcfApp, eventType, eqpt, seqNum,
+                                                                      canBlockPass: can_block_pass,
+                                                                      canHIDPass: can_hid_pass,
+                                                                      trackDir: trackDir);
             }
             catch (Exception ex)
             {

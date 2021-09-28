@@ -453,6 +453,8 @@ namespace com.mirle.ibg3k0.sc.Common
                         string recipeParameterFormat = eqptConfig.Recipe_Parameter_Format;                    //A0.03
                         string ecidFormat = eqptConfig.ECID_Format;                    //A0.04
                         int Type = eqptConfig.EQPT_Type;
+                        AEQPT eqTemp = null;
+                        SCAppConstants.EqptType eqptType = (SCAppConstants.EqptType)Type;
 
 
                         List<AUNIT> unitListOfEQPT = new List<AUNIT>();
@@ -465,17 +467,34 @@ namespace com.mirle.ibg3k0.sc.Common
                             string unit_cate = unitConfig.Unit_Cate.Trim();
                             string eqpt_type = unitConfig.EQPT_Type.Trim();
                             int capacity = unitConfig.Capacity;
-                            unitListOfEQPT.Add(new AUNIT()
+                            if (eqptType == SCAppConstants.EqptType.TRACK)
                             {
-                                UNIT_ID = unit_id,
-                                Real_ID = "",
-                                UNIT_NUM = unitConfig.Unit_Num,
-                                EQPT_ID = eqpt_id,
-                                UNIT_CATE = unit_cate,
-                                EQPT_TYPE = eqpt_type,
-                                CAPACITY = capacity,
-                                SECSAgentName = unitConfig.SECSAgentName 
-                            });
+                                unitListOfEQPT.Add(new Track()
+                                {
+                                    UNIT_ID = unit_id,
+                                    Real_ID = "",
+                                    UNIT_NUM = unitConfig.Unit_Num,
+                                    EQPT_ID = eqpt_id,
+                                    UNIT_CATE = unit_cate,
+                                    EQPT_TYPE = eqpt_type,
+                                    CAPACITY = capacity,
+                                    SECSAgentName = unitConfig.SECSAgentName
+                                });
+                            }
+                            else
+                            {
+                                unitListOfEQPT.Add(new AUNIT()
+                                {
+                                    UNIT_ID = unit_id,
+                                    Real_ID = "",
+                                    UNIT_NUM = unitConfig.Unit_Num,
+                                    EQPT_ID = eqpt_id,
+                                    UNIT_CATE = unit_cate,
+                                    EQPT_TYPE = eqpt_type,
+                                    CAPACITY = capacity,
+                                    SECSAgentName = unitConfig.SECSAgentName
+                                });
+                            }
                         }
 
                         if (unitListOfEQPT.Count > 0)
@@ -483,8 +502,6 @@ namespace com.mirle.ibg3k0.sc.Common
                             unitList.AddRange(unitListOfEQPT);
                         }
 
-                        AEQPT eqTemp = null;
-                        SCAppConstants.EqptType eqptType = (SCAppConstants.EqptType)Type;
                         if (eqptType == SCAppConstants.EqptType.MTL)
                         {
                             eqTemp = new MaintainLift();

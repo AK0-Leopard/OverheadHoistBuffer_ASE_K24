@@ -105,10 +105,15 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.gb_cycleRunInfo = new System.Windows.Forms.GroupBox();
+            this.cmb_cycleRunVhId = new System.Windows.Forms.ComboBox();
+            this.label78 = new System.Windows.Forms.Label();
+            this.cmb_cycleRunBayID = new System.Windows.Forms.ComboBox();
+            this.label77 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             this.cb_passDriveOutByAreaSensor = new System.Windows.Forms.CheckBox();
             this.label12 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.cmb_cycleRunBayID = new System.Windows.Forms.ComboBox();
             this.combox_cycle_type = new System.Windows.Forms.ComboBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.txt_vh_order_in_segment = new System.Windows.Forms.TextBox();
@@ -370,11 +375,8 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label77 = new System.Windows.Forms.Label();
-            this.cmb_cycleRunVhId = new System.Windows.Forms.ComboBox();
-            this.label78 = new System.Windows.Forms.Label();
-            this.gb_cycleRunInfo = new System.Windows.Forms.GroupBox();
+            this.cb_ForceStraightPass = new System.Windows.Forms.CheckBox();
+            this.cb_ForceNonStraightPass = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -387,6 +389,7 @@
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.gb_cycleRunInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox12.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -413,7 +416,6 @@
             this.tableLayoutPanel5.SuspendLayout();
             this.groupBox13.SuspendLayout();
             this.groupBox10.SuspendLayout();
-            this.gb_cycleRunInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // cb_FroceReservePass
@@ -1315,39 +1317,37 @@
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // cb_passDriveOutByAreaSensor
+            // gb_cycleRunInfo
             // 
-            this.cb_passDriveOutByAreaSensor.AutoSize = true;
-            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1039, 364);
-            this.cb_passDriveOutByAreaSensor.Name = "cb_passDriveOutByAreaSensor";
-            this.cb_passDriveOutByAreaSensor.Size = new System.Drawing.Size(319, 26);
-            this.cb_passDriveOutByAreaSensor.TabIndex = 60;
-            this.cb_passDriveOutByAreaSensor.Text = "Pass Drive Out By Area Sensor";
-            this.cb_passDriveOutByAreaSensor.UseVisualStyleBackColor = true;
-            this.cb_passDriveOutByAreaSensor.CheckedChanged += new System.EventHandler(this.cb_passDriveOutByAreaSensor_CheckedChanged);
+            this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleRunVhId);
+            this.gb_cycleRunInfo.Controls.Add(this.label78);
+            this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleRunBayID);
+            this.gb_cycleRunInfo.Controls.Add(this.label77);
+            this.gb_cycleRunInfo.Location = new System.Drawing.Point(1230, 18);
+            this.gb_cycleRunInfo.Name = "gb_cycleRunInfo";
+            this.gb_cycleRunInfo.Size = new System.Drawing.Size(201, 160);
+            this.gb_cycleRunInfo.TabIndex = 65;
+            this.gb_cycleRunInfo.TabStop = false;
+            this.gb_cycleRunInfo.Text = "Cycle Run Info";
             // 
-            // label12
+            // cmb_cycleRunVhId
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(1035, 303);
-            this.label12.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(230, 22);
-            this.label12.TabIndex = 16;
-            this.label12.Text = "Pre Drive Out Distance";
+            this.cmb_cycleRunVhId.FormattingEnabled = true;
+            this.cmb_cycleRunVhId.Location = new System.Drawing.Point(6, 114);
+            this.cmb_cycleRunVhId.Name = "cmb_cycleRunVhId";
+            this.cmb_cycleRunVhId.Size = new System.Drawing.Size(189, 30);
+            this.cmb_cycleRunVhId.TabIndex = 63;
+            this.cmb_cycleRunVhId.SelectedIndexChanged += new System.EventHandler(this.cmb_cycleRunVhId_SelectedIndexChanged);
+            this.cmb_cycleRunVhId.SelectionChangeCommitted += new System.EventHandler(this.cmb_cycleRunVhId_SelectionChangeCommitted);
             // 
-            // numericUpDown1
+            // label78
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(1039, 328);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 30);
-            this.numericUpDown1.TabIndex = 59;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.label78.AutoSize = true;
+            this.label78.Location = new System.Drawing.Point(18, 90);
+            this.label78.Name = "label78";
+            this.label78.Size = new System.Drawing.Size(140, 22);
+            this.label78.TabIndex = 64;
+            this.label78.Text = "Cycle Run Vh:";
             // 
             // cmb_cycleRunBayID
             // 
@@ -1358,6 +1358,58 @@
             this.cmb_cycleRunBayID.TabIndex = 58;
             this.cmb_cycleRunBayID.SelectedIndexChanged += new System.EventHandler(this.cmb_cycleRunBayID_SelectedIndexChanged);
             this.cmb_cycleRunBayID.SelectionChangeCommitted += new System.EventHandler(this.cmb_cycleRunBayID_SelectionChangeCommitted);
+            // 
+            // label77
+            // 
+            this.label77.AutoSize = true;
+            this.label77.Location = new System.Drawing.Point(18, 33);
+            this.label77.Name = "label77";
+            this.label77.Size = new System.Drawing.Size(150, 22);
+            this.label77.TabIndex = 62;
+            this.label77.Text = "Cycle Run Bay:";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(1035, 33);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(160, 22);
+            this.label16.TabIndex = 61;
+            this.label16.Text = "Cycle Run Type:";
+            // 
+            // cb_passDriveOutByAreaSensor
+            // 
+            this.cb_passDriveOutByAreaSensor.AutoSize = true;
+            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1039, 442);
+            this.cb_passDriveOutByAreaSensor.Name = "cb_passDriveOutByAreaSensor";
+            this.cb_passDriveOutByAreaSensor.Size = new System.Drawing.Size(319, 26);
+            this.cb_passDriveOutByAreaSensor.TabIndex = 60;
+            this.cb_passDriveOutByAreaSensor.Text = "Pass Drive Out By Area Sensor";
+            this.cb_passDriveOutByAreaSensor.UseVisualStyleBackColor = true;
+            this.cb_passDriveOutByAreaSensor.CheckedChanged += new System.EventHandler(this.cb_passDriveOutByAreaSensor_CheckedChanged);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(1035, 381);
+            this.label12.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(230, 22);
+            this.label12.TabIndex = 16;
+            this.label12.Text = "Pre Drive Out Distance";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(1039, 406);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 30);
+            this.numericUpDown1.TabIndex = 59;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // combox_cycle_type
             // 
@@ -1479,11 +1531,13 @@
             // 
             // gb_blockControl
             // 
+            this.gb_blockControl.Controls.Add(this.cb_ForceNonStraightPass);
+            this.gb_blockControl.Controls.Add(this.cb_ForceStraightPass);
             this.gb_blockControl.Controls.Add(this.cb_FroceReserveReject);
             this.gb_blockControl.Controls.Add(this.cb_FroceReservePass);
             this.gb_blockControl.Location = new System.Drawing.Point(1039, 213);
             this.gb_blockControl.Name = "gb_blockControl";
-            this.gb_blockControl.Size = new System.Drawing.Size(257, 73);
+            this.gb_blockControl.Size = new System.Drawing.Size(310, 151);
             this.gb_blockControl.TabIndex = 23;
             this.gb_blockControl.TabStop = false;
             this.gb_blockControl.Text = "Block Control";
@@ -2607,7 +2661,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(207, 3);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(207, 8);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -4495,55 +4549,29 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // label16
+            // cb_ForceStraightPass
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(1035, 33);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(160, 22);
-            this.label16.TabIndex = 61;
-            this.label16.Text = "Cycle Run Type:";
+            this.cb_ForceStraightPass.AutoSize = true;
+            this.cb_ForceStraightPass.Location = new System.Drawing.Point(28, 85);
+            this.cb_ForceStraightPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cb_ForceStraightPass.Name = "cb_ForceStraightPass";
+            this.cb_ForceStraightPass.Size = new System.Drawing.Size(219, 26);
+            this.cb_ForceStraightPass.TabIndex = 9;
+            this.cb_ForceStraightPass.Text = "Force Straight Pass";
+            this.cb_ForceStraightPass.UseVisualStyleBackColor = true;
+            this.cb_ForceStraightPass.CheckedChanged += new System.EventHandler(this.cb_ForceStraightPass_CheckedChanged);
             // 
-            // label77
+            // cb_ForceNonStraightPass
             // 
-            this.label77.AutoSize = true;
-            this.label77.Location = new System.Drawing.Point(18, 33);
-            this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(150, 22);
-            this.label77.TabIndex = 62;
-            this.label77.Text = "Cycle Run Bay:";
-            // 
-            // cmb_cycleRunVhId
-            // 
-            this.cmb_cycleRunVhId.FormattingEnabled = true;
-            this.cmb_cycleRunVhId.Location = new System.Drawing.Point(6, 114);
-            this.cmb_cycleRunVhId.Name = "cmb_cycleRunVhId";
-            this.cmb_cycleRunVhId.Size = new System.Drawing.Size(189, 30);
-            this.cmb_cycleRunVhId.TabIndex = 63;
-            this.cmb_cycleRunVhId.SelectedIndexChanged += new System.EventHandler(this.cmb_cycleRunVhId_SelectedIndexChanged);
-            this.cmb_cycleRunVhId.SelectionChangeCommitted += new System.EventHandler(this.cmb_cycleRunVhId_SelectionChangeCommitted);
-            // 
-            // label78
-            // 
-            this.label78.AutoSize = true;
-            this.label78.Location = new System.Drawing.Point(18, 90);
-            this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(140, 22);
-            this.label78.TabIndex = 64;
-            this.label78.Text = "Cycle Run Vh:";
-            // 
-            // gb_cycleRunInfo
-            // 
-            this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleRunVhId);
-            this.gb_cycleRunInfo.Controls.Add(this.label78);
-            this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleRunBayID);
-            this.gb_cycleRunInfo.Controls.Add(this.label77);
-            this.gb_cycleRunInfo.Location = new System.Drawing.Point(1230, 18);
-            this.gb_cycleRunInfo.Name = "gb_cycleRunInfo";
-            this.gb_cycleRunInfo.Size = new System.Drawing.Size(201, 160);
-            this.gb_cycleRunInfo.TabIndex = 65;
-            this.gb_cycleRunInfo.TabStop = false;
-            this.gb_cycleRunInfo.Text = "Cycle Run Info";
+            this.cb_ForceNonStraightPass.AutoSize = true;
+            this.cb_ForceNonStraightPass.Location = new System.Drawing.Point(28, 111);
+            this.cb_ForceNonStraightPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cb_ForceNonStraightPass.Name = "cb_ForceNonStraightPass";
+            this.cb_ForceNonStraightPass.Size = new System.Drawing.Size(259, 26);
+            this.cb_ForceNonStraightPass.TabIndex = 10;
+            this.cb_ForceNonStraightPass.Text = "Force Non Straight Pass";
+            this.cb_ForceNonStraightPass.UseVisualStyleBackColor = true;
+            this.cb_ForceNonStraightPass.CheckedChanged += new System.EventHandler(this.cb_ForceNonStraightPass_CheckedChanged);
             // 
             // DebugForm
             // 
@@ -4577,6 +4605,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.gb_cycleRunInfo.ResumeLayout(false);
+            this.gb_cycleRunInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
@@ -4624,8 +4654,6 @@
             this.groupBox13.PerformLayout();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
-            this.gb_cycleRunInfo.ResumeLayout(false);
-            this.gb_cycleRunInfo.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -4979,5 +5007,7 @@
         private System.Windows.Forms.ComboBox cmb_cycleRunVhId;
         private System.Windows.Forms.Label label77;
         private System.Windows.Forms.GroupBox gb_cycleRunInfo;
+        private System.Windows.Forms.CheckBox cb_ForceNonStraightPass;
+        private System.Windows.Forms.CheckBox cb_ForceStraightPass;
     }
 }
