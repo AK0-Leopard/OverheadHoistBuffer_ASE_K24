@@ -1076,5 +1076,10 @@ namespace com.mirle.ibg3k0.bc.winform
         {
             openForm(typeof(ShelfMaintenanceForm).Name, true, false);
         }
+
+        private void trackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openForm(typeof(TrackMaintenanceForm).Name, true, false);
+        }
     }
 }

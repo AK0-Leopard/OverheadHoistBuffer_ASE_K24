@@ -2241,6 +2241,14 @@ namespace com.mirle.ibg3k0.sc.Service
                                         cmdOHT_CSTdata.Carrier_LOC = eqpt.VEHICLE_ID;
                                         scApp.CassetteDataBLL.UpdateCSTLoc(cmdOHT_CSTdata.BOXID, cmdOHT_CSTdata.Carrier_LOC, 1);
                                         scApp.CassetteDataBLL.UpdateCSTState(cmdOHT_CSTdata.BOXID, (int)E_CSTState.Installed);
+                                        if (cmd_mcs.RelayStation == cmd_ohtc.SOURCE && string.IsNullOrWhiteSpace(cmd_ohtc.SOURCE) == false)
+                                        {
+                                            scApp.ReportBLL.ReportCarrierResumed(cmd_mcs.CMD_ID);
+                                        }
+                                        else
+                                        {
+                                            scApp.ReportBLL.ReportCarrierTransferring(cmd_mcs, cmdOHT_CSTdata, eqpt.VEHICLE_ID);
+                                        }
                                         scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial");
                                         TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} initial 流程，強制將 cst id:{cmdOHT_CSTdata.BOXID}過帳至車上");
                                     }
@@ -2271,6 +2279,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                 scApp.TransferService.ForceFinishMCSCmd
                                     (cmd_mcs, cmdOHT_CSTdata, "TransferReportInitial", ACMD_MCS.ResultCode.Successful);
 
+                                scApp.TransferService.UnloadCompleteForInitialScript(cmd_mcs.HOSTDESTINATION, cmdOHT_CSTdata);
                                 //scApp.ReportBLL.ReportCarrierRemovedFromPort(cmdOHT_CSTdata, SECSConst.HandoffType_Automated);
                                 //scApp.CassetteDataBLL.DeleteCSTbyCstBoxID(cmdOHT_CSTdata.CSTID, cmdOHT_CSTdata.BOXID);
 

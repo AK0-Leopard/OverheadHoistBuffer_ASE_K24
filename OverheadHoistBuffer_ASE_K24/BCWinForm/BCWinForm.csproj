@@ -178,6 +178,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
@@ -303,6 +304,12 @@
     </Compile>
     <Compile Include="UI\Components\WPFComponents\uctlMapWPF.xaml.cs">
       <DependentUpon>uctlMapWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Maintenance\TrackMaintenanceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Maintenance\TrackMaintenanceForm.Designer.cs">
+      <DependentUpon>TrackMaintenanceForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Maintenance\ShelfMaintenanceForm.cs">
       <SubType>Form</SubType>
@@ -987,6 +994,9 @@
     <EmbeddedResource Include="Properties\Resources.zh-TW.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.zh-TW.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Maintenance\TrackMaintenanceForm.resx">
+      <DependentUpon>TrackMaintenanceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Maintenance\ShelfMaintenanceForm.resx">
       <DependentUpon>ShelfMaintenanceForm.cs</DependentUpon>

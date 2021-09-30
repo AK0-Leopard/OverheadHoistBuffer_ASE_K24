@@ -109,6 +109,7 @@ namespace com.mirle.ibg3k0.bc.winform
             this.搬送模擬ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.port內容值ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.命令卡匣資料ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.CMS_OnLineMode.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -369,7 +370,8 @@ namespace com.mirle.ibg3k0.bc.winform
             this.toolStripMenuItem1,
             this.reserveInfoToolStripMenuItem,
             this.toolStripSeparator2,
-            this.shelfToolStripMenuItem});
+            this.shelfToolStripMenuItem,
+            this.trackToolStripMenuItem});
             this.mataToolStripMenuItem.Name = "mataToolStripMenuItem";
             resources.ApplyResources(this.mataToolStripMenuItem, "mataToolStripMenuItem");
             // 
@@ -512,6 +514,12 @@ namespace com.mirle.ibg3k0.bc.winform
             resources.ApplyResources(this.命令卡匣資料ToolStripMenuItem, "命令卡匣資料ToolStripMenuItem");
             this.命令卡匣資料ToolStripMenuItem.Name = "命令卡匣資料ToolStripMenuItem";
             this.命令卡匣資料ToolStripMenuItem.Click += new System.EventHandler(this.命令卡匣資料ToolStripMenuItem_Click);
+            // 
+            // trackToolStripMenuItem
+            // 
+            this.trackToolStripMenuItem.Name = "trackToolStripMenuItem";
+            resources.ApplyResources(this.trackToolStripMenuItem, "trackToolStripMenuItem");
+            this.trackToolStripMenuItem.Click += new System.EventHandler(this.trackToolStripMenuItem_Click);
             // 
             // BCMainForm
             // 
@@ -670,6 +678,7 @@ namespace com.mirle.ibg3k0.bc.winform
         private System.Windows.Forms.ToolStripMenuItem 命令卡匣資料ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem shelfToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem trackToolStripMenuItem;
     }
 
     /// <summary>

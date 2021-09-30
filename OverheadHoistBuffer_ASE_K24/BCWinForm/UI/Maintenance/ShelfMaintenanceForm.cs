@@ -137,7 +137,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 return;
             string enable = enable_status as string;
             if (sc.Common.SCUtility.isMatche(enable, sc.App.SCAppConstants.YES_FLAG))
-            { 
+            {
                 //not thing...
             }
             else

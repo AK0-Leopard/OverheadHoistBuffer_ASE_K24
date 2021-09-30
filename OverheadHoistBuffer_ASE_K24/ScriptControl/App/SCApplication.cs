@@ -2494,12 +2494,9 @@ namespace com.mirle.ibg3k0.sc.App
         public static string CST_TYPE = "";
         public enum CycleRunType
         {
-            AGVStation,
             shelf,
             shelfByOrder,
             shelfByManualCMD,
-            CV,
-            NTB
         }
 
         public static Boolean IsForceStraightPass = false;

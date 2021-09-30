@@ -92,15 +92,15 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                         case DebugParameter.CycleRunType.shelfByOrder:
                             ShelfTestByOrder();
                             break;
-                        case DebugParameter.CycleRunType.AGVStation:
-                            AGVStationTest();
-                            break;
-                        case DebugParameter.CycleRunType.CV:
-                            CVPortTest();
-                            break;
-                        case DebugParameter.CycleRunType.NTB:
-                            NTBPortTest(); // A0.01
-                            break;
+                        //case DebugParameter.CycleRunType.AGVStation:
+                        //    AGVStationTest();
+                        //    break;
+                        //case DebugParameter.CycleRunType.CV:
+                        //    CVPortTest();
+                        //    break;
+                        //case DebugParameter.CycleRunType.NTB:
+                        //    NTBPortTest(); // A0.01
+                        //    break;
                         case DebugParameter.CycleRunType.shelfByManualCMD:
                             ShelfByManualMCS();
                             break;

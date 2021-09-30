@@ -3305,6 +3305,31 @@ namespace com.mirle.ibg3k0.sc.Service
                 );
             }
         }
+        public void UnloadCompleteForInitialScript(string dest, CassetteData unLoadCstData)
+        {
+            TransferServiceLogger.Info($"{DateTime.Now.ToString("HH:mm:ss.fff")} Start process UnloadCompleteForInitialScript...");
+            if (isUnitType(dest, UnitType.SHELF))
+            {
+                reportBLL.ReportCarrierStored(unLoadCstData);
+                reportBLL.ReportZoneCapacityChange(dest, null);
+                QueryLotID(unLoadCstData);
+            }
+            else if (isUnitType(dest, UnitType.EQ))
+            {
+                reportBLL.ReportCarrierWaitOut(unLoadCstData, "1");
+                reportBLL.ReportCarrierRemovedFromPort(unLoadCstData, SECSConst.HandoffType_Automated);
+                cassette_dataBLL.DeleteCSTbyCstBoxID(unLoadCstData.CSTID, unLoadCstData.BOXID);
+                TransferServiceLogger.Info($"{DateTime.Now.ToString("HH:mm:ss.fff")} OHT_UnLoadCompleted 位置在:{dest}, 故直接將其移除");
+            }
+            else
+            {
+                TransferServiceLogger.Info
+                (
+                    DateTime.Now.ToString("HH:mm:ss.fff ")
+                    + "OHT_UnLoadCompleted 卡匣位置在: " + GetCstLog(unLoadCstData)
+                );
+            }
+        }
 
         public void OHT_UnLoadAlternate(ACMD_MCS cmd, CassetteData dbCstData)
         {

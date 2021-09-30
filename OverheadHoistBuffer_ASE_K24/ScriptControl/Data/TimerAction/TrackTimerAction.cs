@@ -36,7 +36,17 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                             var track_info = get_track_info_result.trackInfos.
                                 Where(t => Common.SCUtility.isMatche(t.TrackId, track.UNIT_ID)).
                                 FirstOrDefault();
-                            if (track_info == null) continue;
+                            if (track_info == null)
+                            {
+                                Common.LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(TrackTimerAction), Device: "OHx",
+                                   Data: $"Want to update track:{track.UNIT_ID} but get result not exist.");
+                                continue;
+                            }
+                            else
+                            {
+                                Common.LogHelper.Log(logger: logger, LogLevel: LogLevel.Trace, Class: nameof(TrackTimerAction), Device: "OHx",
+                                   Data: $"Track id:{track.UNIT_ID}: dir:{track.TrackDir} last updata time(ms):{track.stopwatch.ElapsedMilliseconds}.");
+                            }
                             track.setTrackDir(convert(track_info.Dir));
                         }
                     }

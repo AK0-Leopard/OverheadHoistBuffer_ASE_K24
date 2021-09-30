@@ -62,12 +62,19 @@ namespace com.mirle.ibg3k0.sc
                 return BlockZoneDetailSectionIDs;
             }
         }
+        const int INTERVAL_TIME = 5000;
         public bool IsAllTrackReadyStraight()
         {
             if (RelatedTracks == null || RelatedTracks.Count == 0)
                 return false;
             foreach (var related_track in RelatedTracks)
             {
+                if (!related_track.stopwatch.IsRunning || related_track.stopwatch.ElapsedMilliseconds > INTERVAL_TIME)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
+                       Data: $"Block:{ENTRY_SEC_ID} of related track:{related_track.UNIT_ID} stop watch no work or over time out {INTERVAL_TIME}ms, return not ready");
+                    return false;
+                }
                 if (related_track.TrackDir != ProtocolFormat.OHTMessage.TrackDir.Straight)
                 {
                     LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
