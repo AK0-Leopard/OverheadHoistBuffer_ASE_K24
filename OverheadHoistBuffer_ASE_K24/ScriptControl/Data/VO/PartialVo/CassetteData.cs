@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace com.mirle.ibg3k0.sc
 {
     public partial class CassetteData
     {
+        public static List<CassetteData> CassetteData_InfoList { get;  set; } = new List<CassetteData>();
         public enum OHCV_STAGE
         {
             OHTtoPort = 0,  //入料進行中

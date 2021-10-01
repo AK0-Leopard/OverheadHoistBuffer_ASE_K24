@@ -34,8 +34,14 @@ enum TrackDir{
     TrackDir_Straight = 1;
     TrackDir_Curve = 2;
 }
+enum TrackStatus{
+    TrackStatus_NotDefine = 0;
+    TrackStatus_Manaul = 1;
+    TrackStatus_Auto = 2;
+    TrackStatus_Alarm = 3;
+}
 message ReplyTracksInfo { repeated TrackInfo tracks_info = 1; }
-message TrackInfo { string track_id = 1; TrackDir dir = 2; }
+message TrackInfo { string track_id = 1; TrackDir dir = 2; TrackStatus status = 3; }
 
 // The request message containing the user's name.
 message HelloRequest {string name = 1;}

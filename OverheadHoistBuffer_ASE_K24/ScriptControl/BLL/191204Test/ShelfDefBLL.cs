@@ -133,6 +133,21 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return false;
             }
         }
+        public bool isEnable(string shelfID)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    return shelfdefDao.IsEnable(con, shelfID);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
+        }
 
         public bool updatePriority(string shelf_id, int priority)
         {

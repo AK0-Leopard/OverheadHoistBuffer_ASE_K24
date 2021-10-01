@@ -69,6 +69,12 @@ namespace com.mirle.ibg3k0.sc
                 return false;
             foreach (var related_track in RelatedTracks)
             {
+                if(related_track == null )
+                {
+                    LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
+                       Data: $"Block:{ENTRY_SEC_ID} of related track is null ,return not ready.");
+                    return false;
+                }
                 if (!related_track.stopwatch.IsRunning || related_track.stopwatch.ElapsedMilliseconds > INTERVAL_TIME)
                 {
                     LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",

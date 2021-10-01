@@ -97,6 +97,11 @@ namespace com.mirle.ibg3k0.sc.Common
             foreach (var track_id in block_track_map.TRACKS_ID)
             {
                 Track track = scApp.UnitBLL.cache.GetTrack(track_id);
+                if (track == null)
+                {
+                    logger.Warn($"track id:{block_track_map.TRACKS_ID} not exist.");
+                    continue;
+                }
                 tracks.Add(track);
             }
             return tracks;

@@ -130,8 +130,10 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             line.CurrntVehicleModeAutoLoaclCount = vehicleBLL.cache.getVhCurrentModeInAutoLocalCount();
             line.CurrntVehicleStatusIdelCount = vehicleBLL.cache.getVhCurrentStatusInIdleCount();
             line.CurrntVehicleStatusErrorCount = vehicleBLL.cache.getVhCurrentStatusInErrorCount();
-            var host_cmds = cmdBLL.loadACMD_MCSIsUnfinished();
-            var cst = scApp.CassetteDataBLL.loadCassetteData();
+            //var host_cmds = cmdBLL.loadACMD_MCSIsUnfinished();
+            var host_cmds = ACMD_MCS.MCS_CMD_InfoList.Values;
+            var cst = CassetteData.CassetteData_InfoList;
+
             UInt16 carrier_transferring_count = (UInt16)cst.
                                         Where(x => x.CSTState == E_CSTState.Alternate ||
                                             x.CSTState == E_CSTState.WaitIn ||
@@ -244,7 +246,8 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             {
                 try
                 {
-                    Parallel.ForEach(dicCommInfo, keyPair => {
+                    Parallel.ForEach(dicCommInfo, keyPair =>
+                    {
                         CommuncationInfo Info = keyPair.Value;
                         if (!SCUtility.isEmpty(Info.Getway_IP))
                         {

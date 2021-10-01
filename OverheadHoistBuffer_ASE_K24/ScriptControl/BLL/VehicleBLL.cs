@@ -2289,38 +2289,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
             }
 
-            public void vehicleDisconnection(SCApplication app)
-            {
-                try
-                {
-                    string lineName = SCUtility.Trim(app.BC_ID, true);
-                    if (SCUtility.isMatche(lineName, "ASE"))
-                    {
-                        lineName = "line1";
-                    }
-                    else
-                    {
-                        if (lineName.Contains("_"))
-                        {
-                            lineName = lineName.Split('_')[1];
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
-                    lineName = lineName.ToLower();
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
-                       Data: $"Has vh dis connection,notify start.Line name:{lineName}");
-                    vehicleDisconnection(lineName);
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
-                       Data: $"Has vh dis connection,notify end.Line name:{lineName}");
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex, "Exception:");
-                }
-            }
             /// <summary>
             /// Notify sample
             ///http://127.0.0.1:15000/weatherforecast/line1_dis
@@ -2328,19 +2296,18 @@ namespace com.mirle.ibg3k0.sc.BLL
             ///http://127.0.0.1:15000/weatherforecast/agv_dis 
             /// </summary>
             /// <param name="lineName"></param>
-            public void vehicleDisconnection(string lineName)
+            public void vehicleDisconnection(int vhNum)
             {
                 try
                 {
-                    lineName = lineName.ToLower();
-                    string notify_name = $"{lineName}_dis";
                     string[] action_targets = new string[]
                     {
-                    "weatherforecast"
+                    "weatherforecast",
+                    "disconnected"
                     };
                     string[] param = new string[]
                     {
-                        notify_name,
+                        vhNum.ToString(),
                     };
                     foreach (string notify_url in notify_urls)
                     {
@@ -2352,17 +2319,18 @@ namespace com.mirle.ibg3k0.sc.BLL
                     logger.Error(ex, "Exception");
                 }
             }
-            public void errorHappendNotify()
+            public void errorHappendNotify(int vhNum)
             {
                 try
                 {
                     string[] action_targets = new string[]
                     {
-                    "weatherforecast"
+                    "weatherforecast",
+                    "alarm"
                     };
                     string[] param = new string[]
                     {
-                    ERROR_HAPPEND_CONST,
+                    vhNum.ToString()
                     };
                     foreach (string notify_url in notify_urls)
                     {

@@ -53,6 +53,9 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 //檢查是否有MCS搬送命令需要執行
                 //scApp.CMDBLL.checkMCS_TransferCommand();
 
+                var cst = scApp.CassetteDataBLL.loadCassetteData();
+                CassetteData.CassetteData_InfoList = cst;
+
                 scApp.TransferService.TransferRun();
 
                 scApp.TransferService.ManualPortMoveBackProcess();

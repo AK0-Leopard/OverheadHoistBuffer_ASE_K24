@@ -28,11 +28,20 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void initialComboBox()
         {
+            //Bay
             List<string> bay_ids = new List<string>();
             bay_ids.Add("");
             List<string> current_bay_ids = shelfDefs.Select(s => s.BayID).Distinct().OrderBy(s => s).ToList();
             bay_ids.AddRange(current_bay_ids);
             cmb_bay_id.DataSource = bay_ids;
+
+            //Zone
+            List<string> zone_ids = new List<string>();
+            zone_ids.Add("");
+            List<string> current_zone_ids = shelfDefs.Select(s => s.ZoneID).Distinct().OrderBy(s => s).ToList();
+            zone_ids.AddRange(current_zone_ids);
+            cmb_zoneID.DataSource = zone_ids;
+
         }
 
         private async void initialShelfData()
@@ -103,6 +112,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void ShelfMaintenanceForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            timer1.Stop();
             MainForm.removeForm(nameof(ShelfMaintenanceForm));
         }
 
@@ -114,20 +124,59 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void refreshDataGridView()
         {
             string selected_bay_id = cmb_bay_id.Text;
-            if (sc.Common.SCUtility.isEmpty(selected_bay_id))
+            string selected_zone_id = cmb_zoneID.Text;
+            string selected_shelf_id = txt_shelfID.Text;
+            showShelfDefs = shelfDefs;
+            if (!sc.Common.SCUtility.isEmpty(selected_shelf_id))
             {
-                showShelfDefs = shelfDefs;
+                //showShelfDefs = showShelfDefs.Where(s => shelf_ids.Contains(s.ShelfID)).ToList();
+                showShelfDefs = showShelfDefs.Where(s => searchShelfForFuzzy(s.ShelfID, selected_shelf_id)).ToList();
             }
             else
             {
-                var shelfs_temp = shelfDefs.Where(s => sc.Common.SCUtility.isMatche(s.BayID, selected_bay_id)).ToList();
-                showShelfDefs = shelfs_temp;
+                if (!sc.Common.SCUtility.isEmpty(selected_bay_id))
+                {
+                    showShelfDefs = showShelfDefs.Where(s => sc.Common.SCUtility.isMatche(s.BayID, selected_bay_id)).ToList();
+                }
+                if (!sc.Common.SCUtility.isEmpty(selected_zone_id))
+                {
+                    showShelfDefs = showShelfDefs.Where(s => sc.Common.SCUtility.isMatche(s.ZoneID, selected_zone_id)).ToList();
+                }
             }
+            //if (sc.Common.SCUtility.isEmpty(selected_bay_id))
+            //{
+            //    showShelfDefs = shelfDefs;
+            //}
+            //else
+            //{
+            //    var shelfs_temp = shelfDefs.Where(s => sc.Common.SCUtility.isMatche(s.BayID, selected_bay_id)).ToList();
+            //    showShelfDefs = shelfs_temp;
+            //}
             dgv_shelfData.DataSource = showShelfDefs;
             dgv_shelfData.Refresh();
         }
+        private bool searchShelfForFuzzy(string shelfID, string searchShelfIDs)
+        {
+            List<string> shelf_ids = new List<string>();
+            if (searchShelfIDs.Contains(","))
+            {
+                shelf_ids = searchShelfIDs.Split(',').ToList();
+            }
+            else
+            {
+                shelf_ids.Add(searchShelfIDs);
+            }
+            foreach (string s in shelf_ids)
+            {
+                if (shelfID.Contains(s))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
-        const int SHELF_ENABLE_DISABLE_CLOUMN_INDEX_ENABLE = 1;
+        const int SHELF_ENABLE_DISABLE_CLOUMN_INDEX_ENABLE = 2;
         private void dgv_shelfData_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
             if (dgv_shelfData.Rows.Count <= e.RowIndex) return;
@@ -136,13 +185,14 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             if (!(enable_status is string))
                 return;
             string enable = enable_status as string;
+            DataGridViewRow row = dgv_shelfData.Rows[e.RowIndex];
             if (sc.Common.SCUtility.isMatche(enable, sc.App.SCAppConstants.YES_FLAG))
             {
-                //not thing...
+                row.DefaultCellStyle.BackColor = Color.White;
+                row.DefaultCellStyle.ForeColor = Color.Black;
             }
             else
             {
-                DataGridViewRow row = dgv_shelfData.Rows[e.RowIndex];
                 row.DefaultCellStyle.BackColor = Color.Yellow;
                 row.DefaultCellStyle.ForeColor = Color.Red;
                 if (row.Selected)
@@ -151,6 +201,26 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                     row.DefaultCellStyle.SelectionForeColor = Color.Red;
                 }
             }
+        }
+
+        private void cmb_zoneID_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            refreshDataGridView();
+        }
+
+        private void txt_shelfID_TextChanged(object sender, EventArgs e)
+        {
+            refreshDataGridView();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            dgv_shelfData.Refresh();
+        }
+
+        private void ShelfMaintenanceForm_Load(object sender, EventArgs e)
+        {
+            timer1.Start();
         }
     }
 }

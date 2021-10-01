@@ -124,7 +124,7 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 if (vhStopSingle == VhStopSingle.StopSingleOn)
                 {
-                    Task.Run(() => scApp.VehicleBLL.web.errorHappendNotify());
+                    Task.Run(() => scApp.VehicleBLL.web.errorHappendNotify(vh.Num));
                 }
             }
             catch (Exception ex)
@@ -4070,7 +4070,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 //set the connection alarm code 99999
                 scApp.TransferService.OHBC_AlarmSet(vh.VEHICLE_ID, SCAppConstants.SystemAlarmCode.OHT_Issue.OHTAccidentOfflineWarning);
             }
-            Task.Run(() => scApp.VehicleBLL.web.vehicleDisconnection(scApp));
+            Task.Run(() => scApp.VehicleBLL.web.vehicleDisconnection(vh.Num));
         }
 
         #endregion Vh connection / disconnention

@@ -4551,7 +4551,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (plcInfo.cim_on)
             {
-                OHBC_AlarmCleared(plcInfo.EQ_ID, ((int)AlarmLst.PORT_CIM_OFF).ToString());
+                //OHBC_AlarmCleared(plcInfo.EQ_ID, ((int)AlarmLst.PORT_CIM_OFF).ToString());
 
                 if (plcInfo.OpError == true)
                 {
@@ -4573,7 +4573,7 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 OHBC_AlarmAllCleared(plcInfo.EQ_ID);
 
-                OHBC_AlarmSet(plcInfo.EQ_ID, ((int)AlarmLst.PORT_CIM_OFF).ToString());
+                //OHBC_AlarmSet(plcInfo.EQ_ID, ((int)AlarmLst.PORT_CIM_OFF).ToString());
             }
         }
 

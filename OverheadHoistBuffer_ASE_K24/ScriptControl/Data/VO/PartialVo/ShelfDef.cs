@@ -97,5 +97,28 @@ namespace com.mirle.ibg3k0.sc
                 return seq_no;
             }
         }
+        public string CSTID
+        {
+            get
+            {
+                try
+                {
+                    if (CassetteData.CassetteData_InfoList == null ||
+                        CassetteData.CassetteData_InfoList.Count == 0)
+                    {
+                        return "";
+                    }
+                    List<CassetteData> cassetteDatas = CassetteData.CassetteData_InfoList.ToList();
+                    var cst = cassetteDatas.Where(c => Common.SCUtility.isMatche(c.Carrier_LOC, ShelfID)).FirstOrDefault();
+                    if (cst == null) return "";
+                    return cst.BOXID;
+                }
+                catch (Exception ex)
+                {
+                    NLog.LogManager.GetCurrentClassLogger().Warn(ex, "Exception:");
+                    return "";
+                }
+            }
+        }
     }
 }

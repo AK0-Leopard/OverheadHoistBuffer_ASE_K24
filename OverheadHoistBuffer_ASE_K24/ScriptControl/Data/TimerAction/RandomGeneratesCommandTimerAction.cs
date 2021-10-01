@@ -247,7 +247,19 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 }
 
                 //隨機找出一個要放置的 shelf
-                CassetteData process_cst = cassetteDatas[0];
+                //CassetteData process_cst = cassetteDatas[0];
+
+                CassetteData process_cst = null;
+                foreach (var cst in cassetteDatas)
+                {
+                    if (scApp.ShelfDefBLL.isEnable(cst.Carrier_LOC))
+                    {
+                        process_cst = cst;
+                        break;
+                    }
+                }
+                if (process_cst == null)
+                    return;
 
                 int cst_adr_id = scApp.TransferService.portINIData[process_cst.Carrier_LOC].ADR_ID;
 
@@ -312,8 +324,20 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 }
             }
 
-            var process_cst = cassetteDatas.Where(cst => SCUtility.isMatche(cst.CurrentBayID(scApp), DebugParameter.cycleRunBay)).FirstOrDefault();
-            if (process_cst == null) return;
+            var process_csts = cassetteDatas.Where(cst => SCUtility.isMatche(cst.CurrentBayID(scApp), DebugParameter.cycleRunBay)).ToList();
+            if (process_csts == null) return;
+            CassetteData process_cst = null;
+            foreach (var cst in process_csts)
+            {
+                if (scApp.ShelfDefBLL.isEnable(cst.Carrier_LOC))
+                {
+                    process_cst = cst;
+                    break;
+                }
+            }
+            if (process_cst == null)
+                return;
+
             var next_cycle_run_shelf = shelfDefs.FirstOrDefault();
             if (next_cycle_run_shelf == null) return;
 

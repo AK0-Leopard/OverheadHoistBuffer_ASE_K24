@@ -79,17 +79,24 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void refreshDataGridView()
         {
             string track = txt_tracks.Text;
-            List<string> tracks_id = new List<string>();
-            if (track.Contains(","))
+            if (sc.Common.SCUtility.isEmpty(track))
             {
-                tracks_id = track.Split(',').ToList();
+                showTracks = tracks;
             }
             else
             {
-                tracks_id.Add(track);
-            }
+                List<string> tracks_id = new List<string>();
+                if (track.Contains(","))
+                {
+                    tracks_id = track.Split(',').ToList();
+                }
+                else
+                {
+                    tracks_id.Add(track);
+                }
 
-            showTracks = tracks.Where(t => tracks_id.Contains(t.UNIT_ID)).ToList();
+                showTracks = tracks.Where(t => tracks_id.Contains(t.UNIT_ID)).ToList();
+            }
             dgv_trackData.DataSource = showTracks;
             dgv_trackData.Refresh();
 

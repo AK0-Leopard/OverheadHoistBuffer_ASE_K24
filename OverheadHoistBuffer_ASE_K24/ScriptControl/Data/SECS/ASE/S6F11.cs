@@ -219,8 +219,8 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
                     public VIDITEM_203_DVVAL CARRIER_STATE;
                     [SecsElement(Index = 6, ListSpreadOut = true)]
                     public VIDITEM_179_DVVAL BOX_ID_OBJ;
-                    [SecsElement(Index = 6, ListSpreadOut = true)]
-                    public VIDITEM_204_DVVAL CARRIER_TYPE_OBJ;
+                    //[SecsElement(Index = 6, ListSpreadOut = true)]
+                    //public VIDITEM_204_DVVAL CARRIER_TYPE_OBJ;
 
                     public VIDITEM_10_SV()
                     {
@@ -230,7 +230,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
                         INSTALL_TIME_OBJ = new VIDITEM_12_DVVAL();
                         CARRIER_STATE = new VIDITEM_203_DVVAL();
                         BOX_ID_OBJ = new VIDITEM_179_DVVAL();
-                        CARRIER_TYPE_OBJ = new VIDITEM_204_DVVAL();
+                        //CARRIER_TYPE_OBJ = new VIDITEM_204_DVVAL();
                     }
                 }
 

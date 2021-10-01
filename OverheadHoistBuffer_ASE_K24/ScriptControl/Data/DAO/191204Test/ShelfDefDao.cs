@@ -172,7 +172,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                                 x.ShelfState == ShelfDef.E_ShelfState.EmptyShelf &&
                                 x.Enable == "Y")
                     .OrderByDescending(x => x.ShelfID).ToList();
-                    //.FirstOrDefault();
+                //.FirstOrDefault();
                 return result;
             }
             catch (Exception ex)
@@ -206,6 +206,21 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                     .Where(x => x.ShelfState != ShelfDef.E_ShelfState.EmptyShelf)
                     .OrderByDescending(x => x.ShelfID).ToList();
                 return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex);
+                throw;
+            }
+        }
+        public bool IsEnable(DBConnection_EF conn, string shelfID)
+        {
+            try
+            {
+                var result = conn.ShelfDef
+                    .Where(x => x.ShelfID.Trim() == shelfID.Trim() && x.Enable == "Y")
+                    .Count();
+                return result > 0;
             }
             catch (Exception ex)
             {
