@@ -1,0 +1,222 @@
+﻿// See README.txt for information and build instructions.
+//
+// Note: START and END tags are used in comments to define sections used in
+// tutorials.  They are not part of the syntax for Protocol Buffers.
+//
+// To get an in-depth walkthrough of this file and the related examples, see:
+// https://developers.google.com/protocol-buffers/docs/tutorials
+
+// [START declaration]
+syntax = "proto3";
+
+option cc_enable_arenas = true;
+option go_package = "github.com/golang/protobuf/ptypes/timestamp";
+option java_multiple_files = true;
+option objc_class_prefix = "GPB";
+package tutorial;
+
+// [END declaration]
+
+
+
+// [START csharp_declaration]
+option csharp_namespace = "VehicleControl_Viewer.Protots";
+// [END csharp_declaration]
+message Timestamp {
+
+  // Represents seconds of UTC time since Unix epoch
+  // 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
+  // 9999-12-31T23:59:59Z inclusive.
+  int64 seconds = 1;
+
+  // Non-negative fractions of a second at nanosecond resolution. Negative
+  // second values with fractions must still have non-negative nanos values
+  // that count forward in time. Must be from 0 to 999,999,999
+  // inclusive.
+  int32 nanos = 2;
+}
+
+
+  enum VhStopSingle{
+    StopSingle_Off = 0;
+	StopSingle_On = 1;
+  }
+ 
+
+   enum VehicleType 
+   {
+        VhType_None = 0;
+        VhType_Clean = 1;
+        VhType_Dirty = 2;
+   }
+   
+   enum CommandType 
+   {
+        CMD_Move = 0;
+        CMD_Move_Park = 1;
+        CMD_Move_MTPort = 2;
+        CMD_Load = 3;
+        CMD_Unload = 4;
+        CMD_LoadUnload = 5;
+        CMD_Teaching = 6;
+        CMD_Continue = 7;
+        CMD_Round = 8;
+        CMD_Home = 9;
+        CMD_Override = 10;
+   }
+   enum CommandStatus
+   {
+        CMDSt_Queue = 0;
+        CMDSt_Sending = 1;
+        CMDSt_Execution = 2;
+        CMDSt_Aborting = 3;
+        CMDSt_Canceling = 4;
+        CMDSt_NormalEnd = 5;
+        CMDSt_AbnormalEndByOHT = 6;
+        CMDSt_AbnormalEndByMCS = 7;
+        CMDSt_AbnormalEndByOHTC = 8;
+        CMDSt_CancelEndByOHTC = 9;
+   }
+   enum SectionType
+   {
+        Normal = 0;
+        MTL = 1;
+   }
+
+   enum TSCState
+   {
+		TSCNONE = 0;
+        TSCINT = 1;
+        PAUSED = 2;
+        AUTO = 3;
+        PAUSING = 4;
+   }
+   enum TSCEvent
+   {
+        TSCInitial = 0;
+        SystemStartedUpSuccessfully = 1;
+        TSCResumed = 2;
+        TCSRequestedToPause = 3;
+		PauseComplete = 4;
+   }
+
+
+  enum DriveDirction
+  {
+    DriveDir_None =0;
+	DriveDir_Forward=1;
+	DriveDir_Reverse=2;
+  }
+  
+  enum VehicleState
+  {
+    VehicleState_None =0;
+    VehicleState_Remove =1;
+    VehicleState_NotAssigned =2;
+    VehicleState_Enroute =3;
+    VehicleState_Parked =4;
+    VehicleState_Acquiring =5;
+    VehicleState_Depositing = 6;
+    VehicleState_Assigned =7;
+  }
+
+  enum VHModeStatus {
+    None = 0;
+    Initial_Power_OFF = 1;
+    Initial_Power_ON = 2;
+    Manual = 3;
+    Auto_Remote = 4;
+    Auto_Local = 5;
+    Auto_MTS = 6;
+    Auto_MTL = 7;
+  }
+   enum VHActionStatus {
+    NoCommand = 0;
+    Commanding = 1;
+    Teaching = 5;
+    GripperTeaching = 6;
+    CycleRun = 7;
+  }
+     enum EventType {
+    LoadArrivals = 0;
+    LoadComplete = 1;
+    UnloadArrivals = 2;
+    UnloadComplete = 3;
+	AdrOrMoveArrivals =4;
+	AdrPass = 5;
+    MovePause = 6;
+    MoveRestart = 7;
+	BlockReq = 8;
+	HIDReq = 9;
+	BlockHIDReq = 10;
+	VHLoading = 11;
+	VHUnloading = 12;
+	BCRRead = 13;
+	BlockRelease = 21;
+	HIDRelease = 22;
+	BlockHIDRelease = 23;
+  }
+
+
+    message VEHICLE_INFO {
+	bool isTcpIpConnect = 1;
+	string VEHICLE_ID = 2;
+	VehicleType VEHICLE_TYPE = 3;
+	string CUR_ADR_ID = 4;
+	string CUR_SEC_ID = 5;
+	// google.protobuf.Timestamp SEC_ENTRY_TIME = 5;
+	double ACC_SEC_DIST = 6;
+	VHModeStatus MODE_STATUS = 7;
+	VHActionStatus ACT_STATUS = 8;
+	string MCS_CMD = 9;
+	string OHTC_CMD = 10;
+	VhStopSingle BLOCK_PAUSE = 11;
+	VhStopSingle CMD_PAUSE = 12;
+	VhStopSingle OBS_PAUSE = 13;
+	VhStopSingle HID_PAUSE= 14;
+	VhStopSingle ERROR = 15;
+	int32 OBS_DIST = 16;
+	int32 HAS_CST = 17;
+	string CST_ID = 18;
+	Timestamp UPD_TIME = 19;
+	int32 VEHICLE_ACC_DIST = 20;
+	int32 MANT_ACC_DIST = 21;
+	Timestamp MANT_DATE = 22;
+	int32 GRIP_COUNT = 23;
+	int32 GRIP_MANT_COUNT = 24;
+	Timestamp GRIP_MANT_DATE = 25;
+	// string NODE_ADR = 25;
+	bool IS_PARKING = 26;
+	Timestamp PARK_TIME = 27;
+	string PARK_ADR_ID = 28;
+	bool IS_CYCLING = 29;
+	Timestamp CYCLERUN_TIME = 30;
+	string CYCLERUN_ID = 31;
+
+	repeated string PredictPath = 32;
+	repeated string CyclingPath = 33;
+	string startAdr = 34;
+	string FromAdr = 35;
+	string ToAdr = 36;
+	double Speed = 37;
+	string ObsVehicleID = 38;
+	repeated string Alarms = 39;
+	CommandType CmdType = 40;
+	CommandStatus vh_CMD_Status = 41;
+	EventType VhRecentTranEvent = 42;
+	repeated string WillPassSectionID = 43;
+	int32 procProgress_Percen = 44;
+	DriveDirction CurrentDriveDirction = 45;
+	int32 CMD_PRIOTITY = 46;
+	string CMD_CST_ID = 47;
+	VehicleState State = 48;
+	VhStopSingle PauseStatus = 49;
+	VhStopSingle SAFETY_DOOR_PAUSE = 50;
+	VhStopSingle EARTHQUAKE_PAUSE = 51;
+	bool IS_INSTALLED = 52;
+	double X_Axis = 53;
+	double Y_Axis = 54;
+  }
+
+
+// [END messages]

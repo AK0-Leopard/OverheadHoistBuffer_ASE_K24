@@ -1,0 +1,34 @@
+﻿<Window x:Class="VehicleControl_Viewer.frm_Help.frm_TipMessage_YesNo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VehicleControl_Viewer.frm_Help"
+        mc:Ignorable="d"
+        WindowStyle="None" WindowStartupLocation="CenterScreen" 
+        Title="Tip_Message" Height="223" Width="490"
+        ResizeMode="NoResize" Closing="Window_Closing">
+
+    <Grid Style="{DynamicResource PrimaryBackgroundColor}">
+        <Grid Style="{DynamicResource ThirdBackgroundColor}" Margin="8,8,8,8" MouseLeftButtonDown="DragMoveFrom_FromContent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition/>
+                <RowDefinition Height="65"/>
+            </Grid.RowDefinitions>
+
+            <!--介面標題-->
+            <Grid Grid.Row="0" Style="{DynamicResource PrimaryBackgroundColor}" >
+                <TextBlock Text="Tip Message" Style="{DynamicResource  TitleContentText}" MouseLeftButtonDown="DragMoveFrom_FromContent" Margin="3,3,380,3" Width="91" Foreground="White"/>
+            </Grid>
+
+            <Grid Grid.Row="1" Style="{DynamicResource ThirdBackgroundColor}">
+                <TextBlock x:Name="tbk_Message" Text="Message" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+            <Grid Grid.Row="2" Style="{DynamicResource ThirdBackgroundColor}">
+                <Button x:Name="btn_Yes" Width="150" Height="30" Margin="81,0,243,35" Content="Yes" Click="btn_Yes_Click" IsDefault="True"/>
+                <Button x:Name="btn_No" Width="150" Height="30" Margin="244,0,80,35" Content="No" Click="btn_No_Click" IsCancel="True"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

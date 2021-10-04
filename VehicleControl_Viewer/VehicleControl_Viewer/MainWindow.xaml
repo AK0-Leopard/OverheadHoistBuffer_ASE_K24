@@ -1,0 +1,106 @@
+﻿<Window x:Class="VehicleControl_Vierwer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VehicleControl_Vierwer"
+        xmlns:frm_Mainfrom="clr-namespace:VehicleControl_Viewer.frm_Mainfrom"
+        mc:Ignorable="d"
+        Title="OHBC" Width="1936" Height="1080" WindowState="Maximized" Loaded="FormLoad" Closing="Form_Closing" Closed="Form_Close">
+    <Viewbox Stretch="Fill">
+
+        <Grid Style="{DynamicResource PrimaryBackgroundColor}">
+
+            <Grid.RowDefinitions>
+                <!--菜單-->
+                <RowDefinition Height="35"/>
+                <!--主訊號-->
+                <RowDefinition Height="90"/>
+                <!--設備訊號顯示 & 日誌-->
+                <RowDefinition Height ="860"/>
+                <!--系統資訊-->
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <!--Menu-->
+            <Grid Style="{DynamicResource PrimaryBackgroundColor}" Grid.Row="0" Margin="0,0,547,0">
+                <Menu Margin="0,0,-547,0">
+
+                    <!--System Menu-->
+                    <MenuItem Header="{DynamicResource SYSTEM}" Height="35">
+                        <MenuItem x:Name="mi_LogIn" Header="{DynamicResource LOGIN}" Height="35" FontSize="30"  />
+                        <MenuItem x:Name="mi_LogOff" Header="{DynamicResource LOGOUT}" Height="35" FontSize="16" />
+                        <MenuItem x:Name="mi_PasswordChange" Header="{DynamicResource PASSWORD_CHANGE}" Height="35" FontSize="16" />
+                        <MenuItem x:Name="mi_AccountManagement" Header="{DynamicResource ACCOUNT_MANAGEMENT}" Height="35" FontSize="16" />
+                        <MenuItem x:Name="mi_Exit" Header="{DynamicResource EXIT}" Height="35" FontSize="16"  />
+                    </MenuItem>
+
+                    <!--Parameter-->
+                    <MenuItem Header="{DynamicResource PARAMETER}" Height="35" >
+                        <MenuItem x:Name="mi_ParameterSetting" Header="{DynamicResource SETTING_PARAMETER}" Height="35" FontSize="16"  CommandParameter="FUNC_PARAMETER_SETTING"/>
+                        <MenuItem x:Name="mi_SystemParameter" Header="{DynamicResource SYSTEM_PARAMETER}" Height="35" FontSize="16" CommandParameter="FUNC_SYSTEM_PARAMETER"/>
+                    </MenuItem>
+
+                    <!--Operation-->
+                    <MenuItem Header="{DynamicResource OPERATION}" Height="35" >
+                        <MenuItem x:Name="mi_Connection" Header="{DynamicResource CONNECTION_CONTROL}" Height="35" FontSize="16" CommandParameter="FUNC_CONNECTION_CONTROL"/>
+                        <MenuItem x:Name="mi_StockerSemiAuto" Header="{DynamicResource STK_SEMI_AUTO_COMMAND}" Height="35" FontSize="16" CommandParameter="FUNC_STK_SEMI_AUTO"/>
+                        <MenuItem x:Name="mi_RGVTransferCommand" Header="{DynamicResource RGV_TRANSFER_COMMAND}" Height="35" FontSize="16" CommandParameter="FUNC_RGV_TRANSFER_COMMAND"/>
+                        <MenuItem x:Name="mi_EQPortCommand" Header="{DynamicResource EQ_PORT_COMMAND}" Height="35" FontSize="16" CommandParameter="FUNC_EQ_PORT_COMMAND"/>
+                    </MenuItem>
+
+                    <!--Query-->
+                    <MenuItem Header="{DynamicResource QUERY}" Height="35">
+                    </MenuItem>
+
+                    <!--Maintenance-->
+                    <MenuItem Header="{DynamicResource MAINTENANCE}" Height="35" >
+                        <MenuItem x:Name="mi_GuideTest" Header="{DynamicResource GIUDE_TEST}" Height="35" FontSize="16" Click="mi_GuideTest_Click"/>
+                    </MenuItem>
+
+                    <!--Help-->
+                    <MenuItem Header="{DynamicResource HELP}" Height="35">
+                    </MenuItem>
+                </Menu>
+            </Grid>
+
+            <!--主訊號區-->
+            <frm_Mainfrom:uc_MainSignal x:Name="ucMainSignal" Grid.Row="1" Grid.ColumnSpan="2"  />
+
+            <!--3. 設備訊號顯示區-->
+            <Grid Grid.Row="2" Grid.ColumnSpan="2"  />
+
+            <!--3.1 其他子介面顯示區-->
+            <Grid Grid.Row="2" x:Name="placeToShowChildForm" Grid.RowSpan="2" Grid.ColumnSpan="2" Width = "1936" Height="860" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource ThirdBackgroundColor}" >
+            </Grid>
+
+            <!--5. 系統資訊區-->
+            <Grid Grid.Row="3" Style="{DynamicResource SecondBackgroundColor}" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <!--<TextBlock Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Today Process : "></TextBlock>-->
+                <!--<TextBlock x:Name="lab_TodayProcess_Value" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Text=""></TextBlock>-->
+
+                <TextBlock Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{DynamicResource RUNNING_TIME}" Style="{DynamicResource TitleContentText}" Visibility="Hidden"/>
+                <TextBlock x:Name="lab_RunningTime_Value" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center" Text=" 30 Hours" Style="{DynamicResource TitleContentText}" Visibility="Hidden"/>
+
+                <TextBlock Grid.Column="5" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{DynamicResource BUILD_DATE}" Style="{DynamicResource TitleContentText}" Visibility="Hidden"/>
+                <TextBlock x:Name="lab_BuildDate_Value" Grid.Column="6" HorizontalAlignment="Left" VerticalAlignment="Center" Text=" 2020/11/10" Style="{DynamicResource TitleContentText}" Visibility="Hidden"/>
+
+                <TextBlock Grid.Column="7" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{DynamicResource VERSION}" Style="{DynamicResource TitleContentText}" />
+                <TextBlock x:Name="lab_Version_Value" Grid.Column="8" HorizontalAlignment="Left" VerticalAlignment="Center" Text=" 1.0.0" Style="{DynamicResource TitleContentText}" />
+            </Grid>
+
+        </Grid>
+
+    </Viewbox>
+</Window>
