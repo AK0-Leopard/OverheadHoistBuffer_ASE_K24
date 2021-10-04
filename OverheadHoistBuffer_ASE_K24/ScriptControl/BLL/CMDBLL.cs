@@ -3582,6 +3582,16 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
+        public bool hasCmdOhtcExcute(string vhID)
+        {
+            int count = 0;
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                count = cmd_ohtcDAO.getUnfinishCMD_OHTCount(con, vhID);
+            }
+            return count > 0;
+        }
+
         public void remoteCMD_OHTCByBatch(List<ACMD_OHTC> cmds)
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())

@@ -3128,6 +3128,8 @@ namespace com.mirle.ibg3k0.sc.Service
                                           RepeatedField<ReserveInfo> reserveInfos = null,
                                           TrackDir trackDir = TrackDir.None)
         {
+            cancelType = checkCancelType(vh, eventType, cancelType);
+
             ID_36_TRANS_EVENT_RESPONSE send_str = new ID_36_TRANS_EVENT_RESPONSE
             {
                 IsBlockPass = canBlockPass ? PassType.Pass : PassType.Block,
@@ -3153,6 +3155,49 @@ namespace com.mirle.ibg3k0.sc.Service
             LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, send_str, seq_num);
             return resp_cmp;
         }
+        /// <summary>
+        /// 當車子在OHTC Command Table中已無命令，在回復36-Loading...事件時，皆要要求車子進行cacnel
+        /// </summary>
+        private CMDCancelType checkCancelType(AVEHICLE vh, EventType eventType, CMDCancelType cancelType)
+        {
+            try
+            {
+                if (cancelType != CMDCancelType.CmdNone)
+                {
+                    return cancelType;
+                }
+                switch (eventType)
+                {
+                    case EventType.LoadArrivals:
+                    case EventType.Vhloading:
+                    case EventType.LoadComplete:
+                    case EventType.UnloadArrivals:
+                    case EventType.Vhunloading:
+                        //case EventType.UnloadComplete:
+                        bool has_cmd_excute = scApp.CMDBLL.hasCmdOhtcExcute(vh.VEHICLE_ID);
+                        if (has_cmd_excute)
+                        {
+                            return cancelType;
+                        }
+                        else
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                               Data: $"vh:{vh.VEHICLE_ID} report event:{eventType}, but no command in db, return:{CMDCancelType.CmdCancel}",
+                               VehicleID: vh.VEHICLE_ID,
+                               CarrierID: vh.CST_ID);
+                            return CMDCancelType.CmdCancel;
+                        }
+                    default:
+                        return cancelType;
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return cancelType;
+            }
+        }
+
 
         private void PositionReport_DoubleStorage(BCFApplication bcfApp, AVEHICLE eqpt, int seqNum
                                                     , EventType eventType, string current_adr_id, string current_sec_id, string carrier_id)

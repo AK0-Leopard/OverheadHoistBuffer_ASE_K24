@@ -188,7 +188,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     );
                     if (SCUtility.isEmpty(desc))
                     {
-                        alam_desc = $"unknow alarm code:{error_code}";
+                        alam_desc = $"Device no define:{error_code}";
                     }
                     else
                     {

@@ -286,6 +286,14 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             string cycle_run_vh = DebugParameter.cycleRunVh;
             AVEHICLE vh = scApp.VehicleBLL.cache.getVhByID(cycle_run_vh);
             if (vh == null) return;
+            if (vh.ACT_STATUS == ProtocolFormat.OHTMessage.VHActionStatus.Commanding)
+            {
+                return;
+            }
+            if (vh.ERROR == ProtocolFormat.OHTMessage.VhStopSingle.StopSingleOn)
+            {
+                return;
+            }
             if (vh.IS_INSTALLED)
             {
                 return;

@@ -1271,28 +1271,6 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        private void CraneCountBy2(List<ACMD_MCS> cmdList)    //當有兩台車在同一條LINE (非LOOP)
-        {
-            foreach (var cmd1 in cmdList)
-            {
-            }
-            List<AVEHICLE> avehicles = scApp.VehicleBLL.cache.loadVhs();
-
-            foreach (var vh in avehicles)
-            {
-                if (string.IsNullOrWhiteSpace(vh.OHTC_CMD) == false)
-                {
-                    ACMD_OHTC ohtCmdData = cmdBLL.getCMD_OHTCByID(vh.OHTC_CMD);
-                    if (ohtCmdData != null)
-                    {
-                    }
-                }
-            }
-            //List<PortINIData> portADR = GetPortADR();
-            //portADR.Where(data => data.ADR_ID == 0).FirstOrDefault();
-            //int i = portADR.IndexOf(portADR.Where(data => data.ADR_ID == 0).FirstOrDefault());
-        }
-
         /// <summary>
         /// 比較兩筆命令路徑是否重疊
         /// </summary>
@@ -7878,15 +7856,20 @@ namespace com.mirle.ibg3k0.sc.Service
                         scApp.MapBLL.getAddressID(source, out string from_adr);
                         scApp.MapBLL.getAddressID(dest, out string to_adr);
 
-                        scApp.CMDBLL.doCreatTransferCommand
-                                            (craneID,
-                                             cmd_id_mcs: datainfo.CMD_ID,
-                                             cmd_type: E_CMD_TYPE.LoadUnload,
-                                             source: source,
-                                             destination: dest,
-                                             box_id: sourceData.BOXID,
-                                             source_address: from_adr,
-                                             destination_address: to_adr);
+                        bool is_success = scApp.CMDBLL.doCreatTransferCommand
+                                              (craneID,
+                                               cmd_id_mcs: datainfo.CMD_ID,
+                                               cmd_type: E_CMD_TYPE.LoadUnload,
+                                               source: source,
+                                               destination: dest,
+                                               box_id: sourceData.BOXID,
+                                               source_address: from_adr,
+                                               destination_address: to_adr);
+                        if (!is_success)
+                        {
+                            cmdBLL.updateCMD_MCS_TranStatus(datainfo.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                            return "產生CMD_OHTC失敗";
+                        }
                     }
                     reportBLL.ReportOperatorInitiatedAction(datainfo.CMD_ID, reportMCSCommandType.Transfer.ToString());
                     return "OK";

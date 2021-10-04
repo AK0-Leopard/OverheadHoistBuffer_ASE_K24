@@ -129,6 +129,15 @@ namespace com.mirle.ibg3k0.bc.winform.Common
                     , MessageBoxIcon.Information);
 
         }
+
+        public static void recordAction(BCApplication app, string formName, string tipMessage, string confirmResult)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(tipMessage);
+            sb.AppendLine(string.Format("{0}         ConfirmResult:{1}", new string(' ', 5), confirmResult));
+            app.SCApplication.BCSystemBLL.addOperationHis(app.LoginUserID, formName, sb.ToString());
+        }
+
         /// <summary>
         /// Does the login.
         /// </summary>

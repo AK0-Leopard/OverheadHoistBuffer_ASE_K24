@@ -73,7 +73,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
         public List<ACMD_OHTC> loadUnfnishCMD_OHTC(DBConnection_EF con)
         {
             var query = from cmd in con.ACMD_OHTC
-                        where cmd.CMD_STAUS < E_CMD_STATUS.NormalEnd 
+                        where cmd.CMD_STAUS < E_CMD_STATUS.NormalEnd
                         orderby cmd.CMD_START_TIME
                         select cmd;
             return query.ToList();
@@ -97,6 +97,14 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                         select cmd;
             return query.ToList();
         }
+        public int getUnfinishCMD_OHTCount(DBConnection_EF con, string vhID)
+        {
+            var query = from cmd in con.ACMD_OHTC
+                        where cmd.CMD_STAUS < E_CMD_STATUS.NormalEnd && cmd.VH_ID.Trim() == vhID.Trim()
+                        select cmd;
+            return query.Count();
+        }
+
 
         public ACMD_OHTC getByID(DBConnection_EF con, String cmd_id)
         {
@@ -236,7 +244,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
         public ACMD_OHTC getCMD_OHTCByMCScmdID_And_NotFinishByDest(DBConnection_EF con, string mcs_cmd_id, string dest)
         {
             var query = from cmd in con.ACMD_OHTC
-                        where cmd.CMD_ID_MCS.Trim() == mcs_cmd_id.Trim() 
+                        where cmd.CMD_ID_MCS.Trim() == mcs_cmd_id.Trim()
                             && cmd.CMD_END_TIME == null
                             && cmd.DESTINATION.Trim() == dest.Trim()
                         select cmd;

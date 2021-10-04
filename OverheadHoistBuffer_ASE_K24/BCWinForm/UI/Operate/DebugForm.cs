@@ -49,6 +49,14 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             BCUtility.setComboboxDataSource(cmb_plcctr_Vehicle, allVh.ToArray());
             BCUtility.setComboboxDataSource(cmb_car_out_vh, allVh.ToArray());
             BCUtility.setComboboxDataSource(cmb_cycleRunVhId, allVh.ToArray());
+            //var cst_data = CassetteData.CassetteData_InfoList;
+            //if (cst_data != null && cst_data.Count() != 0)
+            //{
+            //    var cst_data_ids = new List<string>();
+            //    cst_data_ids.Add("");
+            //    cst_data_ids.AddRange(cst_data.Select(cst => cst.BOXID).ToList());
+            //    BCUtility.setComboboxDataSource(cmb_cycleCstID, cst_data_ids.ToArray());
+            //}
 
             List<ASEGMENT> segments = bcApp.SCApplication.SegmentBLL.cache.GetSegments();
             string[] segment_ids = segments.Select(seg => seg.SEG_NUM).ToArray();
@@ -72,6 +80,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_passDriveOutByAreaSensor.Checked = DebugParameter.isPassDriveOutByAreaSensor;
             cmb_cycleRunVhId.SelectedItem = DebugParameter.cycleRunVh;
             cmb_cycleRunBayID.SelectedItem = DebugParameter.cycleRunBay;
+            //cmb_cycleCstID.SelectedValue = DebugParameter.cycleRunCST;
+
             cb_ForceStraightPass.Checked = DebugParameter.IsForceStraightPass;
             cb_ForceNonStraightPass.Checked = DebugParameter.IsForceNonStraightPass;
 
@@ -256,6 +266,27 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void button6_Click(object sender, EventArgs e)
         {
+            if (noticeCar == null)
+            {
+                MessageBox.Show($"Please select vh first.", "Force finish fail.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            string message = $"Do you want to force finish vh:{noticeCar.VEHICLE_ID} command?";
+            DialogResult confirmResult = MessageBox.Show(this, message,
+                BCApplication.getMessageString("CONFIRM"), MessageBoxButtons.YesNo);
+
+            if (noticeCar.ACT_STATUS == sc.ProtocolFormat.OHTMessage.VHActionStatus.Commanding)
+            {
+                MessageBox.Show($"vh:{noticeCar.VEHICLE_ID} current status:{noticeCar.ACT_STATUS} can't excute force finish.",
+                                 "Force finish fail.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            BCUtility.recordAction(bcApp, this.Name, message, confirmResult.ToString());
+            if (confirmResult != System.Windows.Forms.DialogResult.Yes)
+            {
+                return;
+            }
             Task.Run(() =>
             {
                 bcApp.SCApplication.CMDBLL.forceUpdataCmdStatus2FnishByVhID(vh_id);
@@ -1427,6 +1458,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_ForceNonStraightPass_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.IsForceNonStraightPass = cb_ForceNonStraightPass.Checked;
+        }
+
+        private void cmb_cycleCstID_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //DebugParameter.cycleRunCST = cmb_cycleCstID.SelectedValue as string;
         }
     }
 }

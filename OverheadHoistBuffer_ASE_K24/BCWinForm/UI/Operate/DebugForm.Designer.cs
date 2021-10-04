@@ -127,6 +127,8 @@
             this.label18 = new System.Windows.Forms.Label();
             this.cb_PortID = new System.Windows.Forms.ComboBox();
             this.gb_blockControl = new System.Windows.Forms.GroupBox();
+            this.cb_ForceNonStraightPass = new System.Windows.Forms.CheckBox();
+            this.cb_ForceStraightPass = new System.Windows.Forms.CheckBox();
             this.cb_FroceReserveReject = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -375,8 +377,8 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.cb_ForceStraightPass = new System.Windows.Forms.CheckBox();
-            this.cb_ForceNonStraightPass = new System.Windows.Forms.CheckBox();
+            this.label82 = new System.Windows.Forms.Label();
+            this.cmb_cycleCstID = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -474,6 +476,7 @@
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Fun 71";
+            this.groupBox1.Visible = false;
             // 
             // label2
             // 
@@ -515,6 +518,7 @@
             this.button1.TabIndex = 16;
             this.button1.Text = "Send Func:61";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
@@ -526,6 +530,7 @@
             this.button2.TabIndex = 16;
             this.button2.Text = "Send Func:63";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
@@ -623,7 +628,7 @@
             // cb_StartGenAntoCmd
             // 
             this.cb_StartGenAntoCmd.AutoSize = true;
-            this.cb_StartGenAntoCmd.Location = new System.Drawing.Point(1039, 184);
+            this.cb_StartGenAntoCmd.Location = new System.Drawing.Point(1039, 201);
             this.cb_StartGenAntoCmd.Name = "cb_StartGenAntoCmd";
             this.cb_StartGenAntoCmd.Size = new System.Drawing.Size(349, 26);
             this.cb_StartGenAntoCmd.TabIndex = 18;
@@ -654,6 +659,7 @@
             this.groupBox3.TabIndex = 20;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Fun 45";
+            this.groupBox3.Visible = false;
             // 
             // groupBox4
             // 
@@ -723,6 +729,7 @@
             this.label76.Size = new System.Drawing.Size(20, 22);
             this.label76.TabIndex = 58;
             this.label76.Text = "Y";
+            this.label76.Visible = false;
             // 
             // num_vh_y
             // 
@@ -740,6 +747,7 @@
             this.num_vh_y.Name = "num_vh_y";
             this.num_vh_y.Size = new System.Drawing.Size(172, 30);
             this.num_vh_y.TabIndex = 59;
+            this.num_vh_y.Visible = false;
             this.num_vh_y.ValueChanged += new System.EventHandler(this.num_vh_y_ValueChanged);
             // 
             // label75
@@ -751,6 +759,7 @@
             this.label75.Size = new System.Drawing.Size(20, 22);
             this.label75.TabIndex = 17;
             this.label75.Text = "X";
+            this.label75.Visible = false;
             // 
             // num_vh_x
             // 
@@ -768,6 +777,7 @@
             this.num_vh_x.Name = "num_vh_x";
             this.num_vh_x.Size = new System.Drawing.Size(172, 30);
             this.num_vh_x.TabIndex = 57;
+            this.num_vh_x.Visible = false;
             this.num_vh_x.ValueChanged += new System.EventHandler(this.num_vh_x_ValueChanged);
             // 
             // Ignore136UnloadComplete
@@ -779,6 +789,7 @@
             this.Ignore136UnloadComplete.TabIndex = 56;
             this.Ignore136UnloadComplete.Text = "Ignore Unload Complete";
             this.Ignore136UnloadComplete.UseVisualStyleBackColor = true;
+            this.Ignore136UnloadComplete.Visible = false;
             this.Ignore136UnloadComplete.CheckedChanged += new System.EventHandler(this.Ignore136UnloadComplete_CheckedChanged);
             // 
             // txt_current_sec_id
@@ -787,6 +798,7 @@
             this.txt_current_sec_id.Name = "txt_current_sec_id";
             this.txt_current_sec_id.Size = new System.Drawing.Size(172, 30);
             this.txt_current_sec_id.TabIndex = 55;
+            this.txt_current_sec_id.Visible = false;
             // 
             // num_section_dis
             // 
@@ -804,6 +816,7 @@
             this.num_section_dis.Name = "num_section_dis";
             this.num_section_dis.Size = new System.Drawing.Size(172, 30);
             this.num_section_dis.TabIndex = 54;
+            this.num_section_dis.Visible = false;
             this.num_section_dis.ValueChanged += new System.EventHandler(this.num_section_dis_ValueChanged);
             // 
             // ck_retry
@@ -890,6 +903,7 @@
             this.cb_test_duplicate.TabIndex = 47;
             this.cb_test_duplicate.Text = "Test Duplicate";
             this.cb_test_duplicate.UseVisualStyleBackColor = true;
+            this.cb_test_duplicate.Visible = false;
             this.cb_test_duplicate.CheckedChanged += new System.EventHandler(this.cb_test_duplicate_CheckedChanged);
             // 
             // btn_changeToRemove
@@ -972,6 +986,7 @@
             this.cb_pauseFirst.TabIndex = 30;
             this.cb_pauseFirst.Text = "Pause First";
             this.cb_pauseFirst.UseVisualStyleBackColor = true;
+            this.cb_pauseFirst.Visible = false;
             // 
             // groupBox9
             // 
@@ -984,6 +999,7 @@
             this.groupBox9.TabIndex = 20;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Fun 35";
+            this.groupBox9.Visible = false;
             // 
             // txt_rename_cst_id
             // 
@@ -1022,6 +1038,7 @@
             this.uctl_SendFun2.TabIndex = 29;
             this.uctl_SendFun2.Text = "Send Func:2";
             this.uctl_SendFun2.UseVisualStyleBackColor = true;
+            this.uctl_SendFun2.Visible = false;
             this.uctl_SendFun2.Click += new System.EventHandler(this.uctl_SendFun2_Click);
             // 
             // btn_cmd_override_test
@@ -1032,6 +1049,7 @@
             this.btn_cmd_override_test.TabIndex = 28;
             this.btn_cmd_override_test.Text = "Command Override Test";
             this.btn_cmd_override_test.UseVisualStyleBackColor = true;
+            this.btn_cmd_override_test.Visible = false;
             this.btn_cmd_override_test.Click += new System.EventHandler(this.btn_cmd_override_test_Click);
             // 
             // btn_reset_teach_result
@@ -1042,6 +1060,7 @@
             this.btn_reset_teach_result.TabIndex = 27;
             this.btn_reset_teach_result.Text = "Reset Teach Result";
             this.btn_reset_teach_result.UseVisualStyleBackColor = true;
+            this.btn_reset_teach_result.Visible = false;
             this.btn_reset_teach_result.Click += new System.EventHandler(this.btn_reset_teach_result_Click);
             // 
             // ck_autoTech
@@ -1053,6 +1072,7 @@
             this.ck_autoTech.TabIndex = 26;
             this.ck_autoTech.Text = "Auto Tech";
             this.ck_autoTech.UseVisualStyleBackColor = true;
+            this.ck_autoTech.Visible = false;
             this.ck_autoTech.Click += new System.EventHandler(this.ck_autoTech_Click);
             // 
             // groupBox8
@@ -1188,6 +1208,7 @@
             this.uctl_SendFun1.TabIndex = 8;
             this.uctl_SendFun1.Text = "Send Func:1";
             this.uctl_SendFun1.UseVisualStyleBackColor = true;
+            this.uctl_SendFun1.Visible = false;
             this.uctl_SendFun1.Click += new System.EventHandler(this.uctl_Btn1_Click);
             // 
             // uctl_SendFun15
@@ -1199,6 +1220,7 @@
             this.uctl_SendFun15.TabIndex = 8;
             this.uctl_SendFun15.Text = "Send Func:15";
             this.uctl_SendFun15.UseVisualStyleBackColor = true;
+            this.uctl_SendFun15.Visible = false;
             this.uctl_SendFun15.Click += new System.EventHandler(this.uctl_SendFun15_Click);
             // 
             // uctl_SendFun13
@@ -1210,6 +1232,7 @@
             this.uctl_SendFun13.TabIndex = 10;
             this.uctl_SendFun13.Text = "Send Func:13";
             this.uctl_SendFun13.UseVisualStyleBackColor = true;
+            this.uctl_SendFun13.Visible = false;
             this.uctl_SendFun13.Click += new System.EventHandler(this.uctl_SendFun13_Click);
             // 
             // uctl_SendFun11
@@ -1221,6 +1244,7 @@
             this.uctl_SendFun11.TabIndex = 10;
             this.uctl_SendFun11.Text = "Send Func:11";
             this.uctl_SendFun11.UseVisualStyleBackColor = true;
+            this.uctl_SendFun11.Visible = false;
             this.uctl_SendFun11.Click += new System.EventHandler(this.uctl_SendFun11_Click);
             // 
             // uctl_SendFun17
@@ -1232,6 +1256,7 @@
             this.uctl_SendFun17.TabIndex = 11;
             this.uctl_SendFun17.Text = "Send Func:17";
             this.uctl_SendFun17.UseVisualStyleBackColor = true;
+            this.uctl_SendFun17.Visible = false;
             this.uctl_SendFun17.Click += new System.EventHandler(this.uctl_SendFun17_Click);
             // 
             // uctl_SendFun19
@@ -1243,6 +1268,7 @@
             this.uctl_SendFun19.TabIndex = 12;
             this.uctl_SendFun19.Text = "Send Func:19";
             this.uctl_SendFun19.UseVisualStyleBackColor = true;
+            this.uctl_SendFun19.Visible = false;
             this.uctl_SendFun19.Click += new System.EventHandler(this.uctl_SendFun19_Click);
             // 
             // uctl_SendFun21
@@ -1254,6 +1280,7 @@
             this.uctl_SendFun21.TabIndex = 12;
             this.uctl_SendFun21.Text = "Send Func:21";
             this.uctl_SendFun21.UseVisualStyleBackColor = true;
+            this.uctl_SendFun21.Visible = false;
             this.uctl_SendFun21.Click += new System.EventHandler(this.uctl_SendFun21_Click);
             // 
             // uctl_SendFun23
@@ -1265,6 +1292,7 @@
             this.uctl_SendFun23.TabIndex = 12;
             this.uctl_SendFun23.Text = "Send Func:23";
             this.uctl_SendFun23.UseVisualStyleBackColor = true;
+            this.uctl_SendFun23.Visible = false;
             this.uctl_SendFun23.Click += new System.EventHandler(this.uctl_SendFun23_Click);
             // 
             // uctl_SendAllFun
@@ -1276,6 +1304,7 @@
             this.uctl_SendAllFun.TabIndex = 12;
             this.uctl_SendAllFun.Text = "Send ALL";
             this.uctl_SendAllFun.UseVisualStyleBackColor = true;
+            this.uctl_SendAllFun.Visible = false;
             this.uctl_SendAllFun.Click += new System.EventHandler(this.uctl_SendAllFun_Click);
             // 
             // tabControl1
@@ -1292,7 +1321,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1492, 865);
+            this.tabControl1.Size = new System.Drawing.Size(1370, 749);
             this.tabControl1.TabIndex = 23;
             // 
             // tabPage1
@@ -1312,20 +1341,22 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 31);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1484, 830);
+            this.tabPage1.Size = new System.Drawing.Size(1362, 714);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // gb_cycleRunInfo
             // 
+            this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleCstID);
+            this.gb_cycleRunInfo.Controls.Add(this.label82);
             this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleRunVhId);
             this.gb_cycleRunInfo.Controls.Add(this.label78);
             this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleRunBayID);
             this.gb_cycleRunInfo.Controls.Add(this.label77);
-            this.gb_cycleRunInfo.Location = new System.Drawing.Point(1230, 18);
+            this.gb_cycleRunInfo.Location = new System.Drawing.Point(1230, 0);
             this.gb_cycleRunInfo.Name = "gb_cycleRunInfo";
-            this.gb_cycleRunInfo.Size = new System.Drawing.Size(201, 160);
+            this.gb_cycleRunInfo.Size = new System.Drawing.Size(201, 196);
             this.gb_cycleRunInfo.TabIndex = 65;
             this.gb_cycleRunInfo.TabStop = false;
             this.gb_cycleRunInfo.Text = "Cycle Run Info";
@@ -1333,7 +1364,7 @@
             // cmb_cycleRunVhId
             // 
             this.cmb_cycleRunVhId.FormattingEnabled = true;
-            this.cmb_cycleRunVhId.Location = new System.Drawing.Point(6, 114);
+            this.cmb_cycleRunVhId.Location = new System.Drawing.Point(6, 103);
             this.cmb_cycleRunVhId.Name = "cmb_cycleRunVhId";
             this.cmb_cycleRunVhId.Size = new System.Drawing.Size(189, 30);
             this.cmb_cycleRunVhId.TabIndex = 63;
@@ -1343,7 +1374,7 @@
             // label78
             // 
             this.label78.AutoSize = true;
-            this.label78.Location = new System.Drawing.Point(18, 90);
+            this.label78.Location = new System.Drawing.Point(18, 79);
             this.label78.Name = "label78";
             this.label78.Size = new System.Drawing.Size(140, 22);
             this.label78.TabIndex = 64;
@@ -1352,7 +1383,7 @@
             // cmb_cycleRunBayID
             // 
             this.cmb_cycleRunBayID.FormattingEnabled = true;
-            this.cmb_cycleRunBayID.Location = new System.Drawing.Point(6, 57);
+            this.cmb_cycleRunBayID.Location = new System.Drawing.Point(6, 46);
             this.cmb_cycleRunBayID.Name = "cmb_cycleRunBayID";
             this.cmb_cycleRunBayID.Size = new System.Drawing.Size(189, 30);
             this.cmb_cycleRunBayID.TabIndex = 58;
@@ -1362,7 +1393,7 @@
             // label77
             // 
             this.label77.AutoSize = true;
-            this.label77.Location = new System.Drawing.Point(18, 33);
+            this.label77.Location = new System.Drawing.Point(18, 22);
             this.label77.Name = "label77";
             this.label77.Size = new System.Drawing.Size(150, 22);
             this.label77.TabIndex = 62;
@@ -1433,6 +1464,7 @@
             this.groupBox12.TabIndex = 26;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Refresh Vh Order In Segment";
+            this.groupBox12.Visible = false;
             // 
             // txt_vh_order_in_segment
             // 
@@ -1491,6 +1523,7 @@
             this.groupBox7.TabIndex = 25;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Port Status";
+            this.groupBox7.Visible = false;
             // 
             // btn_portOutOfServeice
             // 
@@ -1535,12 +1568,36 @@
             this.gb_blockControl.Controls.Add(this.cb_ForceStraightPass);
             this.gb_blockControl.Controls.Add(this.cb_FroceReserveReject);
             this.gb_blockControl.Controls.Add(this.cb_FroceReservePass);
-            this.gb_blockControl.Location = new System.Drawing.Point(1039, 213);
+            this.gb_blockControl.Location = new System.Drawing.Point(1039, 227);
             this.gb_blockControl.Name = "gb_blockControl";
             this.gb_blockControl.Size = new System.Drawing.Size(310, 151);
             this.gb_blockControl.TabIndex = 23;
             this.gb_blockControl.TabStop = false;
             this.gb_blockControl.Text = "Block Control";
+            // 
+            // cb_ForceNonStraightPass
+            // 
+            this.cb_ForceNonStraightPass.AutoSize = true;
+            this.cb_ForceNonStraightPass.Location = new System.Drawing.Point(28, 111);
+            this.cb_ForceNonStraightPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cb_ForceNonStraightPass.Name = "cb_ForceNonStraightPass";
+            this.cb_ForceNonStraightPass.Size = new System.Drawing.Size(259, 26);
+            this.cb_ForceNonStraightPass.TabIndex = 10;
+            this.cb_ForceNonStraightPass.Text = "Force Non Straight Pass";
+            this.cb_ForceNonStraightPass.UseVisualStyleBackColor = true;
+            this.cb_ForceNonStraightPass.CheckedChanged += new System.EventHandler(this.cb_ForceNonStraightPass_CheckedChanged);
+            // 
+            // cb_ForceStraightPass
+            // 
+            this.cb_ForceStraightPass.AutoSize = true;
+            this.cb_ForceStraightPass.Location = new System.Drawing.Point(28, 85);
+            this.cb_ForceStraightPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cb_ForceStraightPass.Name = "cb_ForceStraightPass";
+            this.cb_ForceStraightPass.Size = new System.Drawing.Size(219, 26);
+            this.cb_ForceStraightPass.TabIndex = 9;
+            this.cb_ForceStraightPass.Text = "Force Straight Pass";
+            this.cb_ForceStraightPass.UseVisualStyleBackColor = true;
+            this.cb_ForceStraightPass.CheckedChanged += new System.EventHandler(this.cb_ForceStraightPass_CheckedChanged);
             // 
             // cb_FroceReserveReject
             // 
@@ -4549,35 +4606,31 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // cb_ForceStraightPass
+            // label82
             // 
-            this.cb_ForceStraightPass.AutoSize = true;
-            this.cb_ForceStraightPass.Location = new System.Drawing.Point(28, 85);
-            this.cb_ForceStraightPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cb_ForceStraightPass.Name = "cb_ForceStraightPass";
-            this.cb_ForceStraightPass.Size = new System.Drawing.Size(219, 26);
-            this.cb_ForceStraightPass.TabIndex = 9;
-            this.cb_ForceStraightPass.Text = "Force Straight Pass";
-            this.cb_ForceStraightPass.UseVisualStyleBackColor = true;
-            this.cb_ForceStraightPass.CheckedChanged += new System.EventHandler(this.cb_ForceStraightPass_CheckedChanged);
+            this.label82.AutoSize = true;
+            this.label82.Location = new System.Drawing.Point(18, 137);
+            this.label82.Name = "label82";
+            this.label82.Size = new System.Drawing.Size(150, 22);
+            this.label82.TabIndex = 65;
+            this.label82.Text = "Cycle Run CST:";
+            this.label82.Visible = false;
             // 
-            // cb_ForceNonStraightPass
+            // cmb_cycleCstID
             // 
-            this.cb_ForceNonStraightPass.AutoSize = true;
-            this.cb_ForceNonStraightPass.Location = new System.Drawing.Point(28, 111);
-            this.cb_ForceNonStraightPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cb_ForceNonStraightPass.Name = "cb_ForceNonStraightPass";
-            this.cb_ForceNonStraightPass.Size = new System.Drawing.Size(259, 26);
-            this.cb_ForceNonStraightPass.TabIndex = 10;
-            this.cb_ForceNonStraightPass.Text = "Force Non Straight Pass";
-            this.cb_ForceNonStraightPass.UseVisualStyleBackColor = true;
-            this.cb_ForceNonStraightPass.CheckedChanged += new System.EventHandler(this.cb_ForceNonStraightPass_CheckedChanged);
+            this.cmb_cycleCstID.FormattingEnabled = true;
+            this.cmb_cycleCstID.Location = new System.Drawing.Point(6, 161);
+            this.cmb_cycleCstID.Name = "cmb_cycleCstID";
+            this.cmb_cycleCstID.Size = new System.Drawing.Size(189, 30);
+            this.cmb_cycleCstID.TabIndex = 66;
+            this.cmb_cycleCstID.Visible = false;
+            this.cmb_cycleCstID.SelectedIndexChanged += new System.EventHandler(this.cmb_cycleCstID_SelectedIndexChanged);
             // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1492, 865);
+            this.ClientSize = new System.Drawing.Size(1370, 749);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -5009,5 +5062,7 @@
         private System.Windows.Forms.GroupBox gb_cycleRunInfo;
         private System.Windows.Forms.CheckBox cb_ForceNonStraightPass;
         private System.Windows.Forms.CheckBox cb_ForceStraightPass;
+        private System.Windows.Forms.Label label82;
+        private System.Windows.Forms.ComboBox cmb_cycleCstID;
     }
 }

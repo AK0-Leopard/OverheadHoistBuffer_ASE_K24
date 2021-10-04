@@ -159,6 +159,7 @@
             this.button3.TabIndex = 7;
             this.button3.Text = "預約流向";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
@@ -191,6 +192,7 @@
             this.button5.TabIndex = 7;
             this.button5.Text = "取消預約";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // label3
@@ -245,6 +247,7 @@
             this.button11.TabIndex = 7;
             this.button11.Text = "開啟讀取BCR";
             this.button11.UseVisualStyleBackColor = true;
+            this.button11.Visible = false;
             this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // button13
@@ -256,6 +259,7 @@
             this.button13.TabIndex = 7;
             this.button13.Text = "關閉讀取BCR";
             this.button13.UseVisualStyleBackColor = true;
+            this.button13.Visible = false;
             this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
             // dataGridView1
@@ -277,6 +281,7 @@
             this.button14.TabIndex = 7;
             this.button14.Text = "取得目前 Port 狀態";
             this.button14.UseVisualStyleBackColor = true;
+            this.button14.Visible = false;
             this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
             // button15
@@ -288,6 +293,7 @@
             this.button15.TabIndex = 7;
             this.button15.Text = "Port啟用";
             this.button15.UseVisualStyleBackColor = true;
+            this.button15.Visible = false;
             this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
             // button16
@@ -299,6 +305,7 @@
             this.button16.TabIndex = 7;
             this.button16.Text = "Port禁用";
             this.button16.UseVisualStyleBackColor = true;
+            this.button16.Visible = false;
             this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // panel1
@@ -550,6 +557,7 @@
             this.button26.TabIndex = 33;
             this.button26.Text = "InService";
             this.button26.UseVisualStyleBackColor = true;
+            this.button26.Visible = false;
             this.button26.Click += new System.EventHandler(this.button26_Click);
             // 
             // button27
@@ -561,6 +569,7 @@
             this.button27.TabIndex = 32;
             this.button27.Text = "Out Of Service";
             this.button27.UseVisualStyleBackColor = true;
+            this.button27.Visible = false;
             this.button27.Click += new System.EventHandler(this.button27_Click);
             // 
             // button30
@@ -594,7 +603,7 @@
             this.dataGridView5.Name = "dataGridView5";
             this.dataGridView5.ReadOnly = true;
             this.dataGridView5.RowTemplate.Height = 24;
-            this.dataGridView5.Size = new System.Drawing.Size(351, 119);
+            this.dataGridView5.Size = new System.Drawing.Size(339, 119);
             this.dataGridView5.TabIndex = 35;
             // 
             // button25
@@ -617,6 +626,7 @@
             this.button37.TabIndex = 7;
             this.button37.Text = "啟用BCR";
             this.button37.UseVisualStyleBackColor = true;
+            this.button37.Visible = false;
             this.button37.Click += new System.EventHandler(this.button37_Click);
             // 
             // button38
@@ -628,6 +638,7 @@
             this.button38.TabIndex = 7;
             this.button38.Text = "禁用BCR";
             this.button38.UseVisualStyleBackColor = true;
+            this.button38.Visible = false;
             this.button38.Click += new System.EventHandler(this.button38_Click);
             // 
             // numericUpDown1
@@ -637,6 +648,7 @@
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(98, 23);
             this.numericUpDown1.TabIndex = 37;
+            this.numericUpDown1.Visible = false;
             // 
             // button41
             // 
@@ -647,6 +659,7 @@
             this.button41.TabIndex = 7;
             this.button41.Text = "設定自動搬送時間";
             this.button41.UseVisualStyleBackColor = true;
+            this.button41.Visible = false;
             this.button41.Click += new System.EventHandler(this.button41_Click);
             // 
             // button_StopBuzzer

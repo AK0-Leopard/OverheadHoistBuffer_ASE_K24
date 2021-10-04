@@ -754,7 +754,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 }
                 finally
                 {
-                    scApp.putFunBaseObj<ManualPortPLCControl_ComingOutCarrierId>(function);
+                    scApp.putFunBaseObj<ManualPortPLCControl_WaitOutCarrierId>(function);
                 }
             });
         }
