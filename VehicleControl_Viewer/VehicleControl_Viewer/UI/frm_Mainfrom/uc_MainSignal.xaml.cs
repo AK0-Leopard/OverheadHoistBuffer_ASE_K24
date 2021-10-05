@@ -16,13 +16,20 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         #endregion 全域變數
 
         //建構子
+        List<TextBlock> OHB_ZoneList= new List<TextBlock>();
         public uc_MainSignal()
         {
             InitializeComponent();
         }
 
+
         private void Home_Click(object sender, RoutedEventArgs e)
         {
+            this.CIMLinkStatus.Fill = new SolidColorBrush(Colors.Green);
+            this.MGV_PLC.Fill = new SolidColorBrush(Colors.Green);
+            this.RAIL_PLC1.Fill = new SolidColorBrush(Colors.Green);
+            this.RAIL_PLC2.Fill = new SolidColorBrush(Colors.Green);
+            //this.OHB_Zone01_value.Foreground = new SolidColorBrush(Colors.Green);
         }
         private void WIPView_Click(object sender, RoutedEventArgs e)
         {

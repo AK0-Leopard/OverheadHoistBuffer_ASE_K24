@@ -7,25 +7,23 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="90" d:DesignWidth="1936" FontFamily="Microsoft San Self" FontSize="16">
-
+    
     <Grid Style="{DynamicResource SecondBackgroundColor}">
 
         <Grid>
             <!--劃區-->
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="850"/>
                 <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="90"/>
-                <ColumnDefinition Width="336"/>
-                <ColumnDefinition Width="110"/>
-                <ColumnDefinition Width="110"/>
-                <ColumnDefinition Width="110"/>
-                <ColumnDefinition Width="240"/>
-                <ColumnDefinition Width="240"/>
-                <ColumnDefinition Width="240"/>
-                <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
 
             <!--Home鍵-->
@@ -47,7 +45,7 @@
 
             <!--Line ID顯示-->
             <Grid Grid.Column="2">
-                <TextBlock x:Name="LineIDValue" FontSize="42" Margin="12,0,0,0" Grid.RowSpan="2" Text="Line ID" Style="{DynamicResource TitleTextStyle}" HorizontalAlignment="Left"/>
+                <TextBlock x:Name="LineIDValue" FontSize="42" Margin="12,0,0,0" Grid.RowSpan="2" Text="B6_OHB01" Style="{DynamicResource TitleTextStyle}" HorizontalAlignment="Left"/>
             </Grid>
 
             <!--Semi Auto符號顯示-->
@@ -79,7 +77,7 @@
                 <!--文字顯示-->
                 <TextBlock Grid.Row="1" VerticalAlignment="Bottom" Text="{DynamicResource CIM}" HorizontalAlignment="Center" Style="{DynamicResource TitleContentText}"/>
                 <!--訊號顯示-->
-                <Rectangle x:Name="CIMLinkStatus" Grid.Row="2" Fill="Red" Margin="34,4,33,3" RadiusX="25" RadiusY="25"/>
+                <Rectangle x:Name="CIMLinkStatus" Grid.Row="2" Fill="Red" Margin="31,4,27,4" RadiusX="25" RadiusY="25"/>
             </Grid>
 
             <!--MPLC連線狀態顯示-->
@@ -89,277 +87,27 @@
                     <RowDefinition Height="5"/>
                     <RowDefinition Height="25"/>
                     <RowDefinition/>
-                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="18"/>
                 </Grid.RowDefinitions>
                 <!--文字顯示-->
                 <TextBlock Text="{DynamicResource MPLC}" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{DynamicResource TitleContentText}"/>
+                <!--MGV的msaster PLC-->
+                <TextBlock Text="{DynamicResource MGV_PLC}" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="LEFT" Style="{DynamicResource TitleContentText}"/>
+                <Rectangle x:Name="MGV_PLC" Grid.Row="3" Fill="Red" Margin="50,2,35,3" RadiusX="15" RadiusY="15"/>
+                <!--轉轍器master PLC1-->
+                <TextBlock Text="{DynamicResource RAIL_PLC1}" Grid.Row="4" VerticalAlignment="Bottom" HorizontalAlignment="LEFT" Style="{DynamicResource TitleContentText}"/>
+                <Rectangle x:Name="RAIL_PLC1" Grid.Row="4" Fill="Red" Margin="50,2,35,3" RadiusX="15" RadiusY="15"/>
+                <!--轉轍器master PLC2-->
+                <TextBlock Text="{DynamicResource RAIL_PLC2}" Grid.Row="5" VerticalAlignment="Bottom" HorizontalAlignment="LEFT" Style="{DynamicResource TitleContentText}"/>
+                <Rectangle x:Name="RAIL_PLC2" Grid.Row="5" Fill="Red" Margin="50,2,35,3" RadiusX="15" RadiusY="15"/>
                 <!--訊號顯示-->
-                <Rectangle x:Name="PLCValue" Grid.Row="2" Fill="Red" Margin="34,4,33,3" RadiusX="25" RadiusY="25"/>
+                <!--<Rectangle x:Name="MGV_PLC" Grid.Row="2" Fill="Red" Margin="34,4,33,3" RadiusX="25" RadiusY="25"/>-->
             </Grid>
 
-            <!--Stocker 1資訊顯示-->
-            <Border Grid.Column="6" BorderBrush="#005BA8" BorderThickness="2" CornerRadius="10" Margin="3,3,3,3">
-                <Grid>
-                    <!--劃區-->
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="2*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!--文字顯示-->
-                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"  Text="{DynamicResource STOCKER1}" Style="{DynamicResource TitleContentText}"/>
-
-                    <!--Total Count-->
-                    <Border Grid.Row="1" Grid.Column="0" BorderBrush="#005BA8" Margin="0,0,0,0" BorderThickness="0,1,1,0">
-                        <Grid>
-                            <!--劃區-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Total Count文字顯示-->
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Total Count" FontSize="13" Style="{DynamicResource TitleContentText}" Margin="5,0,0,0"/>
-
-                            <!--Total Count數值顯示-->
-                            <TextBlock x:Name="Stk01_TotalCnt_value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"   FontSize="13" Foreground="#DDA140" Text="0"/>
-                        </Grid>
-                    </Border>
-
-                    <!--Usage Ratio-->
-                    <Border Grid.Row="2" Grid.Column="0" BorderBrush="#005BA8" Margin="0,0,0,0" BorderThickness="0,1,1,0">
-                        <Grid>
-                            <!--劃區-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Usage Ratio文字顯示-->
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Usage Ratio" FontSize="13" Style="{DynamicResource TitleContentText}" Margin="5,0,0,0"/>
-
-                            <!--Usage Ratio數值顯示-->
-                            <TextBlock x:Name="Stk01_UsageRatio_value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"  Text="0%" FontSize="13" Foreground="#DDA140"/>
-                        </Grid>
-                    </Border>
-
-                    <!--Empty Shelf-->
-                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="#005BA8" Margin="0,0,0,0" BorderThickness="0,1,0,0" >
-                        <Grid>
-                            <!--劃區-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Empty Shelf文字顯示-->
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Empty Shelf" FontSize="13" Style="{DynamicResource TitleContentText}" Margin="5,0,0,0"/>
-
-                            <!--Empty Shelf文字顯示-->
-                            <TextBlock x:Name="Stk01_EmptyShelf_value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"  Text="0" FontSize="13" Foreground="#DDA140"/>
-                        </Grid>
-                    </Border>
-
-                    <!--Full Shelf-->
-                    <Border Grid.Row="2" Grid.Column="1" BorderBrush="#005BA8" Margin="0,0,0,0" BorderThickness="0,1,0,0">
-                        <Grid>
-                            <!--劃區-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Full Shelf文字顯示-->
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Full Shelf" FontSize="13" Style="{DynamicResource TitleContentText}" Margin="5,0,0,0"/>
-
-                            <!--Full Shelf數值顯示-->
-                            <TextBlock x:Name="Stk01_FullShelf_value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"  Text="0" FontSize="13" Foreground="#DDA140"/>
-                        </Grid>
-                    </Border>
-                </Grid>
-            </Border>
-
-            <!--Stocker 2資訊顯示-->
-            <Border Grid.Column="7" BorderBrush="#005BA8" BorderThickness="2" CornerRadius="10" Margin="3,3,3,3">
-                <Grid>
-                    <!--劃區-->
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="2*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!--區塊標題-->
-                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"  Text="{DynamicResource STOCKER2}" Style="{DynamicResource TitleContentText}"/>
-
-                    <!--Total Count-->
-                    <Border Grid.Row="1" Grid.Column="0" BorderBrush="#005BA8" BorderThickness="0,1,1,0" Margin="0,0,0,0">
-                        <Grid>
-                            <!--劃區-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Total Count文字顯示-->
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Total Count" FontSize="13" Style="{DynamicResource TitleContentText}" Margin="5,0,0,0"/>
-
-                            <!--Total Count數值顯示-->
-                            <TextBlock x:Name="Stk02_TotalCnt_value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"   FontSize="13" Foreground="#DDA140" Text="0"/>
-                        </Grid>
-                    </Border>
-
-                    <!--Usage Ratio-->
-                    <Border Grid.Row="2" Grid.Column="0" BorderBrush="#005BA8" BorderThickness="0,1,1,0" Margin="0,0,0,0">
-                        <Grid>
-                            <!--劃區-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Usage Ratio文字顯示-->
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Usage Ratio" FontSize="13" Style="{DynamicResource TitleContentText}" Margin="5,0,0,0"/>
-
-                            <!--Usage Ratio數值顯示-->
-                            <TextBlock x:Name="Stk02_UsageRatio_value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"  Text="0%" FontSize="13" Foreground="#DDA140"/>
-                        </Grid>
-                    </Border>
-
-                    <!--Empty Shelf-->
-                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="#005BA8" BorderThickness="0,1,0,0" Margin="0,0,0,0">
-                        <Grid>
-                            <!--劃區-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Empty Shelf文字顯示-->
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Empty Shelf" FontSize="13" Style="{DynamicResource TitleContentText}" Margin="5,0,0,0"/>
-
-                            <!--Empty Shelf數值顯示-->
-                            <TextBlock x:Name="Stk02_EmptyShelf_value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"  Text="0" FontSize="13" Foreground="#DDA140"/>
-                        </Grid>
-                    </Border>
-
-                    <!--Full Shelf-->
-                    <Border Grid.Row="2" Grid.Column="1" BorderBrush="#005BA8" BorderThickness="0,1,0,0" Margin="0,0,0,0">
-                        <Grid>
-                            <!--劃區-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Full Shelf文字顯示-->
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Full Shelf" FontSize="13" Style="{DynamicResource TitleContentText}" Margin="5,0,0,0"/>
-
-                            <!--Full Shelf數值顯示-->
-                            <TextBlock x:Name="Stk02_FullShelf_value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"  Text="0" FontSize="13" Foreground="#DDA140"/>
-                        </Grid>
-                    </Border>
-                </Grid>
-            </Border>
-
-            <!--Stocker 3資訊顯示-->
-            <Border Grid.Column="8" BorderBrush="#005BA8" BorderThickness="2" CornerRadius="10" Margin="3,3,3,3">
-                <Grid>
-                    <!--劃區-->
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="2*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!--區塊標題-->
-                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"  Text="{DynamicResource STOCKER3}" Style="{DynamicResource TitleContentText}"/>
-
-                    <!--Total Count-->
-                    <Border Grid.Row="1" Grid.Column="0" BorderBrush="#005BA8" BorderThickness="0,1,1,0" Margin="0,0,0,0">
-                        <Grid>
-                            <!--劃區-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Total Count文字顯示-->
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Total Count" FontSize="13" Style="{DynamicResource TitleContentText}" Margin="5,0,0,0"/>
-
-                            <!--Total Count數值顯示-->
-                            <TextBlock x:Name="Stk03_TotalCnt_value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"   FontSize="13" Foreground="#DDA140" Text="0"/>
-                        </Grid>
-                    </Border>
-
-                    <!--Usage Ratio-->
-                    <Border Grid.Row="2" Grid.Column="0" BorderBrush="#005BA8" BorderThickness="0,1,1,0" Margin="0,0,0,0">
-                        <Grid>
-                            <!--劃區-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Usage Ratio文字顯示-->
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Usage Ratio" FontSize="13" Style="{DynamicResource TitleContentText}" Margin="5,0,0,0"/>
-
-                            <!--Usage Ratio數值顯示-->
-                            <TextBlock x:Name="Stk03_UsageRatio_value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"  Text="0%" FontSize="13" Foreground="#DDA140"/>
-                        </Grid>
-                    </Border>
-
-                    <!--Empty Shelf-->
-                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="#005BA8" BorderThickness="0,1,0,0" Margin="0,0,0,0">
-                        <Grid>
-                            <!--劃區-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Empty Shelf文字顯示-->
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Empty Shelf" FontSize="13" Style="{DynamicResource TitleContentText}" Margin="5,0,0,0"/>
-
-                            <!--Empty Shelf數值顯示-->
-                            <TextBlock x:Name="Stk03_EmptyShelf_value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"  Text="0" FontSize="13" Foreground="#DDA140"/>
-                        </Grid>
-                    </Border>
-
-                    <!--Full Shelf-->
-                    <Border Grid.Row="2" Grid.Column="1" BorderBrush="#005BA8" BorderThickness="0,1,0,0" Margin="0,0,0,0">
-                        <Grid>
-                            <!--劃區-->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!--Full Shelf文字顯示-->
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Full Shelf" FontSize="13" Style="{DynamicResource TitleContentText}" Margin="5,0,0,0"/>
-
-                            <!--Full Shelf數值顯示-->
-                            <TextBlock x:Name="Stk03_FullShelf_value" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"  Text="0" FontSize="13" Foreground="#DDA140"/>
-                        </Grid>
-                    </Border>
-                </Grid>
-            </Border>
-
             <!--EQ Alarm數量顯示-->
-            <Border Grid.Column="9" BorderBrush="#005BA8" BorderThickness="2" CornerRadius="10" Margin="3">
+            <Border Grid.Column="6" BorderBrush="#005BA8" BorderThickness="2" CornerRadius="10" Margin="3">
                 <Grid>
                     <!--劃區-->
                     <Grid.RowDefinitions>
@@ -394,7 +142,7 @@
             </Border>
 
             <!--Prohibited Shelf數量顯示-->
-            <Border Grid.Column="10" BorderBrush="#005BA8" BorderThickness="2" CornerRadius="10" Margin="3">
+            <Border Grid.Column="7" BorderBrush="#005BA8" BorderThickness="2" CornerRadius="10" Margin="3">
                 <Grid>
                     <!--劃區-->
                     <Grid.RowDefinitions>
@@ -429,8 +177,292 @@
                 </Grid>
             </Border>
 
+            <!--OHB 儲位使用顯示-->
+            <Border Grid.Column="8" BorderBrush="#FF0000" BorderThickness="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="75" />
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition Width="1" />
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition Width="1" />
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition Width="1" />
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition Width="1" />
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition Width="1" />
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="45" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="5">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0">
+                            <TextBlock Text="{DynamicResource OHB_ZoneTitle}" Name="OHB_Title" Style="{DynamicResource ZoneTitleText}" TextWrapping="Wrap"/>
+                        </Border>
+                    </Grid>
+                    
+                    <Grid Grid.Column="1" Grid.Row="1">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone01" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="1" Grid.Row="2">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone02" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="1" Grid.Row="3">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone03" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="1" Grid.Row="4">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone04" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="2" Grid.Row="1">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone01_value" Text="100%" ></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="2" Grid.Row="2">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone02_value" Text="100%" ></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="2" Grid.Row="3">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone03_value" Text="100%" ></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="2" Grid.Row="4">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone04_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    
+                    <Grid Grid.Column="4" Grid.Row="1">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone05" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="4" Grid.Row="2">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone06" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="4" Grid.Row="3">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone07" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="4" Grid.Row="4">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone08" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="5" Grid.Row="1">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone05_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="5" Grid.Row="2">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone06_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="5" Grid.Row="3">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone07_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="5" Grid.Row="4">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone08_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Column="7" Grid.Row="1">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone09" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="7" Grid.Row="2">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone10" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="7" Grid.Row="3">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone11" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="7" Grid.Row="4">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone12" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="8" Grid.Row="1">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone09_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="8" Grid.Row="2">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone10_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="8" Grid.Row="3">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone11_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="8" Grid.Row="4">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone12_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Column="10" Grid.Row="1">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone13" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="10" Grid.Row="2">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone14" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="10" Grid.Row="3">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone15" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="10" Grid.Row="4">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone16" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="11" Grid.Row="1">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone13_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="11" Grid.Row="2">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone14_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="11" Grid.Row="3">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone15_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="11" Grid.Row="4">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone16_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Column="13" Grid.Row="1">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone17" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="13" Grid.Row="2">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone18" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="13" Grid.Row="3">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone19" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="13" Grid.Row="4">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone20" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="14" Grid.Row="1">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone17_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="14" Grid.Row="2">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone18_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="14" Grid.Row="3">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone19_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="14" Grid.Row="4">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone20_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Column="16" Grid.Row="1">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone21" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="16" Grid.Row="2">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone22" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="16" Grid.Row="3">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone23" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="16" Grid.Row="4">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Text="Zone24" Style="{DynamicResource ZoneIDText}"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="17" Grid.Row="1">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone21_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="17" Grid.Row="2">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone22_value" Text="100%"></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="17" Grid.Row="3">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone23_value" Text="100%" ></TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Column="17" Grid.Row="4">
+                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone24_value" Text="100%" ></TextBlock>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+
             <!--用戶登入與登出資訊顯示-->
-            <Grid Grid.Column="14" Margin="0,22,0,22">
+            <Grid Grid.Column="10" Margin="0,22,0,22">
 
                 <!--登入登出鍵-->
                 <Button Height="45" Width="45" HorizontalAlignment="Left"  Margin="0,0,0,1" Click="Loginout_Click" Style="{DynamicResource CircleButton}" >
@@ -440,7 +472,7 @@
                         <ToolTip Background="White">
                             <DockPanel >
                                 <!--提示文字-->
-                                <TextBlock Style="{DynamicResource TitleContentText}" Text="{DynamicResource USER_LOGIN_OUT}" Foreground="Black"/>
+                                <TextBlock  Style="{DynamicResource TitleContentText}" Text="{DynamicResource USER_LOGIN_OUT}" Foreground="Black"/>
                             </DockPanel>
                         </ToolTip>
                     </Button.ToolTip>

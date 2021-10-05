@@ -55,12 +55,15 @@ namespace VehicleControl_Viewer.App
         }
         WindownApplication()
         {
+            NatsManager = new NatsManager("ASE_K24", "test-cluster", "viewer_ohxc2");
+
+            VehicleControlService = new VehicleControlService();
+
+            redisCacheManager = new RedisCacheManager("");
+
             VehicleBLL = new VehicleBLL(this);
             RailBLL = new RailBLL(this);
             TransferCommandBLL = new TransferCommandBLL(this);
-            redisCacheManager = new RedisCacheManager("");
-            NatsManager = new NatsManager("ASE_K24", "test-cluster", "viewer_ohxc2");
-            VehicleControlService = new VehicleControlService();
             objCacheManager = new ObjCacheManager(this);
             TaskCommandBLL = new TaskCommandBLL(this);
         }

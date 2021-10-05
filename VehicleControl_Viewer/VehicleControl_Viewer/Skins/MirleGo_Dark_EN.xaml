@@ -138,6 +138,26 @@ b.其不设置的时候，默认所有TargetType使用此Style。  -->
         <Setter Property="FontWeight" Value="Normal"/>
     </Style>
 
+    <!--Zone標題的文字-->
+    <Style x:Key="ZoneTitleText" BasedOn="{StaticResource MaterialDesignButtonTextBlock}"  TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontFamily" Value="Microsoft San Self"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+    </Style>
+    <!--ZoneID的文字如Zone01, Zone02....-->
+    <Style x:Key="ZoneIDText" BasedOn="{StaticResource MaterialDesignButtonTextBlock}"  TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontFamily" Value="Microsoft San Self"/>
+        <Setter Property="Foreground" Value="Green"/>
+        <Setter Property="Margin" Value="6, 2, 4, 2"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+    </Style>
+
 
     <Style TargetType="{x:Type TabItem}">
         <Setter Property="Template">
@@ -560,7 +580,10 @@ b.其不设置的时候，默认所有TargetType使用此Style。  -->
     <s:String x:Key="NEW_PASSWORD">New Password</s:String>
     <s:String x:Key="VERIFY_PASSWORD">Confirm New Password</s:String>
     <s:String x:Key="HOST">HOST</s:String>
-    <s:String x:Key="MPLC">MPLC</s:String>
+    <s:String x:Key="MPLC">Master PLC</s:String>
+    <s:String x:Key="MGV_PLC">MGV</s:String>
+    <s:String x:Key="RAIL_PLC1">RAIL1</s:String>
+    <s:String x:Key="RAIL_PLC2">RAIL2</s:String>
     <s:String x:Key="LOGOUT_SURE">Are you sure log out now?</s:String>
 
     <s:String x:Key="USER_ACCOUNT">User Account</s:String>
@@ -936,5 +959,7 @@ b.其不设置的时候，默认所有TargetType使用此Style。  -->
 
     <s:String x:Key="PORT_ID">Port ID</s:String>
     <s:String x:Key="ADR_ID">Adr ID</s:String>
-
+    <!--#region -->
+    <s:String x:Key="OHB_ZoneTitle">OHB</s:String>
+    <!--#endregion-->
 </ResourceDictionary>

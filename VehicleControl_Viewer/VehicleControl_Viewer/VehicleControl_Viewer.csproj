@@ -239,6 +239,7 @@
     </Compile>
     <Compile Include="Vo\Address.cs" />
     <Compile Include="Vo\ObjToShow\TransferCommandShow.cs" />
+    <Compile Include="Vo\OHB_Zone.cs" />
     <Compile Include="Vo\Section.cs" />
     <Compile Include="Vo\ValueObjToShow\VehicleShow.cs" />
     <Compile Include="Vo\Vehicle.cs" />
