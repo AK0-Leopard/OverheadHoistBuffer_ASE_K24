@@ -101,3 +101,11 @@ message TaskCommand {
 	int64 CMD_INSER_TIME = 17;
 }
 //End Task Info
+
+//Start Line Info
+message LineInfo {
+    bool IsConnectionWithHOST = 1;
+    bool IsConnectionWithPLC_MANUAL = 2;
+    bool IsConnectionWithPLC_TRACK1 = 3;
+    bool IsConnectionWithPLC_TRACK2 = 4;
+}//End Line Info
