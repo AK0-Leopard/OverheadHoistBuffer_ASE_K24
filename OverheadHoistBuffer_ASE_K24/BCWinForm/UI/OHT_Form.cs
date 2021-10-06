@@ -1282,19 +1282,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             dgv_TransferCommand.DataSource = cmsMCS_bindingSource;
         }
 
-        private void btn_st1_Click(object sender, EventArgs e)
-        {
-            string vh_id = cmb_Vehicle.Text.Trim();
-            string mt_adr_id = "12299";
-            Task.Run(() =>
-            {
-                //AVEHICLE noticeCar = scApp.getEQObjCacheManager().getVehicletByVHID(vh_id);
-                //noticeCar.sned_S1();
-                //scApp.VehicleService.HostBasicVersionReport(vh_id);
-                scApp.VehicleService.doReservationVhToMaintainsBufferAddress(vh_id, mt_adr_id);
-            });
-        }
-
         private void cb_sectionThroughTimes_CheckedChanged(object sender, EventArgs e)
         {
 

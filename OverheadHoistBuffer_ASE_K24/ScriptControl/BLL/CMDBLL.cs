@@ -4834,7 +4834,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             List<string> guide_start_to_from_address_ids,
              List<string> guide_to_dest_section_ids,
              List<string> guide_to_dest_address_ids)
-            FindGuideInfo(string vh_current_address, string source_adr, string dest_adr, ActiveType active_type, bool has_carray = false, List<string> byPassSectionIDs = null)
+            FindGuideInfo(string vh_current_address, string source_adr, string dest_adr, ActiveType active_type, bool has_carray = false)
         {
             bool isSuccess = true;
             List<string> guide_start_to_from_segment_ids = null;
@@ -4855,7 +4855,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                             if (!SCUtility.isMatche(vh_current_address, dest_adr))
                             {
                                 (isSuccess, guide_to_dest_segment_ids, guide_to_dest_section_ids, guide_to_dest_address_ids, total_cost)
-                                    = scApp.GuideBLL.getGuideInfo(vh_current_address, dest_adr, byPassSectionIDs);
+                                    = scApp.GuideBLL.getGuideInfo(vh_current_address, dest_adr);
                             }
                         }
                         else
@@ -4863,7 +4863,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                             if (!SCUtility.isMatche(vh_current_address, source_adr))
                             {
                                 (isSuccess, guide_start_to_from_segment_ids, guide_start_to_from_section_ids, guide_start_to_from_address_ids, total_cost)
-                                    = scApp.GuideBLL.getGuideInfo(vh_current_address, source_adr, byPassSectionIDs);
+                                    = scApp.GuideBLL.getGuideInfo(vh_current_address, source_adr);
                             }
                             if (isSuccess && !SCUtility.isMatche(source_adr, dest_adr))
                             {
@@ -4877,7 +4877,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         if (!SCUtility.isMatche(vh_current_address, source_adr))
                         {
                             (isSuccess, guide_start_to_from_segment_ids, guide_start_to_from_section_ids, guide_start_to_from_address_ids, total_cost)
-                                = scApp.GuideBLL.getGuideInfo(vh_current_address, source_adr, byPassSectionIDs);
+                                = scApp.GuideBLL.getGuideInfo(vh_current_address, source_adr);
                         }
                         else
                         {
@@ -4889,7 +4889,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         if (!SCUtility.isMatche(vh_current_address, source_adr))
                         {
                             (isSuccess, guide_start_to_from_segment_ids, guide_start_to_from_section_ids, guide_start_to_from_address_ids, total_cost)
-                                = scApp.GuideBLL.getGuideInfo(vh_current_address, source_adr, byPassSectionIDs);
+                                = scApp.GuideBLL.getGuideInfo(vh_current_address, source_adr);
                         }
                         else
                         {
@@ -4901,7 +4901,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         if (!SCUtility.isMatche(vh_current_address, dest_adr))
                         {
                             (isSuccess, guide_to_dest_segment_ids, guide_to_dest_section_ids, guide_to_dest_address_ids, total_cost)
-                                = scApp.GuideBLL.getGuideInfo(vh_current_address, dest_adr, byPassSectionIDs);
+                                = scApp.GuideBLL.getGuideInfo(vh_current_address, dest_adr);
                         }
                         else
                         {
@@ -4913,11 +4913,25 @@ namespace com.mirle.ibg3k0.sc.BLL
                         if (!SCUtility.isMatche(vh_current_address, dest_adr))
                         {
                             (isSuccess, guide_to_dest_segment_ids, guide_to_dest_section_ids, guide_to_dest_address_ids, total_cost)
-                                = scApp.GuideBLL.getGuideInfo(vh_current_address, dest_adr, byPassSectionIDs);
+                                = scApp.GuideBLL.getGuideInfo(vh_current_address, dest_adr);
                         }
                         else
                         {
                             isSuccess = false;
+                        }
+                        break;
+                    case ActiveType.Movetomtl:
+                    case ActiveType.Mtlhome:
+                    case ActiveType.Systemin:
+                    case ActiveType.Systemout:
+                        if (!SCUtility.isMatche(vh_current_address, dest_adr))
+                        {
+                            (isSuccess, guide_to_dest_segment_ids, guide_to_dest_section_ids, guide_to_dest_address_ids, total_cost)
+                                = scApp.GuideBLL.getGuideInfoForMtx(vh_current_address, dest_adr);
+                        }
+                        else
+                        {
+                            isSuccess = true;
                         }
                         break;
                 }

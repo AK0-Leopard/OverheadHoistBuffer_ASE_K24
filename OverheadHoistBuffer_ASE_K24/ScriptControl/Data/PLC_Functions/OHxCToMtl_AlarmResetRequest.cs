@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
 {
-    public class OHxCToMtl_AlarmResetRequest : PLC_FunBase
+    public class OHxCToMtl_AlarmResetRequest_PH2 : PLC_FunBase
     {
-        [PLCElement(ValueName = "OHXC_TO_MTL_ALARM_RESET_REQUEST_HS", IsHandshakeProp = true)]
+        [PLCElement(ValueName = "OHXC_TO_MTL_ALARM_RESET_REQUEST_HS_PH2", IsHandshakeProp = true)]
         public UInt16 Handshake;
     }
-    public class MtlToOHxC_AlarmResetReply : PLC_FunBase
+    public class MtlToOHxC_AlarmResetReply_PH2 : PLC_FunBase
     {
-        [PLCElement(ValueName = "MTL_TO_OHXC_REPLY_ALARM_RESET_HS", IsHandshakeProp = true)]
+        [PLCElement(ValueName = "MTL_TO_OHXC_REPLY_ALARM_RESET_HS_PH2 ", IsHandshakeProp = true)]
         public UInt16 Handshake;
     }
 

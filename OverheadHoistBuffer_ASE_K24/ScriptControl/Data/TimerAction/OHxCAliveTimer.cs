@@ -46,7 +46,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
         }
         public override void doProcess(object obj)
         {
-            Task.Run(() => AliveToDevice(0, "HID", "OHXC_TO_HID_ALIVE_INDEX"));
+            AliveMTL();
         }
 
         private long syncMTLPoint = 0;
@@ -57,19 +57,11 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 
                 try
                 {
-                    ValueWrite isAliveIndexVW = scApp.getBCFApplication().getWriteValueEvent(SCAppConstants.EQPT_OBJECT_CATE_EQPT, "MTL", "OHXC_TO_MTL_ALIVE_INDEX");
-                    if (isAliveIndexVW == null) return;
-                    UInt16 isAliveIndex = (UInt16)isAliveIndexVW.getText();
-
-                    int x = isAliveIndex + 1;
-                    if (x > 9999) { x = 1; }
-                    isAliveIndexVW.setWriteValue((UInt16)x);
-                    ISMControl.writeDeviceBlock(scApp.getBCFApplication(), isAliveIndexVW);
-
-
+                    scApp.MTLService.OHxCTOMTxAlive();
                 }
                 catch (Exception e)
                 {
+                    logger.Error(e, "Exception:");
                 }
                 finally
                 {

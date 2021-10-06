@@ -20,8 +20,21 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             scApp = _scApp;
         }
+
         public (bool isSuccess, List<string> guideSegmentIds, List<string> guideSectionIds, List<string> guideAddressIds, int totalCost)
-            getGuideInfo(string startAddress, string targetAddress, List<string> byPassSectionIDs = null)
+        getGuideInfoForMtx(string startAddress, string targetAddress)
+        {
+            return getGuideInfo(startAddress, targetAddress, null);
+        }
+        public (bool isSuccess, List<string> guideSegmentIds, List<string> guideSectionIds, List<string> guideAddressIds, int totalCost)
+        getGuideInfo(string startAddress, string targetAddress)
+        {
+            List<string> mtx_section_ids = scApp.MTLService.All_Mtx_Devic_Section_Ids;
+            return getGuideInfo(startAddress, targetAddress, mtx_section_ids);
+        }
+
+        public (bool isSuccess, List<string> guideSegmentIds, List<string> guideSectionIds, List<string> guideAddressIds, int totalCost)
+        getGuideInfo(string startAddress, string targetAddress, List<string> byPassSectionIDs)
         {
             if (SCUtility.isMatche(startAddress, targetAddress))
             {

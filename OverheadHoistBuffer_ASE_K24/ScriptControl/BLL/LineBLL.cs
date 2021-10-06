@@ -431,26 +431,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             return arrayByte;
         }
 
-        public static byte[] Convert2GPB_MTLMTSInfo(MaintainSpace MTS)
-        {
-            MTL_MTS_INFO online_gpb = new MTL_MTS_INFO()
-            {
-                StationID = SCUtility.Trim(MTS.EQPT_ID, true),
-                NetworkLink = MTS.Plc_Link_Stat == SCAppConstants.LinkStatus.LinkOK ? true : false,
-                Alive = MTS.Is_Eq_Alive,
-                Mode = MTS.MTxMode == MTxMode.Auto ? true : false,
-                Interlock = MTS.Interlock,
-                CarID = SCUtility.Trim(MTS.CurrentCarID, true),
-                MTLLocation = MTS.MTLLocation.ToString(),
-                Distance = MTS.CurrentPreCarOurDistance.ToString(),
-                SynchronizeTime = MTS.SynchronizeTime.ToString("yyyy/MM/dd HH:mm:ss")
-            };
-
-            byte[] arrayByte = new byte[online_gpb.CalculateSize()];
-            online_gpb.WriteTo(new Google.Protobuf.CodedOutputStream(arrayByte));
-            return arrayByte;
-        }
-
 
 
         public static byte[] Convert2GPB_MTLMTSInfo(MaintainLift MTL)

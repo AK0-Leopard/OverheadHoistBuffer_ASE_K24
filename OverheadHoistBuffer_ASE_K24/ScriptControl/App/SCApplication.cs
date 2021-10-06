@@ -496,8 +496,11 @@ namespace com.mirle.ibg3k0.sc.App
         public HCMD_OHTCDao HCMD_OHTCDao { get { return hcmd_ohtcDao; } }
         private PortCstTypeMapDao eqCstTypeMapDao = null;
         public PortCstTypeMapDao EQCstTypeMapDao { get { return eqCstTypeMapDao; } }
+
         private BlockTrackMapDao blockTrackMapDao = null;
         public BlockTrackMapDao BlockTrackMapDao { get { return blockTrackMapDao; } }
+        private MTxInfoDao mTxInfoDao = null;
+        public MTxInfoDao MTxInfoDao { get { return mTxInfoDao; } }
 
         //BLL
         /// <summary>
@@ -1297,6 +1300,7 @@ namespace com.mirle.ibg3k0.sc.App
             flexsimcommandDao = new FlexsimCommandDao();
             eqCstTypeMapDao = new PortCstTypeMapDao();
             blockTrackMapDao = new BlockTrackMapDao();
+            mTxInfoDao = new MTxInfoDao();
         }
 
         /// <summary>
@@ -1317,6 +1321,7 @@ namespace com.mirle.ibg3k0.sc.App
                 loadCSVToDataset(ohxcConfig, "RESERVEENHANCEINFO");
                 loadCSVToDataset(ohxcConfig, "PORTCSTTYPEMAP");
                 loadCSVToDataset(ohxcConfig, "BLOCKTRACKMAP");
+                loadCSVToDataset(ohxcConfig, "MTLINFO");
 
                 loadMapInfoCSVToDataset(ohxcConfig, "AADDRESS");
                 loadMapInfoCSVToDataset(ohxcConfig, "ASECTION");

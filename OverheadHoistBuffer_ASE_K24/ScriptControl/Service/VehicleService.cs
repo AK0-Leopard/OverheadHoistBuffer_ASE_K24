@@ -3451,10 +3451,6 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     modeStat = VHModeStatus.AutoMtl;
                 }
-                else if (scApp.EquipmentBLL.cache.IsInMatainSpace(current_adr))
-                {
-                    modeStat = VHModeStatus.AutoMts;
-                }
                 else
                 {
                     modeStat = vh_current_mode_status;
@@ -3621,6 +3617,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 SpinWait.SpinUntil(() => false, 3000);
                 TestCycleRun(vh, cmd_id);
             }
+            else
+            {
+                checkIsMoveToMTxDevice(vh, completeStatus, cur_adr_id);
+            }
 
             if (scApp.getEQObjCacheManager().getLine().SCStats == ALINE.TSCState.PAUSING)
             {
@@ -3637,7 +3637,80 @@ namespace com.mirle.ibg3k0.sc.Service
             vh.onCommandComplete(completeStatus);
         }
 
+        private void checkIsMoveToMTxDevice(AVEHICLE vh, CompleteStatus completeStatus, string curAdrID)
+        {
+            MaintainLift maintainLift = null;
+            switch (completeStatus)
+            {
+                case CompleteStatus.CmpStatusSystemOut:
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"Process vh:{vh.VEHICLE_ID} system out complete, current address:{curAdrID},current mode:{vh.MODE_STATUS}",
+                       VehicleID: vh.VEHICLE_ID,
+                       CarrierID: vh.CST_ID);
+                    if (vh.MODE_STATUS == VHModeStatus.AutoMtl)
+                    {
+                        //在收到OHT的ID:132-SystemOut完成後，創建一個Transfer command，讓Vh移至移動至MTL上
+                        maintainLift = scApp.EquipmentBLL.cache.GetMaintainLiftBySystemOutAdr(curAdrID);
+                        if (maintainLift != null && maintainLift.CarOutSafetyCheck)
+                            doAskVhToMaintainsAddress(vh.VEHICLE_ID, maintainLift.MTL_ADDRESS);
+                    }
 
+                    scApp.ReportBLL.newReportVehicleRemoved(vh.VEHICLE_ID, null);
+                    //將該VH標記 Remove
+                    Remove(vh.VEHICLE_ID);
+                    break;
+                case CompleteStatus.CmpStatusMoveToMtl:
+                    maintainLift = scApp.EquipmentBLL.cache.GetMaintainLiftByMTLAdr(curAdrID);
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"Process vh:{vh.VEHICLE_ID} move to mtl complete, current address:{curAdrID},current mode:{vh.MODE_STATUS}",
+                       VehicleID: vh.VEHICLE_ID,
+                       CarrierID: vh.CST_ID);
+                    if (maintainLift != null)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"Process vh:{vh.VEHICLE_ID} move to mtl complete, notify mtx:{maintainLift.DeviceID} is complete",
+                           VehicleID: vh.VEHICLE_ID,
+                           CarrierID: vh.CST_ID);
+                        //通知MTL Car out完成
+                        scApp.MTLService.carOutComplete(maintainLift);
+                    }
+                    //將該VH標記 Remove
+                    if (vh.IS_INSTALLED)
+                    {
+                        Remove(vh.VEHICLE_ID);
+                    }
+                    break;
+                case CompleteStatus.CmpStatusMtlhome:
+                    maintainLift = scApp.EquipmentBLL.cache.GetMaintainLiftByMTLHomeAdr(curAdrID);
+                    if (maintainLift != null)
+                    {
+                        scApp.MTLService.DisableCarInInterlock(maintainLift);
+                        doAskVhToSystemInAddress(vh.VEHICLE_ID, maintainLift.MTL_SYSTEM_IN_ADDRESS);
+                    }
+                    break;
+                case CompleteStatus.CmpStatusSystemIn:
+                    var maintain_device = scApp.EquipmentBLL.cache.GetMaintainDeviceBySystemInAdr(curAdrID);
+                    if (maintain_device != null)
+                    {
+                        scApp.MTLService.carInComplete(maintain_device, vh.VEHICLE_ID);
+                        Install(vh.VEHICLE_ID);
+                    }
+                    break;
+                default:
+                    if (vh.MODE_STATUS == VHModeStatus.AutoMtl && vh.HAS_CST == 0)
+                    {
+                        maintainLift = scApp.EquipmentBLL.cache.GetExcuteCarOutMTL(vh.VEHICLE_ID);
+                        if (maintainLift != null)
+                        {
+                            if (maintainLift.CarOutSafetyCheck)//如果SafetyCheck已經解除則不能進行出車
+                            {
+                                doAskVhToMaintainsAddress(vh.VEHICLE_ID, maintainLift.MTL_ADDRESS);
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
 
         private bool replyCommandComplete(AVEHICLE vh, int seq_num, string finish_ohxc_cmd, string finish_mcs_cmd)
         {
@@ -3931,7 +4004,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         #region MTL Handle
 
-        public bool doReservationVhToMaintainsBufferAddress(string vhID, string mtlBufferAdtID)
+        public bool doReservationVhToMaintainsBufferAddress(string vhID)
         {
             bool isSuccess = true;
             using (TransactionScope tx = SCUtility.getTransactionScope())

@@ -70,6 +70,13 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 return CommObjCacheManager.getSections();
             }
+            public List<ASECTION> GetSections(string segmentID)
+            {
+                List<ASECTION> result_sections = CommObjCacheManager.getSections().
+                                                 Where(sec => SCUtility.isMatche(sec.SEG_NUM, segmentID)).
+                                                 ToList();
+                return result_sections;
+            }
             public List<ASECTION> GetSections(List<string> ids)
             {
                 List<ASECTION> result_sections = CommObjCacheManager.getSections().
