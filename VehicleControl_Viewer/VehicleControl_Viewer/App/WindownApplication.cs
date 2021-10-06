@@ -24,6 +24,7 @@ namespace VehicleControl_Viewer.App
         public const string NATS_SUBJECT_RAIL_STATUS_CHANGE = "NATS_SUBJECT_RAIL_STATUS_CHANGE";
         public const string NATS_SUBJECT_TRANSFER_COMMAND_CHANGE = "NATS_SUBJECT_TRANSFER_COMMAND_CHANGE";
         public const string NATS_SUBJECT_TASK_COMMAND_CHANGE = "NATS_SUBJECT_TASK_COMMAND_CHANGE";
+        public const string NATS_SUBJECT_LINE_STATUS_CHANGE = "NATS_SUBJECT_LINE_STATUS_CHANGE";
 
         private IScheduler Scheduler { get; set; }
 
@@ -34,6 +35,7 @@ namespace VehicleControl_Viewer.App
         public RailBLL RailBLL { get; private set; }
         public TransferCommandBLL TransferCommandBLL { get; private set; }
         public TaskCommandBLL TaskCommandBLL { get; private set; }
+        public LineBLL LineBLL { get; private set; }
 
         public VehicleControlService VehicleControlService { get; private set; }
 
@@ -66,6 +68,7 @@ namespace VehicleControl_Viewer.App
             TransferCommandBLL = new TransferCommandBLL(this);
             objCacheManager = new ObjCacheManager(this);
             TaskCommandBLL = new TaskCommandBLL(this);
+            LineBLL = new LineBLL(this);
         }
         public async void Start()
         {
@@ -82,6 +85,7 @@ namespace VehicleControl_Viewer.App
                 RailBLL.SubscriberRailStatusChangeEvent();
                 TransferCommandBLL.SubscriberTransferCommandInfoChangeEvent();
                 TaskCommandBLL.SubscriberTaskCommandInfoChangeEvent();
+                LineBLL.SubscriberLineInfoEvent();
             }
             catch (Exception ex)
             {

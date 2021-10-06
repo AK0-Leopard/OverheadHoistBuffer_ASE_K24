@@ -32,7 +32,6 @@ namespace VehicleControl_Viewer.BLL
         {
             var bytes = e.Message.Data;
             VEHICLE_INFO vh_info = Utility.ToObject<VEHICLE_INFO>(bytes);
-
             app.objCacheManager.GetVehicle(vh_info.VEHICLEID).setObject(vh_info);
         }
 
