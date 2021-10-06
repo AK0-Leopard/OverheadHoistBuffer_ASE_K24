@@ -49,6 +49,7 @@ namespace VehicleControl_Viewer
                 EndAdr = txb_endAdr.Text
             };
             var guide_info = await VehicleControlService.RequestGuideInfo(search_info);
+            if (guide_info == null) return;
             GuideSearchComplete?.Invoke(this, guide_info.SecIds);
         }
 

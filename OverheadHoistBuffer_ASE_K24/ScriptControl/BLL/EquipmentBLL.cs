@@ -60,13 +60,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return eqpt;
             }
 
-            public bool IsInMatainSpace(string adrID)
-            {
-                int eqpt_count = eqObjCacheManager.getAllEquipment().
-                            Where(eq => eq is MaintainSpace && SCUtility.isMatche((eq as MaintainSpace).MTS_ADDRESS, adrID)).
-                            Count();
-                return eqpt_count != 0;
-            }
             public bool IsInMatainLift(string adrID)
             {
                 int eqpt_count = eqObjCacheManager.getAllEquipment().
@@ -77,8 +70,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             public (bool isIn, IMaintainDevice device) IsInMaintainDevice(string vhCurrentAdr)
             {
                 var eqpt = eqObjCacheManager.getAllEquipment().
-                                  Where(eq => eq is MaintainLift && (eq as MaintainLift).MTL_ADDRESS == vhCurrentAdr.Trim() ||
-                                        eq is MaintainSpace && (eq as MaintainSpace).MTS_ADDRESS == vhCurrentAdr.Trim()).
+                                  Where(eq => eq is MaintainLift && (eq as MaintainLift).MTL_ADDRESS == vhCurrentAdr.Trim()).
                                   SingleOrDefault();
                 return (eqpt != null, eqpt as IMaintainDevice);
             }
@@ -127,27 +119,16 @@ namespace com.mirle.ibg3k0.sc.BLL
                             Single();
                 return eqpt as IMaintainDevice;
             }
-            public List<AEQPT> loadMaintainDevice()
-            {
-                var eqpts = eqObjCacheManager.getAllEquipment().
-                            Where(eq => eq is MaintainLift || eq is MaintainSpace).
-                            ToList();
-                return eqpts;
-            }
-            public List<AEQPT> loadMaintainLift()
+
+            public List<MaintainLift> loadMaintainLift()
             {
                 var eqpts = eqObjCacheManager.getAllEquipment().
                             Where(eq => eq is MaintainLift).
+                            Select(eq => eq as MaintainLift).
                             ToList();
                 return eqpts;
             }
-            public List<AEQPT> loadMaintainSpace()
-            {
-                var eqpts = eqObjCacheManager.getAllEquipment().
-                            Where(eq => eq is MaintainSpace).
-                            ToList();
-                return eqpts;
-            }
+
 
             public MaintainLift GetMaintainLiftBySystemOutAdr(string systemOutAdr)
             {
@@ -164,14 +145,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                             SingleOrDefault();
                 return eqpt as MaintainLift;
             }
-            public MaintainSpace GetMaintainSpace()
-            {
-                var eqpt = eqObjCacheManager.getAllEquipment().
-                            Where(eq => eq is MaintainSpace &&
-                                        SCUtility.isMatche(eq.EQPT_ID, "MTS")).
-                            SingleOrDefault();
-                return eqpt as MaintainSpace;
-            }
+
             public MaintainLift GetMaintainLiftByMTLAdr(string mtlAdr)
             {
                 var eqpt = eqObjCacheManager.getAllEquipment().
@@ -186,18 +160,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                             SingleOrDefault();
                 return eqpt as MaintainLift;
             }
-            public MaintainSpace GetMaintainSpaceBySystemOutAdr(string systemOutAdr)
-            {
-                var eqpt = eqObjCacheManager.getAllEquipment().
-                            Where(eq => eq is MaintainSpace && (eq as MaintainSpace).MTS_ADDRESS == systemOutAdr.Trim()).
-                            SingleOrDefault();
-                return eqpt as MaintainSpace;
-            }
             public IMaintainDevice GetMaintainDeviceBySystemInAdr(string systemInAdr)
             {
                 var eqpt = eqObjCacheManager.getAllEquipment().
-                            Where(eq => eq is MaintainLift && (eq as MaintainLift).MTL_SYSTEM_IN_ADDRESS == systemInAdr.Trim() ||
-                                        eq is MaintainSpace && (eq as MaintainSpace).MTS_SYSTEM_IN_ADDRESS == systemInAdr.Trim()).
+                            Where(eq => eq is MaintainLift && (eq as MaintainLift).MTL_SYSTEM_IN_ADDRESS == systemInAdr.Trim()).
                             SingleOrDefault();
                 return eqpt as IMaintainDevice;
             }
@@ -209,14 +175,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                                   SingleOrDefault();
                 return eqpt as MaintainLift;
             }
-            public MaintainSpace GetExcuteCarOutMTS(string vhID)
-            {
-                var eqpt = eqObjCacheManager.getAllEquipment().
-                                  Where(eq => eq is MaintainSpace && (eq as MaintainSpace).PreCarOutVhID == vhID.Trim()).
-                                  SingleOrDefault();
-                return eqpt as MaintainSpace;
-            }
-
 
 
             public List<AEQPT> loadOHCVDevices()

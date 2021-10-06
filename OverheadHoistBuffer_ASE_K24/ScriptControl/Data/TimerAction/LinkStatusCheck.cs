@@ -92,9 +92,9 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 
                 try
                 {
+                    doCheckEQAliveStatus();
                     doCheckIPLinkStatus();
                     //doCheckIPLinkStatusParallel();
-                    doCheckEQAliveStatus();
                     scApp.CheckSystemEventHandler.CheckCheckSystemIsExist();
 
                     ALINE line = scApp.getEQObjCacheManager().getLine();

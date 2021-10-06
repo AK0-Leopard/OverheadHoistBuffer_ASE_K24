@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
 {
-    class MtlToOHxC_CarInSafetyCheck : PLC_FunBase
+
+    class MtlToOHxC_CarInSafetyCheck_PH2 : PLC_FunBase
     {
-        [PLCElement(ValueName = "MTL_TO_OHXC_D2U_SAFETY_CHECK")]
+        [PLCElement(ValueName = "MTL_TO_OHXC_D2U_SAFETY_CHECK_PH2")]
         public bool SafetyCheck;
     }
 

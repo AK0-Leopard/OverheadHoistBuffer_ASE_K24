@@ -9,23 +9,23 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
 {
-    class OHxCToMtl_CarRealtimeInfo : PLC_FunBase
+    class OHxCToMtl_CarRealtimeInfo_PH2 : PLC_FunBase
     {
-        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_CAR_ID")]
+        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_CAR_ID_PH2")]
         public UInt16 CarID;
-        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_ACTION_MODE")]
+        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_ACTION_MODE_PH2")]
         public UInt16 ActionMode;
-        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_CST_EXIST")]
+        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_CST_EXIST_PH2")]
         public UInt16 CSTExist;
-        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_CURRENT_SECTION_ID")]
+        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_CURRENT_SECTION_ID_PH2")]
         public UInt16 CurrentSectionID;
-        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_CURRENT_ADDRESS_ID")]
+        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_CURRENT_ADDRESS_ID_PH2")]
         public UInt32 CurrentAddressID;
-        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_CURRENT_BUFFER_DISTANCE")]
+        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_CURRENT_BUFFER_DISTANCE_PH2")]
         public UInt32 BufferDistance;
-        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_CURRENT_SPEED")]
+        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_CURRENT_SPEED_PH2")]
         public UInt16 Speed;
-        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_INDEX")]
+        [PLCElement(ValueName = "OHXC_TO_MTL_CAR_OUT_REALTIME_INFO_INDEX_PH2")]
         public UInt16 Index;
     }
 

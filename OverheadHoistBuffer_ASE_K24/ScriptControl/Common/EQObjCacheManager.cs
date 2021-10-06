@@ -505,18 +505,16 @@ namespace com.mirle.ibg3k0.sc.Common
                         if (eqptType == SCAppConstants.EqptType.MTL)
                         {
                             eqTemp = new MaintainLift();
-                        }
-                        else if (eqptType == SCAppConstants.EqptType.MTS)
-                        {
-                            eqTemp = new MaintainSpace();
-                            MTSSetting mTSSetting = getMTSSetting(eqpt_id);
-                            if (mTSSetting == null)
+                            MTLSetting mTLSetting = getMTLSetting(eqpt_id);
+                            if (mTLSetting == null)
                             {
-                                throw new Exception($"No setting mts:{eqpt_id} of addresses.");
+                                throw new Exception($"No setting mtl:{eqpt_id} of addresses.");
                             }
-                            (eqTemp as MaintainSpace).setMTSSegment(mTSSetting.MTSSegment);
-                            (eqTemp as MaintainSpace).setMTSAddress(mTSSetting.MTSAddress);
-                            (eqTemp as MaintainSpace).setMTSSystemInAddress(mTSSetting.SystemInAddress);
+                            (eqTemp as MaintainLift).setMTLSegment(mTLSetting.MTLSegment);
+                            (eqTemp as MaintainLift).setMTLAddress(mTLSetting.MTLAddress);
+                            (eqTemp as MaintainLift).setMTLSystemInAddress(mTLSetting.SystemInAddress);
+                            (eqTemp as MaintainLift).setMTLSystemOutAddress(mTLSetting.SystemOutAddress);
+                            (eqTemp as MaintainLift).setMTLCarInBufferAddress(mTLSetting.CarInBufferAddress);
                         }
                         else if (eqptType == SCAppConstants.EqptType.OHCV)
                         {
@@ -837,6 +835,12 @@ namespace com.mirle.ibg3k0.sc.Common
             {
                 return setting.CST_TYPE;
             }
+        }
+        private MTLSetting getMTLSetting(string mtlID)
+        {
+            //var setting = MTLSettings.Where(id => id.ID.Trim() == mtlID.Trim()).SingleOrDefault();
+            //return setting;
+            return scApp.MTxInfoDao.getMTLInfo(scApp, mtlID);
         }
 
         private string getOHCVLocation(string ohcvID)

@@ -599,6 +599,7 @@
     <Compile Include="Data\DAO\EqptLocationInfoDao.cs" />
     <Compile Include="Data\DAO\191204Test\PortDefDao.cs" />
     <Compile Include="Data\DAO\BlockTrackMapDao.cs" />
+    <Compile Include="Data\DAO\MTxInfoDao.cs" />
     <Compile Include="Data\DAO\PortCstTypeMapDao.cs" />
     <Compile Include="Data\DAO\ReserveEnhanceInfoDao.cs" />
     <Compile Include="Data\DAO\VCMD_MCSDao.cs" />
@@ -669,6 +670,8 @@
     <Compile Include="Data\PLC_Functions\MGV\ManualPortPLCInfo.cs" />
     <Compile Include="Data\PLC_Functions\MGV\OHxCToMGV_Status.cs" />
     <Compile Include="Data\PLC_Functions\MGV\MGVToOHxC_Alive.cs" />
+    <Compile Include="Data\PLC_Functions\MtlToOHxC_CarOutActionType.cs" />
+    <Compile Include="Data\PLC_Functions\OHxCToMTL_Alive.cs" />
     <Compile Include="Data\PLC_Functions\OHxCToPLC_SetSystemInfo.cs" />
     <Compile Include="Data\PLC_Functions\HIDToOHxC_TempAlarm.cs" />
     <Compile Include="Data\PLC_Functions\HIDToOHxC_PowerAlarm.cs" />
@@ -893,7 +896,6 @@
     <Compile Include="Data\ValueDefMapAction\OHCVValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\HIDValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\MTLValueDefMapActionNew.cs" />
-    <Compile Include="Data\ValueDefMapAction\MTSValueDefMapActionNew.cs" />
     <Compile Include="Data\ValueDefMapAction\MTxValueDefMapActionBase.cs" />
     <Compile Include="Data\ValueDefMapAction\MESDefaultMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\PLCSystemInfoMapAction.cs" />
@@ -905,8 +907,8 @@
     <Compile Include="Data\VO\AlarmHisList.cs" />
     <Compile Include="Data\VO\Interface\IConnectionStatusChange.cs" />
     <Compile Include="Data\VO\Interface\IMaintainDevice.cs" />
+    <Compile Include="Data\VO\MTLSetting.cs" />
     <Compile Include="Data\VO\OHCV.cs" />
-    <Compile Include="Data\VO\MaintainSpace.cs" />
     <Compile Include="Data\VO\MaintainLift.cs" />
     <Compile Include="Data\VO\PartialVo\AADDRESS.cs" />
     <Compile Include="Data\VO\PartialVo\ABLOCKZONEMASTER.cs" />

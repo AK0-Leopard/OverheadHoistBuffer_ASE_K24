@@ -441,6 +441,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         object setTestGuideTail_Sync = new object();
         public void setTestGideRail(IEnumerable<string> guideSection)
         {
+            if (guideSection == null) return;
             lock (setTestGuideTail_Sync)
             {
                 SolidColorBrush Brush = new SolidColorBrush();

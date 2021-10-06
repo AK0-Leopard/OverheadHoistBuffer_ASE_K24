@@ -68,9 +68,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             BCUtility.setComboboxDataSource(cmb_teach_from_adr, allAdr_ID);
             BCUtility.setComboboxDataSource(cmb_teach_to_adr, allAdr_ID.ToArray());
 
-            List<AEQPT> maintainDevices = bcApp.SCApplication.EquipmentBLL.cache.loadMaintainDevice();
-            string[] maintain_devices_id = maintainDevices.Select(eq => eq.EQPT_ID).ToArray();
-            BCUtility.setComboboxDataSource(cmb_maintain_device, maintain_devices_id.ToArray());
 
             List<AEQPT> ohcvDevices = bcApp.SCApplication.EquipmentBLL.cache.loadOHCVDevices();
             string[] ohcv_devices_id = ohcvDevices.Select(eq => eq.EQPT_ID).ToArray();
@@ -663,15 +660,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void btn_mtl_car_out_notify_Click(object sender, EventArgs e)
         {
-            UInt16 car_id = UInt16.Parse(txt_mtl_car_out_notify_car_id.Text);
-            Task.Run(() =>
-            {
-                var mtl_mapaction = maintainEQ.
-                    getMapActionByIdentityKey(nameof(com.mirle.ibg3k0.sc.Data.ValueDefMapAction.MTxValueDefMapActionBase)) as
-                    com.mirle.ibg3k0.sc.Data.ValueDefMapAction.MTxValueDefMapActionBase;
-                mtl_mapaction.OHxC_CarOutNotify(car_id);
-            }
-            );
         }
 
         private void btn_rename_cst_id_Click(object sender, EventArgs e)
@@ -686,53 +674,15 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void btn_mtl_o2m_u2d_CarOutInterface(object sender, EventArgs e)
         {
-            bool car_out_car_out_interlock = btn_mtl_o2m_u2d_caroutInterlock.Checked;
-            bool car_out_car_out_ready = btn_mtl_o2m_u2d_caroutready.Checked;
-            bool car_out_carmoving = btn_mtl_o2m_u2d_carmoving.Checked;
-            bool car_out_car_move_cmp = btn_mtl_o2m_u2d_carmovingcmp.Checked;
-            AEQPT eQPT = bcApp.SCApplication.getEQObjCacheManager().getEquipmentByEQPTID("MTS");
-
-            Task.Run(() => (
-            eQPT.getMapActionByIdentityKey("MTSValueDefMapActionNew") as sc.Data.ValueDefMapAction.MTSValueDefMapActionNew)
-            .OHxC2MTL_CarOutInterface(car_out_car_out_interlock, car_out_car_out_ready, car_out_carmoving, car_out_car_move_cmp));
         }
 
         private void btn_mtl_o2m_d2u_CarInInterfaece(object sender, EventArgs e)
         {
-            bool car_in_carmoving = btn_mtl_o2m_d2u_moving.Checked;
-            bool car_in_car_move_cmp = btn_mtl_o2m_d2u_movingcmp.Checked;
-            AEQPT eQPT = bcApp.SCApplication.getEQObjCacheManager().getEquipmentByEQPTID("MTS");
-
-            Task.Run(() =>
-            (eQPT.getMapActionByIdentityKey("MTSValueDefMapActionNew") as sc.Data.ValueDefMapAction.MTSValueDefMapActionNew)
-            .OHxC2MTL_CarInInterface(car_in_carmoving, car_in_car_move_cmp));
         }
 
         private void btn_mtl2ohxc_carinterface_refresh_Click(object sender, EventArgs e)
         {
-            bool car_out_safety_check = false;
-            bool car_out_move_cmp = false;
-            bool car_in_safety_check = false;
-            bool car_in_interlock = false;
-            //AEQPT eQPT = bcApp.SCApplication.getEQObjCacheManager().getEquipmentByEQPTID("MTS");
-            string maption_action_name = "";
-            if (maintainEQ is sc.Data.VO.MaintainSpace)
-            {
-                maption_action_name = "MTSValueDefMapActionNew";
-            }
-            else
-            {
-                maption_action_name = "MTLValueDefMapActionNew";
-            }
-
-            (maintainEQ.getMapActionByIdentityKey(maption_action_name) as sc.Data.ValueDefMapAction.MTxValueDefMapActionBase)
-            .GetMTL2OHxC_CarOutInterface(out car_out_safety_check, out car_out_move_cmp);
-            (maintainEQ.getMapActionByIdentityKey(maption_action_name) as sc.Data.ValueDefMapAction.MTxValueDefMapActionBase)
-            .GetMTL2OHxC_CarInInterface(out car_in_safety_check, out car_in_interlock);
-            btn_mtl_m2o_u2d_move_cmp.Checked = car_out_move_cmp;
-            btn_mtl_m2o_u2d_safetycheck.Checked = car_out_safety_check;
-            btn_mtl_m2o_d2u_safetycheck.Checked = car_in_safety_check;
-            btn_mtl_m2o_d2u_interlock.Checked = car_in_interlock;
+           
         }
 
         private void btn_SendHIDControl_Click(object sender, EventArgs e)
@@ -759,25 +709,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void uctlButton1_Click(object sender, EventArgs e)
         {
-            //var eQPT = bcApp.SCApplication.getEQObjCacheManager().getEquipmentByEQPTID("MTS") as sc.Data.VO.MaintainSpace;
-            string maption_action_name = "";
-            if (maintainEQ is sc.Data.VO.MaintainSpace)
-            {
-                maption_action_name = "MTSValueDefMapActionNew";
-            }
-            else
-            {
-                maption_action_name = "MTLValueDefMapActionNew";
-            }
-
-            Task.Run(() => (
-            maintainEQ.getMapActionByIdentityKey(maption_action_name) as sc.Data.ValueDefMapAction.MTxValueDefMapActionBase)
-            .MTL_LFTStatus(null, null));
-            Adapter.Invoke((obj) =>
-            {
-                lbl_mtx_mode.Text = maintainEQ.MTxMode.ToString();
-                lbl_hasvh_value.Text = maintainEQ.HasVehicle.ToString();
-            }, null);
 
         }
 
@@ -883,51 +814,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private async void btn_carOutTest_Click_1(object sender, EventArgs e)
         {
-            try
-            {
-                string maintain_eq = cmb_maintain_device.Text;
-                string vh_id = cmb_car_out_vh.Text;
-                sc.Data.VO.Interface.IMaintainDevice maintainDevice = bcApp.SCApplication.EquipmentBLL.cache.getMaintainDevice(maintain_eq);
-                btn_carOutTest.Enabled = false;
-                bool isSuccess = false;
-                string result = "";
-                await Task.Run(() =>
-                {
-                    //var r = bcApp.SCApplication.MTLService.carOutRequset(maintainDevice, vh_id);
-                    var r = default((bool isSuccess, string result));
-                    AVEHICLE pre_car_out_vh = bcApp.SCApplication.VehicleBLL.cache.getVhByID(vh_id);
-                    if (maintainDevice is sc.Data.VO.MaintainLift)
-                    {
-                        sc.Data.VO.Interface.IMaintainDevice dockingMTS = bcApp.SCApplication.EquipmentBLL.cache.GetMaintainSpace();
-                        r = bcApp.SCApplication.MTLService.checkVhAndMTxCarOutStatus(maintainDevice, dockingMTS, pre_car_out_vh);
-                        if (r.isSuccess)
-                        {
-                            r = bcApp.SCApplication.MTLService.processCarOutScenario(maintainDevice as sc.Data.VO.MaintainLift, pre_car_out_vh);
-                        }
-                    }
-                    else if (maintainDevice is sc.Data.VO.MaintainSpace)
-                    {
-                        r = bcApp.SCApplication.MTLService.checkVhAndMTxCarOutStatus(maintainDevice, null, pre_car_out_vh);
-                        if (r.isSuccess)
-                        {
-                            r = bcApp.SCApplication.MTLService.processCarOutScenario(maintainDevice as sc.Data.VO.MaintainSpace, pre_car_out_vh);
-                        }
-                    }
-                    isSuccess = r.isSuccess;
-                    result = r.result;
 
-                });
-                if (!isSuccess)
-                {
-                    MessageBox.Show(result);
-                }
-
-            }
-            catch { }
-            finally
-            {
-                btn_carOutTest.Enabled = true;
-            }
         }
 
         private async void btn_cauout_cancel_Click_1(object sender, EventArgs e)
@@ -948,13 +835,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void btn_refresh_carout_info_Click(object sender, EventArgs e)
         {
-            var mtl = bcApp.SCApplication.EquipmentBLL.cache.GetMaintainLift();
-            var mts = bcApp.SCApplication.EquipmentBLL.cache.GetMaintainSpace();
-            Adapter.Invoke((obj) =>
-            {
-                lbl_mtlCarOutVh.Text = mtl.PreCarOutVhID;
-                lbl_mtsCarOutVh.Text = mts.PreCarOutVhID;
-            }, null);
 
         }
         AEQPT maintainEQ = null;
@@ -1155,26 +1035,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void set_Distance_btn_Click(object sender, EventArgs e)
         {
-            uint distance = Convert.ToUInt32(numericUpDown_distance.Value);
-            if (MTSMTL != null)
-            {
-                if (MTSMTL.EQPT_ID == "MTS")
-                {
-                    (MTSMTL as MaintainSpace).CurrentPreCarOurDistance = distance;
-                }
-                else if (MTSMTL.EQPT_ID == "MTS2")
-                {
-                    (MTSMTL as MaintainSpace).CurrentPreCarOurDistance = distance;
-                }
-                else if (MTSMTL.EQPT_ID == "MTL")
-                {
-                    (MTSMTL as MaintainLift).CurrentPreCarOurDistance = distance;
-                }
-                else
-                {
 
-                }
-            }
         }
 
         private async void btn_open_tcp_port_Click(object sender, EventArgs e)
