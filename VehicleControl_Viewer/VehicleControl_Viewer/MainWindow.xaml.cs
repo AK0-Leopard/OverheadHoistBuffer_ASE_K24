@@ -24,6 +24,7 @@ namespace VehicleControl_Vierwer
     public partial class MainWindow : Window
     {
         uc_VehicleMainform uc_VehicleMainform = null;
+        uc_MainSignal uc_MainSignal = null;
         frm_GuideTest frm_guideTest = null;
 
 
@@ -35,11 +36,15 @@ namespace VehicleControl_Vierwer
             app.Start();
             uc_VehicleMainform = new uc_VehicleMainform(app);
             placeToShowChildForm.Children.Add(uc_VehicleMainform);
+
+            uc_MainSignal = new uc_MainSignal(app);
+            ucMainSignal.Children.Add(uc_MainSignal);
+
         }
 
         private void FormLoad(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void Form_Closing(object sender, System.ComponentModel.CancelEventArgs e)

@@ -32,6 +32,5 @@ namespace VehicleControl_Viewer.Common
             return false;
         }
 
-
     }
 }

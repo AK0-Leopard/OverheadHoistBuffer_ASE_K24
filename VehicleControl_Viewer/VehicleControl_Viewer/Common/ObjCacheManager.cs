@@ -20,6 +20,9 @@ namespace VehicleControl_Viewer.UI.Components
         public List<TransferCommand> TransferCommandInfos { get; private set; } = new List<TransferCommand>();
         public List<TaskCommand> TaskCommandInfos { get; private set; } = new List<TaskCommand>();
         VehicleControlService vehicleControlService = null;
+
+        public LineInfo LineInfo { get; private set; } = new LineInfo();
+        
         public ObjCacheManager(WindownApplication app)
         {
             vehicleControlService = app.VehicleControlService;
@@ -58,6 +61,10 @@ namespace VehicleControl_Viewer.UI.Components
         {
             Segments = vehicleControlService.GetSegmentInfos();
             RailStatusChanged?.Invoke(this, EventArgs.Empty);
+        }
+        public void refreshLineInfo(LineInfo newLineInfo)
+        {
+            LineInfo = newLineInfo;
         }
         public Vehicle GetVehicle(string vhID)
         {
