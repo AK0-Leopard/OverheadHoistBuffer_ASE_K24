@@ -207,7 +207,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             public APORTSTATION getPortStationByID(string adr_id)
             {
                 APORTSTATION portTemp = CacheManager.getALLPortStation().
-                                                     Where(p => SCUtility.isMatche(p.ADR_ID, adr_id)).
+                                                     Where(p => SCUtility.isMatche(p.PORT_ID, adr_id)).
                                                      SingleOrDefault();
                 return portTemp;
             }

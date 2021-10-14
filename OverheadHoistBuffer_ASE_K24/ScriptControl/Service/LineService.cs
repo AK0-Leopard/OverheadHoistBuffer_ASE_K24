@@ -142,6 +142,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         public bool canOnlineWithHost()
         {
+            return true;
             bool can_not_online = false;
             //1檢查目前沒有Remove的Vhicle，是否都已連線
             List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();

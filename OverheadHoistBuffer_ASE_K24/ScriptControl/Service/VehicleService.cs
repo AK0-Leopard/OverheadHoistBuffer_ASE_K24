@@ -3635,6 +3635,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 scApp.TransferService.TransferRun();//B0.08.0 處發TransferRun，使MCS命令可以在多車情形下早於趕車CMD下達。
             });
             vh.onCommandComplete(completeStatus);
+            //if (recive_str.CmpStatus == CompleteStatus.CmpStatusLoadunload)
+            //{
+            //    scApp.TransferService.findTransferCommandByVhViewer(vh);
+            //}
         }
 
         private void checkIsMoveToMTxDevice(AVEHICLE vh, CompleteStatus completeStatus, string curAdrID)
@@ -4229,6 +4233,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     AVEHICLE vh_vo = scApp.VehicleBLL.cache.getVhByID(vhID);
                     vh_vo.VechileRemove();
+                    scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vhID);
+                    scApp.ReserveBLL.RemoveVehicle(vhID);
                 }
                 List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
                 is_success = is_success && scApp.ReportBLL.newReportVehicleRemoved(vhID, reportqueues);

@@ -479,7 +479,8 @@ namespace com.mirle.ibg3k0.sc.BLL
             //DBConnection_EF con = DBConnection_EF.GetContext();
             //SCUtility.LockWithTimeout(vh_update_lock_obj_pool[vh_id], SCAppConstants.LOCK_TIMEOUT_MS, () =>
             //{
-            AVEHICLE vh = scApp.VehiclPool.GetObject();
+            //AVEHICLE vh = scApp.VehiclPool.GetObject();
+            AVEHICLE vh = new AVEHICLE();
             try
             {
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())

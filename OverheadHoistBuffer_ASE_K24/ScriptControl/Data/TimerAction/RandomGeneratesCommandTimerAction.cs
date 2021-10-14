@@ -298,6 +298,10 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             {
                 return;
             }
+            if (vh.HAS_CST == 1)
+            {
+                return;
+            }
             bool has_cmd_excute = scApp.CMDBLL.isCMD_OHTCExcuteByVh(vh.VEHICLE_ID);
             if (has_cmd_excute)
             {

@@ -682,7 +682,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void btn_mtl2ohxc_carinterface_refresh_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void btn_SendHIDControl_Click(object sender, EventArgs e)
