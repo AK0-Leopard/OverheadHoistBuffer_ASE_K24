@@ -8261,15 +8261,23 @@ namespace com.mirle.ibg3k0.sc.Service
                 OHBC_InsertCassette(boxid, loc, "Manual_InsertCassette");
             }
 
-            if (boxid.Length != 8)
+
+            if (boxid.ToUpper().Contains("CIM"))
             {
-                return "BOX_ID 不為 8 碼";
+                //如果是CIM開頭則不進行Box ID的檢查
             }
             else
             {
-                if (ase_ID_Check(boxid) == false)
+                if (boxid.Length != 8)
                 {
-                    return "BOX_ID，不符合 1、2碼為數字，3、4碼為英文，5~8碼為數字+英文混合";
+                    return "BOX_ID 不為 8 碼";
+                }
+                else
+                {
+                    if (ase_ID_Check(boxid) == false)
+                    {
+                        return "BOX_ID，不符合 1、2碼為數字，3、4碼為英文，5~8碼為數字+英文混合";
+                    }
                 }
             }
 

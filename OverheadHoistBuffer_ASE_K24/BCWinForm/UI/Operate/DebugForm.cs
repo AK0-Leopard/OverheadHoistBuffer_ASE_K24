@@ -90,6 +90,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_Abort_Type.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.CMDCancelType));
             combox_cycle_type.DataSource = Enum.GetValues(typeof(DebugParameter.CycleRunType));
 
+            combox_cycle_type.SelectedItem = DebugParameter.cycleRunType;
+
+
             radioButtons.Add(radio_bit0);
             radioButtons.Add(radio_bit1);
             radioButtons.Add(radio_bit2);
@@ -1164,18 +1167,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void combox_cycle_type_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Enum.TryParse(combox_cycle_type.SelectedValue.ToString(), out DebugParameter.CycleRunType type);
 
-            DebugParameter.cycleRunType = type;
-
-            if (type == DebugParameter.CycleRunType.shelfByOrder)
-            {
-                gb_cycleRunInfo.Visible = true;
-            }
-            else
-            {
-                gb_cycleRunInfo.Visible = false;
-            }
         }
         //*************************************
         //A0.01
@@ -1324,6 +1316,22 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cmb_cycleCstID_SelectedIndexChanged(object sender, EventArgs e)
         {
             //DebugParameter.cycleRunCST = cmb_cycleCstID.SelectedValue as string;
+        }
+
+        private void combox_cycle_type_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            Enum.TryParse(combox_cycle_type.SelectedValue.ToString(), out DebugParameter.CycleRunType type);
+
+            DebugParameter.cycleRunType = type;
+
+            if (type == DebugParameter.CycleRunType.shelfByOrder)
+            {
+                gb_cycleRunInfo.Visible = true;
+            }
+            else
+            {
+                gb_cycleRunInfo.Visible = false;
+            }
         }
     }
 }
