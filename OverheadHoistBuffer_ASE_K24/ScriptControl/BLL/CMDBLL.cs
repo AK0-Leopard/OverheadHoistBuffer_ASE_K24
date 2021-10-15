@@ -291,6 +291,25 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
+        public bool hasMCSCommandWillToDestPort(string dest)
+        {
+            try
+            {
+                int count = 0;
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    //A20.06.15.0
+                    count = cmd_mcsDao.getWithoutCompleteMCSCommandByTargetPortID(con, dest);
+                }
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
+        }
+
         public ACMD_MCS GetCmdDataByAGVtoSHELF(string SourcePortName)  //取得退BOX的命令
         {
             try
@@ -349,10 +368,18 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     isSourceOnVehicle = scApp.VehicleBLL.getVehicleByRealID(HostSource) != null;
                 }
-                //else//應該不會執行到這行 kevin
-                //{
-                //    isSourceOnVehicle = scApp.VehicleBLL.getVehicleByRealID(cstData.Carrier_LOC) != null;
-                //}
+
+                //當來源是EQ時需判斷是否已經有命令要過去了
+                if (scApp.TransferService.isEQPort(HostSource))
+                {
+                    bool has_command_will_to_go = hasMCSCommandWillToDestPort(HostSource);
+                    if (has_command_will_to_go)
+                    {
+                        check_result = $"{DateTime.Now.ToString("HH:mm:ss.fff ")}MCS >> OHB|S2F50: cmdID:{command_id} BOXID: {box_id} 的來源:{HostSource} 已經有命令準備前往，無法接收該Port的入庫命令。";
+                        TransferServiceLogger.Info(check_result);
+                        return SECSConst.HCACK_Obj_Not_Exist;
+                    }
+                }
 
                 #region 卡匣是否存在
 

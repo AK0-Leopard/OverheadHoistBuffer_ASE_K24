@@ -1327,11 +1327,11 @@ namespace com.mirle.ibg3k0.sc.Service
                 //確認確認命令是否可以順途搬送
                 foreach (var transfer_cmd in same_segment_tran_cmds.ToList())
                 {
-                    //if (transfer_cmd.COMMANDSTATE >= ACMD_MCS.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE)
-                    //{
-                    //    same_segment_tran_cmds.Remove(transfer_cmd);
-                    //    continue;
-                    //}
+                    if (transfer_cmd.COMMANDSTATE < ACMD_MCS.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE)
+                    {
+                        same_segment_tran_cmds.Remove(transfer_cmd);
+                        continue;
+                    }
 
                     string transfering_cmd_adr = transfer_cmd.getHostDestAdr(scApp.PortStationBLL);
                     if (SCUtility.isEmpty(transfering_cmd_adr))
@@ -3044,10 +3044,11 @@ namespace com.mirle.ibg3k0.sc.Service
                         break;
 
                     case COMMAND_STATUS_BIT_INDEX_InterlockError:
+                        cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+
                         reportBLL.ReportCraneIdle(ohtName, cmd.CMD_ID);
                         reportBLL.ReportTransferCompleted(cmd, null, ResultCode.InterlockError);
 
-                        cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                         break;
 
                     case COMMAND_STATUS_BIT_INDEX_VEHICLE_ABORT:

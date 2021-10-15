@@ -464,6 +464,23 @@ namespace com.mirle.ibg3k0.sc.Data.DAO.EntityFramework
                 throw;
             }
         }
+
+        public int getWithoutCompleteMCSCommandByTargetPortID(DBConnection_EF conn, string destination)
+        {
+            try
+            {
+                var port = from a in conn.ACMD_MCS
+                           where a.TRANSFERSTATE != E_TRAN_STATUS.TransferCompleted &&
+                                 a.HOSTDESTINATION.Trim() == destination.Trim()
+                           select a;
+                return port.Count();
+            }
+            catch (Exception ex)
+            {
+                //logger.Warn(ex);
+                return 0;
+            }
+        }
     }
 
 }
