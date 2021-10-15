@@ -2180,10 +2180,44 @@ namespace com.mirle.ibg3k0.sc.Service
                     scApp.ReserveBLL.RemoveManyReservedSectionsByVIDSID(vh_id, detail_sec);
                     hasRelease = true;
                 }
+                Task.Run(() => tryResetTrackBlock(vh_vo, block_master));
             }
             return hasRelease;
         }
 
+        private void tryResetTrackBlock(AVEHICLE eqpt, ABLOCKZONEMASTER block_master)
+        {
+            try
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Trace, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"start try to reset track block:{block_master.ENTRY_SEC_ID}...",
+                   VehicleID: eqpt.VEHICLE_ID,
+                   CarrierID: eqpt.CST_ID);
+                var related_tracks = block_master.RelatedTracks;
+                if (related_tracks == null || related_tracks.Count == 0)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Trace, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"start try to reset track block:{block_master.ENTRY_SEC_ID}, but not related track.",
+                       VehicleID: eqpt.VEHICLE_ID,
+                       CarrierID: eqpt.CST_ID);
+                    return;
+                }
+                List<string> track_ids = related_tracks.Select(t => t.UNIT_ID).ToList();
+
+                foreach (var track in related_tracks)
+                {
+                    track.ResetBlock(scApp.TrackInfoClient);
+                }
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Trace, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"reset track:{string.Join(",", track_ids)}",
+                   VehicleID: eqpt.VEHICLE_ID,
+                   CarrierID: eqpt.CST_ID);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+        }
 
         private const string CST_ID_ERROR_RENAME_SYMBOL = "UNKF";
         private const string CST_ID_ERROR_SYMBOL = "ERR";
@@ -3635,6 +3669,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 scApp.TransferService.TransferRun();//B0.08.0 處發TransferRun，使MCS命令可以在多車情形下早於趕車CMD下達。
             });
             vh.onCommandComplete(completeStatus);
+            //if (recive_str.CmpStatus == CompleteStatus.CmpStatusLoadunload)
+            //{
+            //    scApp.TransferService.findTransferCommandByVhViewer(vh);
+            //}
         }
 
         private void checkIsMoveToMTxDevice(AVEHICLE vh, CompleteStatus completeStatus, string curAdrID)
@@ -4229,6 +4267,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     AVEHICLE vh_vo = scApp.VehicleBLL.cache.getVhByID(vhID);
                     vh_vo.VechileRemove();
+                    scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vhID);
+                    scApp.ReserveBLL.RemoveVehicle(vhID);
                 }
                 List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
                 is_success = is_success && scApp.ReportBLL.newReportVehicleRemoved(vhID, reportqueues);

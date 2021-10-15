@@ -256,8 +256,13 @@ namespace com.mirle.ibg3k0.sc.Service
 
         public bool HasCstTypeMismatch(string logTitle, ManualPortPLCInfo info)
         {
-            var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
+            var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
+            if (stage1CarrierId.ToUpper().Contains("CIM"))
+            {
+                //如果是CIM開頭則不進行Box ID的檢查
+                return false;
+            }
             if (stage1CarrierId.Length <= 2)
             {
                 WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. 長度過短.  Mismatch.  MoveBack.");

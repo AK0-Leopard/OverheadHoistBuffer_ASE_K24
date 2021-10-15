@@ -184,7 +184,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //if (isProcess(s2f13)) { return; }
 
                 scApp.TransferService.TransferServiceLogger.Info(
-                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f13:\n" + s2f13.toSECSString());
+                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f13:\n" + "");
+                //DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f13:\n" + s2f13.toSECSString());
 
                 S2F14 s2f14 = null;
                 s2f14 = new S2F14();
@@ -241,7 +242,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //if (isProcess(s2f15)) { return; }
 
                 scApp.TransferService.TransferServiceLogger.Info(
-                                DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f15:\n" + s2f15.toSECSString());
+                                DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f15:\n" + "");
+                //DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f15:\n" + s2f15.toSECSString());
 
                 S2F16 s2f16 = null;
                 s2f16 = new S2F16();
@@ -285,7 +287,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //if (isProcess(s2f33)) { return; }
 
                 TransferServiceLogger.Info(
-                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f33:\n" + s2f33.toSECSString());
+                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f33:\n" + "");
+                //DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f33:\n" + s2f33.toSECSString());
 
                 S2F34 s2f34 = null;
                 s2f34 = new S2F34();
@@ -333,7 +336,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //if (isProcess(s2f35)) { return; }
 
                 TransferServiceLogger.Info(
-                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f35:\n" + s2f35.toSECSString());
+                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f35:\n" + "");
+                //DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f35:\n" + s2f35.toSECSString());
 
                 S2F36 s2f36 = null;
                 s2f36 = new S2F36();
@@ -753,7 +757,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                                 s2f42.HCACK = remove_check_result.checkResult;
                                 has_carrier = remove_check_result.hasCarrier;
                                 carrier_id = remove_check_result.CSTID;
-                                box_id = remove_check_result.BOXID;
+                                //box_id = remove_check_result.BOXID;
+                                box_id = remove_check_result.CSTID;
                                 break;
 
                             case SECSConst.RCMD_DisableShelf:
@@ -1230,10 +1235,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             string CarrierID = "";
             string BoxID = "";
 
-            if (carrier_id_item != null && Box_item != null)
+            if (carrier_id_item != null)
             {
                 CarrierID = carrier_id_item.CPVAL?.ToString() ?? "";
-                BoxID = Box_item.CPVAL;
+                BoxID = carrier_id_item.CPVAL?.ToString() ?? "";
 
                 CassetteData cassette = scApp.CassetteDataBLL.loadCassetteDataByBoxID(CarrierID, BoxID);
 
@@ -1602,7 +1607,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 }
                 //LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(ASEMCSDefaultMapAction), Device: DEVICE_NAME_MCS,
                 //          Data: s1f3);
-                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S1F4\n" + string.Join(",", s1f4.SV.Select(x => x.toSECSString().TrimEnd('\r', '\n'))));
+                //TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S1F4\n" + string.Join(",", s1f4.SV.Select(x => x.toSECSString().TrimEnd('\r', '\n'))));
 
                 TrxSECS.ReturnCode rtnCode = ISECSControl.replySECS(bcfApp, s1f4);
                 SCUtility.secsActionRecordMsg(scApp, false, s1f4);
@@ -2187,7 +2192,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //if (isProcess(s1f15)) { return; }
 
                 scApp.TransferService.TransferServiceLogger.Info(
-                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s1f15:\n" + s1f15.toSECSString());
+                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s1f15:\n" + "");
+                //DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s1f15:\n" + s1f15.toSECSString());
 
                 S1F16 s1f16 = new S1F16();
                 s1f16.SystemByte = s1f15.SystemByte;
@@ -2233,7 +2239,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 SCUtility.secsActionRecordMsg(scApp, true, s1f17);
 
                 TransferServiceLogger.Info(
-                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S1F17:\n" + s1f17.toSECSString());
+                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S1F17:\n" + "");
+                //DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S1F17:\n" + s1f17.toSECSString());
 
                 S1F18 s1f18 = new S1F18();
                 s1f18.SystemByte = s1f17.SystemByte;
@@ -2259,7 +2266,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 SCUtility.secsActionRecordMsg(scApp, false, s1f18);
 
                 TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ")
-                    + "MCS >> OHB|S1F18     SCES_ReturnCode:" + rtnCode + "\n" + s1f18.toSECSString());
+                    + "MCS >> OHB|S1F18     SCES_ReturnCode:" + rtnCode + "\n" + "");
+                //+ "MCS >> OHB|S1F18     SCES_ReturnCode:" + rtnCode + "\n" + s1f18.toSECSString());
 
                 if (rtnCode != TrxSECS.ReturnCode.Normal)
                 {
@@ -4608,7 +4616,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //Boolean isEnable = s2f37.CEED == true;
 
                 scApp.TransferService.TransferServiceLogger.Info(
-                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f37:\n" + s2f37.toSECSString());
+                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f37:\n" + "");
+                //DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f37:\n" + s2f37.toSECSString());
 
                 int cnt = s2f37.CEIDS.Length;
                 if (cnt == 0)
@@ -4679,7 +4688,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //if (isProcess(s2f31)) { return; }
 
                 TransferServiceLogger.Info(
-                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f31:\n" + s2f31.toSECSString());
+                    DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f31:\n" + "");
+                //DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|s2f31:\n" + s2f31.toSECSString());
 
                 S2F32 s2f32 = new S2F32();
                 s2f32.SECSAgentName = scApp.EAPSecsAgentName;

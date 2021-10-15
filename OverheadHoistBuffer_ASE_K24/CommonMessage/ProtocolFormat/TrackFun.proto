@@ -41,7 +41,7 @@ enum TrackStatus{
     TrackStatus_Alarm = 3;
 }
 message ReplyTracksInfo { repeated TrackInfo tracks_info = 1; }
-message TrackInfo { string track_id = 1; TrackDir dir = 2; TrackStatus status = 3; }
+message TrackInfo { string track_id = 1; TrackDir dir = 2; TrackStatus status = 3; string alarmCode=4; }
 
 // The request message containing the user's name.
 message HelloRequest {string name = 1;}

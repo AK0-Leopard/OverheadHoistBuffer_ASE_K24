@@ -41,30 +41,35 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             MainForm.removeForm(nameof(TrackMaintenanceForm));
         }
 
-        const int SHELF_ENABLE_DISABLE_CLOUMN_INDEX_ENABLE = 1;
+        const int TRACK_DATA_TRACKSTATUS = 2;
+        const int TRACK_DATA_ALARM = 3;
         private void dgv_shelfData_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
-            if (dgv_trackData.Rows.Count <= e.RowIndex) return;
-            if (e.RowIndex < 0) return;
-            var enable_status = dgv_trackData.Rows[e.RowIndex].Cells[SHELF_ENABLE_DISABLE_CLOUMN_INDEX_ENABLE].Value;
-            if (!(enable_status is string))
-                return;
-            string enable = enable_status as string;
-            if (sc.Common.SCUtility.isMatche(enable, sc.App.SCAppConstants.YES_FLAG))
-            {
-                //not thing...
-            }
-            else
-            {
-                DataGridViewRow row = dgv_trackData.Rows[e.RowIndex];
-                row.DefaultCellStyle.BackColor = Color.GreenYellow;
-                row.DefaultCellStyle.ForeColor = Color.Black;
-                if (row.Selected)
-                {
-                    row.DefaultCellStyle.SelectionBackColor = Color.SkyBlue;
-                    row.DefaultCellStyle.SelectionForeColor = Color.Black;
-                }
-            }
+            //if (dgv_trackData.Rows.Count <= e.RowIndex) return;
+            //if (e.RowIndex < 0) return;
+            //var track_status = dgv_trackData.Rows[e.RowIndex].Cells[TRACK_DATA_TRACKSTATUS].Value;
+            //var alarm_code = dgv_trackData.Rows[e.RowIndex].Cells[TRACK_DATA_ALARM].Value;
+            //if (!(track_status is string))
+            //    return;
+            //if (!(alarm_code is string))
+            //    return;
+            //string status = track_status as string;
+            //string alarm = track_status as string;
+            //if (sc.Common.SCUtility.isMatche(status, sc.App.SCAppConstants.YES_FLAG))
+            //{
+            //    //not thing...
+            //}
+            //else
+            //{
+            //    DataGridViewRow row = dgv_trackData.Rows[e.RowIndex];
+            //    row.DefaultCellStyle.BackColor = Color.GreenYellow;
+            //    row.DefaultCellStyle.ForeColor = Color.Black;
+            //    if (row.Selected)
+            //    {
+            //        row.DefaultCellStyle.SelectionBackColor = Color.SkyBlue;
+            //        row.DefaultCellStyle.SelectionForeColor = Color.Black;
+            //    }
+            //}
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -106,5 +111,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             timer1.Start();
         }
+
+
     }
 }

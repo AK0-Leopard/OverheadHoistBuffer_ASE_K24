@@ -2525,13 +2525,25 @@ namespace com.mirle.ibg3k0.sc.BLL
                     string to_adr = string.Empty;
                     AVEHICLE bestSuitableVh = null;
                     E_VH_TYPE vh_type = E_VH_TYPE.None;
+                    bool has_pre_wait_assign_vh = !SCUtility.isEmpty(mcs_cmd.PreAssignVhID);
 
                     if (mcs_cmd.CMD_ID.StartsWith("SCAN-"))
                     {
                         ShelfDef targetShelf = scApp.ShelfDefBLL.GetShelfDataByID(mcs_cmd.HOSTSOURCE);
 
                         scApp.MapBLL.getAddressID(hostsource, out from_adr, out vh_type);
-                        bestSuitableVh = scApp.VehicleBLL.findBestSuitableVhStepByNearest(from_adr, vh_type);
+                        if (has_pre_wait_assign_vh)
+                        {
+                            var pre_wait_assign_vh = scApp.VehicleBLL.cache.getVhByID(mcs_cmd.PreAssignVhID);
+                            if (pre_wait_assign_vh.TransferReady(scApp.CMDBLL))
+                            {
+                                bestSuitableVh = pre_wait_assign_vh;
+                            }
+                        }
+                        if (bestSuitableVh == null)
+                        {
+                            bestSuitableVh = scApp.VehicleBLL.findBestSuitableVhStepByNearest(from_adr, vh_type);
+                        }
                         if (bestSuitableVh == null)
                         {
                             return (false, "找不到適合的Vh搬送");
@@ -2584,7 +2596,18 @@ namespace com.mirle.ibg3k0.sc.BLL
                         else
                         {
                             scApp.MapBLL.getAddressID(hostsource, out from_adr, out vh_type);
-                            bestSuitableVh = scApp.VehicleBLL.findBestSuitableVhStepByNearest(from_adr, vh_type);
+                            if (has_pre_wait_assign_vh)
+                            {
+                                var pre_wait_assign_vh = scApp.VehicleBLL.cache.getVhByID(mcs_cmd.PreAssignVhID);
+                                if (pre_wait_assign_vh.TransferReady(scApp.CMDBLL))
+                                {
+                                    bestSuitableVh = pre_wait_assign_vh;
+                                }
+                            }
+                            if (bestSuitableVh == null)
+                            {
+                                bestSuitableVh = scApp.VehicleBLL.findBestSuitableVhStepByNearest(from_adr, vh_type);
+                            }
                             cmd_type = E_CMD_TYPE.LoadUnload;
                         }
 
@@ -2667,6 +2690,35 @@ namespace com.mirle.ibg3k0.sc.BLL
             else
             {
                 return (false, "尋車功能被占用");
+            }
+        }
+
+        public bool AssignTransferCommmand(ACMD_MCS mcs_cmd, AVEHICLE vh)
+        {
+            string hostsource = mcs_cmd.HOSTSOURCE;
+            string hostdest = mcs_cmd.HOSTDESTINATION;
+            string from_adr = string.Empty;
+            string to_adr = string.Empty;
+            string vh_id = vh.VEHICLE_ID;
+
+            bool isSuccess = true;
+            isSuccess &= scApp.CMDBLL.doCreatTransferCommand(vh_id, mcs_cmd.CMD_ID, mcs_cmd.CARRIER_ID,
+                                E_CMD_TYPE.LoadUnload,
+                                hostsource,
+                                hostdest, mcs_cmd.PRIORITY_SUM, 0,
+                                mcs_cmd.BOX_ID, mcs_cmd.LOT_ID,
+                                from_adr, to_adr);
+            if (isSuccess)
+            {
+                if (mcs_cmd.CRANE != vh_id)
+                {
+                    updateCMD_MCS_CRANE(mcs_cmd.CMD_ID, vh_id);
+                }
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

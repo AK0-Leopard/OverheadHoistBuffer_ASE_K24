@@ -905,28 +905,16 @@ namespace com.mirle.ibg3k0.sc.Service
                             #endregion 說明
 
                             var queueCmdData = cmdDatas.Where(data => data.CMDTYPE != CmdType.PortTypeChange.ToString() && data.TRANSFERSTATE == E_TRAN_STATUS.Queue).ToList();
-
+                            queueCmdData = queueCmdData.OrderByDescending(data => data.PreAssignVhID).ToList();
                             var transferCmdData = cmdDatas.Where(data => data.CMDTYPE != CmdType.PortTypeChange.ToString() && data.TRANSFERSTATE != E_TRAN_STATUS.Queue).ToList();
 
-                            //var portTypeChangeCmdData = cmdData.Where(data => data.CMDTYPE == CmdType.PortTypeChange.ToString()).ToList();
-
-                            //var movebackManualPortCmdDatas = cmdData.Where(data => data.CMDTYPE == CmdType.MoveBack.ToString()).ToList();
-
-                            #region 檢查救資料用AGV Port 狀態是否正確
-
-                            if (autoRemarkBOXCSTData == true)
-                            {
-                                AutoReMarkCSTBOXDataFromAGVPort();
-                            }
-
-                            #endregion 檢查救資料用AGV Port 狀態是否正確
-
-                            queueCmdData = scApp.CMDBLL.doSortMCSCmdDataByDistanceFromHostSourceToVehicle(queueCmdData, vehicleData);
+                            //queueCmdData = scApp.CMDBLL.doSortMCSCmdDataByDistanceFromHostSourceToVehicle(queueCmdData, vehicleData);
 
                             if (queueCmdData.Count != 0)
                             {
                                 cmdFail = true;
                             }
+
 
                             foreach (var v in queueCmdData)
                             {
@@ -956,8 +944,14 @@ namespace com.mirle.ibg3k0.sc.Service
                                 #endregion 每分鐘權限 + 1
 
                                 #region 搬送命令
-
-                                if (TransferCommandHandler(v))
+                                var check_can_after_on_the_way_result = checkHasVhAfterOnTheWay(v, transferCmdData);
+                                if (check_can_after_on_the_way_result.hasVh)
+                                {
+                                    SetTransferCommandNGReason(v.CMD_ID, $"vh:{check_can_after_on_the_way_result.sameSegmentTran.CRANE} 即將搬送貨物至該Bay，等待順途搬送");
+                                    SetTransferCommandPreAssignVh(v.CMD_ID, check_can_after_on_the_way_result.sameSegmentTran.CRANE);
+                                }
+                                //if (TransferCommandHandler(v))
+                                if (!check_can_after_on_the_way_result.hasVh && TransferCommandHandler(v))
                                 {
                                     cmdFail = false;
                                     OHBC_OHT_QueueCmdTimeOutCmdIDCleared(v.CMD_ID);
@@ -1116,6 +1110,274 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
             }
         }
+        public void findTransferCommandByVhViewer(AVEHICLE vh)
+        {
+            if (Interlocked.Exchange(ref syncTranCmdPoint, 1) == 0)
+            {
+
+                try
+                {
+                    if (!vh.TransferReady(scApp.CMDBLL))
+                    {
+                        return;
+                    }
+                    var cmdDatas = cmdBLL.LoadCmdData();
+                    var queueCmdData = cmdDatas.Where(data => data.CMDTYPE != CmdType.PortTypeChange.ToString() && data.TRANSFERSTATE == E_TRAN_STATUS.Queue).ToList();
+                    var same_segment_queue_cmd = queueCmdData.Where(cmd => SCUtility.isMatche(cmd.getHostDestSegment(scApp.PortStationBLL, scApp.SectionBLL), vh.CUR_SEG_ID)).ToList();
+                    ACMD_MCS can_excute_mcs_cmd = null;
+                    foreach (var mcsCmd in same_segment_queue_cmd)
+                    {
+                        bool sourcePortType = false;
+                        bool destPortType = false;
+                        #region 檢查來源狀態
+
+                        if (string.IsNullOrWhiteSpace(mcsCmd.RelayStation))  //檢查命令是否先搬到中繼站
+                        {
+                            #region 檢查是否有帳
+
+                            if (mcsCmd.CMD_ID.Contains("SCAN") == false)
+                            {
+                                CassetteData sourceCstData = cassette_dataBLL.loadCassetteDataByLoc(mcsCmd.HOSTSOURCE);
+
+                                if (sourceCstData == null)
+                                {
+                                    sourcePortType = false;
+                                    TransferServiceLogger.Info
+                                    (
+                                        DateTime.Now.ToString("HH:mm:ss.fff ")
+                                        + "OHB >> OHB| 命令來源: " + mcsCmd.HOSTSOURCE + " 找不到帳，刪除命令 "
+                                    );
+                                    Manual_DeleteCmd(mcsCmd.CMD_ID, "命令來源找不到帳");
+
+                                    continue;
+                                }
+                            }
+
+                            #endregion 檢查是否有帳
+
+                            if (isAGVZone(mcsCmd.HOSTSOURCE)) //檢查來源是不是AGVZONE
+                            {
+                                string agvPortName = GetAGV_InModeInServicePortName(mcsCmd.HOSTSOURCE);
+                                if (string.IsNullOrWhiteSpace(agvPortName))
+                                {
+                                    sourcePortType = false;
+                                }
+                                else
+                                {
+                                    sourcePortType = true;
+                                    mcsCmd.HOSTSOURCE = agvPortName;
+                                }
+                            }
+                            else
+                            {
+                                sourcePortType = AreSourceEnable(mcsCmd.HOSTSOURCE);
+                            }
+                        }
+                        else
+                        {
+                            sourcePortType = AreSourceEnable(mcsCmd.RelayStation);
+                            mcsCmd.HOSTSOURCE = mcsCmd.RelayStation;
+                        }
+                        //A21.02.22.0 Start
+                        if (!sourcePortType)
+                        {
+                            TransferServiceLogger.Info
+                            (
+                                DateTime.Now.ToString("HH:mm:ss.fff ")
+                                + "OHB >> OHB| 命令來源: " + mcsCmd.HOSTSOURCE + " Port狀態不正確，不繼續往下執行。"
+                            );
+                            SetTransferCommandNGReason(mcsCmd.CMD_ID, $"Source Port:{SCUtility.Trim(mcsCmd.HOSTSOURCE)},狀態不正確");
+                            continue;
+                        }
+                        //A21.02.22.0 End
+
+                        #endregion 檢查來源狀態
+
+                        #region 檢查目的狀態
+
+                        if (isUnitType(mcsCmd.HOSTDESTINATION, UnitType.ZONE))  //若 Zone 上沒有儲位，目的 Port 會為 ZoneName，並上報 MCS
+                        {
+                            string zoneID = mcsCmd.HOSTDESTINATION;
+                            List<ShelfDef> shelfData = scApp.ShelfDefBLL.GetEmptyAndEnableShelfByZone(zoneID);//Modify by Kevin
+
+                            if (shelfData == null || shelfData.Count() == 0)
+                            {
+                                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|TransferCommandHandler 目的 Zone: " + mcsCmd.HOSTDESTINATION + " 沒有位置");
+
+                                cmdBLL.updateCMD_MCS_TranStatus(mcsCmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+
+                                reportBLL.ReportTransferInitiated(mcsCmd.CMD_ID.Trim());
+                                reportBLL.ReportTransferCompleted(mcsCmd, null, ResultCode.ZoneIsfull);
+                                break;
+                            }
+                            else
+                            {
+                                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|TransferCommandHandler 目的 Zone: " + mcsCmd.HOSTDESTINATION + " 可用儲位數量: " + shelfData.Count);
+
+                                string shelfID = scApp.TransferService.GetShelfRecentLocation(shelfData, mcsCmd.HOSTSOURCE);
+
+                                if (string.IsNullOrWhiteSpace(shelfID) == false)
+                                {
+                                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|TransferCommandHandler: 目的 Zone: " + mcsCmd.HOSTDESTINATION + " 找到 " + shelfID);
+                                    mcsCmd.HOSTDESTINATION = shelfID;
+                                }
+                            }
+                            //cmdBLL.updateCMD_MCS_TranStatus(mcsCmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                            //reportBLL.ReportTransferInitiated(mcsCmd.CMD_ID.Trim());
+                            //reportBLL.ReportTransferCompleted(mcsCmd, null, ResultCode.ZoneIsfull);
+                            //break;
+                        }
+
+                        if (isAGVZone(mcsCmd.HOSTDESTINATION))
+                        {
+                            string agvPortName = GetAGV_OutModeInServicePortName(mcsCmd.HOSTDESTINATION);
+                            if (string.IsNullOrWhiteSpace(agvPortName))
+                            {
+                                destPortType = false;
+                            }
+                            else
+                            {
+                                destPortType = true;
+                                mcsCmd.HOSTDESTINATION = agvPortName;
+                            }
+                        }
+                        else
+                        {
+                            destPortType = AreDestEnable(mcsCmd.HOSTDESTINATION);
+                        }
+                        if (!destPortType)
+                        {
+                            SetTransferCommandNGReason(mcsCmd.CMD_ID, $"Dest. port:{SCUtility.Trim(mcsCmd.HOSTDESTINATION)},狀態不正確");
+                        }
+                        #endregion 檢查目的狀態
+
+                        if (sourcePortType && destPortType)
+                        {
+                            can_excute_mcs_cmd = mcsCmd;
+                            break;
+                        }
+                    }
+                    string hostsource = can_excute_mcs_cmd.HOSTSOURCE;
+                    string hostdest = can_excute_mcs_cmd.HOSTDESTINATION;
+                    string from_adr = string.Empty;
+                    string to_adr = string.Empty;
+                    scApp.MapBLL.getAddressID(hostsource, out from_adr);
+                    scApp.MapBLL.getAddressID(hostdest, out to_adr);
+
+                    bool isSuccess = true;
+                    isSuccess &= scApp.CMDBLL.doCreatTransferCommand(vh.VEHICLE_ID, can_excute_mcs_cmd.CMD_ID, can_excute_mcs_cmd.CARRIER_ID,
+                                         E_CMD_TYPE.LoadUnload,
+                                        hostsource,
+                                        hostdest, can_excute_mcs_cmd.PRIORITY_SUM, 0,
+                                        can_excute_mcs_cmd.BOX_ID, can_excute_mcs_cmd.LOT_ID,
+                                        from_adr, to_adr);
+                    //在找到車子後先把它改成PreInitial，防止Timer再找到該筆命令
+                    if (isSuccess)
+                    {
+                        //isSuccess &= scApp.CMDBLL.updateCMD_MCS_TranStatus2Paused(mcs_cmd.CMD_ID);  //20200220改成Paused WARNING
+                        if (can_excute_mcs_cmd.CRANE != vh.VEHICLE_ID)
+                        {
+                            scApp.CMDBLL.updateCMD_MCS_CRANE(can_excute_mcs_cmd.CMD_ID, vh.VEHICLE_ID);
+                        }
+
+                        TransferServiceLogger.Info
+                                        (
+                                            DateTime.Now.ToString("HH:mm:ss.fff ")
+                                            + "OHB >> OHT|命令執行成功，" + GetCmdLog(can_excute_mcs_cmd)
+                                        );
+
+                        if (isCVPort(can_excute_mcs_cmd.HOSTDESTINATION))
+                        {
+                            PortCommanding(can_excute_mcs_cmd.HOSTDESTINATION, true);
+                        }
+
+                        cmdBLL.updateCMD_MCS_TranStatus(can_excute_mcs_cmd.CMD_ID, E_TRAN_STATUS.Transferring);
+                        //cmdBLL.updateCMD_MCS_Source(cmd.CMD_ID, cmd.HOSTSOURCE);
+
+                        ohtCmdTimeOut = 0;
+
+                        if (isUnitType(can_excute_mcs_cmd.HOSTSOURCE, UnitType.SHELF) && string.IsNullOrWhiteSpace(can_excute_mcs_cmd.RelayStation) == false)
+                        {
+                            ShelfReserved(can_excute_mcs_cmd.HOSTSOURCE, can_excute_mcs_cmd.HOSTDESTINATION);
+                        }
+
+                        cmdBLL.updateCMD_MCS_Dest(can_excute_mcs_cmd.CMD_ID, can_excute_mcs_cmd.HOSTDESTINATION);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TransferServiceLogger.Error(ex, "findTransferCommandByVhViewer");
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref syncTranCmdPoint, 0);
+                }
+            }
+        }
+
+        private (bool hasVh, ACMD_MCS sameSegmentTran) checkHasVhAfterOnTheWay(ACMD_MCS queueCmd, List<ACMD_MCS> transferCmdData)
+        {
+            try
+            {
+                string queue_cmd_adr_id = queueCmd.getHostSourceAdr(scApp.PortStationBLL);
+                if (SCUtility.isEmpty(queue_cmd_adr_id)) return (false, null);
+
+                var same_segment_tran_cmds = transferCmdData.Where(cmd => SCUtility.isMatche(queueCmd.getHostSourceSegment(scApp.PortStationBLL, scApp.SectionBLL),
+                                                                          cmd.getHostDestSegment(scApp.PortStationBLL, scApp.SectionBLL))).ToList();
+                //確認確認命令是否可以順途搬送
+                foreach (var transfer_cmd in same_segment_tran_cmds.ToList())
+                {
+                    //if (transfer_cmd.COMMANDSTATE >= ACMD_MCS.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE)
+                    //{
+                    //    same_segment_tran_cmds.Remove(transfer_cmd);
+                    //    continue;
+                    //}
+
+                    string transfering_cmd_adr = transfer_cmd.getHostDestAdr(scApp.PortStationBLL);
+                    if (SCUtility.isEmpty(transfering_cmd_adr))
+                    {
+                        same_segment_tran_cmds.Remove(transfer_cmd);
+                        continue;
+                    }
+                    if (SCUtility.isEmpty(transfering_cmd_adr))
+                    {
+                        same_segment_tran_cmds.Remove(transfer_cmd);
+                        continue;
+                    }
+                    var tran_dest_to_queue_source_result = scApp.GuideBLL.IsRoadWalkable(transfering_cmd_adr, queue_cmd_adr_id);
+                    if (!tran_dest_to_queue_source_result.isSuccess)
+                    {
+                        same_segment_tran_cmds.Remove(transfer_cmd);
+                        continue;
+                    }
+                    var queue_source_to_tran_dest_result = scApp.GuideBLL.IsRoadWalkable(queue_cmd_adr_id, transfering_cmd_adr);
+                    if (!queue_source_to_tran_dest_result.isSuccess)
+                    {
+                        same_segment_tran_cmds.Remove(transfer_cmd);
+                        continue;
+                    }
+                    if (tran_dest_to_queue_source_result.distance > queue_source_to_tran_dest_result.distance)
+                    {
+                        same_segment_tran_cmds.Remove(transfer_cmd);
+                        continue;
+                    }
+                }
+                if (same_segment_tran_cmds == null || same_segment_tran_cmds.Count == 0)
+                {
+                    return (false, null);
+                }
+                else
+                {
+                    return (true, same_segment_tran_cmds.FirstOrDefault());
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+                return (false, null);
+            }
+
+        }
 
         private void refreshACMD_MCSInfoList(List<ACMD_MCS> currentExcuteMCSCmd)
         {
@@ -1162,7 +1424,10 @@ namespace com.mirle.ibg3k0.sc.Service
                         mcs_cmd_item.Value.CanNotServiceReason = string.Empty;
                         has_change = true;
                     }
+                    //4.將cache的資料再填回去新load出來的ACMD_MCS中，供後續計算使用
+                    cmd_mcs.PreAssignVhID = mcs_cmd_item.Value.PreAssignVhID;
                 }
+
                 if (has_change)
                 {
                     AK0.ProtocolFormat.VehicleControlPublishMessage.TransferCommandInfo info =
@@ -1446,13 +1711,6 @@ namespace com.mirle.ibg3k0.sc.Service
 
                     bool sourcePortType = false;
                     bool destPortType = false;
-                    //加入流程當MCS下達了 A02搬送至ST01的搬送命令時，就直接針對該命令的Source Port轉向，直接出去
-                    bool is_agv_port_to_station_cmd = checkAndProcessIsAgvPortToStation(mcsCmd);
-                    if (is_agv_port_to_station_cmd)
-                    {
-                        return true;
-                    }
-
                     #region 檢查來源狀態
 
                     if (string.IsNullOrWhiteSpace(mcsCmd.RelayStation))  //檢查命令是否先搬到中繼站
@@ -1479,23 +1737,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                         #endregion 檢查是否有帳
 
-                        if (isAGVZone(mcsCmd.HOSTSOURCE)) //檢查來源是不是AGVZONE
-                        {
-                            string agvPortName = GetAGV_InModeInServicePortName(mcsCmd.HOSTSOURCE);
-                            if (string.IsNullOrWhiteSpace(agvPortName))
-                            {
-                                sourcePortType = false;
-                            }
-                            else
-                            {
-                                sourcePortType = true;
-                                mcsCmd.HOSTSOURCE = agvPortName;
-                            }
-                        }
-                        else
-                        {
-                            sourcePortType = AreSourceEnable(mcsCmd.HOSTSOURCE);
-                        }
+                        sourcePortType = AreSourceEnable(mcsCmd.HOSTSOURCE);
                     }
                     else
                     {
@@ -1740,6 +1982,14 @@ namespace com.mirle.ibg3k0.sc.Service
             if (is_exist)
             {
                 cmd_mcs_obj.setCanNotServiceReason(reason);
+            }
+        }
+        private void SetTransferCommandPreAssignVh(string cmdID, string vhID)
+        {
+            bool is_exist = ACMD_MCS.MCS_CMD_InfoList.TryGetValue(SCUtility.Trim(cmdID), out var cmd_mcs_obj);
+            if (is_exist)
+            {
+                cmd_mcs_obj.setPreAssignVh(vhID);
             }
         }
 
@@ -2718,6 +2968,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             cmdBLL.updateCMD_MCS_CmdStatus(cmd.CMD_ID, 0);
                             break;
                         }
+                        cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
 
                         if (cmd.COMMANDSTATE == COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE)
                         {
@@ -3236,7 +3487,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             );
                         }
 
-                        cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                        //cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                     }
                     else
                     {
@@ -6243,9 +6494,9 @@ namespace com.mirle.ibg3k0.sc.Service
                     //Duplicate(bcrcsid);
                 }
                 else if (idRead == IDreadStatus.mismatch
-                    || idRead == IDreadStatus.failed
-                    || idRead == IDreadStatus.BoxReadFail_CstIsOK
-                    || idRead == IDreadStatus.CSTReadFail_BoxIsOK
+                      || idRead == IDreadStatus.failed
+                      || idRead == IDreadStatus.BoxReadFail_CstIsOK
+                      || idRead == IDreadStatus.CSTReadFail_BoxIsOK
                         )
                 {
 
@@ -8010,15 +8261,23 @@ namespace com.mirle.ibg3k0.sc.Service
                 OHBC_InsertCassette(boxid, loc, "Manual_InsertCassette");
             }
 
-            if (boxid.Length != 8)
+
+            if (boxid.ToUpper().Contains("CIM"))
             {
-                return "BOX_ID 不為 8 碼";
+                //如果是CIM開頭則不進行Box ID的檢查
             }
             else
             {
-                if (ase_ID_Check(boxid) == false)
+                if (boxid.Length != 8)
                 {
-                    return "BOX_ID，不符合 1、2碼為數字，3、4碼為英文，5~8碼為數字+英文混合";
+                    return "BOX_ID 不為 8 碼";
+                }
+                else
+                {
+                    if (ase_ID_Check(boxid) == false)
+                    {
+                        return "BOX_ID，不符合 1、2碼為數字，3、4碼為英文，5~8碼為數字+英文混合";
+                    }
                 }
             }
 

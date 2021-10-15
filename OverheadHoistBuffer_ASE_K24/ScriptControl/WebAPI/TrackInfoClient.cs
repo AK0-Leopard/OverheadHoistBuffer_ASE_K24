@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using com.mirle.ibg3k0.sc.Common;
+using Grpc.Core;
 using NLog;
 using RailChangerProtocol;
 using System;
@@ -39,6 +40,31 @@ namespace com.mirle.ibg3k0.sc.WebAPI
                 is_success = false;
             }
             return (is_success, trackInfos);
+        }
+        public async Task<bool> ResetBlockAsync(string trackID)
+        {
+            try
+            {
+                if (sc.Common.SCUtility.isEmpty(trackID))
+                    return false;
+                string num = trackID.Replace("R", "");
+                var block_reset_req = new blockRstRequest()
+                {
+                    RailChangerNumber = num
+                };
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Trace, Class: nameof(TrackInfoClient), Device: "OHx",
+                   Data: $"Notify track:{trackID} num:{num} block reset...");
+                var ask = await client.blockRstAsync(block_reset_req);
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Trace, Class: nameof(TrackInfoClient), Device: "OHx",
+                   Data: $"Notify track:{trackID} num:{num} block reset finish,result:{ask}");
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
         }
     }
 }
