@@ -21,9 +21,12 @@
                 <!--系統資訊-->
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
-
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="359" />
+                <ColumnDefinition Width="1597" />
+            </Grid.ColumnDefinitions>
             <!--Menu-->
-            <Grid Style="{DynamicResource PrimaryBackgroundColor}" Grid.Row="0" Margin="0,0,547,0">
+            <Grid Style="{DynamicResource PrimaryBackgroundColor}" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,547,0">
                 <Menu Margin="0,0,-547,0">
 
                     <!--System Menu-->
@@ -66,17 +69,14 @@
 
             <!--主訊號區-->
             <!--<frm_Mainfrom:uc_MainSignal x:Name="ucMainSignal" Grid.Row="1" Grid.ColumnSpan="2"  />-->
-            <Grid Grid.Row="1" x:Name="ucMainSignal" Grid.RowSpan="2"  />
+            <Grid Grid.Row="1" x:Name="ucMainSignal" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="2"  />
 
             <!--3. 設備訊號顯示區-->
-            <Grid Grid.Row="2" Grid.ColumnSpan="2"  />
+            <!--<Grid Grid.Row="2" Grid.ColumnSpan="2"  />-->
 
             <!--3.1 其他子介面顯示區-->
-            <Grid Grid.Row="2" x:Name="placeToShowChildForm" Grid.RowSpan="2" Grid.ColumnSpan="2" Width = "1936" Height="860" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource ThirdBackgroundColor}" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="359*"/>
-                    <ColumnDefinition Width="1577*"/>
-                </Grid.ColumnDefinitions>
+            <Grid Grid.Row="2" x:Name="placeToShowChildForm" Grid.RowSpan="1" Grid.ColumnSpan="2" Width = "1936" Height="860" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource ThirdBackgroundColor}" >
+
             </Grid>
 
             <!--5. 系統資訊區-->

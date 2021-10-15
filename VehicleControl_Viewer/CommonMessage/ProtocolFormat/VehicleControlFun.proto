@@ -9,6 +9,8 @@ service VehicleControlFun {
 	rpc RequestGuideInfo(SearchInfo) returns (ReplyGuideInfo) {}
 	rpc RequestVehicleSummary(Empty) returns (ReplyVehicleSummary) {}
 	rpc RequestPortsInfo(Empty) returns (ReplyPortsInfo) {}
+    rpc RequestSegmentDisable(Empty) returns (ReplyPortsInfo) {}
+    rpc RequestSegDisable(disableSegRequest) returns (disableSegReply) {}
 }
 
 //comm enum
@@ -142,3 +144,14 @@ message ReplyGuideInfo
        bool FireAlarm = 39;
   }
 //End Port Info
+
+//Start Seg Disable
+message disableSegRequest
+{
+    string seg_id = 1;
+}
+message disableSegReply
+{
+    string result = 1;
+}
+//End Seg Disable
