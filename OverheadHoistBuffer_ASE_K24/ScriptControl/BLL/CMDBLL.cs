@@ -2719,6 +2719,215 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return (false, "尋車功能被占用");
             }
         }
+        public (bool canGenerate, string reason) generateOHTCommandNew(ACMD_MCS mcs_cmd)
+        {
+            if (Interlocked.Exchange(ref syncTranOHTCommandPoint, 1) == 0)
+            {
+                try
+                {
+                    string hostsource = mcs_cmd.HOSTSOURCE;
+                    string hostdest = mcs_cmd.HOSTDESTINATION;
+                    string from_adr = string.Empty;
+                    string to_adr = string.Empty;
+                    AVEHICLE bestSuitableVh = null;
+                    E_VH_TYPE vh_type = E_VH_TYPE.None;
+
+                    //
+                    bool has_pre_wait_assign_vh = !SCUtility.isEmpty(mcs_cmd.PreAssignVhID);
+
+                    if (mcs_cmd.CMD_ID.StartsWith("SCAN-"))
+                    {
+                        ShelfDef targetShelf = scApp.ShelfDefBLL.GetShelfDataByID(mcs_cmd.HOSTSOURCE);
+
+                        scApp.MapBLL.getAddressID(hostsource, out from_adr, out vh_type);
+                        if (has_pre_wait_assign_vh)
+                        {
+                            var pre_wait_assign_vh = scApp.VehicleBLL.cache.getVhByID(mcs_cmd.PreAssignVhID);
+                            if (pre_wait_assign_vh.TransferReady(scApp.CMDBLL))
+                            {
+                                bestSuitableVh = pre_wait_assign_vh;
+                            }
+                        }
+                        if (bestSuitableVh == null)
+                        {
+                            bestSuitableVh = scApp.VehicleBLL.findBestSuitableVhStepByNearest(from_adr, vh_type);
+                        }
+                        if (bestSuitableVh == null)
+                        {
+                            return (false, "找不到適合的Vh搬送");
+                        }
+
+                        ACMD_OHTC cmdohtc = new ACMD_OHTC
+                        {
+                            CMD_ID = scApp.SequenceBLL.getCommandID(SCAppConstants.GenOHxCCommandType.Auto),
+                            //CARRIER_ID = mcs_cmd.CARRIER_ID,
+                            BOX_ID = mcs_cmd.BOX_ID,
+                            VH_ID = bestSuitableVh.VEHICLE_ID.Trim(),
+                            CMD_ID_MCS = mcs_cmd.CMD_ID,
+                            CMD_TPYE = E_CMD_TYPE.Scan,
+                            PRIORITY = 50,
+                            SOURCE = mcs_cmd.HOSTSOURCE,
+                            DESTINATION = mcs_cmd.HOSTDESTINATION,
+                            CMD_STAUS = 0,
+                            CMD_PROGRESS = 0,
+                            ESTIMATED_EXCESS_TIME = 0,
+                            REAL_CMP_TIME = 0,
+                            ESTIMATED_TIME = 50,
+                            SOURCE_ADR = targetShelf.ADR_ID,
+                            DESTINATION_ADR = targetShelf.ADR_ID
+                        };
+
+                        creatCommand_OHTC(cmdohtc);
+                        return (true, "");
+                    }
+                    else
+                    {
+                        E_CMD_TYPE cmd_type = default(E_CMD_TYPE);
+
+                        //如果命令的目的地已經有指定是在哪台車上，則直接取得該VH來決定是否要對他下命令。
+                        bool isSourceOnVehicle = scApp.VehicleBLL.getVehicleByRealID(hostsource) != null;
+                        if (isSourceOnVehicle)
+                        {
+                            bestSuitableVh = scApp.VehicleBLL.getVehicleByRealID(hostsource);
+                            if (bestSuitableVh.IsError || bestSuitableVh.MODE_STATUS != VHModeStatus.AutoRemote)
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
+                                   Data: $"vh id:{bestSuitableVh.VEHICLE_ID} current mode status is {bestSuitableVh.MODE_STATUS},is error flag:{bestSuitableVh.IsError}." +
+                                         $"can't excute mcs command:{SCUtility.Trim(mcs_cmd.CMD_ID)}",
+                                   VehicleID: bestSuitableVh.VEHICLE_ID,
+                                   CarrierID: bestSuitableVh.CST_ID);
+                                return (false, "source vh of status not ready");
+                            }
+                            cmd_type = E_CMD_TYPE.Unload;
+                        }
+                        //沒有指定的話，則需要找出離Source Port最近的一台VH來搬送
+                        else
+                        {
+                            scApp.MapBLL.getAddressID(hostsource, out from_adr, out vh_type);
+                            if (has_pre_wait_assign_vh)
+                            {
+                                var pre_wait_assign_vh = scApp.VehicleBLL.cache.getVhByID(mcs_cmd.PreAssignVhID);
+                                if (pre_wait_assign_vh.TransferReady(scApp.CMDBLL))
+                                {
+                                    bestSuitableVh = pre_wait_assign_vh;
+                                }
+                            }
+                            if (bestSuitableVh == null)
+                            {
+                                bestSuitableVh = scApp.VehicleBLL.findBestSuitableVhStepByNearest(from_adr, vh_type);
+                            }
+                            cmd_type = E_CMD_TYPE.LoadUnload;
+                        }
+
+                        //if (isZone(hostdest))   //hsinyuchang	2020/4/30 15:32:36	搬送目的為zone時，計算搬送到哪個shelf的methos
+                        //{
+                        //    List<ShelfDef> shelfData = scApp.ShelfDefBLL.GetEmptyAndEnableShelfByZone(hostdest);
+                        //    string shelfID = scApp.TransferService.GetShelfRecentLocation(shelfData, hostsource);
+                        //    hostdest = shelfID;
+                        //    //hostdest = getEmptyShelfForMoveIn(hostdest);
+                        //}
+                        //if (hostdest == null)
+                        //{
+                        //    return false;   //沒有空shelf，暫緩執行
+                        //}
+
+                        scApp.MapBLL.getAddressID(hostdest, out to_adr);
+
+                        string best_suitable_vehicle_id = string.Empty;
+                        //如果有找到的話，則就產生命令派給VH
+                        if (bestSuitableVh != null)
+                        {
+                            best_suitable_vehicle_id = bestSuitableVh.VEHICLE_ID.Trim();
+                        }
+                        //沒有則代表找不到車，因此就更新該筆命令的Time Priority (此步驟上層處理)
+                        else
+                        {
+                            return (false, "找不到適合vh搬送");
+                        }
+                        using (TransactionScope tx = SCUtility.getTransactionScope())
+                        {
+                            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                            {
+                                //如果有找到車子則將產生一筆Transfer command
+                                bool isSuccess = true;
+                                isSuccess &= scApp.CMDBLL.doCreatTransferCommand(best_suitable_vehicle_id, mcs_cmd.CMD_ID, mcs_cmd.CARRIER_ID,
+                                                    cmd_type,
+                                                    hostsource,
+                                                    hostdest, mcs_cmd.PRIORITY_SUM, 0,
+                                                    mcs_cmd.BOX_ID, mcs_cmd.LOT_ID,
+                                                    from_adr, to_adr);
+                                //在找到車子後先把它改成PreInitial，防止Timer再找到該筆命令
+                                if (isSuccess)
+                                {
+                                    //isSuccess &= scApp.CMDBLL.updateCMD_MCS_TranStatus2Paused(mcs_cmd.CMD_ID);  //20200220改成Paused WARNING
+                                    if (mcs_cmd.CRANE != best_suitable_vehicle_id)
+                                    {
+                                        updateCMD_MCS_CRANE(mcs_cmd.CMD_ID, best_suitable_vehicle_id);
+                                    }
+                                    isSuccess = updateCMD_MCS_TranStatus(mcs_cmd.CMD_ID, E_TRAN_STATUS.Transferring);
+
+                                    if (isSuccess && !SCUtility.isEmpty(bestSuitableVh.OHTC_CMD))
+                                    {
+                                        //AVEHICLE VhCatchObj = scApp.getEQObjCacheManager().getVehicletByVHID(bestSuitableVh.VEHICLE_ID);
+                                        isSuccess = bestSuitableVh.sned_Str37(bestSuitableVh.OHTC_CMD, CMDCancelType.CmdCancel);
+                                        //再命令取消失敗後，要去確認一下目前VH的AVEHICLE Table跟ACMD_OHTC Table是否有發生已無ACMD_OHTC
+                                        //但AVEHICLE Table卻還有殘留的資料，
+                                        //如果沒有匹配則需要強制更新 AVEHICLE Table，使它資料一致
+                                        //if (!isSuccess)
+                                        //{
+                                        //    Task.Run(() => scApp.VehicleService.vhCommandExcuteStatusCheck(bestSuitableVh.VEHICLE_ID));
+                                        //}
+                                    }
+                                    if (isSuccess)
+                                    {
+                                        tx.Complete();
+                                        return (true, "");
+                                    }
+                                    else
+                                    {
+                                        return (false, "產生命令失敗");
+                                    }
+
+                                }
+                                else
+                                {
+                                    OHTCCommandCheckResult check_result = getOrSetCallContext<OHTCCommandCheckResult>(CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT);
+                                    return (false, check_result.Result.ToString());
+                                }
+                            }
+                        }
+                        //如果產生完命令後，發現該Vh正在執行OHTC的移動命令時，則需要將該命令Cancel
+                        //20200515 不要取消了，讓他做完
+                        //if (isSuccess && !SCUtility.isEmpty(bestSuitableVh.OHTC_CMD))
+                        //{
+                        //    AVEHICLE VhCatchObj = scApp.getEQObjCacheManager().getVehicletByVHID(bestSuitableVh.VEHICLE_ID);
+                        //    isSuccess = bestSuitableVh.sned_Str37(bestSuitableVh.OHTC_CMD, CMDCancelType.CmdCancel);
+                        //}
+
+                        //if (mcs_cmd.CRANE != best_suitable_vehicle_id)
+                        //{
+                        //    updateCMD_MCS_CRANE(mcs_cmd.CMD_ID, best_suitable_vehicle_id);
+                        //}
+
+                        //return true;
+                        //return isSuccess;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TransferServiceLogger.Error(ex, "generateOHTCommand");
+                    return (false, "例外發生");
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref syncTranOHTCommandPoint, 0);
+                }
+            }
+            else
+            {
+                return (false, "尋車功能被占用");
+            }
+        }
 
         public bool AssignTransferCommmand(ACMD_MCS mcs_cmd, AVEHICLE vh)
         {
@@ -3239,7 +3448,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     if (!SCUtility.isEmpty(cmd_id_mcs) ||
                         cmd_type == E_CMD_TYPE.Move_MTPort)
                     {
-                        if (isCMD_OHTCQueueByVh(vh_id))
+                        if (isCMD_OHTCWillSending(vh_id))
                         {
                             check_result.IsSuccess &= false;
                             check_result.Result.AppendLine($" want to creat mcs transfer command:{cmd_id_mcs} of ACMD_OHTC, " +
@@ -3273,6 +3482,17 @@ namespace com.mirle.ibg3k0.sc.BLL
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(CMDBLL), Device: string.Empty,
                                       Data: check_result.Result.ToString(),
                                       XID: check_result.Num);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            ACMD_OHTC.CMD_OHTC_InfoList.TryAdd(cmd_obj.CMD_ID, cmd_obj);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error(ex, "Exception");
+                        }
                     }
                     setCallContext(CALL_CONTEXT_KEY_WORD_OHTC_CMD_CHECK_RESULT, check_result);
                 }
@@ -3377,7 +3597,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 //如果該筆Command是MCS Cmd，只需要檢查有沒有已經在Queue中的，有則不能Creat
                 else
                 {
-                    if (isCMD_OHTCQueueByVh(vh_id))
+                    if (isCMD_OHTCWillSending(vh_id))
                     {
                         return null;
                     }
@@ -3822,6 +4042,15 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exception");
                 return false;
             }
+        }
+        public bool isCMD_OHTCWillSending(string vhID)
+        {
+            int count = 0;
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                count = cmd_ohtcDAO.getVhWillSendingCMDConut(con, vhID);
+            }
+            return count != 0;
         }
 
         public bool isCMD_OHTCExcuteByVh(string vh_id)
@@ -5645,6 +5874,21 @@ namespace com.mirle.ibg3k0.sc.BLL
                 catch (Exception ex)
                 {
                     return false;
+                }
+            }
+            public List<ACMD_OHTC> loadCurrentExcuteCmdOhtc()
+            {
+                try
+                {
+                    var excute_cmd_ohtcs = ACMD_OHTC.CMD_OHTC_InfoList.Values.ToList();
+
+                    return excute_cmd_ohtcs;
+                }
+
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                    return new List<ACMD_OHTC>();
                 }
             }
         }

@@ -1079,7 +1079,10 @@ namespace com.mirle.ibg3k0.sc.Service
                     //如果失敗了，則要將該筆命令更新回Queue，並且AbnormalEnd該筆命令
                     if (!SCUtility.isEmpty(cmd.CMD_ID_MCS))
                     {
-                        scApp.CMDBLL.updateCMD_MCS_TranStatus2Queue(cmd.CMD_ID_MCS);
+                        //scApp.CMDBLL.updateCMD_MCS_TranStatus2Queue(cmd.CMD_ID_MCS);
+                        ACMD_MCS cmd_mcs = scApp.CMDBLL.getCMD_MCSByID(cmd.CMD_ID_MCS);
+                        CassetteData cmdOHT_CSTdata = scApp.CassetteDataBLL.loadCassetteDataByBoxID(cmd.BOX_ID);
+                        scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, cmdOHT_CSTdata, "doSendOHxCCmdToVh");
                     }
                     scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHT);
                 }
@@ -1975,21 +1978,22 @@ namespace com.mirle.ibg3k0.sc.Service
             can_avoid_port = scApp.PortDefBLL.cache.loadCanAvoidPortDefs();
 
 
-            if (can_avoid_port == null || can_avoid_port.Count == 0)
+            //2.找出離自己最近的一個CV點且沒有車在上面沒有命令要前往的Address
+            var find_result = findTheNearestCVPort(willDrivenAwayVh, can_avoid_port);
+
+
+            PortDef avoid_port = null;
+            if (find_result.isFind)
             {
-                //1.2.如果沒有則就把全部的CV納入選擇。
-                can_avoid_port = scApp.PortDefBLL.cache.loadCVPortDefs();
+                avoid_port = find_result.PortDef;
             }
-            //2.找出離自己最近的一個CV點
-            //var find_result = findTheNearestCVPort(willDrivenAwayVh, can_avoid_port);
-
-            can_avoid_port = can_avoid_port.Where(port => !SCUtility.isMatche(port.ADR_ID, willDrivenAwayVh.CUR_ADR_ID)).ToList();
-
-            var avoid_port = can_avoid_port.OrderBy(port => port.AvoidCount).FirstOrDefault();
+            else
+            {
+                avoid_port = can_avoid_port.FirstOrDefault();
+            }
 
             if (avoid_port != null)
             {
-                avoid_port.AvoidCount++;
                 return (true, avoid_port.ADR_ID);
             }
             else
@@ -2004,7 +2008,18 @@ namespace com.mirle.ibg3k0.sc.Service
             PortDef nearest_cv_port = null;
             foreach (var port_def in all_cv_port_in_mode)
             {
+                var adr_obj = port_def.getAdressObj(scApp.AddressBLL);
+                if (adr_obj != null)
+                {
+                    bool has_vh_on_or_to_adr = adr_obj.HasVhIdleOnHere(scApp.VehicleBLL) || adr_obj.HasVhWillComeHere(scApp.CMDBLL);
+                    if (has_vh_on_or_to_adr)
+                    {
+                        continue;
+                    }
+                }
+
                 if (SCUtility.isMatche(port_def.ADR_ID, willDrivenAwayVh.CUR_ADR_ID)) continue;//如果目前所在的Address與要找的CV Port 一樣的話，要濾掉
+
                 var check_result = scApp.GuideBLL.IsRoadWalkable(willDrivenAwayVh.CUR_ADR_ID, port_def.ADR_ID);
                 if (check_result.isSuccess && check_result.distance < min_distance)
                 {
@@ -2014,6 +2029,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             return (nearest_cv_port != null, nearest_cv_port);
         }
+
 
         private void PositionReport_LoadingUnloading(BCFApplication bcfApp, AVEHICLE eqpt, ID_136_TRANS_EVENT_REP recive_str, int seq_num, EventType eventType)
         {
@@ -2242,6 +2258,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         ACMD_MCS cmd_mcs = scApp.CMDBLL.getCMD_MCSByID(cmd_ohtc.CMD_ID_MCS);
                         CassetteData cmdOHT_CSTdata = scApp.CassetteDataBLL.loadCassetteDataByBoxID(cmd_mcs.BOX_ID);
+
                         if (has_cst_on_vh)
                         {
                             if (is_bcr_read_fail)
@@ -2326,7 +2343,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             }
                         }
                     }
-                    finishOHTCCmd(eqpt, eqpt.OHTC_CMD, CompleteStatus.CmpStatusVehicleAbort);
+                    finishOHTCCmd(eqpt, eqpt.OHTC_CMD, eqpt.MCS_CMD, CompleteStatus.CmpStatusVehicleAbort);
                     replyTranEventReport(bcfApp, eventType, eqpt, seq_num,
                         renameCarrierID: final_cst_id);
                 }
@@ -2396,17 +2413,43 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        private bool finishOHTCCmd(AVEHICLE eqpt, string cmd_id, CompleteStatus completeStatus)
+        private bool finishOHTCCmd(AVEHICLE eqpt, string cmd_id, string cmd_mcs_id, CompleteStatus completeStatus)
         {
             bool isSuccess = true;
+            E_CMD_STATUS ohtc_cmd_status = scApp.VehicleBLL.CompleteStatusToCmdStatus(completeStatus);
             using (TransactionScope tx = SCUtility.getTransactionScope())
             {
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
                     isSuccess &= scApp.VehicleBLL.doTransferCommandFinish(eqpt.VEHICLE_ID, cmd_id, completeStatus);
-                    E_CMD_STATUS ohtc_cmd_status = scApp.VehicleBLL.CompleteStatusToCmdStatus(completeStatus);
                     isSuccess &= scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd_id, ohtc_cmd_status);
                     isSuccess &= scApp.VIDBLL.initialVIDCommandInfo(eqpt.VEHICLE_ID);
+
+                    if (completeStatus == CompleteStatus.CmpStatusVehicleAbort)
+                    {
+                        TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 發生vehicle abort 確認是否有命令已經先預下給該vh...");
+                        var check_result = scApp.CMDBLL.hasCMD_OHTCInQueue(eqpt.VEHICLE_ID);
+                        if (check_result.has)
+                        {
+                            TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 有預下cmd_ohtc_id:{SCUtility.Trim(check_result.cmd_ohtc.CMD_ID, true)}、cmd_mcs_id:{SCUtility.Trim(check_result.cmd_ohtc.CMD_ID_MCS, true)}，" +
+                                                       $"開始進行命令結束...");
+                            ACMD_OHTC queue_cmd = check_result.cmd_ohtc;
+                            scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(queue_cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHTC);
+                            if (!SCUtility.isEmpty(queue_cmd.CMD_ID_MCS))
+                            {
+                                ACMD_MCS pre_initial_cmd_mcs = scApp.CMDBLL.getCMD_MCSByID(queue_cmd.CMD_ID_MCS);
+                                if (pre_initial_cmd_mcs != null &&
+                                    pre_initial_cmd_mcs.TRANSFERSTATE == E_TRAN_STATUS.Transferring)
+                                {
+                                    //scApp.CMDBLL.updateCMD_MCS_TranStatus2Queue(pre_initial_cmd_mcs.CMD_ID);
+                                    CassetteData cmdOHT_CSTdata = scApp.CassetteDataBLL.loadCassetteDataByBoxID(pre_initial_cmd_mcs.BOX_ID);
+                                    scApp.TransferService.ForceFinishMCSCmd(pre_initial_cmd_mcs, cmdOHT_CSTdata, "finishOHTCCmd");
+                                    TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 命令結束cmd_ohtc_id:{SCUtility.Trim(check_result.cmd_ohtc.CMD_ID, true)}、cmd_mcs_id:{SCUtility.Trim(check_result.cmd_ohtc.CMD_ID_MCS, true)}，" +
+                                                               $"結束命令完成。");
+                                }
+                            }
+                        }
+                    }
 
                     if (isSuccess)
                     {
@@ -2418,6 +2461,23 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                 }
             }
+            try
+            {
+                if (!SCUtility.isEmpty(cmd_mcs_id))
+                {
+                    scApp.SysExcuteQualityBLL.updateSysExecQity_CmdFinish(cmd_mcs_id, ohtc_cmd_status, completeStatus, out var quality);
+                    if (quality != null)
+                    {
+                        SCUtility.TrimAllParameter(quality);
+                        LogManager.GetLogger("SysExcuteQuality").Info(quality.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+
 
             return isSuccess;
         }
@@ -3633,11 +3693,11 @@ namespace com.mirle.ibg3k0.sc.Service
             if (recive_str.CmpStatus == CompleteStatus.CmpStatusVehicleAbort)
             {
                 if (is_direct_finish)
-                    isSuccess = finishOHTCCmd(vh, cmd_id, completeStatus);
+                    isSuccess = finishOHTCCmd(vh, cmd_id, finish_mcs_cmd, completeStatus);
             }
             else
             {
-                isSuccess = finishOHTCCmd(vh, cmd_id, completeStatus);
+                isSuccess = finishOHTCCmd(vh, cmd_id, finish_mcs_cmd, completeStatus);
             }
 
 

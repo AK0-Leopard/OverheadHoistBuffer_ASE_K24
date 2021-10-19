@@ -601,6 +601,8 @@ namespace com.mirle.ibg3k0.sc.App
         public SysExcuteQualityBLL SysExcuteQualityBLL { get { return sysexcutequalityBLL; } }
         private BlockControlBLL blockcontrolBLL = null;
         public BlockControlBLL BlockControlBLL { get { return blockcontrolBLL; } }
+        private AddressBLL addressBLL = null;
+        public AddressBLL AddressBLL { get { return addressBLL; } }
         private SectionBLL sectinoBLL = null;
         public SectionBLL SectionBLL { get { return sectinoBLL; } }
         private SegmentBLL segmentBLL = null;
@@ -1543,6 +1545,7 @@ namespace com.mirle.ibg3k0.sc.App
             networkqualityBLL = new NetworkQualityBLL();
             sysexcutequalityBLL = new SysExcuteQualityBLL();
             blockcontrolBLL = new BlockControlBLL();
+            addressBLL = new AddressBLL();
             sectinoBLL = new SectionBLL();
             segmentBLL = new SegmentBLL();
             equipmentBLL = new EquipmentBLL();
@@ -1623,6 +1626,7 @@ namespace com.mirle.ibg3k0.sc.App
 
             PortBLL.start(this);
             PortStationBLL.start(this);
+            AddressBLL.start(this);
             SectionBLL.start(this);
             SegmentBLL.start(this);
             equipmentBLL.start(this);

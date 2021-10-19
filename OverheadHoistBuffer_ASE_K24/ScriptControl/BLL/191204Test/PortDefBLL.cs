@@ -180,6 +180,19 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return false;
             }
         }
+        public void upDatePortTypeIndex()
+        {
+            try
+            {
+                var PortDefs = scApp.PortDefBLL.GetOHB_PortData(scApp.getEQObjCacheManager().getLine().LINE_ID);
+                cache.upDatePortTypeIndex(PortDefs);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+        }
+
 
         public List<PortDef> GetOHB_PortData(string ohbName)
         {
@@ -362,6 +375,16 @@ namespace com.mirle.ibg3k0.sc.BLL
                 objCacheManager = _objCacheManager;
             }
 
+            public void upDatePortTypeIndex(List<PortDef> portDefsDB)
+            {
+                var port_defs_cache = objCacheManager.getPortDefs();
+                foreach (var port in portDefsDB)
+                {
+                    var port_cache = port_defs_cache.Where(a => SCUtility.isMatche(a.PLCPortID, port.PLCPortID)).FirstOrDefault();
+                    if (port_cache == null) continue;
+                    port_cache.PortTypeIndex = port.PortTypeIndex;
+                }
+            }
 
             public List<PortDef> loadALLPortDefs()
             {

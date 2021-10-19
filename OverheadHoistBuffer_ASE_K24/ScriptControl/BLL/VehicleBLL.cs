@@ -996,14 +996,14 @@ namespace com.mirle.ibg3k0.sc.BLL
             //2.過濾掉狀態不符的
             if (!is_check_has_vh_carry)
                 filterVh(ref vhs, vh_type);
-            //3.確認車子是否是在CV Port上且是Input port，如果是則要確認該CV是不是有已經準備流過來的BOX
-            foreach (var vh in vhs.ToList())
-            {
-                if (scApp.TransferService.isNeedWatingBoxComeIn(vh.CUR_ADR_ID, passAdrID: source))
-                {
-                    vhs.Remove(vh);
-                }
-            }
+            ////3.確認車子是否是在CV Port上且是Input port，如果是則要確認該CV是不是有已經準備流過來的BOX
+            //foreach (var vh in vhs.ToList())
+            //{
+            //    if (scApp.TransferService.isNeedWatingBoxComeIn(vh.CUR_ADR_ID, passAdrID: source))
+            //    {
+            //        vhs.Remove(vh);
+            //    }
+            //}
             (firstVh, dietance) = FindNearestVh(source, vhs);
 
             return firstVh;
@@ -1186,26 +1186,26 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             //*******************
             //A0.03
-            foreach (AVEHICLE vh in vhs.ToList())
-            {
-                if (!SCUtility.isEmpty(vh.OHTC_CMD))
-                {
-                    vhs.Remove(vh);
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
-                       Data: $"vh id:{vh.VEHICLE_ID} has excute OHTC command:{vh.MCS_CMD.Trim()}," +
-                             $"so filter it out",
-                       VehicleID: vh.VEHICLE_ID,
-                       CarrierID: vh.CST_ID);
-                }
-            }
+            //foreach (AVEHICLE vh in vhs.ToList())
+            //{
+            //    if (!SCUtility.isEmpty(vh.OHTC_CMD))
+            //    {
+            //        vhs.Remove(vh);
+            //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
+            //           Data: $"vh id:{vh.VEHICLE_ID} has excute OHTC command:{vh.MCS_CMD.Trim()}," +
+            //                 $"so filter it out",
+            //           VehicleID: vh.VEHICLE_ID,
+            //           CarrierID: vh.CST_ID);
+            //    }
+            //}
             //A0.03
             foreach (AVEHICLE vh in vhs.ToList())
             {
-                if (scApp.CMDBLL.isCMD_OHTCQueueByVh(vh.VEHICLE_ID))
+                if (scApp.CMDBLL.isCMD_OHTCWillSending(vh.VEHICLE_ID))
                 {
                     vhs.Remove(vh);
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
-                       Data: $"vh id:{vh.VEHICLE_ID} has ohxc command in queue," +
+                       Data: $"vh id:{vh.VEHICLE_ID} has ohxc command in sending," +
                              $"so filter it out",
                        VehicleID: vh.VEHICLE_ID,
                        CarrierID: vh.CST_ID);

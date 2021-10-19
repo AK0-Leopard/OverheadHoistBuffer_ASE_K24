@@ -49,5 +49,11 @@ namespace com.mirle.ibg3k0.sc
         public bool FireAlarm;
 
         public int AvoidCount;
+
+        public AADDRESS getAdressObj(BLL.AddressBLL addressBLL)
+        {
+            var adr_obj = addressBLL.cache.GetAddress(ADR_ID);
+            return adr_obj;
+        }
     }
 }

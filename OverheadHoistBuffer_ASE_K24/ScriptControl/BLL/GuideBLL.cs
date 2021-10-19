@@ -65,7 +65,28 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
 
 
+        public (bool isSuccess, int distance) IsRoadWalkableForMTx(string startAddress, string targetAddress)
+        {
+            try
+            {
+                if (SCUtility.isMatche(startAddress, targetAddress))
+                    return (true, 0);
 
+                var guide_info = getGuideInfoForMtx(startAddress, targetAddress);
+                if (guide_info.isSuccess)
+                {
+                    return (true, guide_info.totalCost);
+                }
+                else
+                {
+                    return (false, int.MaxValue);
+                }
+            }
+            catch
+            {
+                return (false, int.MaxValue);
+            }
+        }
         public (bool isSuccess, int distance) IsRoadWalkable(string startAddress, string targetAddress)
         {
             try

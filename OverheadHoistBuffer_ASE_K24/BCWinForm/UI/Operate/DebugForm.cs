@@ -513,25 +513,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         }
 
 
-        private void btn_portInServeice_Click(object sender, EventArgs e)
-        {
-            string port_id = cb_PortID.Text;
-            //Task.Run(() =>
-            //{
-            //    bcApp.SCApplication.VehicleService.doPortServeiceChange(port_id, E_PORT_STATUS.InService);
-            //});
-        }
-
-        private void btn_portOutOfServeice_Click(object sender, EventArgs e)
-        {
-            string port_id = cb_PortID.Text;
-            //Task.Run(() =>
-            //{
-            //    bcApp.SCApplication.VehicleService.doPortServeiceChange(port_id, E_PORT_STATUS.OutOfService);
-            //});
-
-        }
-
         private void ck_test_carrierinterface_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.isTestCarrierInterfaceError = ck_test_carrierinterface_error.Checked;
@@ -1332,6 +1313,21 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             {
                 gb_cycleRunInfo.Visible = false;
             }
+        }
+
+        private async void btn_reloadParkingAdr_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                btn_reloadParkingAdr.Enabled = false;
+                await Task.Run(() => bcApp.SCApplication.PortDefBLL.upDatePortTypeIndex());
+            }
+            finally
+            {
+                btn_reloadParkingAdr.Enabled = true;
+
+            }
+
         }
     }
 }

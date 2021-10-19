@@ -54,5 +54,40 @@ namespace com.mirle.ibg3k0.sc
                 return AddressTypeFlags[BIT_INDEX_SEGMENT];
             }
         }
+
+
+        public bool HasVhWillComeHere(BLL.CMDBLL cmdBLL)
+        {
+            try
+            {
+                var current_excute_cmd_ohtc = cmdBLL.cache.loadCurrentExcuteCmdOhtc();
+                if (current_excute_cmd_ohtc == null || current_excute_cmd_ohtc.Count == 0)
+                    return false;
+                int count = current_excute_cmd_ohtc.Where(cmd => Common.SCUtility.isMatche(cmd.DESTINATION_ADR, ADR_ID)).Count();
+                if (count > 0) return true;
+                else return false;
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception");
+                return false;
+            }
+        }
+        public bool HasVhIdleOnHere(BLL.VehicleBLL vehicleBLL)
+        {
+            try
+            {
+                var vhs = vehicleBLL.cache.loadVhs();
+                int count = vhs.Where(v => v.ACT_STATUS == VHActionStatus.NoCommand &&
+                                           Common.SCUtility.isMatche(ADR_ID, v.CUR_ADR_ID)).Count();
+                if (count > 0) return true;
+                else return false;
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception");
+                return false;
+            }
+        }
     }
 }

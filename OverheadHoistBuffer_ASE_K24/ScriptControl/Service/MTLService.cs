@@ -191,6 +191,7 @@ namespace com.mirle.ibg3k0.sc.Service
             //if (isSuccess && !scApp.RouteGuide.checkRoadIsWalkable(car_out_vh.CUR_ADR_ID, mtx.DeviceAddress, true, out route_distance))
             if (isSuccess)
             {
+                //(bool guideResult, int _) = scApp.GuideBLL.IsRoadWalkable(car_out_vh.CUR_ADR_ID, mtx.DeviceAddress);
                 (bool guideResult, int _) = scApp.GuideBLL.IsRoadWalkable(car_out_vh.CUR_ADR_ID, mtx.DeviceAddress);
                 if (!guideResult)
                 {

@@ -37,6 +37,7 @@ namespace com.mirle.ibg3k0.sc.Common
         private SCApplication scApp = null;
         //Cache Object
         //Section
+        private List<AADDRESS> Addresses;
         private List<ASECTION> Sections;
         //Segment
         private List<ASEGMENT> Segments;
@@ -67,6 +68,7 @@ namespace com.mirle.ibg3k0.sc.Common
         {
             scApp = _app;
 
+            Addresses = scApp.MapBLL.loadAllAddress();
             Segments = scApp.MapBLL.loadAllSegments();
             Sections = scApp.MapBLL.loadAllSection();
             BlockZoneMasters = scApp.MapBLL.loadAllBlockZoneMaster();
@@ -149,14 +151,19 @@ namespace com.mirle.ibg3k0.sc.Common
             return Sections.Where(s => (s.FROM_ADR_ID.Trim() == adr1.Trim() && s.TO_ADR_ID.Trim() == adr2.Trim())
                                     || (s.FROM_ADR_ID.Trim() == adr2.Trim() && s.TO_ADR_ID.Trim() == adr1.Trim())).FirstOrDefault();
         }
+        public List<AADDRESS> getAddresses()
+        {
+            return Addresses.ToList();
+        }
+
         public List<ASECTION> getSections()
         {
-            return Sections;
+            return Sections.ToList();
         }
         //Segment
         public List<ASEGMENT> getSegments()
         {
-            return Segments;
+            return Segments.ToList();
         }
         public List<PortDef> getPortDefs()
         {
