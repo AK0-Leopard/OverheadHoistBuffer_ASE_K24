@@ -129,6 +129,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         {
             app.objCacheManager.RailStatusChanged += ObjCacheManager_RailStatusChanged;
             RailsCollection.AddressSelected += RailsCollection_AddressSelected;
+            RailsCollection.SectionSelected += RailsCollection_SectionSelected;
         }
 
         bool isSourceSelected = false;
@@ -150,7 +151,30 @@ namespace VehicleControl_Viewer.frm_Mainfrom
                 isSourceSelected = false;
             }
         }
-
+        private async void RailsCollection_SectionSelected(object sender, EventArgs e)
+        {
+            //Section Mouse Right Click
+            var line = sender as Line;
+            Point start = new Point(line.X1, line.Y1);
+            Point end = new Point(line.X2, line.Y2);
+            Section section = null ;
+            foreach (var v in sections)
+            {
+                if( (start == v.StartAddress.Point) && (end == v.EndAddress.Point))
+                {
+                    //alreay find the section~~~~
+                    section = v;
+                    break;
+                }
+            }
+            if (section == null) { }
+            else
+            {
+                frm_TipMessage_YesNo frm = new frm_TipMessage_YesNo("Are You Sure to Disable Seg : " + section.ID.Substring(0, 3) + "?\r\n" + "It will be disable all section like " + section.ID.Substring(0, 3) + "xx");
+                frm.ShowDialog();
+                bool b = frm.bResult; //get user send yes/no, can do something
+            }
+        }
         private void ObjCacheManager_RailStatusChanged(object sender, EventArgs e)
         {
             refreshRailStatus();
@@ -473,6 +497,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         class ShapeCollection
         {
             public EventHandler AddressSelected;
+            public EventHandler SectionSelected;
             SolidColorBrush mySolidColorBrush_ForPoint = new SolidColorBrush();
             SolidColorBrush mySolidColorBrush_ForRail = new SolidColorBrush();
             public List<Shape> shapes = null;
@@ -523,6 +548,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
                 myLine.HorizontalAlignment = HorizontalAlignment.Left;
                 myLine.VerticalAlignment = VerticalAlignment.Center;
                 myLine.StrokeThickness = 200;
+                myLine.MouseRightButtonDown += myLineMouseRightDown;
                 var t = new ToolTip();
                 ToolTipService.SetInitialShowDelay(t, 0);
                 t.Content = secID;
@@ -530,6 +556,12 @@ namespace VehicleControl_Viewer.frm_Mainfrom
                 myLine.ToolTip = t;
                 shapes.Add(myLine);
             }
+
+            private void myLineMouseRightDown(object sender, MouseButtonEventArgs e)
+            {
+                SectionSelected?.Invoke(sender, EventArgs.Empty);
+            }
+
             public void AddLineSegment(FrameworkElement frameworkElement, string secID, Point startPoint, Point endPoint, SolidColorBrush brush, bool isFinal)
             {
                 Line myLine = new Line();
@@ -542,6 +574,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
                 myLine.HorizontalAlignment = HorizontalAlignment.Left;
                 myLine.VerticalAlignment = VerticalAlignment.Center;
                 myLine.StrokeThickness = 200;
+                myLine.MouseRightButtonDown += myLineMouseRightDown;
                 var t = new ToolTip();
                 ToolTipService.SetInitialShowDelay(t, 0);
                 t.Content = secID;
@@ -568,6 +601,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
             {
                 resertGuideReail();
             }
+
         }
 
         private void Img_extendMenu_MouseDown(object sender, MouseButtonEventArgs e)

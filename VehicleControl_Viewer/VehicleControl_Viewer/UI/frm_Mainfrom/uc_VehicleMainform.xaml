@@ -17,13 +17,12 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-
             <!--EQ VIEW-->
-            <RowDefinition/>
+            <RowDefinition Height="560*"/>
             <!--分割線-->
-            <RowDefinition Height="5"/>
+            <RowDefinition Height="Auto"/>
             <!--系統資訊區-->
-            <RowDefinition Height="300" MinHeight="170"/>
+            <RowDefinition Height="250*" MinHeight="170"/>
 
         </Grid.RowDefinitions>
         <Grid x:Name="gd_LeftSide" Grid.Row="0" Grid.Column="0" >
@@ -94,7 +93,7 @@
         </Grid>
 
         <!--分割線-->
-        <GridSplitter Grid.Row="1" Grid.ColumnSpan="3" Height="10" HorizontalAlignment="Stretch" Background="LightGray" Margin="0,0,0,165" Grid.RowSpan="2"  />
+        <GridSplitter Grid.Row="1" Grid.ColumnSpan="3" Height="5" HorizontalAlignment="Stretch" Background="LightGray" />
 
         <!--系統資訊區-->
         <Grid Grid.Row="2" Grid.ColumnSpan="3" Style="{DynamicResource SecondBackgroundColor}">
