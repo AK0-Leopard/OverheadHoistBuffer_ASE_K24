@@ -98,6 +98,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 var maintain_device = eqObjCacheManager.getAllEquipment().
                                                         Where(device => device is IMaintainDevice).
                                                         ToList();
+                //在K24中這兩個點剛好是MTL交界，因有時要從這邊開始移動時，需要讓他可以動
+                if (SCUtility.isMatche(adrID, "10874") || SCUtility.isMatche(adrID, "10876"))
+                {
+                    return true;
+                }
                 foreach (IMaintainDevice device in maintain_device)
                 {
                     ASEGMENT device_segment = segmentBLL.cache.GetSegment(device.DeviceSegment);
