@@ -324,47 +324,112 @@ namespace com.mirle.ibg3k0.sc.Service
 
 
         }
-        const int ADVANCE_DRIVE_OUT_DISTANCE_MM = 20000;
+        const int ADVANCE_DRIVE_OUT_DISTANCE_IN_GUIDE_SECTION_MM = 20000;
+        const int ADVANCE_DRIVE_OUT_DISTANCE_NOT_IN_GUIDE_SECTION_MM = 2000;
 
 
         public void tryDriveOutTheVhByAdvance(AVEHICLE vh)
         {
-            if (vh.WillPassSectionID == null || vh.WillPassSectionID.Count == 0) return;
-            string current_section = "";
-            if (SCUtility.isEmpty(vh.CUR_SEC_ID))
+            try
             {
-                ASECTION from_sec = scApp.SectionBLL.cache.GetSectionsByFromAddress(vh.CUR_ADR_ID).FirstOrDefault();
-                if (from_sec == null)
+                if (vh.WillPassSectionID == null || vh.WillPassSectionID.Count == 0)
                 {
+                    string next_find_from_adr = vh.CUR_ADR_ID;
+                    double checked_distance_by_unknow_guide_section = 0;
+                    if (!vh.IsObstacle)
+                        return;
+                    do
+                    {
+                        var related_sections = scApp.SectionBLL.cache.GetSectionsByFromAddress(next_find_from_adr);
+                        if (related_sections == null || related_sections.Count == 0 || related_sections.Count >= 2)
+                        { return; }
+                        ASECTION last_check_section_by_unknow_guide_section = related_sections.FirstOrDefault();
+                        var reserve_result = scApp.ReserveBLL.TryAddReservedSection
+                        (vh.VEHICLE_ID, last_check_section_by_unknow_guide_section.SEC_ID, isAsk: true);
+                        if (!reserve_result.OK)
+                        {
+                            tryDriveOutTheVh(vh.VEHICLE_ID, reserve_result.VehicleID);
+                            return;
+                        }
+                        next_find_from_adr = last_check_section_by_unknow_guide_section.TO_ADR_ID;
+                        checked_distance_by_unknow_guide_section += last_check_section_by_unknow_guide_section.SEC_DIS;
+                    } while (checked_distance_by_unknow_guide_section < ADVANCE_DRIVE_OUT_DISTANCE_IN_GUIDE_SECTION_MM);
+
                     return;
+                }
+                List<string> wiil_pass_section_ids = vh.WillPassSectionID.ToList();
+                string current_section = "";
+                if (SCUtility.isEmpty(vh.CUR_SEC_ID))
+                {
+                    ASECTION from_sec = scApp.SectionBLL.cache.GetSectionsByFromAddress(vh.CUR_ADR_ID).FirstOrDefault();
+                    if (from_sec == null)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        current_section = from_sec.SEC_ID;
+                    }
                 }
                 else
                 {
-                    current_section = from_sec.SEC_ID;
+                    current_section = vh.CUR_SEC_ID;
                 }
-            }
-            else
-            {
-                current_section = vh.CUR_SEC_ID;
-            }
-            int sec_index = vh.WillPassSectionID.IndexOf(current_section);
-            if (sec_index < 0) return;
-            double checked_distance = 0;
-            //for (int start_index = sec_index; checked_distance < ADVANCE_DRIVE_OUT_DISTANCE_MM; start_index++)
-            for (int start_index = sec_index; checked_distance < DebugParameter.PreDriveOutDistance_MM; start_index++)
-            {
-                string sec_id = vh.WillPassSectionID[start_index];
-                ASECTION sec_obj = scApp.SectionBLL.cache.GetSection(sec_id);
-                var reserve_result = scApp.ReserveBLL.TryAddReservedSection
-                                    (vh.VEHICLE_ID, sec_id, isAsk: true);
-                if (!reserve_result.OK)
+                //int sec_index = vh.WillPassSectionID.IndexOf(current_section);
+                int sec_index = wiil_pass_section_ids.IndexOf(current_section);
+                if (sec_index < 0) return;
+                double checked_distance = 0;
+                ASECTION last_check_section = null;
+                //for (int start_index = sec_index; checked_distance < ADVANCE_DRIVE_OUT_DISTANCE_MM; start_index++)
+                for (int start_index = sec_index; checked_distance < DebugParameter.PreDriveOutDistance_MM; start_index++)
                 {
-                    tryDriveOutTheVh(vh.VEHICLE_ID, reserve_result.VehicleID);
-                    return;
+                    if (start_index < wiil_pass_section_ids.Count)
+                    {
+                        //string sec_id = vh.WillPassSectionID[start_index];
+                        string sec_id = wiil_pass_section_ids[start_index];
+                        ASECTION sec_obj = scApp.SectionBLL.cache.GetSection(sec_id);
+                        var reserve_result = scApp.ReserveBLL.TryAddReservedSection
+                                            (vh.VEHICLE_ID, sec_id, isAsk: true);
+                        if (!reserve_result.OK)
+                        {
+                            tryDriveOutTheVh(vh.VEHICLE_ID, reserve_result.VehicleID);
+                            return;
+                        }
+                        last_check_section = sec_obj;
+                    }
+                    else
+                    {
+                        if (!vh.IsObstacle)
+                            return;
+                        if (last_check_section != null)
+                        {
+                            List<ASECTION> sections = scApp.SectionBLL.cache.GetSectionsByFromAddress(last_check_section.TO_ADR_ID);
+                            if (sections == null || sections.Count == 0)
+                                return;
+                            last_check_section = sections.FirstOrDefault();
+                            var reserve_result = scApp.ReserveBLL.TryAddReservedSection
+                                                (vh.VEHICLE_ID, last_check_section.SEC_ID, isAsk: true);
+                            if (!reserve_result.OK)
+                            {
+                                tryDriveOutTheVh(vh.VEHICLE_ID, reserve_result.VehicleID);
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            return;
+                        }
+                        if (checked_distance > ADVANCE_DRIVE_OUT_DISTANCE_NOT_IN_GUIDE_SECTION_MM)
+                            return;
+                    }
+                    checked_distance += last_check_section.SEC_DIS;
+                    if (checked_distance > ADVANCE_DRIVE_OUT_DISTANCE_IN_GUIDE_SECTION_MM)
+                        return;
                 }
-                checked_distance += sec_obj.SEC_DIS;
-                if (checked_distance > ADVANCE_DRIVE_OUT_DISTANCE_MM)
-                    return;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
             }
         }
 
@@ -1942,7 +2007,8 @@ namespace com.mirle.ibg3k0.sc.Service
             if (check_can_creat_avoid_command.is_can)
             {
                 //B0.09 var find_result = findAvoidAddressNew(in_the_way_vh);
-                var find_result = findAvoidAddressForFixPort(in_the_way_vh);//B0.09
+                //var find_result = findAvoidAddressForFixPort(in_the_way_vh);//B0.09
+                var find_result = findAvoidAddressForAvoidTypeAdr(in_the_way_vh);//B0.09
                 if (find_result.isFind)
                 {
                     is_success = scApp.CMDBLL.doCreatTransferCommand(inTheWayVhID,
@@ -2002,6 +2068,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
+
         private (bool isFind, PortDef PortDef) findTheNearestCVPort(AVEHICLE willDrivenAwayVh, IEnumerable<PortDef> all_cv_port_in_mode)
         {
             int min_distance = int.MaxValue;
@@ -2030,6 +2097,73 @@ namespace com.mirle.ibg3k0.sc.Service
             return (nearest_cv_port != null, nearest_cv_port);
         }
 
+
+        private (bool isFind, string avoidAdr) findAvoidAddressForAvoidTypeAdr(AVEHICLE willDrivenAwayVh)
+        {
+            //1.找看看是否有設定的固定避車點。
+            var avoid_addresses = scApp.AddressBLL.cache.loadCanAvoidAddresses();
+
+            //2.找出離自己最近的一個CV點且沒有車在上面沒有命令要前往的Address
+            var find_result = findTheNearestAvoidAddress(willDrivenAwayVh, avoid_addresses);
+
+
+            AADDRESS avoid_adr = null;
+            if (find_result.isFind)
+            {
+                avoid_adr = find_result.adr;
+            }
+            else
+            {
+                avoid_adr = avoid_addresses.FirstOrDefault();
+            }
+
+
+
+            if (avoid_adr != null)
+            {
+                //找出點位以後，將自己的位置到停等點為止是否也有停車點，有的話就改到那個位置
+                var guide_info = scApp.GuideBLL.getGuideInfo(willDrivenAwayVh.CUR_ADR_ID, avoid_adr.ADR_ID);
+
+                var guide_adrs = guide_info.guideAddressIds;
+                foreach (var adr in guide_adrs)
+                {
+                    var adr_obj = scApp.AddressBLL.cache.GetAddress(adr);
+                    if (adr_obj.IsAvoid)
+                    {
+                        avoid_adr = adr_obj;
+                    }
+                }
+
+                return (true, avoid_adr.ADR_ID);
+            }
+            else
+            {
+                return (false, "");
+            }
+        }
+        private (bool isFind, AADDRESS adr) findTheNearestAvoidAddress(AVEHICLE willDrivenAwayVh, List<AADDRESS> all_can_avoid_adrs)
+        {
+            int min_distance = int.MaxValue;
+            AADDRESS nearest_address = null;
+            foreach (var adr in all_can_avoid_adrs)
+            {
+                bool has_vh_on_or_to_adr = adr.HasVhIdleOnHere(scApp.VehicleBLL) || adr.HasVhWillComeHere(scApp.CMDBLL);
+                if (has_vh_on_or_to_adr)
+                {
+                    continue;
+                }
+
+                if (SCUtility.isMatche(adr.ADR_ID, willDrivenAwayVh.CUR_ADR_ID)) continue;
+
+                var check_result = scApp.GuideBLL.IsRoadWalkable(willDrivenAwayVh.CUR_ADR_ID, adr.ADR_ID);
+                if (check_result.isSuccess && check_result.distance < min_distance)
+                {
+                    min_distance = check_result.distance;
+                    nearest_address = adr;
+                }
+            }
+            return (nearest_address != null, nearest_address);
+        }
 
         private void PositionReport_LoadingUnloading(BCFApplication bcfApp, AVEHICLE eqpt, ID_136_TRANS_EVENT_REP recive_str, int seq_num, EventType eventType)
         {

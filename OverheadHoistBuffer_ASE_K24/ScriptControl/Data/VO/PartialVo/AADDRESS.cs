@@ -13,9 +13,7 @@ namespace com.mirle.ibg3k0.sc
 {
     public partial class AADDRESS
     {
-        private const int BIT_INDEX_CONTROL = 1;
-        private const int BIT_INDEX_PORT = 2;
-        private const int BIT_INDEX_SEGMENT = 5;
+        private const int BIT_INDEX_AVOID = 1;
 
         public Boolean[] AddressTypeFlags { get; set; }
         public string[] SegmentIDs { get; set; }
@@ -24,9 +22,9 @@ namespace com.mirle.ibg3k0.sc
 
         public void initialAddressType()
         {
-            string s_type = ADR_ID.Substring(0, 2);
-            int.TryParse(s_type, out int type);
-            BitArray b = new BitArray(new int[] { type });
+            //string s_type = ADR_ID.Substring(0, 2);
+            int i_type = (int)ADRTYPE;
+            BitArray b = new BitArray(new int[] { i_type });
             AddressTypeFlags = new bool[b.Count];
             b.CopyTo(AddressTypeFlags, 0);
         }
@@ -41,19 +39,8 @@ namespace com.mirle.ibg3k0.sc
         }
 
         [JsonIgnore]
-        public bool IsPort
-        { get { return AddressTypeFlags[BIT_INDEX_PORT]; } }
-        [JsonIgnore]
-        public bool IsControl
-        { get { return AddressTypeFlags[BIT_INDEX_CONTROL]; } }
-        [JsonIgnore]
-        public bool IsSegment
-        {
-            get
-            {
-                return AddressTypeFlags[BIT_INDEX_SEGMENT];
-            }
-        }
+        public bool IsAvoid
+        { get { return AddressTypeFlags[BIT_INDEX_AVOID]; } }
 
 
         public bool HasVhWillComeHere(BLL.CMDBLL cmdBLL)

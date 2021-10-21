@@ -54,8 +54,15 @@ namespace com.mirle.ibg3k0.sc.BLL
             public AADDRESS GetAddress(string id)
             {
                 return CommObjCacheManager.getAddresses().
-                                           Where(a=>Common.SCUtility.isMatche(a.ADR_ID,id)).
+                                           Where(a => Common.SCUtility.isMatche(a.ADR_ID, id)).
                                            FirstOrDefault();
+            }
+
+            public List<AADDRESS> loadCanAvoidAddresses()
+            {
+                return CommObjCacheManager.getAddresses().
+                                           Where(a => a.IsAvoid).
+                                           ToList();
             }
         }
     }

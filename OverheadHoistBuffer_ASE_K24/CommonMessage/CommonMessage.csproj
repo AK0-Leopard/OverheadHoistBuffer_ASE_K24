@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ProtocolFormat\OhbcNtbcGrpcSpec.proto" />
     <None Remove="ProtocolFormat\TrackFun.proto" />
     <None Remove="ProtocolFormat\VehicleControlFun.proto" />
     <None Remove="ProtocolFormat\VehicleControlPublishMessage.proto" />
@@ -23,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="ProtocolFormat\OhbcNtbcGrpcSpec.proto" />
     <Protobuf Include="ProtocolFormat\TrackFun.proto" />
     <Protobuf Include="ProtocolFormat\VehicleControlFun.proto" />
     <Protobuf Include="ProtocolFormat\VehicleControlPublishMessage.proto" />

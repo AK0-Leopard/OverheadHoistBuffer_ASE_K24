@@ -84,6 +84,11 @@ namespace com.mirle.ibg3k0.sc.Common
                 block_zone_master.SetBlockDetailList(scApp.MapBLL);
             }
 
+            foreach (var add in Addresses)
+            {
+                add.initialAddressType();
+            }
+
 
             CommonInfo = new CommonInfo();
         }
