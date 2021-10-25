@@ -26,7 +26,7 @@ namespace com.mirle.ibg3k0.sc
         private AlarmHisList alarmHisList = new AlarmHisList();
         public VIDCollection VID_Collection;
 
-        
+
 
         public virtual SCAppConstants.EqptType Type { get; set; }
 
@@ -269,6 +269,18 @@ namespace com.mirle.ibg3k0.sc
             }
         }
         public string test { get; set; }
+
+
+
+        public Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionSend getReelNTBCDefaultMapActionSend()
+        {
+            Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionSend portValueDefMapAction =
+                getMapActionByIdentityKey(typeof(Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionSend).Name) as
+                Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionSend;
+            return portValueDefMapAction;
+        }
+
+
 
     }
 

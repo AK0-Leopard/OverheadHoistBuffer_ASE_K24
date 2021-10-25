@@ -542,6 +542,63 @@ namespace com.mirle.ibg3k0.sc.Common
 
         }
 
+        public static void RecordHostReportInfoAsk(IMessage message,  [CallerMemberName] string method = "", int seqNum = 0)
+        {
+            RecordHostReportInfo(message, $"{method}Ask", seqNum);
+        }
+        public static void RecordHostReportInfo(IMessage message,  [CallerMemberName] string method = "", int seqNum = 0)
+        {
+            recodeLog(message, "NTB", method, "", "", method.Contains("Ask"));
+
+
+        }
+        static Logger NTBlogger = LogManager.GetLogger("NTBLogger");
+        public const string TITLE_NAME_EQID = "EQ ID";
+        public const string TITLE_NAME_TIME = "T";
+        public const string TITLE_NAME_FUNNAME = "Name";
+        public const string TITLE_NAME_ID = "ID";
+        public const string TITLE_NAME_SEQ_NO = "Seq no";
+        public const string TITLE_NAME_TYPE = "Type";
+        public const string TITLE_NAME_KEYWORD = "Key Word";
+
+        public const string CHAR_TRILE_STAR = "-";
+        public const string CHAR_LEFT_BRACKETS = "[";
+        public const string CHAR_RIGHT_BRACKETS = "]";
+        public const string CHAR_COLON = ":";
+        public const string CHAR_BREAK = " ";
+        public const string CHAR_TAB_BREAK = "  ";
+        public const string CHAR_EQUAL = "=";
+        public static void recodeLog(IMessage msg, string eq_name, string fun_name, string id, string seq_no, bool isRece)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine();
+            sb.
+            Append(CHAR_TRILE_STAR).Append(TITLE_NAME_EQID).Append(CHAR_COLON).
+            Append(CHAR_LEFT_BRACKETS).Append(eq_name).
+            AppendLine(CHAR_RIGHT_BRACKETS).
+
+            Append(CHAR_TRILE_STAR).Append(TITLE_NAME_FUNNAME).Append(CHAR_COLON).
+            Append(CHAR_LEFT_BRACKETS).Append(fun_name).
+            AppendLine(CHAR_RIGHT_BRACKETS).
+
+            Append(CHAR_TRILE_STAR).Append(TITLE_NAME_TYPE).Append(CHAR_COLON).
+            Append(CHAR_LEFT_BRACKETS).Append(isRece ? "Receive" : "Send").
+            AppendLine(CHAR_RIGHT_BRACKETS);
+
+            foreach (var field in msg.Descriptor.Fields.InDeclarationOrder())
+            {
+                object obj = field.Accessor.GetValue(msg);
+                sb.Append(CHAR_TAB_BREAK);
+                sb.Append(CHAR_TAB_BREAK);
+                sb.Append(field.Name);
+                sb.Append(CHAR_BREAK);
+                sb.Append(CHAR_EQUAL);
+                sb.Append(CHAR_BREAK);
+                sb.AppendLine(obj.ToString());
+            }
+            NTBlogger.Info(sb.ToString());
+        }
+
         private static string getLoction(ID_136_TRANS_EVENT_REP id_136)
         {
             switch (id_136.EventType)

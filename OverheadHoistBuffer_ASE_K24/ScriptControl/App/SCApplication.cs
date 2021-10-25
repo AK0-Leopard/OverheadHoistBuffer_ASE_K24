@@ -695,6 +695,7 @@ namespace com.mirle.ibg3k0.sc.App
         public IRouteGuide NewRouteGuide { get { return newrouteGuide; } }
 
         private Grpc.Core.Server gRPC_With_VehicleControlFun;
+        private Grpc.Core.Server gRPC_With_ReelNTBCDefaultMapActionReceive;
 
         public WebAPI.TrackInfoClient TrackInfoClient { get; private set; }
 
@@ -1593,6 +1594,12 @@ namespace com.mirle.ibg3k0.sc.App
                 Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7001, Grpc.Core.ServerCredentials.Insecure) },
             };
             TrackInfoClient = new WebAPI.TrackInfoClient(this);
+
+            gRPC_With_ReelNTBCDefaultMapActionReceive = new Grpc.Core.Server()
+            {
+                Services = { Mirle.U332MA30.Grpc.OhbcNtbcConnect.NtbcToOhbcService.BindService(new com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionReceive()) },
+                Ports = { new Grpc.Core.ServerPort("10.243.41.186", 5005, Grpc.Core.ServerCredentials.Insecure) },
+            };
         }
 
         /// <summary>
@@ -1660,6 +1667,7 @@ namespace com.mirle.ibg3k0.sc.App
             manualPortControlService.Start(manual_port_map_action);
             manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL);
             gRPC_With_VehicleControlFun.Start();
+            gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
         }
 
         /// <summary>

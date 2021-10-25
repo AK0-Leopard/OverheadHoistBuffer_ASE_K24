@@ -204,6 +204,16 @@ namespace com.mirle.ibg3k0.sc.BLL
                             SingleOrDefault();
                 return eqpt as OHCV;
             }
+
+
+            public AEQPT GetNTB()
+            {
+                var eqpt = eqObjCacheManager.getAllEquipment().
+                            Where(eq => SCUtility.isMatche(eq.EQPT_ID, "NTB01")).
+                            FirstOrDefault();
+                return eqpt ;
+            }
+
         }
 
     }

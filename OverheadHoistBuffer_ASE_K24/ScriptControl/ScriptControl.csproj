@@ -893,6 +893,8 @@
     <Compile Include="Data\ValueDefMapAction\Interface\ICommonPortInfoValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\Interface\IManualPortValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\MGVDefaultValueDefMapAction.cs" />
+    <Compile Include="Data\ValueDefMapAction\ReelNTBC\ReelNTBCDefaultMapActionReceive.cs" />
+    <Compile Include="Data\ValueDefMapAction\ReelNTBC\ReelNTBCDefaultMapActionSend.cs" />
     <Compile Include="Data\ValueDefMapAction\SimpleMTLValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\OHCVValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\HIDValueDefMapAction.cs" />
