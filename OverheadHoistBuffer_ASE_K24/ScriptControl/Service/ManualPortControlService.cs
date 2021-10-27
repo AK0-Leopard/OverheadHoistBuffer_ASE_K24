@@ -19,6 +19,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             WriteLog($"ManualPortControlService Initial");
             HeartBeatStopwatch = new Stopwatch();
+            TimeCalibrationStopwatch = new Stopwatch();
         }
 
         public void Start(IEnumerable<IManualPortValueDefMapAction> ports)
@@ -29,6 +30,8 @@ namespace com.mirle.ibg3k0.sc.Service
 
             HeartBeatStopwatch.Start();
             WriteLog($"HeartBeat Stopwatch Start");
+            TimeCalibrationStopwatch.Start();
+            WriteLog($"Calibration Stopwatch Start");
         }
 
         private void RegisterPort(IEnumerable<IManualPortValueDefMapAction> ports)
@@ -89,8 +92,10 @@ namespace com.mirle.ibg3k0.sc.Service
         private const int timeoutElapsedMillisecondsForOffCommandingSignal = 12_000;
 
         private const int CheckHeartbeatMilliseconds = 1_000;
+        private const int TimeCalibrationMilliseconds = 86400_000;
 
         private Stopwatch HeartBeatStopwatch;
+        private Stopwatch TimeCalibrationStopwatch;
 
         #region Log
 
@@ -110,6 +115,29 @@ namespace com.mirle.ibg3k0.sc.Service
             ReflashReadyToWaitOutCarrier();
             ReflashComingOutCarrier();
             CheckCommandingSignal(allCommands);
+            tryExcuteTimeCalibration();
+        }
+
+        private void tryExcuteTimeCalibration()
+        {
+            try
+            {
+                if (TimeCalibrationStopwatch.ElapsedMilliseconds < TimeCalibrationMilliseconds)
+                    return;
+
+                foreach (var portItem in manualPorts)
+                {
+                    var port = portItem.Value;
+                    port.TimeCalibrationAsync();
+                }
+                TimeCalibrationStopwatch.Reset();
+                TimeCalibrationStopwatch.Start();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                WriteLog($"{MethodBase.GetCurrentMethod()}, Exception Happen: (( {ex} ))");
+            }
         }
 
         private void HeartBeat()

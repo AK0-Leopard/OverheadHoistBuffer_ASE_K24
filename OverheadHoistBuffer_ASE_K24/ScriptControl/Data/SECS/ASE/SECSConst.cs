@@ -349,12 +349,13 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
         public const string CEID_Carrier_Stored_Alt = "156";
         public const string CEID_Shelf_Status_Change = "157";
         public const string CEID_Carrier_Wait_In = "158";
+        public const string CEID_Carrier_Wait_In_To_Target = "160";
         public const string CEID_Carrier_Wait_Out = "161";
         public const string CEID_Unit_Alarm_Set = "162";
         public const string CEID_Unit_Alarm_Cleared = "163";
         //
-        public const string CEID_Crane_Active  = "201";
-        public const string CEID_Crane_Idle  = "202";
+        public const string CEID_Crane_Active = "201";
+        public const string CEID_Crane_Idle = "202";
         public const string CEID_Crane_In_Escape = "203";
         public const string CEID_Crane_Out_Escape = "204";
         public const string CEID_Crane_Out_Servce = "205";
@@ -364,7 +365,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
         public const string CEID_Zone_Capacity_Change = "252";
         public const string CEID_Carrier_Box_ID_Rename = "253";
         public const string CEID_Operator_Initiated_Action = "254";
-        public const string CEID_Empty_Box_Supply  = "255";
+        public const string CEID_Empty_Box_Supply = "255";
         public const string CEID_Empty_Box_Recycling = "256";
         //
         public const string CEID_Port_Out_Of_Service = "260";
@@ -418,7 +419,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
         public const string VID_Unit_Info = "72";
         public const string VID_Unit_State = "74";
 
-        public const string VID_Command_Type= "80";
+        public const string VID_Command_Type = "80";
         public const string VID_Alarm_ID = "81";
         public const string VID_Alarm_Text = "82";
         public const string VID_Unit_ID = "83";
@@ -571,7 +572,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
             {CEID_Transfer_Pause,"Transfer_Pause" },
             {CEID_Transfer_Resumed,"Transfer_Resumed" },
             {CEID_Carrier_Transferring,"Carrier_Transferring" },
-            
+
             {CEID_Carrier_Installed_Completed,"Carrier_Installed_Completed"},
             {CEID_Carrier_Removed_Completed,"Carrier_Removed_Completed"},
 
@@ -617,7 +618,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
         public static readonly string LANECUTTYPE_LaneCutOnHMI = "0";
         public static readonly string LANECUTTYPE_LaneCutVehicle = "1";
         #endregion LANECUTTYPE
-        
+
         #region ACKC6
         /// <summary>
         /// The ack C6_ accepted
