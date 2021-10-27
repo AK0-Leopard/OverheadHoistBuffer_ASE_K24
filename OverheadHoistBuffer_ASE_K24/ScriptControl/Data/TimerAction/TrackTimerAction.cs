@@ -14,6 +14,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 
         public TrackTimerAction(string name, long intervalMilliSec) : base(name, intervalMilliSec)
         {
+
         }
 
         public override void initStart()

@@ -2519,6 +2519,7 @@ namespace com.mirle.ibg3k0.sc.App
 
         public static Boolean IsForceStraightPass = false;
         public static Boolean IsForceNonStraightPass = false;
+        public static Boolean IsPassTrackBlockStatus = false;
 
     }
 }

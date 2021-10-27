@@ -3074,6 +3074,16 @@ namespace com.mirle.ibg3k0.sc.Service
                        CarrierID: eqpt.CST_ID);
                     return (false, TrackDir.None);
                 }
+                bool is_block_ready = block_master.IsAllTrackBlockReady();
+                if(!is_block_ready)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"Vh:{eqpt.VEHICLE_ID} ask block:{req_block_id},but related track block not ready.",
+                       VehicleID: eqpt.VEHICLE_ID,
+                       CarrierID: eqpt.CST_ID);
+                    return (false, TrackDir.None);
+                }
+
                 bool is_first_vh = isNextPassVh(eqpt, req_block_id);
                 if (!is_first_vh)
                 {

@@ -191,6 +191,9 @@
             this.cb_Cache_data_Name = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.bt_ReelStateUpdate = new System.Windows.Forms.Button();
+            this.bt_IoPortSignalQuery = new System.Windows.Forms.Button();
+            this.bt_ntb_hbReq = new System.Windows.Forms.Button();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.btn_initial = new System.Windows.Forms.Button();
             this.btn_cmp_vh_complete = new System.Windows.Forms.Button();
@@ -354,9 +357,6 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.bt_ntb_hbReq = new System.Windows.Forms.Button();
-            this.bt_IoPortSignalQuery = new System.Windows.Forms.Button();
-            this.bt_ReelStateUpdate = new System.Windows.Forms.Button();
             this.btn_close_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.btn_open_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.btn_changeToRemove = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
@@ -378,6 +378,7 @@
             this.uctl_Send_Fun_71 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.uctlButton1 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.cb_passTrack = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1213,7 +1214,7 @@
             // cb_passDriveOutByAreaSensor
             // 
             this.cb_passDriveOutByAreaSensor.AutoSize = true;
-            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1039, 442);
+            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1039, 480);
             this.cb_passDriveOutByAreaSensor.Name = "cb_passDriveOutByAreaSensor";
             this.cb_passDriveOutByAreaSensor.Size = new System.Drawing.Size(319, 26);
             this.cb_passDriveOutByAreaSensor.TabIndex = 60;
@@ -1224,7 +1225,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(1035, 381);
+            this.label12.Location = new System.Drawing.Point(1035, 419);
             this.label12.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(230, 22);
@@ -1233,7 +1234,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(1039, 406);
+            this.numericUpDown1.Location = new System.Drawing.Point(1039, 444);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -1315,13 +1316,14 @@
             // 
             // gb_blockControl
             // 
+            this.gb_blockControl.Controls.Add(this.cb_passTrack);
             this.gb_blockControl.Controls.Add(this.cb_ForceNonStraightPass);
             this.gb_blockControl.Controls.Add(this.cb_ForceStraightPass);
             this.gb_blockControl.Controls.Add(this.cb_FroceReserveReject);
             this.gb_blockControl.Controls.Add(this.cb_FroceReservePass);
             this.gb_blockControl.Location = new System.Drawing.Point(1039, 227);
             this.gb_blockControl.Name = "gb_blockControl";
-            this.gb_blockControl.Size = new System.Drawing.Size(310, 151);
+            this.gb_blockControl.Size = new System.Drawing.Size(310, 162);
             this.gb_blockControl.TabIndex = 23;
             this.gb_blockControl.TabStop = false;
             this.gb_blockControl.Text = "Block Control";
@@ -1329,7 +1331,7 @@
             // cb_ForceNonStraightPass
             // 
             this.cb_ForceNonStraightPass.AutoSize = true;
-            this.cb_ForceNonStraightPass.Location = new System.Drawing.Point(28, 111);
+            this.cb_ForceNonStraightPass.Location = new System.Drawing.Point(28, 102);
             this.cb_ForceNonStraightPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cb_ForceNonStraightPass.Name = "cb_ForceNonStraightPass";
             this.cb_ForceNonStraightPass.Size = new System.Drawing.Size(259, 26);
@@ -1341,7 +1343,7 @@
             // cb_ForceStraightPass
             // 
             this.cb_ForceStraightPass.AutoSize = true;
-            this.cb_ForceStraightPass.Location = new System.Drawing.Point(28, 85);
+            this.cb_ForceStraightPass.Location = new System.Drawing.Point(28, 76);
             this.cb_ForceStraightPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cb_ForceStraightPass.Name = "cb_ForceStraightPass";
             this.cb_ForceStraightPass.Size = new System.Drawing.Size(219, 26);
@@ -2428,7 +2430,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.61165F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 95.38835F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1356, 717);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1356, 708);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // dgv_cache_object_data
@@ -2439,12 +2441,12 @@
             this.Column_cst_id});
             this.tableLayoutPanel2.SetColumnSpan(this.dgv_cache_object_data, 2);
             this.dgv_cache_object_data.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_cache_object_data.Location = new System.Drawing.Point(3, 36);
+            this.dgv_cache_object_data.Location = new System.Drawing.Point(3, 35);
             this.dgv_cache_object_data.MultiSelect = false;
             this.dgv_cache_object_data.Name = "dgv_cache_object_data";
             this.dgv_cache_object_data.RowTemplate.Height = 24;
             this.dgv_cache_object_data.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_cache_object_data.Size = new System.Drawing.Size(1350, 678);
+            this.dgv_cache_object_data.Size = new System.Drawing.Size(1350, 670);
             this.dgv_cache_object_data.TabIndex = 0;
             this.dgv_cache_object_data.EditModeChanged += new System.EventHandler(this.dgv_cache_object_data_EditModeChanged);
             // 
@@ -2481,7 +2483,7 @@
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(9, 0);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(70, 33);
+            this.label22.Size = new System.Drawing.Size(70, 32);
             this.label22.TabIndex = 2;
             this.label22.Text = "Cache Data Name";
             // 
@@ -2504,6 +2506,39 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // bt_ReelStateUpdate
+            // 
+            this.bt_ReelStateUpdate.Location = new System.Drawing.Point(971, 113);
+            this.bt_ReelStateUpdate.Name = "bt_ReelStateUpdate";
+            this.bt_ReelStateUpdate.Size = new System.Drawing.Size(265, 30);
+            this.bt_ReelStateUpdate.TabIndex = 57;
+            this.bt_ReelStateUpdate.Text = "NTB - ReelStateUpdate";
+            this.bt_ReelStateUpdate.UseVisualStyleBackColor = true;
+            this.bt_ReelStateUpdate.Visible = false;
+            this.bt_ReelStateUpdate.Click += new System.EventHandler(this.bt_ReelStateUpdate_Click);
+            // 
+            // bt_IoPortSignalQuery
+            // 
+            this.bt_IoPortSignalQuery.Location = new System.Drawing.Point(971, 77);
+            this.bt_IoPortSignalQuery.Name = "bt_IoPortSignalQuery";
+            this.bt_IoPortSignalQuery.Size = new System.Drawing.Size(265, 30);
+            this.bt_IoPortSignalQuery.TabIndex = 56;
+            this.bt_IoPortSignalQuery.Text = "NTB - IoPortSignalQuery";
+            this.bt_IoPortSignalQuery.UseVisualStyleBackColor = true;
+            this.bt_IoPortSignalQuery.Visible = false;
+            this.bt_IoPortSignalQuery.Click += new System.EventHandler(this.bt_IoPortSignalQuery_Click);
+            // 
+            // bt_ntb_hbReq
+            // 
+            this.bt_ntb_hbReq.Location = new System.Drawing.Point(971, 41);
+            this.bt_ntb_hbReq.Name = "bt_ntb_hbReq";
+            this.bt_ntb_hbReq.Size = new System.Drawing.Size(265, 30);
+            this.bt_ntb_hbReq.TabIndex = 55;
+            this.bt_ntb_hbReq.Text = "NTB - HeartBeatRequest";
+            this.bt_ntb_hbReq.UseVisualStyleBackColor = true;
+            this.bt_ntb_hbReq.Visible = false;
+            this.bt_ntb_hbReq.Click += new System.EventHandler(this.bt_ntb_hbReq_Click);
             // 
             // groupBox18
             // 
@@ -4350,39 +4385,6 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // bt_ntb_hbReq
-            // 
-            this.bt_ntb_hbReq.Location = new System.Drawing.Point(971, 41);
-            this.bt_ntb_hbReq.Name = "bt_ntb_hbReq";
-            this.bt_ntb_hbReq.Size = new System.Drawing.Size(265, 30);
-            this.bt_ntb_hbReq.TabIndex = 55;
-            this.bt_ntb_hbReq.Text = "NTB - HeartBeatRequest";
-            this.bt_ntb_hbReq.UseVisualStyleBackColor = true;
-            this.bt_ntb_hbReq.Visible = false;
-            this.bt_ntb_hbReq.Click += new System.EventHandler(this.bt_ntb_hbReq_Click);
-            // 
-            // bt_IoPortSignalQuery
-            // 
-            this.bt_IoPortSignalQuery.Location = new System.Drawing.Point(971, 77);
-            this.bt_IoPortSignalQuery.Name = "bt_IoPortSignalQuery";
-            this.bt_IoPortSignalQuery.Size = new System.Drawing.Size(265, 30);
-            this.bt_IoPortSignalQuery.TabIndex = 56;
-            this.bt_IoPortSignalQuery.Text = "NTB - IoPortSignalQuery";
-            this.bt_IoPortSignalQuery.UseVisualStyleBackColor = true;
-            this.bt_IoPortSignalQuery.Visible = false;
-            this.bt_IoPortSignalQuery.Click += new System.EventHandler(this.bt_IoPortSignalQuery_Click);
-            // 
-            // bt_ReelStateUpdate
-            // 
-            this.bt_ReelStateUpdate.Location = new System.Drawing.Point(971, 113);
-            this.bt_ReelStateUpdate.Name = "bt_ReelStateUpdate";
-            this.bt_ReelStateUpdate.Size = new System.Drawing.Size(265, 30);
-            this.bt_ReelStateUpdate.TabIndex = 57;
-            this.bt_ReelStateUpdate.Text = "NTB - ReelStateUpdate";
-            this.bt_ReelStateUpdate.UseVisualStyleBackColor = true;
-            this.bt_ReelStateUpdate.Visible = false;
-            this.bt_ReelStateUpdate.Click += new System.EventHandler(this.bt_ReelStateUpdate_Click);
-            // 
             // btn_close_tcp_port
             // 
             this.btn_close_tcp_port.Location = new System.Drawing.Point(664, 751);
@@ -4616,6 +4618,18 @@
             this.uctlButton1.Text = "Refresh LFT Status";
             this.uctlButton1.UseVisualStyleBackColor = true;
             this.uctlButton1.Click += new System.EventHandler(this.uctlButton1_Click);
+            // 
+            // cb_passTrack
+            // 
+            this.cb_passTrack.AutoSize = true;
+            this.cb_passTrack.Location = new System.Drawing.Point(28, 130);
+            this.cb_passTrack.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cb_passTrack.Name = "cb_passTrack";
+            this.cb_passTrack.Size = new System.Drawing.Size(259, 26);
+            this.cb_passTrack.TabIndex = 11;
+            this.cb_passTrack.Text = "Pass Track Block Status";
+            this.cb_passTrack.UseVisualStyleBackColor = true;
+            this.cb_passTrack.CheckedChanged += new System.EventHandler(this.cb_passTrack_CheckedChanged);
             // 
             // DebugForm
             // 
@@ -5052,5 +5066,6 @@
         private System.Windows.Forms.Button bt_ntb_hbReq;
         private System.Windows.Forms.Button bt_IoPortSignalQuery;
         private System.Windows.Forms.Button bt_ReelStateUpdate;
+        private System.Windows.Forms.CheckBox cb_passTrack;
     }
 }

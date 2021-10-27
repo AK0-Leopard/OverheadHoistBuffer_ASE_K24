@@ -38,6 +38,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TrackDir = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsBlocking = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsAlive = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TrackStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AlarmCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.last_updateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,6 +57,8 @@
             this.dgv_trackData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID,
             this.TrackDir,
+            this.IsBlocking,
+            this.IsAlive,
             this.TrackStatus,
             this.AlarmCode,
             this.last_updateTime,
@@ -68,7 +72,7 @@
             this.dgv_trackData.ReadOnly = true;
             this.dgv_trackData.RowTemplate.Height = 24;
             this.dgv_trackData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_trackData.Size = new System.Drawing.Size(910, 742);
+            this.dgv_trackData.Size = new System.Drawing.Size(1165, 742);
             this.dgv_trackData.TabIndex = 0;
             this.dgv_trackData.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgv_shelfData_RowPrePaint);
             // 
@@ -78,7 +82,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(922, 819);
+            this.groupBox1.Size = new System.Drawing.Size(1177, 819);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Track";
@@ -99,14 +103,14 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.335157F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 94.66484F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(916, 790);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1171, 790);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
             // lbl_track_id
             // 
             this.lbl_track_id.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lbl_track_id.AutoSize = true;
-            this.lbl_track_id.Location = new System.Drawing.Point(113, 10);
+            this.lbl_track_id.Location = new System.Drawing.Point(156, 10);
             this.lbl_track_id.Name = "lbl_track_id";
             this.lbl_track_id.Size = new System.Drawing.Size(40, 22);
             this.lbl_track_id.TabIndex = 1;
@@ -116,9 +120,9 @@
             // 
             this.txt_tracks.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel3.SetColumnSpan(this.txt_tracks, 3);
-            this.txt_tracks.Location = new System.Drawing.Point(159, 6);
+            this.txt_tracks.Location = new System.Drawing.Point(202, 6);
             this.txt_tracks.Name = "txt_tracks";
-            this.txt_tracks.Size = new System.Drawing.Size(754, 30);
+            this.txt_tracks.Size = new System.Drawing.Size(966, 30);
             this.txt_tracks.TabIndex = 2;
             this.txt_tracks.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -133,7 +137,7 @@
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(928, 825);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1183, 825);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // timer1
@@ -154,6 +158,21 @@
             this.TrackDir.HeaderText = "Dir.";
             this.TrackDir.Name = "TrackDir";
             this.TrackDir.ReadOnly = true;
+            // 
+            // IsBlocking
+            // 
+            this.IsBlocking.DataPropertyName = "IsBlocking";
+            this.IsBlocking.HeaderText = "IsBlocking";
+            this.IsBlocking.Name = "IsBlocking";
+            this.IsBlocking.ReadOnly = true;
+            this.IsBlocking.Width = 130;
+            // 
+            // IsAlive
+            // 
+            this.IsAlive.DataPropertyName = "IsAlive";
+            this.IsAlive.HeaderText = "IsAlive";
+            this.IsAlive.Name = "IsAlive";
+            this.IsAlive.ReadOnly = true;
             // 
             // TrackStatus
             // 
@@ -197,7 +216,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(928, 825);
+            this.ClientSize = new System.Drawing.Size(1183, 825);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
@@ -225,6 +244,8 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn TrackDir;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IsBlocking;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IsAlive;
         private System.Windows.Forms.DataGridViewTextBoxColumn TrackStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn AlarmCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn last_updateTime;

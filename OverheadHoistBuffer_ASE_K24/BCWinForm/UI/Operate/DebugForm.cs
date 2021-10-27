@@ -91,6 +91,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             combox_cycle_type.DataSource = Enum.GetValues(typeof(DebugParameter.CycleRunType));
 
             combox_cycle_type.SelectedItem = DebugParameter.cycleRunType;
+            cb_passTrack.Checked = DebugParameter.IsPassTrackBlockStatus;
 
 
             radioButtons.Add(radio_bit0);
@@ -1346,6 +1347,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             AEQPT ntb = bcApp.SCApplication.EquipmentBLL.cache.GetNTB();
             await Task.Run(() => ntb.getReelNTBCDefaultMapActionSend().ReelStateUpdate());
+        }
+
+        private void cb_passTrack_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsPassTrackBlockStatus = cb_passTrack.Checked;
         }
     }
 }

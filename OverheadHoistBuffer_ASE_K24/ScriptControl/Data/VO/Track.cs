@@ -10,10 +10,12 @@ namespace com.mirle.ibg3k0.sc.Data.VO
 {
     public class Track : AUNIT
     {
-        public TrackDir TrackDir { get; set; }
-        public RailChangerProtocol.TrackStatus TrackStatus { get; set; }
-        public string AlarmCode { get; set; }
-        public UInt32 ResetCount { get; set; }
+        public bool IsBlocking { get; private set; }
+        public bool IsAlive { get; private set; }
+        public TrackDir TrackDir { get; private set; }
+        public RailChangerProtocol.TrackStatus TrackStatus { get; private set; }
+        public int AlarmCode { get; private set; }
+        public UInt32 ResetCount { get; private set; }
         public Stopwatch stopwatch { get; private set; } = new Stopwatch();
         public string LastUpdateTime
         {
@@ -32,6 +34,9 @@ namespace com.mirle.ibg3k0.sc.Data.VO
             TrackDir = convert(trackInfo.Dir);
             TrackStatus = trackInfo.Status;
             AlarmCode = trackInfo.AlarmCode;
+            IsBlocking = trackInfo.IsBlock == RailChangerProtocol.TrackBlock.Block;
+            IsAlive = trackInfo.Alive;
+
             stopwatch.Restart();
         }
         private ProtocolFormat.OHTMessage.TrackDir convert(RailChangerProtocol.TrackDir dir)
