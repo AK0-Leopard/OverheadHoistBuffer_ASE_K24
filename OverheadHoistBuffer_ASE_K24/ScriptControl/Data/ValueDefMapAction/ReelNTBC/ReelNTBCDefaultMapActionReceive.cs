@@ -1,6 +1,10 @@
 ﻿using com.mirle.AK0.ProtocolFormat;
+using com.mirle.ibg3k0.bcf.App;
+using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events.ReelNTB;
+using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 using Grpc.Core;
 using Mirle.U332MA30.Grpc.OhbcNtbcConnect;
 using System;
@@ -11,8 +15,10 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC
 {
-    public class ReelNTBCDefaultMapActionReceive : Mirle.U332MA30.Grpc.OhbcNtbcConnect.NtbcToOhbcService.NtbcToOhbcServiceBase
+    public class ReelNTBCDefaultMapActionReceive : Mirle.U332MA30.Grpc.OhbcNtbcConnect.NtbcToOhbcService.NtbcToOhbcServiceBase, IReelNTBValueDefMapAction
     {
+        public event ReelNTBEvents.ReelNTBTranCmdReqEventHandler TransferCommandRequest;
+
         public override Task<TransferCommandAck> CarrierTransferRequest(TransferCommandRequset request, ServerCallContext context)
         {
             LogHelper.RecordHostReportInfo(request, method: "CarrierTransferRequest");
@@ -21,8 +27,12 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC
             Console.WriteLine(resvice_message);
             ask.ReplyCode = Ack.Ok;
             LogHelper.RecordHostReportInfoAsk(ask, method: "CarrierTransferRequest");
+
+            TransferCommandRequest?.Invoke(this, new ReelNTBTranCmdReqEventArgs(request));
+
             return Task.FromResult(ask);
         }
+
 
         public override Task<OhtPortStateAck> GetOhtPortState(OhtPortQuery request, ServerCallContext context)
         {
@@ -55,6 +65,31 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC
             ask.ReplyCode = Ack.Ok;
             LogHelper.RecordHostReportInfoAsk(ask, method: "HeartBeatRequest");
             return Task.FromResult(ask);
+        }
+
+        public void doInit()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void doShareMemoryInit(BCFAppConstants.RUN_LEVEL runLevel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string getIdentityKey()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void setContext(BaseEQObject baseEQ)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void unRegisterEvent()
+        {
+            throw new NotImplementedException();
         }
     }
 }

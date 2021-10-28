@@ -1598,7 +1598,7 @@ namespace com.mirle.ibg3k0.sc.App
             gRPC_With_ReelNTBCDefaultMapActionReceive = new Grpc.Core.Server()
             {
                 Services = { Mirle.U332MA30.Grpc.OhbcNtbcConnect.NtbcToOhbcService.BindService(new com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionReceive()) },
-                Ports = { new Grpc.Core.ServerPort("10.243.41.186", 5005, Grpc.Core.ServerCredentials.Insecure) },
+                Ports = { new Grpc.Core.ServerPort("127.0.0.1", 5005, Grpc.Core.ServerCredentials.Insecure) },
             };
         }
 
@@ -1667,7 +1667,7 @@ namespace com.mirle.ibg3k0.sc.App
             manualPortControlService.Start(manual_port_map_action);
             manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL);
             gRPC_With_VehicleControlFun.Start();
-            gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
+            //gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
         }
 
         /// <summary>

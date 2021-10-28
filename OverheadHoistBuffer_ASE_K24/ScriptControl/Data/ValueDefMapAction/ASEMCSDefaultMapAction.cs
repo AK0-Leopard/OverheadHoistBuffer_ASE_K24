@@ -3402,45 +3402,38 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 return false;
             }
         }
-        //public override bool S6F11SendCarrierWaitInToTarget(CassetteData cst, string portType, List<AMCSREPORTQUEUE> reportQueues = null)
-        //{
-        //    try
-        //    {
-        //        //if (!isSend()) return true;
-        //        VIDCollection Vids = new VIDCollection();
-        //        string zonename = scApp.CassetteDataBLL.GetZoneName(cst.Carrier_LOC);
+        public override bool S6F11SendCarrierWaitInToTarget(string cstID, string cstLoc, string lotID, string reqDev, string reqLoc, List<AMCSREPORTQUEUE> reportQueues = null)
+        {
+            try
+            {
+                VIDCollection Vids = new VIDCollection();
 
-        //        Vids.VIDITEM_54_DVVAL_CarrierID.CARRIER_ID = cst.CSTID;
-        //        Vids.VIDITEM_56_DVVAL_CarrierLoc.CARRIER_LOC = cst.Carrier_LOC;
-        //        Vids.VIDITEM_370_DVVAL_CarrierZoneName.CARRIER_ZONE_NAME = zonename;
-        //        //if (cst.Stage != 0)
-        //        //{
-        //        //    Vids.VIDITEM_370_DVVAL_CarrierZoneName.CARRIER_ZONE_NAME = zonename.Remove(9);
-        //        //}
-        //        Vids.VIDITEM_179_DVVAL_BOXID.BOX_ID = cst.BOXID;
-        //        Vids.VIDITEM_116_DVVAL_PortType.PORT_TYPE = portType;
-        //        AMCSREPORTQUEUE mcs_queue = S6F11BulibMessage(SECSConst.CEID_Carrier_Wait_Out, Vids);
-        //        if (reportQueues == null)
-        //        {
-        //            if (S6F11SendMessage(mcs_queue))
-        //            {
-        //                scApp.CassetteDataBLL.UpdateCSTState(cst.BOXID, (int)E_CSTState.WaitOut);
-        //                scApp.TransferService.SetWaitInOutLog(cst, E_CSTState.WaitOut);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            reportQueues.Add(mcs_queue);
-        //        }
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(ASEMCSDefaultMapAction), Device: DEVICE_NAME_MCS,
-        //           Data: ex);
-        //        return false;
-        //    }
-        //}
+                Vids.VIDITEM_54_DVVAL_CarrierID.CARRIER_ID = cstID;
+                Vids.VIDITEM_56_DVVAL_CarrierLoc.CARRIER_LOC = cstLoc;
+                Vids.VIDITEM_370_DVVAL_CarrierZoneName.CARRIER_ZONE_NAME = cstLoc;
+                Vids.VIDITEM_179_DVVAL_BOXID.BOX_ID = cstID;
+                Vids.VIDITEM_894_LOT_ID.LOT_ID = lotID;
+                Vids.VIDITEM_895_REQ_DEV.REQ_DEV = reqDev;
+                Vids.VIDITEM_896_REQ_LOC.REQ_LOC = reqLoc;
+
+                AMCSREPORTQUEUE mcs_queue = S6F11BulibMessage(SECSConst.CEID_Carrier_Wait_In_To_Target, Vids);
+                if (reportQueues == null)
+                {
+                    S6F11SendMessage(mcs_queue);
+                }
+                else
+                {
+                    reportQueues.Add(mcs_queue);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(ASEMCSDefaultMapAction), Device: DEVICE_NAME_MCS,
+                   Data: ex);
+                return false;
+            }
+        }
 
 
         public override bool S6F11SendCarrierWaitOut(CassetteData cst, string portType, List<AMCSREPORTQUEUE> reportQueues = null)

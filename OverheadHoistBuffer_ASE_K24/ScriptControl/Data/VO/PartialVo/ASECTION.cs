@@ -33,6 +33,10 @@ namespace com.mirle.ibg3k0.sc
             onSectinoEntry(vh_id);
         }
 
+        public string[] getNodeAdrs()
+        {
+            return new string[] { FROM_ADR_ID, TO_ADR_ID };
+        }
 
 
     }

@@ -1683,6 +1683,42 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
                         DISTANCE_FROM_HP_TO_OP_OBJ = new VIDITEM_892_DVVAL();
                     }
                 }
+
+                [Serializable]
+                public class VIDITEM_894 : SXFY
+                {
+                    [SecsElement(Index = 1, ListSpreadOut = true, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 64)]
+                    public string LOT_ID;
+                    public VIDITEM_894()
+                    {
+                        LOT_ID = string.Empty;
+                    }
+                }
+
+                [Serializable]
+                public class VIDITEM_895 : SXFY
+                {
+                    [SecsElement(Index = 1, ListSpreadOut = true, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 64)]
+                    public string REQ_DEV;
+                    public VIDITEM_895()
+                    {
+                        REQ_DEV = string.Empty;
+                    }
+                }
+
+                [Serializable]
+                public class VIDITEM_896 : SXFY
+                {
+                    [SecsElement(Index = 1, ListSpreadOut = true, Type = SecsElement.SecsElementType.TYPE_ASCII, Length = 64)]
+                    public string REQ_LOC;
+                    public VIDITEM_896()
+                    {
+                        REQ_LOC = string.Empty;
+                    }
+                }
+
+
+
                 //[Serializable]
                 //public class VIDITEM_371_SV : SXFY
                 //{
@@ -1808,6 +1844,10 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
             VIDITEM_891_DVVAL_CraneCurrentPosition = new S6F11.RPTINFO.RPTITEM.VIDITEM_891_DVVAL();
             VIDITEM_892_DVVAL_CraneTotalDistance = new S6F11.RPTINFO.RPTITEM.VIDITEM_892_DVVAL();
             VIDITEM_893_SV_MonitoredCraneInfo = new S6F11.RPTINFO.RPTITEM.VIDITEM_893_SV();
+            VIDITEM_894_LOT_ID = new S6F11.RPTINFO.RPTITEM.VIDITEM_894();
+            VIDITEM_895_REQ_DEV = new S6F11.RPTINFO.RPTITEM.VIDITEM_895();
+            VIDITEM_896_REQ_LOC = new S6F11.RPTINFO.RPTITEM.VIDITEM_896();
+
         }
         public string VH_ID;
 
@@ -1901,6 +1941,9 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
         public com.mirle.ibg3k0.sc.Data.SECS.ASE.S6F11.RPTINFO.RPTITEM.VIDITEM_891_DVVAL VIDITEM_891_DVVAL_CraneCurrentPosition;
         public com.mirle.ibg3k0.sc.Data.SECS.ASE.S6F11.RPTINFO.RPTITEM.VIDITEM_892_DVVAL VIDITEM_892_DVVAL_CraneTotalDistance;
         public com.mirle.ibg3k0.sc.Data.SECS.ASE.S6F11.RPTINFO.RPTITEM.VIDITEM_893_SV VIDITEM_893_SV_MonitoredCraneInfo;
+        public com.mirle.ibg3k0.sc.Data.SECS.ASE.S6F11.RPTINFO.RPTITEM.VIDITEM_894 VIDITEM_894_LOT_ID;
+        public com.mirle.ibg3k0.sc.Data.SECS.ASE.S6F11.RPTINFO.RPTITEM.VIDITEM_895 VIDITEM_895_REQ_DEV;
+        public com.mirle.ibg3k0.sc.Data.SECS.ASE.S6F11.RPTINFO.RPTITEM.VIDITEM_896 VIDITEM_896_REQ_LOC;
 
     }
 }

@@ -34,6 +34,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECSDriver
         public abstract bool S6F11SendCarrierStoredAlt(ACMD_MCS cmd, CassetteData cassette, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendCarrierWaitIn(CassetteData cst, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendCarrierWaitOut(CassetteData cst, string portType, List<AMCSREPORTQUEUE> reportQueues = null);
+        public abstract bool S6F11SendCarrierWaitInToTarget(string cstID, string cstLoc, string lotID, string reqDev, string reqLoc, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendUnitAlarmSet(string unitID, string alarmID, string alarmTest, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendUnitAlarmCleared(string unitID, string alarmID, string alarmTest, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendCraneActive(string cmdID, string craneID, List<AMCSREPORTQUEUE> reportQueues = null);
@@ -501,6 +502,11 @@ namespace com.mirle.ibg3k0.sc.Data.SECSDriver
         public override bool S6F11SendCarrierRemovedCompleted(CassetteData cassette, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             return true;
+        }
+
+        public override bool S6F11SendCarrierWaitInToTarget(string cstID, string cstLoc, string lotID, string reqDev, string reqLoc, List<AMCSREPORTQUEUE> reportQueues = null)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

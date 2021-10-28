@@ -388,13 +388,35 @@ namespace com.mirle.ibg3k0.sc.Service
                         //string sec_id = vh.WillPassSectionID[start_index];
                         string sec_id = wiil_pass_section_ids[start_index];
                         ASECTION sec_obj = scApp.SectionBLL.cache.GetSection(sec_id);
-                        var reserve_result = scApp.ReserveBLL.TryAddReservedSection
-                                            (vh.VEHICLE_ID, sec_id, isAsk: true);
-                        if (!reserve_result.OK)
+                        var vhs_on_section = scApp.VehicleBLL.cache.getVhBySections(sec_id);
+                        if (vhs_on_section.Count > 0)
                         {
-                            tryDriveOutTheVh(vh.VEHICLE_ID, reserve_result.VehicleID);
-                            return;
+                            foreach (var v in vhs_on_section)
+                            {
+                                if (!SCUtility.isMatche(v.VEHICLE_ID, vh.VEHICLE_ID))
+                                {
+                                    tryDriveOutTheVh(vh.VEHICLE_ID, v.VEHICLE_ID);
+                                }
+                            }
                         }
+                        var vhs_on_addresses = scApp.VehicleBLL.cache.getVhByAddressIDs(sec_obj.getNodeAdrs());
+                        if (vhs_on_addresses.Count > 0)
+                        {
+                            foreach (var v in vhs_on_addresses)
+                            {
+                                if (!SCUtility.isMatche(v.VEHICLE_ID, vh.VEHICLE_ID))
+                                {
+                                    tryDriveOutTheVh(vh.VEHICLE_ID, v.VEHICLE_ID);
+                                }
+                            }
+                        }
+                        //var reserve_result = scApp.ReserveBLL.TryAddReservedSection
+                        //                    (vh.VEHICLE_ID, sec_id, isAsk: true);
+                        //if (!reserve_result.OK)
+                        //{
+                        //    tryDriveOutTheVh(vh.VEHICLE_ID, reserve_result.VehicleID);
+                        //    return;
+                        //}
                         last_check_section = sec_obj;
                     }
                     else
@@ -2633,10 +2655,10 @@ namespace com.mirle.ibg3k0.sc.Service
                            reservedVh.ACT_STATUS == VHActionStatus.NoCommand &&
                            !scApp.CMDBLL.isCMD_OHTCExcuteByVh(reservedVh.VEHICLE_ID);
             //如果可以進行趕車，最後需再確認該車子是否停在CV上，且是不是需要等待BOX出來
-            if (is_can && scApp.TransferService.isNeedWatingBoxComeIn(reservedVh.CUR_ADR_ID))
-            {
-                is_can = false;
-            }
+            //if (is_can && scApp.TransferService.isNeedWatingBoxComeIn(reservedVh.CUR_ADR_ID))
+            //{
+            //    is_can = false;
+            //}
             return (is_can, CAN_NOT_AVOID_RESULT.Normal);
         }
 
@@ -3075,7 +3097,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     return (false, TrackDir.None);
                 }
                 bool is_block_ready = block_master.IsAllTrackBlockReady();
-                if(!is_block_ready)
+                if (!is_block_ready)
                 {
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
                        Data: $"Vh:{eqpt.VEHICLE_ID} ask block:{req_block_id},but related track block not ready.",

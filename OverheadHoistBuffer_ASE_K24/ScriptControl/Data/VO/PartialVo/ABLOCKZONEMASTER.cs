@@ -62,7 +62,7 @@ namespace com.mirle.ibg3k0.sc
                 return BlockZoneDetailSectionIDs;
             }
         }
-        const int INTERVAL_TIME = 2000;
+        const int INTERVAL_TIME = 2_500;
         public bool IsAllTrackReadyStraight()
         {
             if (RelatedTracks == null || RelatedTracks.Count == 0)
