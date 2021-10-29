@@ -3029,16 +3029,18 @@ namespace com.mirle.ibg3k0.sc.Service
                         break;
 
                     case COMMAND_STATUS_BIT_INDEX_VEHICLE_ABORT:
-                        reportBLL.ReportCraneIdle(ohtName, cmd.CMD_ID);
-                        reportBLL.ReportTransferCompleted(cmd, null, ResultCode.InterlockError);   //  20/04/13 MCS 反應說不要報 1 ，改報64
                         cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                        reportBLL.ReportCraneIdle(ohtName, cmd.CMD_ID);
+                        //reportBLL.ReportTransferCompleted(cmd, null, ResultCode.InterlockError);   //  20/04/13 MCS 反應說不要報 1 ，改報64
+                        reportBLL.ReportTransferCompleted(cmd, null, ResultCode.WarnError);   //  20/04/13 MCS 反應說不要報 1 ，改報64
                         EmptyShelf();
                         break;
 
                     case COMMAND_STATUS_BIT_INDEX_CST_TYPE_MISMATCH:
                         cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                         reportBLL.ReportCraneIdle(ohtName, cmd.CMD_ID);
-                        reportBLL.ReportTransferCompleted(cmd, null, ResultCode.InterlockError);   //  20/04/13 MCS 反應說不要報 1 ，改報64
+                        //reportBLL.ReportTransferCompleted(cmd, null, ResultCode.InterlockError);   //  20/04/13 MCS 反應說不要報 1 ，改報64
+                        reportBLL.ReportTransferCompleted(cmd, null, ResultCode.WarnError);   //  20/04/13 MCS 反應說不要報 1 ，改報64
 
                         TransferServiceLogger.Info
                         (
@@ -6819,7 +6821,8 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        public string ForceFinishMCSCmd(ACMD_MCS cmdMCS, CassetteData cassetteData, string cmdSource, string result = ResultCode.InterlockError)
+        //public string ForceFinishMCSCmd(ACMD_MCS cmdMCS, CassetteData cassetteData, string cmdSource, string result = ResultCode.InterlockError)
+        public string ForceFinishMCSCmd(ACMD_MCS cmdMCS, CassetteData cassetteData, string cmdSource, string result = ResultCode.WarnError)
         {
             TransferServiceLogger.Info
             (

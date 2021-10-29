@@ -102,6 +102,7 @@ namespace com.mirle.ibg3k0.sc
             public const string BoxID_ReadFailed = "6";
             public const string BoxID_Mismatch = "7";
             public const string CarrierTypeMismatch = "8";
+            public const string WarnError = "32"; //上報MCS 但不會跳Move Error
             public const string InterlockError = "64";
         }
 

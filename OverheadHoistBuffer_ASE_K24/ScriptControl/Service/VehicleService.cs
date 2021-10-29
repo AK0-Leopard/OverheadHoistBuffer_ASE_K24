@@ -185,7 +185,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 //vh.Stop();
                 //上報Alamr Rerport給MCS
                 scApp.TransferService.OHBC_AlarmSet(scApp.getEQObjCacheManager().getLine().LINE_ID, ((int)AlarmLst.OHT_CommandNotFinishedInTime).ToString());
-                Task.Run(() => scApp.VehicleBLL.web.vehicleLongTimeNoAction(scApp));
+                //Task.Run(() => scApp.VehicleBLL.web.vehicleLongTimeNoAction(scApp));
+                Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
 
                 //scApp.LineService.ProcessAlarmReport(
                 //    vh.NODE_ID, vh.VEHICLE_ID, vh.Real_ID, "",

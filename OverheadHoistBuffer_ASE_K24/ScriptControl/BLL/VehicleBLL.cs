@@ -2289,7 +2289,29 @@ namespace com.mirle.ibg3k0.sc.BLL
                     logger.Error(ex, "Exception");
                 }
             }
-
+            public void vehicleHasCmdNoAction(int vhNum)
+            {
+                try
+                {
+                    string[] action_targets = new string[]
+                    {
+                    "weatherforecast",
+                    "VhHasCmdNoAction"
+                    };
+                    string[] param = new string[]
+                    {
+                        vhNum.ToString(),
+                    };
+                    foreach (string notify_url in notify_urls)
+                    {
+                        string result = webClientManager.GetInfoFromServer(notify_url, action_targets, param);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+            }
             /// <summary>
             /// Notify sample
             ///http://127.0.0.1:15000/weatherforecast/line1_dis
