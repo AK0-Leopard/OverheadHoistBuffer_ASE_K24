@@ -6832,8 +6832,8 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (cmdMCS != null)
             {
-                reportBLL.ReportTransferCompleted(cmdMCS, cassetteData, result);
                 cmdBLL.updateCMD_MCS_TranStatus(cmdMCS.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                reportBLL.ReportTransferCompleted(cmdMCS, cassetteData, result);
                 return "OK";
             }
             return "失敗";

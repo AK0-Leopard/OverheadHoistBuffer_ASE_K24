@@ -109,11 +109,33 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.StatusRequestFailOverTimes += Vh_StatusRequestFailOverTimes;
                 vh.LongTimeNoCommuncation += Vh_LongTimeNoCommuncation;
                 vh.LongTimeInaction += Vh_LongTimeInaction;
+                vh.LongTimeBlocking += Vh_LongTimeBlocking;
                 vh.ErrorStatusChange += (s1, e1) => Vh_ErrorStatusChange(s1, e1);
                 vh.TimerActionStart();
             }
 
             transferService = app.TransferService;
+        }
+
+        private void Vh_LongTimeBlocking(object sender, EventArgs e)
+        {
+            AVEHICLE vh = sender as AVEHICLE;
+            if (vh == null) return;
+            try
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Process vehicle long time block",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+                Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: ex,
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+            }
         }
 
         private void Vh_ErrorStatusChange(object sender, VhStopSingle vhStopSingle)
@@ -186,7 +208,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 //上報Alamr Rerport給MCS
                 scApp.TransferService.OHBC_AlarmSet(scApp.getEQObjCacheManager().getLine().LINE_ID, ((int)AlarmLst.OHT_CommandNotFinishedInTime).ToString());
                 //Task.Run(() => scApp.VehicleBLL.web.vehicleLongTimeNoAction(scApp));
-                Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
+                //Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
 
                 //scApp.LineService.ProcessAlarmReport(
                 //    vh.NODE_ID, vh.VEHICLE_ID, vh.Real_ID, "",

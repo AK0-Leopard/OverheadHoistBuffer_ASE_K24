@@ -64,7 +64,8 @@ namespace com.mirle.ibg3k0.sc
         /// <summary>
         /// 單筆命令，最大允許的搬送時間
         /// </summary>
-        public static UInt16 MAX_ALLOW_ACTION_TIME_SECOND { get; private set; } = 30;
+        public static UInt16 MAX_ALLOW_ACTION_TIME_SECOND { get; private set; } = 600;
+        public static UInt16 MAX_ALLOW_BLOCKING_TIME_SECOND{ get; private set; } = 30;
 
         public event EventHandler<LocationChangeEventArgs> LocationChange;
         public event EventHandler<SegmentChangeEventArgs> SegmentChange;
@@ -73,11 +74,13 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler<int> StatusRequestFailOverTimes;
         public event EventHandler LongTimeNoCommuncation;
         public event EventHandler<string> LongTimeInaction;
+        public event EventHandler LongTimeBlocking;
         public event EventHandler<VhStopSingle> ErrorStatusChange;
 
 
         VehicleTimerAction vehicleTimer = null;
         private Stopwatch CurrentCommandExcuteTime;
+        public Stopwatch CurrentBlockingTime;
 
         public void onCommandComplete(CompleteStatus cmpStatus)
         {
@@ -99,6 +102,10 @@ namespace com.mirle.ibg3k0.sc
         {
             LongTimeInaction?.Invoke(this, cmdID);
         }
+        public void onLongTimeBlocking()
+        {
+            LongTimeBlocking?.Invoke(this, EventArgs.Empty);
+        }
         public void onErrorStatusChange(VhStopSingle vhStopSingle)
         {
             ErrorStatusChange?.Invoke(this, vhStopSingle);
@@ -119,6 +126,7 @@ namespace com.mirle.ibg3k0.sc
             vhStateMachine.OnUnhandledTrigger(UnhandledTriggerHandler);
 
             CurrentCommandExcuteTime = new Stopwatch();
+            CurrentBlockingTime = new Stopwatch();
 
         }
 
@@ -160,6 +168,7 @@ namespace com.mirle.ibg3k0.sc
         public virtual string CUR_SEG_ID { get; set; } = string.Empty;
         private int assigncommandfailtimes = 0;
         public virtual bool isLongTimeInaction { get; private set; }
+        public virtual bool isLongTimeBlocking { get; private set; }
         public virtual string isLongTimeInactionCMDID { get; private set; }
         public virtual int AssignCommandFailTimes
         {
@@ -1437,6 +1446,23 @@ namespace com.mirle.ibg3k0.sc
 
                             }
                             vh.isLongTimeInaction = false;
+                        }
+                        double blocking_time = vh.CurrentBlockingTime.Elapsed.TotalSeconds;
+                        if (blocking_time > AVEHICLE.MAX_ALLOW_BLOCKING_TIME_SECOND)
+                        {
+                            if (!vh.isLongTimeBlocking)
+                            {
+                                vh.isLongTimeBlocking = true;
+                                vh.onLongTimeBlocking();
+                            }
+                            else
+                            {
+                                //do nothing
+                            }
+                        }
+                        else
+                        {
+                            vh.isLongTimeBlocking = false;
                         }
                     }
                     catch (Exception ex)

@@ -69,8 +69,17 @@ namespace com.mirle.ibg3k0.sc.Data
                 if (!can_block_pass)
                 {
                     eqpt.LastBlockRequestFailInterval.Restart();
-                }
 
+                    if (!eqpt.CurrentBlockingTime.IsRunning)
+                    {
+                        eqpt.CurrentBlockingTime.Restart();
+                    }
+                }
+                else
+                {
+                    eqpt.CurrentBlockingTime.Reset();
+                    eqpt.CurrentBlockingTime.Stop();
+                }
 
                 isSuccess = scApp.VehicleService.replyTranEventReport(bcfApp, eventType, eqpt, seqNum,
                                                                       canBlockPass: can_block_pass,
