@@ -1595,9 +1595,11 @@ namespace com.mirle.ibg3k0.sc.App
             };
             TrackInfoClient = new WebAPI.TrackInfoClient(this);
 
+
+            AEQPT ntb = equipmentBLL.cache.GetNTB();
             gRPC_With_ReelNTBCDefaultMapActionReceive = new Grpc.Core.Server()
             {
-                Services = { Mirle.U332MA30.Grpc.OhbcNtbcConnect.NtbcToOhbcService.BindService(new com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionReceive()) },
+                Services = { Mirle.U332MA30.Grpc.OhbcNtbcConnect.NtbcToOhbcService.BindService(ntb.getReelNTBCDefaultMapActionReceive()) },
                 Ports = { new Grpc.Core.ServerPort("127.0.0.1", 5005, Grpc.Core.ServerCredentials.Insecure) },
             };
         }

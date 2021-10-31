@@ -533,6 +533,7 @@
     <Compile Include="BLL\Interface\IManualPortDefBLL.cs" />
     <Compile Include="BLL\Interface\IManualPortReportBLL.cs" />
     <Compile Include="BLL\Interface\IManualPortShelfDefBLL.cs" />
+    <Compile Include="BLL\Interface\ReelNTB\IManualPortReportBLL.cs" />
     <Compile Include="BLL\LineBLL.cs" />
     <Compile Include="BLL\MapBLL.cs" />
     <Compile Include="BLL\ParkBLL.cs" />

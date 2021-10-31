@@ -15,7 +15,7 @@ using static com.mirle.ibg3k0.sc.ACMD_MCS;
 
 namespace com.mirle.ibg3k0.sc.Service
 {
-    public class ReelNTBEventService : IManualPortEventService
+    public class ReelNTBEventService
     {
         private Logger logger = LogManager.GetLogger("ManualPortLogger");
 
@@ -41,7 +41,7 @@ namespace com.mirle.ibg3k0.sc.Service
             WriteLog($"New ManualPortEventService");
         }
 
-        public void Start(IEnumerable<IManualPortValueDefMapAction> ports,
+        public void Start(IEnumerable<IReelNTBValueDefMapAction> reelNtb,
                           IManualPortReportBLL reportBll,
                           IManualPortDefBLL portDefBLL,
                           IManualPortShelfDefBLL shelfDefBLL,
@@ -58,12 +58,20 @@ namespace com.mirle.ibg3k0.sc.Service
 
             WriteLog($"ReelNTBEventService Start");
 
-            RegisterEvent(ports);
+            RegisterEvent(reelNtb);
         }
 
-        private void RegisterEvent(IEnumerable<IManualPortValueDefMapAction> ports)
+        private void RegisterEvent(IEnumerable<IReelNTBValueDefMapAction> eqs)
         {
-            
+            foreach (var eq in eqs)
+            {
+                eq.TransferCommandRequest += Eq_TransferCommandRequest;
+            }
+        }
+
+        private void Eq_TransferCommandRequest(object sender, Data.ValueDefMapAction.Events.ReelNTB.ReelNTBTranCmdReqEventArgs args)
+        {
+            throw new NotImplementedException();
         }
 
         #region Log
