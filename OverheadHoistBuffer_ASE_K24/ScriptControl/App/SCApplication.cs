@@ -644,6 +644,9 @@ namespace com.mirle.ibg3k0.sc.App
         private EmptyBoxHandlerService emptyBoxHandlerService = null;
         public EmptyBoxHandlerService EmptyBoxHandlerService { get { return emptyBoxHandlerService; } }
 
+        private ReelNTBEventService reelNTBEventService = null;
+        public ReelNTBEventService ReelNTBEventService { get { return reelNTBEventService; } }
+
         private IManualPortControlService manualPortControlService = null;
         public IManualPortControlService ManualPortControlService { get { return manualPortControlService; } }
         private IManualPortEventService manualPortEventService = null;
@@ -864,7 +867,6 @@ namespace com.mirle.ibg3k0.sc.App
 
             initDao();      //Initial DAO
             initBLL();      //Initial BLL
-            initServer();
             initConfig();   //Initial Config
             initialTransferCommandPeriodicDataSet();
 
@@ -885,6 +887,7 @@ namespace com.mirle.ibg3k0.sc.App
             initialReserveSectionAPI();//A0.01
             iniOHBC_Data();
             startBLL();
+            initServer();
             initWIF();      //Initial WIF   //A0.01
             initialCatchDataFromDB();
             commObjCacheManager.start(this);
@@ -1584,6 +1587,7 @@ namespace com.mirle.ibg3k0.sc.App
             blockControlService = new BlockControlService();
             shelfService = new ShelfService();
             emptyBoxHandlerService = new EmptyBoxHandlerService();
+            reelNTBEventService = new ReelNTBEventService();
 
             manualPortControlService = new ManualPortControlService();
             manualPortEventService = new ManualPortEventService();
@@ -1596,12 +1600,6 @@ namespace com.mirle.ibg3k0.sc.App
             TrackInfoClient = new WebAPI.TrackInfoClient(this);
 
 
-            AEQPT ntb = equipmentBLL.cache.GetNTB();
-            gRPC_With_ReelNTBCDefaultMapActionReceive = new Grpc.Core.Server()
-            {
-                Services = { Mirle.U332MA30.Grpc.OhbcNtbcConnect.NtbcToOhbcService.BindService(ntb.getReelNTBCDefaultMapActionReceive()) },
-                Ports = { new Grpc.Core.ServerPort("127.0.0.1", 5005, Grpc.Core.ServerCredentials.Insecure) },
-            };
         }
 
         /// <summary>
@@ -1665,6 +1663,7 @@ namespace com.mirle.ibg3k0.sc.App
             shelfService.start(this);
             emptyBoxHandlerService.start(this);
 
+            ReelNTBEventService.Start(reportBLL, equipmentBLL, PortStationBLL);
             var manual_port_map_action = PortStationBLL.OperateCatch.loadAllMgvPortStationMapAction();
             manualPortControlService.Start(manual_port_map_action);
             manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL);
@@ -1974,6 +1973,17 @@ namespace com.mirle.ibg3k0.sc.App
             reportBLL.startMapAction();
 
             vehicleDao.start(eqObjCacheManager.getAllVehicle());
+
+
+            var ntb = equipmentBLL.loadReelNTBs().FirstOrDefault();
+            if (ntb != null)
+            {
+                gRPC_With_ReelNTBCDefaultMapActionReceive = new Grpc.Core.Server()
+                {
+                    Services = { Mirle.U332MA30.Grpc.OhbcNtbcConnect.NtbcToOhbcService.BindService(ntb.getReelNTBCDefaultMapActionReceive()) },
+                    Ports = { new Grpc.Core.ServerPort("127.0.0.1", 5005, Grpc.Core.ServerCredentials.Insecure) },
+                };
+            }
         }
 
         /// <summary>

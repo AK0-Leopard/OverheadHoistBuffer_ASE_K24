@@ -1333,19 +1333,22 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private async void bt_ntb_hbReq_Click(object sender, EventArgs e)
         {
-            AEQPT ntb = bcApp.SCApplication.EquipmentBLL.cache.GetNTB();
+            var ntb = bcApp.SCApplication.EquipmentBLL.loadReelNTBs().FirstOrDefault();
+            if (ntb == null) return;
             await Task.Run(() => ntb.getReelNTBCDefaultMapActionSend().SendHeartBeatRequest());
         }
 
         private async void bt_IoPortSignalQuery_Click(object sender, EventArgs e)
         {
-            AEQPT ntb = bcApp.SCApplication.EquipmentBLL.cache.GetNTB();
-            await Task.Run(() => ntb.getReelNTBCDefaultMapActionSend().IoPortSignalQuery());
+            //var ntb = bcApp.SCApplication.EquipmentBLL.loadReelNTBs().FirstOrDefault();
+            //if (ntb == null) return;
+            //await Task.Run(() => ntb.getReelNTBCDefaultMapActionSend().IoPortSignalQuery());
         }
 
         private async void bt_ReelStateUpdate_Click(object sender, EventArgs e)
         {
-            AEQPT ntb = bcApp.SCApplication.EquipmentBLL.cache.GetNTB();
+            var ntb = bcApp.SCApplication.EquipmentBLL.loadReelNTBs().FirstOrDefault();
+            if (ntb == null) return;
             await Task.Run(() => ntb.getReelNTBCDefaultMapActionSend().ReelStateUpdate());
         }
 

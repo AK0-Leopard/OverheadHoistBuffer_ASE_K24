@@ -31,6 +31,7 @@ using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using com.mirle.ibg3k0.sc.Data.SECSDriver;
 using com.mirle.ibg3k0.sc.BLL.Interface;
+using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events.ReelNTB;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
@@ -1951,6 +1952,21 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             bool isSuccsess = true;
             isSuccsess = isSuccsess && iBSEMDriver.S6F11SendCarrierInstallCompleted(cassetteData);
+            return isSuccsess;
+        }
+    }
+
+    public partial class ReportBLL : IReelNTBReportBLL
+    {
+        public bool ReportCarrierTransferRequest(ReelNTBTranCmdReqEventArgs arg)
+        {
+            bool isSuccsess = true;
+            string cst_id = arg.CarrierReelId;
+            string cst_loc = arg.SourcePortName;
+            string lot_id = "";
+            string req_dev = arg.DestinationEqPortName;
+            string req_loc = arg.DestinationEqPortId;
+            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendCarrierWaitInToTarget(cst_id, cst_loc, lot_id, req_dev, req_loc);
             return isSuccsess;
         }
     }

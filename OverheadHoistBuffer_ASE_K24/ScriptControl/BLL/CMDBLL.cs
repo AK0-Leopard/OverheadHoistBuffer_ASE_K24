@@ -1941,14 +1941,14 @@ namespace com.mirle.ibg3k0.sc.BLL
             return cmd_mcs;
         }
 
-        public ACMD_MCS getByCstBoxID(string cst_id, string box_id)
+        public ACMD_MCS getByCstBoxID(string box_id)
         {
             ACMD_MCS cmd_mcs = null;
             try
             {
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
-                    cmd_mcs = cmd_mcsDao.getByCstBoxID(con, cst_id, box_id);
+                    cmd_mcs = cmd_mcsDao.getByCstBoxID(con, box_id);
                 }
             }
             catch (Exception ex)

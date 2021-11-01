@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
-    public class EquipmentBLL
+    public partial class EquipmentBLL
     {
         private SCApplication scApp = null;
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -52,6 +52,13 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 this.eqObjCacheManager = eqObjCacheManager;
             }
+            public List<AEQPT> loadEqs()
+            {
+                var eqpt = eqObjCacheManager.getAllEquipment().ToList();
+                return eqpt;
+
+            }
+
             public AEQPT getEqpt(string eqID)
             {
                 var eqpt = eqObjCacheManager.getAllEquipment().
@@ -211,10 +218,19 @@ namespace com.mirle.ibg3k0.sc.BLL
                 var eqpt = eqObjCacheManager.getAllEquipment().
                             Where(eq => SCUtility.isMatche(eq.EQPT_ID, "NTB01")).
                             FirstOrDefault();
-                return eqpt ;
+                return eqpt;
             }
 
         }
 
+    }
+
+    public partial class EquipmentBLL : Interface.IReelNTBEquipmentBLL
+    {
+        public List<ReelNTB> loadReelNTBs()
+        {
+            var ntbs = cache.loadEqs().Where(eq => eq is ReelNTB).Select(eq => eq as ReelNTB).ToList();
+            return ntbs;
+        }
     }
 }

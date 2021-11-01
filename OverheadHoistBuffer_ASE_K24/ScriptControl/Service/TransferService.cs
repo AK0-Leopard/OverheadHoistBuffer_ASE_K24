@@ -4506,7 +4506,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         + "OHB >> OHB|誰呼叫:" + cmdSource + " 發現: " + portName + " LoadPosition1 OFF，殘留帳 " + cmdSource + GetCstLog(dbCstData)
                     );
 
-                    ACMD_MCS cmd = cmdBLL.getByCstBoxID(dbCstData.CSTID, dbCstData.BOXID);
+                    ACMD_MCS cmd = cmdBLL.getByCstBoxID(dbCstData.BOXID);
 
                     if (cmd != null)
                     {
@@ -4565,7 +4565,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     HandoffType = "1";
                 }
 
-                ACMD_MCS cmd = cmdBLL.getByCstBoxID(dbData.CSTID, dbData.BOXID);    //0727 發生AGV Port 退BOX，BOX 在席滅掉，OHT再報入料完成，發生刪錯帳
+                ACMD_MCS cmd = cmdBLL.getByCstBoxID(dbData.BOXID);    //0727 發生AGV Port 退BOX，BOX 在席滅掉，OHT再報入料完成，發生刪錯帳
                 if (cmd != null)
                 {
                     TransferServiceLogger.Info
@@ -6720,7 +6720,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 "OHB >> DB|DeleteCst：cstID:" + cstID + "    boxID:" + boxID + "  誰呼叫:" + cmdSource
             );
 
-            ACMD_MCS cmdData = cmdBLL.getByCstBoxID(cstID, boxID);
+            ACMD_MCS cmdData = cmdBLL.getByCstBoxID(boxID);
 
             if (cmdData != null)
             {

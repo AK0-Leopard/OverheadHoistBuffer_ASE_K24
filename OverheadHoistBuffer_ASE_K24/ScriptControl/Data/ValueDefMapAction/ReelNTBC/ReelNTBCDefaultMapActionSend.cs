@@ -19,6 +19,7 @@ using com.mirle.ibg3k0.bcf.Data.ValueDefMapAction;
 using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data.SECSDriver;
+using com.mirle.ibg3k0.sc.Data.VO;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
 using com.mirle.ibg3k0.stc.Common;
 using Grpc.Core;
@@ -35,7 +36,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC
         Channel channel = null;
         Mirle.U332MA30.Grpc.OhbcNtbcConnect.OhbcToNtbcService.OhbcToNtbcServiceClient client = null;
         sc.App.SCApplication scApp = null;
-        AEQPT eqpt = null;
+        ReelNTB eqpt = null;
         public ReelNTBCDefaultMapActionSend() : base()
         {
 
@@ -81,7 +82,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC
 
         public void setContext(BaseEQObject baseEQ)
         {
-            eqpt = baseEQ as AEQPT;
+            eqpt = baseEQ as ReelNTB;
         }
 
         public void unRegisterEvent()
@@ -103,14 +104,36 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC
                 return false;
             }
         }
-        public bool IoPortSignalQuery()
+        public Mirle.U332MA30.Grpc.OhbcNtbcConnect.OhtPortSignal IoPortSignalQuery(string portName)
         {
             try
             {
                 var send = new Mirle.U332MA30.Grpc.OhbcNtbcConnect.OhtPortQuery();
-                send.PortName = "AAA";
+                send.PortName = portName;
                 LogHelper.RecordHostReportInfo(send);
                 var ask = client.IoPortSignalQuery(send);
+                LogHelper.RecordHostReportInfoAsk(ask);
+                return ask;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return null;
+            }
+        }
+        public bool ReelStateUpdate(string cstID, Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState state, bool isToEQ, string mcsCmdID)
+        {
+            try
+            {
+                var send = new Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelStateUpdateReq();
+                send.CarrierReelId = cstID;
+                send.Scenario = state;
+                if (isToEQ)
+                    send.McsTransferToEqPortCommandId = mcsCmdID;
+                else
+                    send.McsTransferToNtbCommand = mcsCmdID;
+                LogHelper.RecordHostReportInfo(send);
+                var ask = client.ReelStateUpdate(send);
                 LogHelper.RecordHostReportInfoAsk(ask);
                 return true;
             }

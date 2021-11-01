@@ -111,7 +111,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO.EntityFramework
                         select cmd;
             return query.SingleOrDefault();
         }
-        public ACMD_MCS getByCstBoxID(DBConnection_EF con, string cst_id, string box_id)
+        public ACMD_MCS getByCstBoxID(DBConnection_EF con,  string box_id)
         {
             var query = from cmd in con.ACMD_MCS
                             //cmd.CARRIER_ID.Trim() == cst_id.Trim()

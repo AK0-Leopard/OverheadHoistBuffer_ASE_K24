@@ -272,20 +272,6 @@ namespace com.mirle.ibg3k0.sc
 
 
 
-        public Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionSend getReelNTBCDefaultMapActionSend()
-        {
-            Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionSend portValueDefMapAction =
-                getMapActionByIdentityKey(typeof(Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionSend).Name) as
-                Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionSend;
-            return portValueDefMapAction;
-        }
-        public Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionReceive getReelNTBCDefaultMapActionReceive()
-        {
-            Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionReceive portValueDefMapAction =
-                getMapActionByIdentityKey(typeof(Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionReceive).Name) as
-                Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionReceive;
-            return portValueDefMapAction;
-        }
 
 
     }

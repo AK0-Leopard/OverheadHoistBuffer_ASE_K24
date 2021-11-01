@@ -3,6 +3,7 @@ using com.mirle.ibg3k0.bcf.Data.TimerAction;
 using com.mirle.ibg3k0.sc.App;
 using NLog;
 using System;
+using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.Data.TimerAction
 {
@@ -25,6 +26,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
         {
             try
             {
+                Task.Run(() => scApp.ReelNTBEventService.RefreshReelNTBPortSignal());
                 scApp.ManualPortControlService?.ReflashState();
             }
             catch (Exception ex)

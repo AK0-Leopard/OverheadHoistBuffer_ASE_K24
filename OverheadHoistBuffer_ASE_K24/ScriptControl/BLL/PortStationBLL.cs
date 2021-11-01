@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
-    public class PortStationBLL
+    public partial class PortStationBLL
     {
         public DB OperateDB { private set; get; }
         public Catch OperateCatch { private set; get; }
@@ -373,8 +373,14 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
 
         }
+    }
 
-
-
+    public partial class PortStationBLL : Interface.IReelNTBPortStationBLL
+    {
+        public List<REEL_NTB_PORTSTATION> loadReelNTBPortStations(string eqID)
+        {
+            var reel_ports = OperateCatch.loadPortStations().Where(port => port is REEL_NTB_PORTSTATION).Select(port => port as REEL_NTB_PORTSTATION).ToList();
+            return reel_ports;
+        }
     }
 }

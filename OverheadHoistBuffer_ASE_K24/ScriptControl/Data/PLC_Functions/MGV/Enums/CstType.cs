@@ -6,5 +6,6 @@
         B = 1,
         A = 2,
         Undefined = 3,
+        ReelCST = 4,
     }
 }

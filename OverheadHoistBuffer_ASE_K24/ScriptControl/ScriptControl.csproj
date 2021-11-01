@@ -533,6 +533,9 @@
     <Compile Include="BLL\Interface\IManualPortDefBLL.cs" />
     <Compile Include="BLL\Interface\IManualPortReportBLL.cs" />
     <Compile Include="BLL\Interface\IManualPortShelfDefBLL.cs" />
+    <Compile Include="BLL\Interface\ReelNTB\IReelNTBPortStationBLL.cs" />
+    <Compile Include="BLL\Interface\ReelNTB\IReelNTBEquipmentBLL.cs" />
+    <Compile Include="BLL\Interface\ReelNTB\IReelNTBReportBLL.cs" />
     <Compile Include="BLL\LineBLL.cs" />
     <Compile Include="BLL\MapBLL.cs" />
     <Compile Include="BLL\ParkBLL.cs" />
@@ -914,11 +917,13 @@
     <Compile Include="Data\VO\Interface\IConnectionStatusChange.cs" />
     <Compile Include="Data\VO\Interface\IMaintainDevice.cs" />
     <Compile Include="Data\VO\MTLSetting.cs" />
+    <Compile Include="Data\VO\ReelNTB.cs" />
     <Compile Include="Data\VO\OHCV.cs" />
     <Compile Include="Data\VO\MaintainLift.cs" />
     <Compile Include="Data\VO\PartialVo\AADDRESS.cs" />
     <Compile Include="Data\VO\PartialVo\ABLOCKZONEMASTER.cs" />
     <Compile Include="Data\VO\PartialVo\ACMD_OHTC.cs" />
+    <Compile Include="Data\VO\PartialVo\REEL_NTB_PORTSTATION.cs" />
     <Compile Include="Data\VO\PartialVo\MANUAL_PORTSTATION.cs" />
     <Compile Include="Data\VO\PartialVo\ASECTION.cs" />
     <Compile Include="Data\VO\PartialVo\ASEGMENT.cs" />

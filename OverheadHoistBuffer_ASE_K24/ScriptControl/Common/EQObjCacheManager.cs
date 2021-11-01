@@ -527,6 +527,10 @@ namespace com.mirle.ibg3k0.sc.Common
                             }
                             (eqTemp as OHCV).setSegmentLocation(segment_location);
                         }
+                        else if (eqptType == SCAppConstants.EqptType.NTB)
+                        {
+                            eqTemp = new ReelNTB();
+                        }
                         else
                         {
                             eqTemp = new AEQPT();
@@ -607,6 +611,19 @@ namespace com.mirle.ibg3k0.sc.Common
                             if (eqptType == SCAppConstants.EqptType.MANUALPORT)
                             {
                                 portStationList.Add(new MANUAL_PORTSTATION()
+                                {
+                                    EQPT_ID = eqpt_id,
+                                    PORT_ID = port_id,
+                                    ADR_ID = adr_id,
+                                    LD_VH_TYPE = load_vh_type,
+                                    ULD_VH_TYPE = unload_vh_type,
+                                    PORT_STATUS = E_PORT_STATUS.InService,
+                                    CARRIER_CST_TYPE = carrier_cst_type
+                                });
+                            }
+                            else if (eqptType == SCAppConstants.EqptType.NTB)
+                            {
+                                portStationList.Add(new REEL_NTB_PORTSTATION()
                                 {
                                     EQPT_ID = eqpt_id,
                                     PORT_ID = port_id,
