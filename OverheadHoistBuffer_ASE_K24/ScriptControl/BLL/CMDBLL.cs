@@ -342,7 +342,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-        public string doCheckMCSCommand(SCApplication app, string command_id, string Priority, string cstID, string box_id, string lotID, string cstType,
+        //public string doCheckMCSCommand(SCApplication app, string command_id, string Priority, string cstID, string box_id, string lotID, string cstType,
+        //                                ref string HostSource, ref string HostDestination,
+        //                                out string check_result, out bool isFromVh)
+        public (string resultCode, CassetteData cassetteData) doCheckMCSCommand(SCApplication app, string command_id, string Priority, string cstID, string box_id, string lotID, string cstType,
                                         ref string HostSource, ref string HostDestination,
                                         out string check_result, out bool isFromVh)
         {
@@ -377,7 +380,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     {
                         check_result = $"{DateTime.Now.ToString("HH:mm:ss.fff ")}MCS >> OHB|S2F50: cmdID:{command_id} BOXID: {box_id} 的來源:{HostSource} 已經有命令準備前往，無法接收該Port的入庫命令。";
                         TransferServiceLogger.Info(check_result);
-                        return SECSConst.HCACK_Obj_Not_Exist;
+                        return (SECSConst.HCACK_Not_Able_Execute, null);
                     }
                 }
 
@@ -389,8 +392,19 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     //TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: BOXID: " + box_id + " 不存在");
                     //return SECSConst.HCACK_Obj_Not_Exist;
-                    if (scApp.TransferService.isEQPort(HostSource))
+                    if (scApp.TransferService.isEQPort(HostSource) ||
+                        scApp.TransferService.isNTBPort(HostSource))
                     {
+                        string cst_type = cstType;
+                        var port_station = scApp.PortStationBLL.OperateCatch.getPortStation(HostSource);
+                        if (port_station != null &&
+                            port_station.LD_VH_TYPE == E_VH_TYPE.ReelCST)
+                        {
+                            int i_cst_type = (int)Data.PLC_Functions.MGV.Enums.CstType.ReelCST;
+                            cst_type = i_cst_type.ToString();
+                            TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F49: BOXID: " + box_id + $" 開始進行建帳，並將CST Type改為:{cst_type}");
+                        }
+
                         CassetteData cstData_FromS2F49 = new CassetteData();
                         cstData_FromS2F49.BOXID = box_id.Trim(); //填BOXID
                         //cstData_FromS2F49.CSTID = ""; // 填入空白即可
@@ -400,7 +414,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                         cstData_FromS2F49.CSTInDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
                         cstData_FromS2F49.ReadStatus = ((int)ACMD_MCS.IDreadStatus.successful).ToString();
                         cstData_FromS2F49.Stage = 1;
-                        cstData_FromS2F49.CSTType = cstType;
+                        //cstData_FromS2F49.CSTType = cstType;
+                        cstData_FromS2F49.CSTType = cst_type;
                         TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F49: BOXID: " + box_id + " 不存在, 但由於是EQ Port 自動建帳 PTI用");
                         app.CassetteDataBLL.insertCassetteData(cstData_FromS2F49);
                         cstData = cstData_FromS2F49;
@@ -409,7 +424,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     {
                         check_result = DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: BOXID: " + box_id + " 不存在";
                         TransferServiceLogger.Info(check_result);
-                        return SECSConst.HCACK_Obj_Not_Exist;
+                        return (SECSConst.HCACK_Obj_Not_Exist, null);
                     }
                 }
 
@@ -434,7 +449,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         + " 狀態: " + cmd_obj.TRANSFERSTATE
                     );
 
-                    return SECSConst.HCACK_Rejected;
+                    return (SECSConst.HCACK_Rejected, null);
                 }
 
                 var cmdbyBox = scApp.CMDBLL.getCMD_ByBoxID(cstData.BOXID);//.getByCstBoxID(cstData.CSTID ,cstData.BOXID);
@@ -453,11 +468,11 @@ namespace com.mirle.ibg3k0.sc.BLL
 
                         if (SCUtility.isMatche(cstData.Carrier_LOC, cmdbyBox.HOSTSOURCE))
                         {
-                            return SECSConst.HCACK_Confirm_Executed;    //如果卡匣還沒進車子，要報0
+                            return (SECSConst.HCACK_Confirm_Executed, null);    //如果卡匣還沒進車子，要報0
                         }
                         else
                         {
-                            return SECSConst.HCACK_Rejected;
+                            return (SECSConst.HCACK_Rejected, null);
                         }
                     }
                 }
@@ -474,21 +489,21 @@ namespace com.mirle.ibg3k0.sc.BLL
                 if (SourceDestExist(HostSource) == false)
                 {
                     TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: 來源Port: " + HostSource + " 不存在");
-                    return SECSConst.HCACK_Obj_Not_Exist;
+                    return (SECSConst.HCACK_Obj_Not_Exist, null);
                 }
 
                 if (scApp.TransferService.isCVPort(HostSource))
                 {
                     if (HostSource.Trim() != cstData.Carrier_LOC.Trim())
                     {
-                        return SECSConst.HCACK_Not_Able_Execute;
+                        return (SECSConst.HCACK_Not_Able_Execute, null);
                     }
                 }
 
                 if (SourceDestExist(HostDestination) == false)
                 {
                     TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: 目的Port: " + HostDestination + " 不存在");
-                    return SECSConst.HCACK_Obj_Not_Exist;
+                    return (SECSConst.HCACK_Obj_Not_Exist, null);
                 }
 
                 #endregion 來源目的是否存在
@@ -542,7 +557,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         {
                             check_result = $"Vh:{HostSource.Trim()},not carray cst.";
                             TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: 車子相關:" + check_result);
-                            return SECSConst.HCACK_Rejected;
+                            return (SECSConst.HCACK_Rejected, null);
                         }
                         else
                         {
@@ -550,7 +565,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                             {
                                 check_result = $"Vh:{HostSource.Trim()}, current carray cst id:{carray_vh.BOX_ID} ,not matche host carrier id:{box_id}.";
                                 TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: 車子相關:" + check_result);
-                                return SECSConst.HCACK_Rejected;
+                                return (SECSConst.HCACK_Rejected, null);
                             }
                             else
                             {
@@ -651,14 +666,14 @@ namespace com.mirle.ibg3k0.sc.BLL
 
                 checkcode = SECSConst.HCACK_Confirm;
 
-                return checkcode;
+                return (checkcode, cstData);
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception");
                 TransferServiceLogger.Error(ex, "doCheckMCSCommand");
                 check_result = "程式跳出例外";
-                return SECSConst.HCACK_Rejected;
+                return (SECSConst.HCACK_Rejected, null);
             }
         }
 
@@ -689,7 +704,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             return cmdMCSSort;
         }
 
-        public bool doCreatMCSCommand(string command_id, string Priority, string replace, string carrier_id, string HostSource, string HostDestination, string Box_ID, string LOT_ID, string box_Loc, string checkcode, bool isFromVh)
+        public (bool isSuccess, ACMD_MCS cmdMCS) doCreatMCSCommand(string command_id, string Priority, string replace, string carrier_id, string HostSource, string HostDestination, string Box_ID, string LOT_ID, string box_Loc, string checkcode, bool isFromVh)
         {
             bool isSuccess = true;
             int ipriority = 0;
@@ -709,7 +724,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             //ACMD_MCS mcs_com = creatCommand_MCS(command_id, ipriority, carrier_id, HostSource, HostDestination, checkcode);
 
-            creatCommand_MCS(command_id, ipriority, ireplace, carrier_id, HostSource, HostDestination, Box_ID, LOT_ID, box_Loc, checkcode, isFromVh);
+            ACMD_MCS mcs_com = creatCommand_MCS(command_id, ipriority, ireplace, carrier_id, HostSource, HostDestination, Box_ID, LOT_ID, box_Loc, checkcode, isFromVh);
 
             CassetteData cstData = scApp.CassetteDataBLL.loadCassetteDataByBoxID(Box_ID);
 
@@ -727,7 +742,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             //    checkMCS_TransferCommand();
             //}
 
-            return isSuccess;
+            return (mcs_com != null, mcs_com);
         }
 
         public ACMD_MCS creatCommand_MCS(string command_id, int Priority, int replace, string carrier_id, string HostSource, string HostDestination, string Box_ID, string LOT_ID, string carrier_Loc, string checkcode, bool isFromVh)

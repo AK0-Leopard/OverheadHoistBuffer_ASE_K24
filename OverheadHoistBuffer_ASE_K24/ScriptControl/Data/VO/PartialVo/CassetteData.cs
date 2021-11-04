@@ -9,7 +9,7 @@ namespace com.mirle.ibg3k0.sc
 {
     public partial class CassetteData
     {
-        public static List<CassetteData> CassetteData_InfoList { get;  set; } = new List<CassetteData>();
+        public static List<CassetteData> CassetteData_InfoList { get; set; } = new List<CassetteData>();
         public enum OHCV_STAGE
         {
             OHTtoPort = 0,  //入料進行中
@@ -60,5 +60,13 @@ namespace com.mirle.ibg3k0.sc
             return "";
         }
 
+    }
+
+    public partial class CassetteData
+    {
+        public bool IsReelCST
+        {
+            get { return CSTType == ((int)Data.PLC_Functions.MGV.Enums.CstType.ReelCST).ToString(); }
+        }
     }
 }

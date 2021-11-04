@@ -784,7 +784,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             if (e.RowIndex >= 0)
             {
                 currentSelectIndex = e.RowIndex;
-                string vh_id = dgv_vhStatus.Rows[currentSelectIndex].Cells[0].Value as string;
+                string vh_id = dgv_vhStatus.Rows[currentSelectIndex].Cells[0].Value as string;  
 
                 setMonitorVehicle(vh_id);
             }

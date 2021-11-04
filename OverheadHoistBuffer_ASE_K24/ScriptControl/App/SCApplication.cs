@@ -1663,12 +1663,12 @@ namespace com.mirle.ibg3k0.sc.App
             shelfService.start(this);
             emptyBoxHandlerService.start(this);
 
-            ReelNTBEventService.Start(reportBLL, equipmentBLL, PortStationBLL);
+            ReelNTBEventService.Start(this, reportBLL, equipmentBLL, PortStationBLL);
             var manual_port_map_action = PortStationBLL.OperateCatch.loadAllMgvPortStationMapAction();
             manualPortControlService.Start(manual_port_map_action);
             manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL);
             gRPC_With_VehicleControlFun.Start();
-            //gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
+            gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
         }
 
         /// <summary>

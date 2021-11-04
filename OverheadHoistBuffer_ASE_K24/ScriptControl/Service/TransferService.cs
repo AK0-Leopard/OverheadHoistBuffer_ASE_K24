@@ -840,14 +840,14 @@ namespace com.mirle.ibg3k0.sc.Service
 
                     #region Port狀態處理
 
-                    TimeSpan updateTimeSpan = DateTime.Now - updateTime;
+                    //TimeSpan updateTimeSpan = DateTime.Now - updateTime;
 
-                    if (updateTimeSpan.Seconds >= 3.5)
-                    {
-                        updateAGVStation();
-                        updateAGVHasCmdsAccessStatus();
-                        updateTime = DateTime.Now;
-                    }
+                    //if (updateTimeSpan.Seconds >= 3.5)
+                    //{
+                    //    updateAGVStation();
+                    //    updateAGVHasCmdsAccessStatus();
+                    //    updateTime = DateTime.Now;
+                    //}
 
                     #endregion Port狀態處理
 
@@ -2338,7 +2338,8 @@ namespace com.mirle.ibg3k0.sc.Service
                         }
                     }
                 }
-                else if (isUnitType(sourceName, UnitType.EQ))
+                else if (isUnitType(sourceName, UnitType.EQ) ||
+                         isUnitType(sourceName, UnitType.NTB))
                 {
                     sourcePortType = true;
                 }
@@ -2521,6 +2522,10 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                 }
                 else if (isUnitType(destName, UnitType.EQ))
+                {
+                    destPortType = true;
+                }
+                else if (isUnitType(destName, UnitType.NTB))
                 {
                     destPortType = true;
                 }
@@ -3026,6 +3031,9 @@ namespace com.mirle.ibg3k0.sc.Service
                         reportBLL.ReportCraneIdle(ohtName, cmd.CMD_ID);
                         reportBLL.ReportTransferCompleted(cmd, null, ResultCode.InterlockError);
 
+
+                        checkIsNeedNotifyReelNTBTransferFail(cmd.BOX_ID, cmd);
+
                         break;
 
                     case COMMAND_STATUS_BIT_INDEX_VEHICLE_ABORT:
@@ -3034,6 +3042,8 @@ namespace com.mirle.ibg3k0.sc.Service
                         //reportBLL.ReportTransferCompleted(cmd, null, ResultCode.InterlockError);   //  20/04/13 MCS 反應說不要報 1 ，改報64
                         reportBLL.ReportTransferCompleted(cmd, null, ResultCode.WarnError);   //  20/04/13 MCS 反應說不要報 1 ，改報64
                         EmptyShelf();
+                        checkIsNeedNotifyReelNTBTransferFail(cmd.BOX_ID, cmd);
+
                         break;
 
                     case COMMAND_STATUS_BIT_INDEX_CST_TYPE_MISMATCH:
@@ -3047,6 +3057,8 @@ namespace com.mirle.ibg3k0.sc.Service
                             DateTime.Now.ToString("HH:mm:ss.fff ")
                             + "OHT >> OHB|OHT_CSTTypeMismatch發生， 位置： " + ohtCmd.SOURCE.Trim()
                         );
+                        checkIsNeedNotifyReelNTBTransferFail(cmd.BOX_ID, cmd);
+
 
                         //CassetteData cst_type_Data = cassette_dataBLL.loadCassetteDataByLoc(ohtCmd.SOURCE.Trim());
                         //reportBLL.ReportCarrierRemovedCompleted(cst_type_Data.CSTID, cst_type_Data.BOXID);
@@ -3309,6 +3321,8 @@ namespace com.mirle.ibg3k0.sc.Service
                                 {
                                     reportBLL.ReportCarrierTransferring(cmd, loadCstData, ohtName);
                                 }
+
+                                checkIsNeedNotifyReelNTBTransferring(loadCstData, cmd);
                                 //A21.02.01.0 End
                                 //A21.02.01.0 reportBLL.ReportCarrierTransferring(cmd, loadCstData, ohtName);
                             }
@@ -3317,6 +3331,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             {
                                 reportBLL.ReportZoneCapacityChange(cmd.HOSTSOURCE, null);
                             }
+
                         }
                         else
                         {
@@ -3365,6 +3380,71 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
+        private void checkIsNeedNotifyReelNTBTransferring(CassetteData loadCstData, ACMD_MCS cmd)
+        {
+            try
+            {
+                if (loadCstData.IsReelCST)
+                {
+                    var ntb = scApp.EquipmentBLL.getReelNTB();
+                    ntb?.onRelatedReelCSTTransferring(cmd);
+                }
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "checkIsNeedNotifyReelNTBTransferring");
+            }
+        }
+
+        private void checkIsNeedNotifyReelNTBTransferFail(string cstID, ACMD_MCS cmd)
+        {
+            try
+            {
+                bool is_success = cassette_dataBLL.GetCarrierByBoxId(cstID, out CassetteData cassetteData);
+                if (is_success)
+                {
+                    checkIsNeedNotifyReelNTBTransferFail(cassetteData, cmd);
+                }
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "checkIsNeedNotifyReelNTBTransferFail");
+            }
+        }
+
+
+        private void checkIsNeedNotifyReelNTBTransferFail(CassetteData loadCstData, ACMD_MCS cmd)
+        {
+            try
+            {
+                if (loadCstData.IsReelCST)
+                {
+                    var ntb = scApp.EquipmentBLL.getReelNTB();
+                    ntb?.onRelatedReelCSTTransfeFail(cmd);
+                }
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "checkIsNeedNotifyReelNTBTransferFail");
+            }
+        }
+        private void checkIsNeedNotifyRelatedReelCSTArrived(CassetteData loadCstData, ACMD_MCS cmd)
+        {
+            try
+            {
+                if (loadCstData.IsReelCST)
+                {
+                    var ntb = scApp.EquipmentBLL.getReelNTB();
+                    ntb?.onRelatedReelCSTArrived(cmd);
+                }
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "checkIsNeedNotifyRelatedReelCSTArrived");
+            }
+        }
+
+
         public void OHT_UnLoadCompleted(ACMD_OHTC ohtCmd, CassetteData unLoadCstData, string sourceCmd)
         {
             string ohtName = ohtCmd.VH_ID.Trim();
@@ -3395,7 +3475,8 @@ namespace com.mirle.ibg3k0.sc.Service
                         cassette_dataBLL.UpdateCSTLoc(unLoadCstData.BOXID, unLoadCstData.Carrier_LOC, 1);
                     }
                     else if (isUnitType(dest, UnitType.SHELF) ||
-                             isUnitType(dest, UnitType.EQ))
+                             isUnitType(dest, UnitType.EQ) ||
+                             isUnitType(dest, UnitType.NTB))
 
                     {
                         cassette_dataBLL.UpdateCSTLoc(unLoadCstData.BOXID, dest, 1);
@@ -3449,7 +3530,8 @@ namespace com.mirle.ibg3k0.sc.Service
                             }
                             QueryLotID(unLoadCstData);
                         }
-                        else if (isUnitType(dest, UnitType.EQ))
+                        else if (isUnitType(dest, UnitType.EQ) ||
+                                 isUnitType(dest, UnitType.NTB))
                         {
                             reportBLL.ReportCarrierWaitOut(unLoadCstData, "1");
                             //reportBLL.ReportCarrierRemovedCompleted(unLoadCstData.CSTID, unLoadCstData.BOXID);
@@ -3457,6 +3539,9 @@ namespace com.mirle.ibg3k0.sc.Service
                             cassette_dataBLL.DeleteCSTbyCstBoxID(unLoadCstData.CSTID, unLoadCstData.BOXID);
                             //cassette_dataBLL.DeleteCSTbyBoxId(unLoadCstData.BOXID);
                             TransferServiceLogger.Info($"{DateTime.Now.ToString("HH:mm:ss.fff")} OHT_UnLoadCompleted 位置在:{dest}, 故直接將其移除");
+
+                            checkIsNeedNotifyRelatedReelCSTArrived(unLoadCstData, cmd);
+
                         }
                         else
                         {
@@ -3523,7 +3608,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 reportBLL.ReportZoneCapacityChange(dest, null);
                 QueryLotID(unLoadCstData);
             }
-            else if (isUnitType(dest, UnitType.EQ))
+            else if (isUnitType(dest, UnitType.EQ) ||
+                     isUnitType(dest, UnitType.NTB))
             {
                 reportBLL.ReportCarrierWaitOut(unLoadCstData, "1");
                 reportBLL.ReportCarrierRemovedFromPort(unLoadCstData, SECSConst.HandoffType_Automated);
@@ -6081,6 +6167,7 @@ namespace com.mirle.ibg3k0.sc.Service
         public string CarrierReadFail(string loc)   //卡匣讀不到
         {
             return "UNKF" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            //return "UNKT" + "REELCA01" + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
         }
 
         public string CarrierReadFailAtTargetAGV(string loc)   //卡匣讀不到
@@ -6579,6 +6666,15 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 CassetteData datainfo = new CassetteData();
 
+                string cst_type = "";
+                var port_station = scApp.PortStationBLL.OperateCatch.getPortStation(loc);
+                if (port_station != null &&
+                    port_station.LD_VH_TYPE == E_VH_TYPE.ReelCST)
+                {
+                    int i_cst_type = (int)Data.PLC_Functions.MGV.Enums.CstType.ReelCST;
+                    cst_type = i_cst_type.ToString();
+                }
+
                 datainfo.StockerID = "1";
                 //datainfo.CSTID = Redis_GetCstID(cstid, boxid);
                 datainfo.BOXID = boxid;
@@ -6588,7 +6684,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 datainfo.CSTInDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
                 datainfo.TrnDT = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
                 datainfo.Stage = 1;
-                //datainfo.CSTType = cstType;
+                datainfo.CSTType = cst_type;
 
                 string portName = datainfo.Carrier_LOC;
 
@@ -6834,6 +6930,8 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 cmdBLL.updateCMD_MCS_TranStatus(cmdMCS.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                 reportBLL.ReportTransferCompleted(cmdMCS, cassetteData, result);
+
+                checkIsNeedNotifyReelNTBTransferFail(cassetteData, cmdMCS);
                 return "OK";
             }
             return "失敗";
@@ -7200,7 +7298,7 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 portName = portName.Trim();
                 if (portINIData[portName].UnitType == UnitType.OHCV.ToString()
-                 || portINIData[portName].UnitType == UnitType.NTB.ToString()
+                 //|| portINIData[portName].UnitType == UnitType.NTB.ToString()
                  || portINIData[portName].UnitType == UnitType.AGV.ToString()
                  || portINIData[portName].UnitType == UnitType.STK.ToString()
                  || portINIData[portName].UnitType == UnitType.MANUALPORT.ToString()
@@ -7220,6 +7318,27 @@ namespace com.mirle.ibg3k0.sc.Service
                 return false;
             }
         }
+        public bool isNTBPort(string portName)
+        {
+            try
+            {
+                portName = portName.Trim();
+                if (portINIData[portName].UnitType == UnitType.NTB.ToString())
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "isCVPort    portName:" + portName);
+                return false;
+            }
+        }
+
 
         public bool isEQPort(string portName)
         {
@@ -10856,7 +10975,8 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 AVEHICLE vh = scApp.VehicleBLL.cache.getVhByID(vhID);
 
-                if (SystemParameter.IsEnableIDReadFailScenario)
+                //if (SystemParameter.IsEnableIDReadFailScenario)
+                if(true)
                 {
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
                            Data: $"BCR read fail happend,start abort command id:{vh.OHTC_CMD?.Trim()} and rename BOX id...",

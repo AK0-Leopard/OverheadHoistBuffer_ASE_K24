@@ -170,7 +170,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                     //B7_OHBLINE1_ST01
                     alarmUnitType = "MANUALPORT";
                 }
-                else if (scApp.TransferService.isUnitType(eq_id, UnitType.EQ))
+                else if (scApp.TransferService.isUnitType(eq_id, UnitType.EQ) ||
+                         scApp.TransferService.isUnitType(eq_id, UnitType.NTB))
                 {
                     //不會上報Eq的alarm
                 }

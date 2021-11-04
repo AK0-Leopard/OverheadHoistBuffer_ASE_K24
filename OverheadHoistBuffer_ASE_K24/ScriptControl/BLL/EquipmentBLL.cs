@@ -232,5 +232,14 @@ namespace com.mirle.ibg3k0.sc.BLL
             var ntbs = cache.loadEqs().Where(eq => eq is ReelNTB).Select(eq => eq as ReelNTB).ToList();
             return ntbs;
         }
+        /// <summary>
+        /// 目前僅有一台所以預設就回傳一台
+        /// </summary>
+        /// <returns></returns>
+        public ReelNTB getReelNTB()
+        {
+            var ntbs = cache.loadEqs().Where(eq => eq is ReelNTB).Select(eq => eq as ReelNTB).FirstOrDefault();
+            return ntbs;
+        }
     }
 }

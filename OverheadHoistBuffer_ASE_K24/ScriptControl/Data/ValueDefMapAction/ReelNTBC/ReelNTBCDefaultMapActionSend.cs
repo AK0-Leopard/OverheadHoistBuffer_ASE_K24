@@ -121,17 +121,18 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC
                 return null;
             }
         }
-        public bool ReelStateUpdate(string cstID, Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState state, bool isToEQ, string mcsCmdID)
+        public bool ReelStateUpdate(string cstID, Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState state, bool isToNTB, string mcsCmdID)
         {
             try
             {
                 var send = new Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelStateUpdateReq();
                 send.CarrierReelId = cstID;
                 send.Scenario = state;
-                if (isToEQ)
-                    send.McsTransferToEqPortCommandId = mcsCmdID;
-                else
+                if (isToNTB)
                     send.McsTransferToNtbCommand = mcsCmdID;
+                else
+                    send.McsTransferToEqPortCommandId = mcsCmdID;
+
                 LogHelper.RecordHostReportInfo(send);
                 var ask = client.ReelStateUpdate(send);
                 LogHelper.RecordHostReportInfoAsk(ask);

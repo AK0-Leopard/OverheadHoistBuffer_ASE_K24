@@ -402,6 +402,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         string cstID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.CARRIERIDINFO.CarrierID;
                         //string cstType = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.CARRIERTYPEINFO.CarrierType;
                         string cstType = "";
+
                         string boxID = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.CARRIERIDINFO.CarrierID;
                         string source = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.SOUINFO.Source;
                         string dest = s2f49_transfer.REPITEMS.TRANINFO.CARRINFO.DESTINFO.Dest;
@@ -433,12 +434,15 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                         SCUtility.RecodeReportInfo(s2f49, cmdID);
 
                         //檢查搬送命令
-
+                        CassetteData cassetteData = null;
+                        ACMD_MCS cmd_mcs = null;
                         if (isHostReady())
                         {
-                            s2f50.HCACK = scApp.CMDBLL.doCheckMCSCommand
+                            var check_result = scApp.CMDBLL.doCheckMCSCommand
                                 (scApp, cmdID, priority, cstID, boxID, lotID, cstType,
                                 ref source, ref dest, out rtnStr, out isFromVh);
+                            s2f50.HCACK = check_result.resultCode;
+                            cassetteData = check_result.cassetteData;
                         }
                         else
                         {
@@ -454,7 +458,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                             scApp.TransferService.SetMoveBackManualPortCommand(source);
                             return;
                         }
-
                         //準備將命令存入資料庫中
                         using (var tx = SCUtility.getTransactionScope())
                         {
@@ -465,7 +468,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                                                                                                 //|| SCUtility.isMatche(SECSConst.HCACK_Confirm_Executed, s2f50.HCACK)
                                    )
                                 {
-                                    isCreatScuess &= scApp.CMDBLL.doCreatMCSCommand(cmdID, priority, "0", cstID, source, dest, boxID, lotID, boxLoc, s2f50.HCACK, isFromVh);
+                                    //isCreatScuess &= scApp.CMDBLL.doCreatMCSCommand(cmdID, priority, "0", cstID, source, dest, boxID, lotID, boxLoc, s2f50.HCACK, isFromVh);
+                                    var mcs_cmd_creat_result = scApp.CMDBLL.doCreatMCSCommand(cmdID, priority, "0", cstID, source, dest, boxID, lotID, boxLoc, s2f50.HCACK, isFromVh);
+                                    isCreatScuess &= mcs_cmd_creat_result.isSuccess;
+                                    cmd_mcs = mcs_cmd_creat_result.cmdMCS;
                                 }
 
                                 if (s2f50.HCACK == SECSConst.HCACK_Confirm)
@@ -504,6 +510,12 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
                         if (s2f50.HCACK == SECSConst.HCACK_Confirm)
                         {
+                            if (cassetteData != null &&
+                                cassetteData.IsReelCST)
+                            {
+                                var ntb = scApp.EquipmentBLL.getReelNTB();
+                                ntb?.onRelatedReelCSTReceiveMCSCmd(cmd_mcs);
+                            }
                             //scApp.CMDBLL.checkMCS_TransferCommand();
                         }
                         else
@@ -1768,7 +1780,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             string ohbName = scApp.getEQObjCacheManager().getLine().LINE_ID;
             List<PortDef> port_station = scApp.PortDefBLL.GetOHB_CVPortData(ohbName);
-            port_station = port_station.Where(p => SCUtility.isMatche(p.UnitType, "EQ")).ToList();
+            port_station = port_station.Where(p => SCUtility.isMatche(p.UnitType, "EQ") || SCUtility.isMatche(p.UnitType, "NTB")).ToList();
             int port_count = port_station.Count;
 
             S6F11.RPTINFO.RPTITEM.VIDITEM_350_SV viditem_350 = new S6F11.RPTINFO.RPTITEM.VIDITEM_350_SV();
@@ -1790,6 +1802,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             //List<PortDef> port_station = scApp.PortDefBLL.GetOHB_PortData(ohbName);
             List<PortDef> port_station = scApp.PortDefBLL.GetOHB_CVPortData(ohbName);
             port_station = port_station.Where(p => !SCUtility.isMatche(p.UnitType, "EQ")).ToList();
+            port_station = port_station.Where(p => !SCUtility.isMatche(p.UnitType, "NTB")).ToList();
             int port_count = port_station.Count;
 
             string control_state = SCAppConstants.LineHostControlState.convert2MES(line.Host_Control_State);
@@ -3419,7 +3432,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 AMCSREPORTQUEUE mcs_queue = S6F11BulibMessage(SECSConst.CEID_Carrier_Wait_In_To_Target, Vids);
                 if (reportQueues == null)
                 {
-                    S6F11SendMessage(mcs_queue);
+                    if (S6F11SendMessage(mcs_queue))
+                    {
+                        scApp.CassetteDataBLL.UpdateCSTState(cstID, (int)E_CSTState.WaitIn);
+                    }
                 }
                 else
                 {
@@ -4340,6 +4356,15 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
                             case SECSConst.VID_Monitored_CraneInfo:
                                 vid_item = Vids.VIDITEM_893_SV_MonitoredCraneInfo;
+                                break;
+                            case SECSConst.VID_LOT_ID:
+                                vid_item = Vids.VIDITEM_894_LOT_ID;
+                                break;
+                            case SECSConst.VID_REQ_DEV:
+                                vid_item = Vids.VIDITEM_895_REQ_DEV;
+                                break;
+                            case SECSConst.VID_REQ_LOC:
+                                vid_item = Vids.VIDITEM_896_REQ_LOC;
                                 break;
 
                             default:

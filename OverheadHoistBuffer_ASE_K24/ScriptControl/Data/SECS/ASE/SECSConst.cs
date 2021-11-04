@@ -463,6 +463,9 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
         public const string VID_Crane_Current_Position = "891";
         public const string VID_Crane_Total_Distance = "892";
         public const string VID_Monitored_CraneInfo = "893";
+        public const string VID_LOT_ID = "894";
+        public const string VID_REQ_DEV = "895";
+        public const string VID_REQ_LOC = "896";
         //-------Synchronize---------
         public const string VID_Alarms_Set = "4";
         public const string VID_EnhancedALID = "40";
@@ -519,6 +522,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
              CEID_Carrier_Stored_Alt,
              CEID_Shelf_Status_Change,
              CEID_Carrier_Wait_In ,
+             CEID_Carrier_Wait_In_To_Target,
              CEID_Carrier_Wait_Out,
              CEID_Unit_Alarm_Set,
              CEID_Unit_Alarm_Cleared,
@@ -582,6 +586,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECS.ASE
             {CEID_Carrier_Stored_Alt,"Carrier_Stored_Alt"},
             {CEID_Shelf_Status_Change,"Shelf_Status_Change"},
             {CEID_Carrier_Wait_In,"Carrier_Wait_In"},
+            {CEID_Carrier_Wait_In_To_Target,"CEID_Carrier_Wait_In_To_Target"},
             {CEID_Carrier_Wait_Out,"Carrier_Wait_Out"},
             {CEID_Unit_Alarm_Set,"Unit_Alarm_Set"},
             {CEID_Unit_Alarm_Cleared,"Unit_Alarm_Cleared"},

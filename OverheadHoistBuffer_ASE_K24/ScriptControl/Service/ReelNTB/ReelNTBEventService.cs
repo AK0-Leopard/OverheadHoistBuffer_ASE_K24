@@ -24,6 +24,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private ConcurrentDictionary<string, IReelNTBValueDefMapAction> manualPorts { get; set; }
 
+        private sc.App.SCApplication scApp;
         private IReelNTBReportBLL reportBll;
         private IReelNTBEquipmentBLL equipmentBLL;
         private IReelNTBPortStationBLL portStationBLL;
@@ -36,8 +37,9 @@ namespace com.mirle.ibg3k0.sc.Service
             WriteLog($"New ReelNTBEventService");
         }
 
-        public void Start(IReelNTBReportBLL reportBll, IReelNTBEquipmentBLL equipmentBLL, IReelNTBPortStationBLL portStationBLL)
+        public void Start(sc.App.SCApplication _scApp, IReelNTBReportBLL reportBll, IReelNTBEquipmentBLL equipmentBLL, IReelNTBPortStationBLL portStationBLL)
         {
+            scApp = _scApp;
             this.reportBll = reportBll;
             this.equipmentBLL = equipmentBLL;
             this.portStationBLL = portStationBLL;
@@ -53,6 +55,95 @@ namespace com.mirle.ibg3k0.sc.Service
             foreach (var ntb in reel_ntbs)
             {
                 ntb.getReelNTBCDefaultMapActionReceive().TransferCommandRequest += Eq_TransferCommandRequest;
+
+                ntb.RelatedReelCSTReceiveMCSCmd += Ntb_RelatedReelCSTReceiveMCSCmd;
+                ntb.RelatedReelCSTTransferring += Ntb_RelatedReelCSTTransferring;
+                ntb.RelatedReelCSTTransfeFail += Ntb_RelatedReelCSTTransfeFail;
+                ntb.RelatedReelCSTArrived += Ntb_RelatedReelCSTArrived;
+            }
+        }
+
+        private void Ntb_RelatedReelCSTArrived(object sender, ACMD_MCS cmd_mcs)
+        {
+            try
+            {
+                var reel_ntb = sender as Data.VO.ReelNTB;
+                string cst_id = sc.Common.SCUtility.Trim(cmd_mcs.BOX_ID, true);
+                string mcs_cmd_id = sc.Common.SCUtility.Trim(cmd_mcs.CMD_ID, true);
+                bool is_to_ntb = cmd_mcs.IsDestReelNTB(scApp.TransferService);
+                Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState reelTransferState =
+                    is_to_ntb ?
+                    Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState.ArrivedNtbPort :
+                    Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState.ArrivedEqPort;
+
+                reel_ntb.ReelStateUpdate(cst_id, reelTransferState, is_to_ntb, mcs_cmd_id);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+        }
+
+        private void Ntb_RelatedReelCSTTransfeFail(object sender, ACMD_MCS cmd_mcs)
+        {
+            try
+            {
+                var reel_ntb = sender as Data.VO.ReelNTB;
+                string cst_id = sc.Common.SCUtility.Trim(cmd_mcs.BOX_ID, true);
+                string mcs_cmd_id = sc.Common.SCUtility.Trim(cmd_mcs.CMD_ID, true);
+                bool is_to_ntb = cmd_mcs.IsDestReelNTB(scApp.TransferService);
+                Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState reelTransferState =
+                    is_to_ntb ?
+                    Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState.FailedWhenTransferringToNtbPort :
+                    Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState.FailedWhenTransferringToEqPort;
+
+                reel_ntb.ReelStateUpdate(cst_id, reelTransferState, is_to_ntb, mcs_cmd_id);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+        }
+
+        private void Ntb_RelatedReelCSTTransferring(object sender, ACMD_MCS cmd_mcs)
+        {
+            try
+            {
+                var reel_ntb = sender as Data.VO.ReelNTB;
+                string cst_id = sc.Common.SCUtility.Trim(cmd_mcs.BOX_ID, true);
+                string mcs_cmd_id = sc.Common.SCUtility.Trim(cmd_mcs.CMD_ID, true);
+                bool is_to_ntb = cmd_mcs.IsDestReelNTB(scApp.TransferService);
+                Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState reelTransferState =
+                    is_to_ntb ?
+                    Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState.TransferringToNtbPort :
+                    Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState.TransferringToEqPort;
+
+                reel_ntb.ReelStateUpdate(cst_id, reelTransferState, is_to_ntb, mcs_cmd_id);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+        }
+
+        private void Ntb_RelatedReelCSTReceiveMCSCmd(object sender, ACMD_MCS cmd_mcs)
+        {
+            try
+            {
+                var reel_ntb = sender as Data.VO.ReelNTB;
+                string cst_id = sc.Common.SCUtility.Trim(cmd_mcs.BOX_ID, true);
+                string mcs_cmd_id = sc.Common.SCUtility.Trim(cmd_mcs.CMD_ID, true);
+                bool is_to_ntb = cmd_mcs.IsDestReelNTB(scApp.TransferService);
+                Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState reelTransferState =
+                    is_to_ntb ?
+                    Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState.ReciveMcsTransferToNtbCommand :
+                    Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState.ReciveMcsTransferToEqPortCommand;
+
+                reel_ntb.ReelStateUpdate(cst_id, reelTransferState, is_to_ntb, mcs_cmd_id);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
             }
         }
 
@@ -61,9 +152,11 @@ namespace com.mirle.ibg3k0.sc.Service
             try
             {
                 var reel_ntb = args.ReelNTB;
-                reportBll.ReportCarrierTransferRequest(args);
                 string cst_id = args.CarrierReelId;
+
                 reel_ntb.ReelStateUpdate(cst_id, Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState.ReciveNtbcTransferRequest, false, "");
+                reportBll.ReportCarrierTransferRequest(args);
+                reel_ntb.ReelStateUpdate(cst_id, Mirle.U332MA30.Grpc.OhbcNtbcConnect.ReelTransferState.SendMcsWaitIn, false, "");
             }
             catch (Exception ex)
             {

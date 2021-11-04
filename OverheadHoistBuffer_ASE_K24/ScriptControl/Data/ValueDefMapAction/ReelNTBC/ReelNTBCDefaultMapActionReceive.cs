@@ -27,6 +27,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC
             scApp = SCApplication.getInstance();
         }
 
+
+
         public override Task<TransferCommandAck> CarrierTransferRequest(TransferCommandRequset request, ServerCallContext context)
         {
             LogHelper.RecordHostReportInfo(request, method: "CarrierTransferRequest");

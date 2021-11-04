@@ -504,9 +504,12 @@ namespace com.mirle.ibg3k0.sc
             if (port_st == null) return "";
             return port_st.ADR_ID;
         }
-
-
-
-
+    }
+    public partial class ACMD_MCS //ForReelNTB使用
+    {
+        public bool IsDestReelNTB(sc.Service.TransferService transferService)
+        {
+            return transferService.isNTBPort(HOSTDESTINATION);
+        }
     }
 }

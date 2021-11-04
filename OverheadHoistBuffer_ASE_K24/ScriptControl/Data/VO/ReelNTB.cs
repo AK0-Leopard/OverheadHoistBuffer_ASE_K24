@@ -12,6 +12,11 @@ namespace com.mirle.ibg3k0.sc.Data.VO
 {
     public class ReelNTB : AEQPT
     {
+        public event EventHandler<ACMD_MCS> RelatedReelCSTReceiveMCSCmd;
+        public event EventHandler<ACMD_MCS> RelatedReelCSTTransferring;
+        public event EventHandler<ACMD_MCS> RelatedReelCSTTransfeFail;
+        public event EventHandler<ACMD_MCS> RelatedReelCSTArrived;
+
         public Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionSend getReelNTBCDefaultMapActionSend()
         {
             Data.ValueDefMapAction.ReelNTBC.ReelNTBCDefaultMapActionSend portValueDefMapAction =
@@ -38,6 +43,35 @@ namespace com.mirle.ibg3k0.sc.Data.VO
             return map_action_send.ReelStateUpdate(cstID, state, isToEQ, mcsCmdID);
         }
 
+        public void onRelatedReelCSTReceiveMCSCmd(ACMD_MCS _acmdMCS)
+        {
+            RelatedReelCSTReceiveMCSCmd?.Invoke(this, _acmdMCS);
+        }
+        public void onRelatedReelCSTTransferring(ACMD_MCS _acmdMCS)
+        {
+            RelatedReelCSTTransferring?.Invoke(this, _acmdMCS);
+        }
+        public void onRelatedReelCSTTransfeFail(ACMD_MCS _acmdMCS)
+        {
+            RelatedReelCSTTransfeFail?.Invoke(this, _acmdMCS);
+        }
+        public void onRelatedReelCSTArrived(ACMD_MCS _acmdMCS)
+        {
+            RelatedReelCSTArrived?.Invoke(this, _acmdMCS);
+        }
 
+
+        public void CarrierTransferRequestTest(string cstID, string destEqPortID, string destinationEqPortName, string sourcePortName)
+        {
+            Mirle.U332MA30.Grpc.OhbcNtbcConnect.TransferCommandRequset r = new Mirle.U332MA30.Grpc.OhbcNtbcConnect.TransferCommandRequset()
+            {
+                CarrierReelId = cstID,
+                DestinationEqPortId = destEqPortID,
+                DestinationEqPortName = destinationEqPortName,
+                SourcePortName = sourcePortName
+            };
+            getReelNTBCDefaultMapActionReceive().CarrierTransferRequest(r, null);
+        }
     }
+
 }

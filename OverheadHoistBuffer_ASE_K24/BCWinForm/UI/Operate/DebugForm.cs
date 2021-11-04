@@ -1356,5 +1356,13 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             DebugParameter.IsPassTrackBlockStatus = cb_passTrack.Checked;
         }
+
+        private async void btn_receiveTraReq_Click(object sender, EventArgs e)
+        {
+            var ntb = bcApp.SCApplication.EquipmentBLL.loadReelNTBs().FirstOrDefault();
+            if (ntb == null) return;
+
+            await Task.Run(() => ntb.CarrierTransferRequestTest("CST03", "P01", "E0081367", "TestPort_P01"));
+        }
     }
 }
