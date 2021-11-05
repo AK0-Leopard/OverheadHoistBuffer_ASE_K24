@@ -9,6 +9,7 @@ service OhbcToNtbcService
 	rpc HeartBeatRequest (HeartBeatReq) returns (HeartBeatAck);
 	rpc IoPortSignalQuery (OhtPortQuery) returns (OhtPortSignal);
     rpc ReelStateUpdate (ReelStateUpdateReq) returns (ReelStateUpdateAck);
+    rpc ForceDeleteReel (ReelDeleteReq) returns (ReelDeleteAck);
 }
 
 service NtbcToOhbcService
@@ -20,7 +21,8 @@ service NtbcToOhbcService
 }
 
 message HeartBeatReq {}
-message HeartBeatAck{
+message HeartBeatAck
+{
    Ack ReplyCode = 1;
 }
 
@@ -29,7 +31,8 @@ message RequestAck
 	Ack ReplyCode = 1;
 }
 
-enum Ack {
+enum Ack 
+{
 	NG = 0;
 	OK = 1;
 }
@@ -74,6 +77,7 @@ message TransferCommandRequset
     string SourcePortName = 2;
     string DestinationEqPortName = 3;
     string DestinationEqPortId = 4;
+    int32 ReelType = 5;
 }
 
 message TransferCommandAck
@@ -95,6 +99,7 @@ message ReelStateAck
 	ReelTransferState Scenario = 4;
     string McsTransferToEqPortCommandId = 5; 
     string McsTransferToNtbCommand = 6;
+    int32 ReelType = 7;
 }
 
 enum ReelTransferState 
@@ -109,7 +114,6 @@ enum ReelTransferState
 	TransferringToNtbPort = 7;
 	FailedWhenTransferringToNtbPort = 8;
 	ArrivedNtbPort = 9;
-	RemovedFromNtbPort = 10;
 }
 
 message ReelStateUpdateReq
@@ -118,6 +122,7 @@ message ReelStateUpdateReq
     ReelTransferState Scenario = 2;
     string McsTransferToEqPortCommandId = 3; 
     string McsTransferToNtbCommand = 4;
+    int32 ReelType = 5;
 }
 
 message ReelStateUpdateAck
@@ -130,4 +135,15 @@ message OhtPortStateAck
     string CarrierReelId = 1;
 	Ack ReplyCode = 2;
     string ReasonForRejection = 3;
+}
+
+message ReelDeleteReq
+{
+    string CarrierReelId = 1;
+    string Reasons = 2;
+}
+
+message ReelDeleteAck
+{
+	Ack ReplyCode = 1;
 }

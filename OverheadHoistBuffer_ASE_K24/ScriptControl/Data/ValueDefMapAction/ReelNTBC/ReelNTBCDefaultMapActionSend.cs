@@ -45,8 +45,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC
         public void doInit()
         {
             scApp = sc.App.SCApplication.getInstance();
-            string s_grpc_client_ip = scApp.getString("gRPCClientIP", "10.243.239.164");
-            string s_grpc_client_port = scApp.getString("gRPCClientPort", "5004");
+            string s_grpc_client_ip = scApp.getString("ReelNTBGrpcClientIP", "999.999.999.999");
+            string s_grpc_client_port = scApp.getString("ReelNTBGrpcClientPort", "5004");
             int.TryParse(s_grpc_client_port, out int i_grpc_client_port);
             channel = new Channel(s_grpc_client_ip, i_grpc_client_port, ChannelCredentials.Insecure);
             client = new Mirle.U332MA30.Grpc.OhbcNtbcConnect.OhbcToNtbcService.OhbcToNtbcServiceClient(channel);

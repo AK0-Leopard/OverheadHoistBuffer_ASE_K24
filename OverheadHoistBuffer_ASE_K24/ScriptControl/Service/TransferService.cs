@@ -1811,6 +1811,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         destPortType = AreDestEnable(mcsCmd.HOSTDESTINATION);
                     }
+
                     if (!destPortType)
                     {
                         SetTransferCommandNGReason(mcsCmd.CMD_ID, $"Dest. port:{SCUtility.Trim(mcsCmd.HOSTDESTINATION)},狀態不正確");
@@ -1834,6 +1835,8 @@ namespace com.mirle.ibg3k0.sc.Service
                     else if (sourcePortType && isShelfPort(mcsCmd.HOSTSOURCE) == false
                           && destPortType == false && isCVPort(mcsCmd.HOSTDESTINATION))
                     {
+
+
                         //來源目的都是 CV Port 且 目的不能搬，觸發將卡匣送至中繼站
                         TimeSpan timeSpan = DateTime.Now - mcsCmd.CMD_INSER_TIME;
 
@@ -1842,7 +1845,14 @@ namespace com.mirle.ibg3k0.sc.Service
                             break;
                         }
 
-
+                        if (isReelNTBPortSourceOrDest(mcsCmd.HOSTSOURCE, mcsCmd.HOSTDESTINATION))
+                        {
+                            TransferServiceLogger.Info
+                            (
+                                $"{DateTime.Now.ToString("HH:mm:ss.fff ")} cmd:{mcsCmd.CMD_ID} is reel ntb port 命令，不執行中繼站流程 "
+                            );
+                            break;
+                        }
 
                         PortPLCInfo plcInfoSource = !isUnitType(mcsCmd.HOSTSOURCE, UnitType.CRANE) ? GetPLC_PortData(mcsCmd.HOSTSOURCE) : null;//20210224 如果Source是在車上，那就不要去取PLC資料，避免異常發生
                         PortPLCInfo plcInfoDest = GetPLC_PortData(mcsCmd.HOSTDESTINATION);
@@ -1951,6 +1961,18 @@ namespace com.mirle.ibg3k0.sc.Service
 
             return TransferIng;
         }
+        private bool isReelNTBPortSourceOrDest(string sourcePort, string descPort)
+        {
+            if (isNTBPort(sourcePort))
+            {
+                return true;
+            }
+            else if (isNTBPort(sourcePort))
+            {
+                return true;
+            }
+            return false;
+        }
 
         private void SetTransferCommandNGReason(string cmdID, string reason)
         {
@@ -2056,6 +2078,7 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 foreach (var cst in cstDataList)
                 {
+
                     if (cst.CSTState == E_CSTState.WaitIn || cst.CSTState == E_CSTState.Installed || cst.CSTState == E_CSTState.Transferring)
                     {
                         int cstTimeOut = portINIData[cst.Carrier_LOC.Trim()].timeOutForAutoUD;
@@ -2133,6 +2156,11 @@ namespace com.mirle.ibg3k0.sc.Service
                                             string cmdSource = cst.Carrier_LOC.Trim();
                                             string cmdDest = shelfID;
 
+                                            if (cst.IsReelCST)
+                                            {
+                                                TransferServiceLogger.Info($"{cst.BOXID} is reel cst, 不執行亭等超時的檢查 ");
+                                                continue;
+                                            }
                                             Manual_InsertCmd(cmdSource, cmdDest, 5, "cstTimeOut", CmdType.OHBC);
                                             //portINIData[cst.Carrier_LOC.Trim()].timeOutForAutoInZone = "";
                                         }
@@ -2389,6 +2417,37 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 #region 檢查目的 Port 流向
 
+                if (isNTBPort(destName))
+                {
+                    if (DebugParameter.IsIgnoreManualPortStatus)
+                    {
+                        TransferServiceLogger.Info
+                        (
+                            $"{DateTime.Now.ToString("HH:mm:ss.fff ")} Port:{destName} is reel ntb port, 但目前是忽略Manual Port狀態，直接回覆True."
+                        );
+                        return true;
+                    }
+                    var reel_ntb_port_result = scApp.PortStationBLL.getReelNtbPosition(destName);
+                    if (!reel_ntb_port_result.isExist)
+                    {
+                        TransferServiceLogger.Info
+                        (
+                            $"{DateTime.Now.ToString("HH:mm:ss.fff ")} Port:{destName} is reel ntb port, but no data in position"
+                        );
+                        return false;
+                    }
+                    var reel_ntb_port = reel_ntb_port_result.reelPortStation;
+                    if (reel_ntb_port.requestType != Mirle.U332MA30.Grpc.OhbcNtbcConnect.RequestType.LoadRequest)
+                    {
+                        TransferServiceLogger.Info
+                        (
+                            $"{DateTime.Now.ToString("HH:mm:ss.fff ")} Port:{destName} is reel ntb port, current request type:{reel_ntb_port.requestType}"
+                        );
+                        return false;
+                    }
+                    return true;
+                }
+
                 if (isAGVZone(destName))
                 {
                     string agvPortName = GetAGV_OutModeInServicePortName(destName);
@@ -2522,10 +2581,6 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                 }
                 else if (isUnitType(destName, UnitType.EQ))
-                {
-                    destPortType = true;
-                }
-                else if (isUnitType(destName, UnitType.NTB))
                 {
                     destPortType = true;
                 }
@@ -8362,8 +8417,13 @@ namespace com.mirle.ibg3k0.sc.Service
                 OHBC_InsertCassette(boxid, loc, "Manual_InsertCassette");
             }
 
-
-            if (boxid.ToUpper().Contains("CIM"))
+            var port_station = scApp.PortStationBLL.OperateCatch.getPortStation(loc);
+            if (port_station != null &&
+                port_station.LD_VH_TYPE == E_VH_TYPE.ReelCST)
+            {
+                //如果該port 是ReelCST的話就不用去確認CST ID
+            }
+            else if (boxid.ToUpper().Contains("CIM"))
             {
                 //如果是CIM開頭則不進行Box ID的檢查
             }
@@ -10975,8 +11035,7 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 AVEHICLE vh = scApp.VehicleBLL.cache.getVhByID(vhID);
 
-                //if (SystemParameter.IsEnableIDReadFailScenario)
-                if(true)
+                if (SystemParameter.IsEnableIDReadFailScenario)
                 {
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
                            Data: $"BCR read fail happend,start abort command id:{vh.OHTC_CMD?.Trim()} and rename BOX id...",

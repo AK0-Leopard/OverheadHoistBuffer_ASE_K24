@@ -382,5 +382,15 @@ namespace com.mirle.ibg3k0.sc.BLL
             var reel_ports = OperateCatch.loadPortStations().Where(port => port is REEL_NTB_PORTSTATION).Select(port => port as REEL_NTB_PORTSTATION).ToList();
             return reel_ports;
         }
+        public (bool isExist, REEL_NTB_PORTSTATION reelPortStation) getReelNtbPosition(string portID)
+        {
+            var port_station_reel_ntb = OperateCatch.loadPortStations().Where(p =>
+            p is REEL_NTB_PORTSTATION &&
+            SCUtility.isMatche(p.PORT_ID, portID)).
+            Select(p => p as REEL_NTB_PORTSTATION).
+            FirstOrDefault();
+            return (port_station_reel_ntb != null, port_station_reel_ntb);
+        }
+
     }
 }

@@ -785,6 +785,11 @@ namespace com.mirle.ibg3k0.sc.BLL
             if (port != null)
             {
                 adr = port.ADR_ID.Trim();
+                APORTSTATION port_station = scApp.PortStationBLL.OperateCatch.getPortStation(adr_port_id);
+                if (port_station != null)
+                {
+                    vh_type = port_station.LD_VH_TYPE;
+                }
                 return true;
             }
             else

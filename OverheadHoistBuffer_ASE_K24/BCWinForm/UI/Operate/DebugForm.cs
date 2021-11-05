@@ -81,6 +81,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             cb_ForceStraightPass.Checked = DebugParameter.IsForceStraightPass;
             cb_ForceNonStraightPass.Checked = DebugParameter.IsForceNonStraightPass;
+            cb_ignoreManualPort.Checked = DebugParameter.IsIgnoreManualPortStatus;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -1363,6 +1364,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             if (ntb == null) return;
 
             await Task.Run(() => ntb.CarrierTransferRequestTest("CST03", "P01", "E0081367", "TestPort_P01"));
+        }
+
+        private void cb_ignoreManualPort_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsIgnoreManualPortStatus = cb_ignoreManualPort.Checked;
         }
     }
 }

@@ -92,7 +92,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.ReelNTBC
                 bool has_tran_cmd_excute = reel_cst_id_mcs_cmd != null;
                 if (reel_cst_data == null)
                 {
-                    return (false, ReelTransferState.RemovedFromNtbPort, false, "", "cst not exist");
+                    return (false, default(ReelTransferState), false, "", "cst not exist");
                 }
                 else
                 {

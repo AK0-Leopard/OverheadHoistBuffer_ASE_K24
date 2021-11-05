@@ -735,7 +735,8 @@ namespace com.mirle.ibg3k0.sc.Common
         private PortDef getPortDefObj(string lineID, string zoneName, PortStationConfigSection portStationConfig, SCAppConstants.EqptType eqptType)
         {
             E_PORT_STATUS port_status = E_PORT_STATUS.OutOfService;
-            if (eqptType == SCAppConstants.EqptType.Equipment)
+            if (eqptType == SCAppConstants.EqptType.Equipment ||
+                eqptType == SCAppConstants.EqptType.NTB)
             {
                 port_status = E_PORT_STATUS.InService;
             }

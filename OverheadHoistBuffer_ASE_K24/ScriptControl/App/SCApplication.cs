@@ -1975,13 +1975,18 @@ namespace com.mirle.ibg3k0.sc.App
             vehicleDao.start(eqObjCacheManager.getAllVehicle());
 
 
+            string s_grpc_service_ip = getString("ReelNTBGrpcServiceIP", "127.0.0.1");
+            string s_grpc_service_port = getString("ReelNTBGrpcServicePort", "5005");
+            int.TryParse(s_grpc_service_port, out int i_grpc_service_port);
+
+
             var ntb = equipmentBLL.loadReelNTBs().FirstOrDefault();
             if (ntb != null)
             {
                 gRPC_With_ReelNTBCDefaultMapActionReceive = new Grpc.Core.Server()
                 {
                     Services = { Mirle.U332MA30.Grpc.OhbcNtbcConnect.NtbcToOhbcService.BindService(ntb.getReelNTBCDefaultMapActionReceive()) },
-                    Ports = { new Grpc.Core.ServerPort("127.0.0.1", 5005, Grpc.Core.ServerCredentials.Insecure) },
+                    Ports = { new Grpc.Core.ServerPort(s_grpc_service_ip, i_grpc_service_port, Grpc.Core.ServerCredentials.Insecure) },
                 };
             }
         }
@@ -2532,6 +2537,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean IsForceStraightPass = false;
         public static Boolean IsForceNonStraightPass = false;
         public static Boolean IsPassTrackBlockStatus = false;
+        public static Boolean IsIgnoreManualPortStatus = false;
 
     }
 }
