@@ -2427,7 +2427,18 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 bool is_cmd_excute = !SCUtility.isEmpty(eqpt.OHTC_CMD);
                 bool has_cst_on_vh = !SCUtility.isEmpty(cstID);
-                bool is_bcr_read_fail = cstID != null && cstID.ToUpper().Contains(CST_ID_ERROR_SYMBOL);
+                //bool is_bcr_read_fail = cstID != null && cstID.ToUpper().Contains(CST_ID_ERROR_SYMBOL);
+
+                bool is_bcr_read_fail = false;
+                if (eqpt.VEHICLE_TYPE == E_VH_TYPE.ReelCST)
+                {
+                    is_bcr_read_fail = true;
+                }
+                else
+                {
+                    is_bcr_read_fail = cstID != null && cstID.ToUpper().Contains(CST_ID_ERROR_SYMBOL);
+                }
+
                 if (is_cmd_excute)
                 {
                     TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 有命令在執行中，ohtc cmd id:{eqpt.OHTC_CMD},mcs cmd id:{eqpt.MCS_CMD}");
@@ -2540,8 +2551,10 @@ namespace com.mirle.ibg3k0.sc.Service
                             }
                             else
                             {
+                                //string new_carrier_id =
+                                //  $"UNKF{eqpt.Real_ID.Trim()}{DateTime.Now.ToString(SCAppConstants.TimestampFormat_12)}";
                                 string new_carrier_id =
-                                  $"UNKF{eqpt.Real_ID.Trim()}{DateTime.Now.ToString(SCAppConstants.TimestampFormat_12)}";
+                                  scApp.TransferService.CarrierReadFail(eqpt.VEHICLE_ID, eqpt.Real_ID);
                                 final_cst_id = new_carrier_id;
                                 scApp.TransferService.OHBC_InsertCassette(new_carrier_id, eqpt.VEHICLE_ID, "TransferReportInitial");
                                 TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 非在執行命令中，身上有CST但CST ID為unknwon:{cstID}，故將其rename為unknown id:{final_cst_id}");

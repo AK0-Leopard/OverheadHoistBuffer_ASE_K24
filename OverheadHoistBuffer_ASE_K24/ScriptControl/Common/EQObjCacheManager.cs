@@ -826,13 +826,14 @@ namespace com.mirle.ibg3k0.sc.Common
 
         private string getVhRealID(string vhID)
         {
-            var map = VEHICLEMAPs.Where(id => id.ID.Trim() == vhID.Trim()).SingleOrDefault();
-            string real_id = vhID;
-            if (map != null)
-            {
-                real_id = map.REAL_ID;
-            }
-            return real_id;
+            return vhID;
+            //var map = VEHICLEMAPs.Where(id => id.ID.Trim() == vhID.Trim()).SingleOrDefault();
+            //string real_id = vhID;
+            //if (map != null)
+            //{
+            //    real_id = map.REAL_ID;
+            //}
+            //return real_id;
         }
 
         private MTSSetting getMTSSetting(string mtsID)

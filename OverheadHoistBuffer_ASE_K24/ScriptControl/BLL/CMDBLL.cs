@@ -354,7 +354,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             int ipriority = 0;
             string from_adr = string.Empty;
             string to_adr = string.Empty;
-            E_VH_TYPE vh_type = E_VH_TYPE.None;
+            //E_VH_TYPE vh_type = E_VH_TYPE.None;
             isFromVh = false;
 
             //if (SCUtility.isEmpty(HostSource) || SCUtility.isEmpty(HostDestination)) //add by Kevin
@@ -572,6 +572,29 @@ namespace com.mirle.ibg3k0.sc.BLL
                                 isFromVh = true;
                             }
                         }
+                        //如果Source是車子，需要確認是否為Reel CST的車子，是的話需確認目的地是可是放置ReelCST的
+                        if (carray_vh.VEHICLE_TYPE == E_VH_TYPE.ReelCST)
+                        {
+                            if (scApp.TransferService.isUnitType(HostDestination, UnitType.ZONE))
+                            {
+                                check_result = $"Vh:{HostSource.Trim()},is Reel CST Vh,但收到要去儲位:{HostDestination}放貨的命令.";
+                                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: 車子相關:" + check_result);
+                                return (SECSConst.HCACK_Rejected, null);
+                            }
+
+                            APORTSTATION port_station = scApp.PortStationBLL.OperateCatch.getPortStation(HostDestination);
+                            if (port_station != null)
+                            {
+                                E_VH_TYPE vh_type = port_station.LD_VH_TYPE;
+                                if (vh_type != E_VH_TYPE.ReelCST)
+                                {
+                                    check_result = $"Vh:{HostSource.Trim()},is Reel CST Vh,但收到要去Port:{HostDestination}非Reel cst 的機台放貨.";
+                                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: 車子相關:" + check_result);
+                                    return (SECSConst.HCACK_Rejected, null);
+                                }
+                            }
+                        }
+
                     }
                     //else //下面已經會檢查如果不在車上時的狀態 kevin
                     //{
@@ -583,7 +606,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     //        TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: 車子相關:" + check_result);
                     //    }
                     //}
-                    else if (scApp.MapBLL.getAddressID(HostSource, out from_adr, out vh_type) == false)
+                    else if (scApp.MapBLL.getAddressID(HostSource, out from_adr, out E_VH_TYPE vh_type) == false)
                     {
                         isSuccess = false;
                         checkcode = SECSConst.HCACK_Param_Invalid;
@@ -639,7 +662,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 //確認有VH可以派送
                 if (!isSourceOnVehicle && isSuccess)
                 {
-                    scApp.MapBLL.getAddressID(HostSource, out from_adr, out vh_type);
+                    scApp.MapBLL.getAddressID(HostSource, out from_adr, out E_VH_TYPE vh_type);
                     //AVEHICLE may_be_can_carry_vh = scApp.VehicleBLL.findBestSuitableVhStepByStepFromAdr(from_adr, vh_type
                     //                                                                                    , is_check_has_vh_carry: true);
                     AVEHICLE may_be_can_carry_vh = scApp.VehicleBLL.findBestSuitableVhStepByNearest(from_adr, vh_type

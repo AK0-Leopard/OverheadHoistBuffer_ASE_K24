@@ -2974,7 +2974,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                                 CassetteData destBoxData = new CassetteData();
                                 //destBoxData.CSTID = CarrierReadFail(dest);
-                                destBoxData.BOXID = CarrierReadFail(dest);
+                                destBoxData.BOXID = CarrierReadFail(ohtCmd.VH_ID, dest);
                                 destBoxData.Carrier_LOC = dest;
 
                                 NotAccountHaveRead(destBoxData);
@@ -3270,7 +3270,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                             if (ohtCmdData.BOX_ID.Trim().Contains("ERROR1") || string.IsNullOrWhiteSpace(ohtCmdData.BOX_ID.Trim()))
                             {
-                                loadBoxID = CarrierReadFail(ohtCmdData.DESTINATION.Trim());
+                                loadBoxID = CarrierReadFail(ohtCmdData.VH_ID, ohtCmdData.DESTINATION.Trim());
                             }
                         }
 
@@ -3733,7 +3733,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 if (string.IsNullOrWhiteSpace(readBOXID) || readBOXID == "ERROR1")
                 {
-                    readBOXID = CarrierReadFail(ohtName);
+                    readBOXID = CarrierReadFail(ohtName, ohtName);
                 }
 
                 CassetteData ohtBoxData = new CassetteData();
@@ -6219,10 +6219,29 @@ namespace com.mirle.ibg3k0.sc.Service
             return "UNKS" + loc + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
         }
 
-        public string CarrierReadFail(string loc)   //卡匣讀不到
+        public string CarrierReadFail(string vhID, string loc)   //卡匣讀不到
         {
-            return "UNKF" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            E_VH_TYPE vh_type = tryGetVhType(vhID);
+            if (vh_type == E_VH_TYPE.ReelCST)
+            {
+                return "UNKT" + "REELCA01" + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            }
+            else
+            {
+                return "UNKF" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            }
             //return "UNKT" + "REELCA01" + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+        }
+
+        private E_VH_TYPE tryGetVhType(string vhID)
+        {
+
+            if (SCUtility.isEmpty(vhID))
+                return E_VH_TYPE.None;
+            var vh = scApp.VehicleBLL.cache.getVhByID(vhID);
+            if (vh == null)
+                return E_VH_TYPE.None;
+            return vh.VEHICLE_TYPE;
         }
 
         public string CarrierReadFailAtTargetAGV(string loc)   //卡匣讀不到
@@ -6524,7 +6543,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 scApp.TransferService.OHBC_AlarmCleared(readData.Carrier_LOC, ((int)AlarmLst.PORT_BOXID_READ_FAIL).ToString());
                 //
 
-                readData.BOXID = CarrierReadFail(readData.Carrier_LOC);
+                readData.BOXID = CarrierReadFail("", readData.Carrier_LOC);
                 boxIDFail = true;
             }
             else if (readData.BOXID.ToUpper().Contains("UNK"))
@@ -11043,7 +11062,8 @@ namespace com.mirle.ibg3k0.sc.Service
                            CarrierID: vh.BOX_ID);
 
                     is_continue = false;
-                    rename_box = CarrierReadFail(vh.VEHICLE_ID);
+
+                    rename_box = CarrierReadFail(vh.VEHICLE_ID, vh.VEHICLE_ID);
                 }
                 else
                 {
@@ -11078,8 +11098,15 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 if (SystemParameter.IsEnableIDReadMismatchScenario)
                 {
+                    if (vh.VEHICLE_TYPE == E_VH_TYPE.ReelCST)
+                    {
+                        rename_box = CarrierReadFail(vhID, vhID);
+                    }
+                    else
+                    {
+                        rename_box = readBOXID;
+                    }
                     is_continue = false;
-                    rename_box = readBOXID;
 
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
                        Data: $"BCR miss match happend,start abort command id:{vh.OHTC_CMD?.Trim()} and new cst id:{rename_box}",
