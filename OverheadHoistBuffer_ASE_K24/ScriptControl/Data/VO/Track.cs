@@ -10,7 +10,9 @@ namespace com.mirle.ibg3k0.sc.Data.VO
 {
     public class Track : AUNIT
     {
-        public bool IsBlocking { get; private set; }
+        NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        public RailChangerProtocol.TrackBlock TrackBlock { get; private set; }
+        public bool IsBlocking { get { return TrackBlock == RailChangerProtocol.TrackBlock.Block; } }
         public bool IsAlive { get; private set; }
         public TrackDir TrackDir { get; private set; }
         public RailChangerProtocol.TrackStatus TrackStatus { get; private set; }
@@ -31,14 +33,35 @@ namespace com.mirle.ibg3k0.sc.Data.VO
         }
         public void setTrackInfo(RailChangerProtocol.TrackInfo trackInfo)
         {
-            TrackDir = convert(trackInfo.Dir);
+            ProtocolFormat.OHTMessage.TrackDir trackDir = convert(trackInfo.Dir);
+
+            if (hasDifferent(trackInfo))
+            {
+                logger.Debug(trackInfo.ToString());
+            }
+
+            TrackDir = trackDir;
             TrackStatus = trackInfo.Status;
             AlarmCode = trackInfo.AlarmCode;
-            IsBlocking = trackInfo.IsBlock == RailChangerProtocol.TrackBlock.Block;
+            TrackBlock = trackInfo.IsBlock;
             IsAlive = trackInfo.Alive;
 
             stopwatch.Restart();
         }
+
+        private bool hasDifferent(RailChangerProtocol.TrackInfo trackInfo)
+        {
+            ProtocolFormat.OHTMessage.TrackDir trackDir = convert(trackInfo.Dir);
+
+            if (TrackDir != trackDir) return true;
+            else if (TrackStatus != trackInfo.Status) return true;
+            else if (AlarmCode != trackInfo.AlarmCode) return true;
+            else if (TrackBlock != trackInfo.IsBlock) return true;
+            else if (IsAlive != trackInfo.Alive) return true;
+            else return false;
+        }
+
+
         private ProtocolFormat.OHTMessage.TrackDir convert(RailChangerProtocol.TrackDir dir)
         {
             switch (dir)

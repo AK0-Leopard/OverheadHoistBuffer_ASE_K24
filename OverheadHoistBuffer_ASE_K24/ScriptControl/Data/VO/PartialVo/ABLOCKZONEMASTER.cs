@@ -144,6 +144,10 @@ namespace com.mirle.ibg3k0.sc
                     return false;
                 }
             }
+            var track_ids = RelatedTracks.Select(t => t.UNIT_ID).ToList();
+            string track_ready_message = string.Join(",", track_ids);
+            LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
+               Data: $"Block:{ENTRY_SEC_ID} of related tracks:{track_ready_message} status is ready, return true");
             return true;
         }
 
