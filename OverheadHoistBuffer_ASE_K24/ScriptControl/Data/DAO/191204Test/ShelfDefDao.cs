@@ -131,13 +131,48 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             }
         }
 
-        public List<ShelfDef> LoadShelfByZone(DBConnection_EF conn, string zoneid)
+        public List<ShelfDef> LoadEnableShelfByZone(DBConnection_EF conn, string zoneid)
         {
             try
             {
                 var result = conn.ShelfDef
                     .Where(x => x.Enable == "Y" && x.ZoneID == zoneid)
                     .ToList();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex);
+                throw;
+            }
+        }
+
+        public List<string> LoadEnableShelfIDsByZone(DBConnection_EF conn, string zoneid)
+        {
+            try
+            {
+                var result = conn.ShelfDef
+                    .Where(x => x.Enable == "Y" && x.ZoneID.Trim() == zoneid.Trim())
+                    .Select(shelf => shelf.ShelfID.Trim())
+                    .ToList();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex);
+                throw;
+            }
+        }
+
+        public int LoadEnableShelfCountByZone(DBConnection_EF conn, string zoneid)
+        {
+            try
+            {
+                var result = conn.ShelfDef
+                    .Where(x => x.Enable == "Y" && x.ZoneID.Trim() == zoneid.Trim())
+                    .Count();
 
                 return result;
             }

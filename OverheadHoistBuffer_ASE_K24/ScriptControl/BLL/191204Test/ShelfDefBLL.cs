@@ -275,29 +275,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-        public UInt16 getCurrentShelfTotalSize()
-        {
-            using (DBConnection_EF con = DBConnection_EF.GetUContext())
-            {
-                return (UInt16)shelfdefDao.LoadShelfDef(con).Count;
-            }
-        }
-
-        public UInt16 getCurrentShelfCapacity()
-        {
-            using (DBConnection_EF con = DBConnection_EF.GetUContext())
-            {
-                var enable = shelfdefDao.LoadShelfDef(con).Where(x => x.Enable == "Y").Count();
-                var cassette = cassetteDataDao.LoadCassetteData(con);
-                int i = 0;
-                cassette.ForEach(x =>
-                {
-                    i = i + shelfdefDao.LoadShelfDef(con).Where(y => y.Enable == "Y" && y.ShelfID == x.Carrier_LOC).Count();
-                });
-
-                return (UInt16)(enable - i);
-            }
-        }
 
         public bool updateOccupied(string shelf_id, bool occupied)
         {

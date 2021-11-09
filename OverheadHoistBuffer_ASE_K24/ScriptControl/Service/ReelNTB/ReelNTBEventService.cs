@@ -51,7 +51,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private void RegisterEvent()
         {
-            var reel_ntbs = equipmentBLL.loadReelNTBs();
+             var reel_ntbs = equipmentBLL.loadReelNTBs();
             foreach (var ntb in reel_ntbs)
             {
                 ntb.getReelNTBCDefaultMapActionReceive().TransferCommandRequest += Eq_TransferCommandRequest;

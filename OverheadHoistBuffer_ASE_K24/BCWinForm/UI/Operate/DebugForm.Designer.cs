@@ -105,6 +105,7 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cb_ignoreManualPort = new System.Windows.Forms.CheckBox();
             this.btn_reloadParkingAdr = new System.Windows.Forms.Button();
             this.gb_cycleRunInfo = new System.Windows.Forms.GroupBox();
             this.cmb_cycleCstID = new System.Windows.Forms.ComboBox();
@@ -380,7 +381,6 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.cb_ignoreManualPort = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1347,6 +1347,18 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // cb_ignoreManualPort
+            // 
+            this.cb_ignoreManualPort.AutoSize = true;
+            this.cb_ignoreManualPort.Location = new System.Drawing.Point(1039, 696);
+            this.cb_ignoreManualPort.Name = "cb_ignoreManualPort";
+            this.cb_ignoreManualPort.Size = new System.Drawing.Size(279, 26);
+            this.cb_ignoreManualPort.TabIndex = 67;
+            this.cb_ignoreManualPort.Text = "Ignore Manual Port Status";
+            this.cb_ignoreManualPort.UseVisualStyleBackColor = true;
+            this.cb_ignoreManualPort.Visible = false;
+            this.cb_ignoreManualPort.CheckedChanged += new System.EventHandler(this.cb_ignoreManualPort_CheckedChanged);
             // 
             // btn_reloadParkingAdr
             // 
@@ -2710,7 +2722,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(85, 6);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(85, 3);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -4644,18 +4656,6 @@
             this.ck_Alive.Text = "Alive";
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
-            // 
-            // cb_ignoreManualPort
-            // 
-            this.cb_ignoreManualPort.AutoSize = true;
-            this.cb_ignoreManualPort.Location = new System.Drawing.Point(1039, 696);
-            this.cb_ignoreManualPort.Name = "cb_ignoreManualPort";
-            this.cb_ignoreManualPort.Size = new System.Drawing.Size(279, 26);
-            this.cb_ignoreManualPort.TabIndex = 67;
-            this.cb_ignoreManualPort.Text = "Ignore Manual Port Status";
-            this.cb_ignoreManualPort.UseVisualStyleBackColor = true;
-            this.cb_ignoreManualPort.Visible = false;
-            this.cb_ignoreManualPort.CheckedChanged += new System.EventHandler(this.cb_ignoreManualPort_CheckedChanged);
             // 
             // DebugForm
             // 

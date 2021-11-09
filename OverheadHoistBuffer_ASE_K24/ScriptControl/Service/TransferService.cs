@@ -635,40 +635,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        public void updateAGVStation()  //定時更新AGV狀態
-        {
-            foreach (var v in scApp.PortDefBLL.GetOHB_CVPortData(line.LINE_ID))
-            {
-                string portName = v.PLCPortID.Trim();
-                if (isUnitType(portName, UnitType.AGV))
-                {
-                    PortPLCInfo portValue = GetPLC_PortData(portName);
 
-                    PLC_AGV_Station(portValue, "updateAGVStation");
-                }
-            }
-        }
-
-        public void updateAGVHasCmdsAccessStatus()
-        {
-            foreach (var v in GetAGVZone())
-            {
-                if (v.agvHasCmdsAccess)
-                {
-                    TimeSpan timeSpan = DateTime.Now - v.reservePortTime;
-
-                    if (timeSpan.TotalSeconds >= agvHasCmdsAccessTimeOut)
-                    {
-                        v.reservePortTime = DateTime.Now;
-
-                        OHBC_AlarmSet(v.PortName, ((int)AlarmLst.AGV_HasCmdsAccessTimeOut).ToString());
-
-                        //OHBC_AlarmCleared("LINE", ((int)AlarmLst.AGV_HasCmdsAccessTimeOut).ToString());
-                        //OHBC_AGV_HasCmdsAccessCleared(v.PortName);
-                    }
-                }
-            }
-        }
 
 
 
@@ -4735,13 +4702,6 @@ namespace com.mirle.ibg3k0.sc.Service
                     cassette_dataBLL.DeleteCSTbyCstBoxID(dbData.CSTID, dbData.BOXID);
                 }
 
-                if (isUnitType(dbData.Carrier_LOC, UnitType.AGV))
-                {
-                    if (isAGV)
-                    {
-                        PLC_AGV_Station(GetPLC_PortData(dbData.Carrier_LOC), "PortCarrierRemoved");
-                    }
-                }
             }
             catch (Exception ex)
             {
