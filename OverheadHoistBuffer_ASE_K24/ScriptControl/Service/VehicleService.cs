@@ -1551,12 +1551,11 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     using (DBConnection_EF con = DBConnection_EF.GetUContext())
                     {
-                        isSuccess &= scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.Execution);
                         if (activeType != ActiveType.Override)
                         {
                             isSuccess &= scApp.VehicleBLL.updateVehicleExcuteCMD(cmd.VH_ID, cmd.CMD_ID, cmd.CMD_ID_MCS);
                         }
-
+                        isSuccess &= scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.Execution);
                         if (isSuccess)
                         {
                             isSuccess &= TransferRequset

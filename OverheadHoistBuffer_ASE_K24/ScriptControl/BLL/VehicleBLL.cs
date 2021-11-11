@@ -1176,7 +1176,8 @@ namespace com.mirle.ibg3k0.sc.BLL
             foreach (AVEHICLE vh in vhs.ToList())
             {
                 //if (!SCUtility.isEmpty(vh.OHTC_CMD))
-                if (!SCUtility.isEmpty(vh.MCS_CMD))
+                //if (!SCUtility.isEmpty(vh.MCS_CMD))
+                if (scApp.CMDBLL.isCmdMcsExcute(vh.VEHICLE_ID))
                 {
                     vhs.Remove(vh);
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",

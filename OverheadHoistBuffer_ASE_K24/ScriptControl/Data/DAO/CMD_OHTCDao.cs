@@ -174,6 +174,19 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             return query.Count();
         }
 
+        public int getVhExcuteCMDMCSConut(DBConnection_EF con, string vh_id)
+        {
+            var query = from cmd in con.ACMD_OHTC.AsNoTracking()
+                        where cmd.VH_ID == vh_id.Trim()
+                        && cmd.CMD_ID_MCS != ""
+                        && cmd.CMD_STAUS < E_CMD_STATUS.NormalEnd
+                        select cmd;
+            return query.Count();
+        }
+
+
+
+
 
         public int getVhExcuteCMDConut(DBConnection_EF con, string vh_id)
         {
