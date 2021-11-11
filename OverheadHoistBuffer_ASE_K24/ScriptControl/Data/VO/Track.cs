@@ -18,6 +18,9 @@ namespace com.mirle.ibg3k0.sc.Data.VO
         public RailChangerProtocol.TrackStatus TrackStatus { get; private set; }
         public int AlarmCode { get; private set; }
         public UInt32 ResetCount { get; private set; }
+
+        public List<string> RelatedSection { get; private set; } = new List<string>();
+        public string sRelatedSection { get; private set; } = "";
         public Stopwatch stopwatch { get; private set; } = new Stopwatch();
         public string LastUpdateTime
         {
@@ -26,10 +29,22 @@ namespace com.mirle.ibg3k0.sc.Data.VO
                 return stopwatch.ElapsedMilliseconds.ToString();
             }
         }
-        public void setTrackDir(TrackDir _trackDir)
+        public void setRelatedSection(sc.App.SCApplication app)
         {
-            TrackDir = _trackDir;
-            stopwatch.Restart();
+            var block_track_infos = app.BlockTrackMapDao.loadBlockTrackInfoByTackID(app, this.UNIT_ID);
+
+            foreach (var info in block_track_infos)
+            {
+                var block_master = app.BlockControlBLL.cache.getBlockZoneMaster(info.ENTRY_SEC_ID);
+                if (block_master == null)
+                {
+                    logger.Warn($"Want get block master:{info.ENTRY_SEC_ID},but no exist.Fun:setRelatedSection");
+                    continue;
+                }
+                RelatedSection.AddRange(block_master.GetBlockZoneDetailSectionIDs());
+            }
+            RelatedSection = RelatedSection.Distinct().ToList();
+            sRelatedSection = string.Join(",", RelatedSection);
         }
         public void setTrackInfo(RailChangerProtocol.TrackInfo trackInfo)
         {

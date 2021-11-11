@@ -2243,6 +2243,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                 vh.OHTC_CMD = "";
                 vh.MCS_CMD = "";
             }
+            public List<AVEHICLE> loadAlarmVhs()
+            {
+                var vhs = eqObjCacheManager.getAllVehicle();
+                return vhs.Where(vh => vh.IsError).
+                           ToList();
+            }
 
         }
         public class Web

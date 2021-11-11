@@ -5214,7 +5214,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                             if (isSuccess && !SCUtility.isMatche(source_adr, dest_adr))
                             {
                                 (isSuccess, guide_to_dest_segment_ids, guide_to_dest_section_ids, guide_to_dest_address_ids, total_cost)
-                                    = scApp.GuideBLL.getGuideInfo(source_adr, dest_adr, null);
+                                    //= scApp.GuideBLL.getGuideInfo(source_adr, dest_adr, null);
+                                    = scApp.GuideBLL.getGuideInfo(source_adr, dest_adr);
                             }
                         }
                         break;

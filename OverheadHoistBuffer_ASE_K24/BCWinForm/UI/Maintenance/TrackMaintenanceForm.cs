@@ -47,27 +47,24 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             //if (dgv_trackData.Rows.Count <= e.RowIndex) return;
             //if (e.RowIndex < 0) return;
-            //var track_status = dgv_trackData.Rows[e.RowIndex].Cells[TRACK_DATA_TRACKSTATUS].Value;
-            //var alarm_code = dgv_trackData.Rows[e.RowIndex].Cells[TRACK_DATA_ALARM].Value;
-            //if (!(track_status is string))
+            //var enable_status = dgv_trackData.Rows[e.RowIndex].Cells[TRACK_DATA_TRACKSTATUS].Value;
+            //if (!(enable_status is string))
             //    return;
-            //if (!(alarm_code is string))
-            //    return;
-            //string status = track_status as string;
-            //string alarm = track_status as string;
-            //if (sc.Common.SCUtility.isMatche(status, sc.App.SCAppConstants.YES_FLAG))
+            //string enable = enable_status as string;
+            //DataGridViewRow row = dgv_shelfData.Rows[e.RowIndex];
+            //if (sc.Common.SCUtility.isMatche(enable, sc.App.SCAppConstants.YES_FLAG))
             //{
-            //    //not thing...
+            //    row.DefaultCellStyle.BackColor = Color.White;
+            //    row.DefaultCellStyle.ForeColor = Color.Black;
             //}
             //else
             //{
-            //    DataGridViewRow row = dgv_trackData.Rows[e.RowIndex];
-            //    row.DefaultCellStyle.BackColor = Color.GreenYellow;
-            //    row.DefaultCellStyle.ForeColor = Color.Black;
+            //    row.DefaultCellStyle.BackColor = Color.Yellow;
+            //    row.DefaultCellStyle.ForeColor = Color.Red;
             //    if (row.Selected)
             //    {
             //        row.DefaultCellStyle.SelectionBackColor = Color.SkyBlue;
-            //        row.DefaultCellStyle.SelectionForeColor = Color.Black;
+            //        row.DefaultCellStyle.SelectionForeColor = Color.Red;
             //    }
             //}
         }

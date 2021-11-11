@@ -49,6 +49,13 @@ namespace com.mirle.ibg3k0.sc.BLL
                                                       .FirstOrDefault();
                 return track;
             }
+            public List<Track> loadNoAutoTrack()
+            {
+                var tracks = cacheManager.getAllUnit().Where(u => u is Track && (u as Track).TrackStatus != RailChangerProtocol.TrackStatus.Auto)
+                                                      .Select(u => u as Track)
+                                                      .ToList();
+                return tracks;
+            }
 
         }
 

@@ -65,7 +65,7 @@ namespace com.mirle.ibg3k0.sc
         /// 單筆命令，最大允許的搬送時間
         /// </summary>
         public static UInt16 MAX_ALLOW_ACTION_TIME_SECOND { get; private set; } = 600;
-        public static UInt16 MAX_ALLOW_BLOCKING_TIME_SECOND{ get; private set; } = 30;
+        public static UInt16 MAX_ALLOW_BLOCKING_TIME_SECOND { get; private set; } = 30;
 
         public event EventHandler<LocationChangeEventArgs> LocationChange;
         public event EventHandler<SegmentChangeEventArgs> SegmentChange;
@@ -533,7 +533,11 @@ namespace com.mirle.ibg3k0.sc
         }
         public string getVIEW_SEC_ID(BLL.SectionBLL sectionBLL)
         {
-            string start_sec_id = SCUtility.Trim(CUR_SEC_ID, true);
+            if (!SCUtility.isEmpty(CUR_SEC_ID))
+            {
+                return CUR_SEC_ID;
+            }
+            string start_sec_id = "";
             ASECTION sec_by_cur_adr = sectionBLL.cache.GetSectionsByToAddress(CUR_ADR_ID).FirstOrDefault();
             if (sec_by_cur_adr != null)
             {
