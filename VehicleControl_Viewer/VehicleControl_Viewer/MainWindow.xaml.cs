@@ -75,5 +75,23 @@ namespace VehicleControl_Vierwer
         {
             uc_VehicleMainform.setTestGideRail(e);
         }
+
+        private void mi_LanguageChinese_Click(object sender, RoutedEventArgs e)
+        {
+            var skinDictUri = new Uri("/Skins/MirleGo_Dark_TW.xaml", UriKind.Relative);//【X2.提供樣式樣本】
+            var skinDict = Application.LoadComponent(skinDictUri) as ResourceDictionary;
+            var mergedDicts = Resources.MergedDictionaries;
+            mergedDicts.Clear();//清空之前樣式
+            mergedDicts.Add(skinDict);//添加當前需要的樣式 
+        }
+
+        private void mi_LanguageEnglish_Click(object sender, RoutedEventArgs e)
+        {
+            var skinDictUri = new Uri("/Skins/MirleGo_Dark_EN.xaml", UriKind.Relative);//【X2.提供樣式樣本】
+            var skinDict = Application.LoadComponent(skinDictUri) as ResourceDictionary;
+            var mergedDicts = Resources.MergedDictionaries;
+            mergedDicts.Clear();//清空之前樣式
+            mergedDicts.Add(skinDict);//添加當前需要的樣式 
+        }
     }
 }

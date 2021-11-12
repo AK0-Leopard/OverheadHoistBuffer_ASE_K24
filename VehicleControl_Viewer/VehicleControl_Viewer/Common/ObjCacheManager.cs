@@ -14,12 +14,14 @@ namespace VehicleControl_Viewer.UI.Components
     public class ObjCacheManager
     {
         public event EventHandler RailStatusChanged;
+        public event EventHandler TrackStatusChanged;
         public Dictionary<string, Vehicle> VehiclesInfo { get; } = new Dictionary<string, Vehicle>();
         public Dictionary<string, PortInfo> PortsInfo { get; } = new Dictionary<string, PortInfo>();
         public List<SegmentInfo> Segments { get; private set; }
         public List<TransferCommand> TransferCommandInfos { get; private set; } = new List<TransferCommand>();
         public List<TaskCommand> TaskCommandInfos { get; private set; } = new List<TaskCommand>();
         VehicleControlService vehicleControlService = null;
+        public List<string>TrackStatusChangeLines = new List<string>();
 
         public LineInfo LineInfo { get; private set; } = new LineInfo();
         
@@ -61,6 +63,13 @@ namespace VehicleControl_Viewer.UI.Components
         {
             Segments = vehicleControlService.GetSegmentInfos();
             RailStatusChanged?.Invoke(this, EventArgs.Empty);
+        }
+        public void refreshTrackStatusChange()
+        {
+            //在OHBC告訴Viewer，Section狀態有異動，我們要再問OHBC有哪些section不能用~
+            TrackStatusChangeLines = vehicleControlService.GetLineDisable();
+            //問完不能用的sec就要觸發轉轍器修改的工作了~
+            TrackStatusChanged?.Invoke(this, EventArgs.Empty);
         }
         public void refreshLineInfo(LineInfo newLineInfo)
         {

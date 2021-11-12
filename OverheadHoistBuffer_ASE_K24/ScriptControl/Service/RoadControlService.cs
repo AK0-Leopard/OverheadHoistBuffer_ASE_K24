@@ -70,6 +70,7 @@ namespace com.mirle.ibg3k0.sc.Service
             NodeBLL = _app.NodeBLL;
             app = _app;
 
+            //註冊轉轍器alarm Change要觸發上報MCS的事件
         }
 
         public void doEnableDisableSegment(string segment_id, E_PORT_STATUS port_status, string laneCutType)
@@ -385,6 +386,10 @@ namespace com.mirle.ibg3k0.sc.Service
             return ohcv_node.Is_Alive && ohcv_node.DoorClosed;
         }
 
+        private void trackAlarmReport(object sender, EventArgs args)
+        {
+
+        }
 
     }
 

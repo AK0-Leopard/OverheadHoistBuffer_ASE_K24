@@ -81,5 +81,17 @@ namespace VehicleControl_Viewer.Data
                 return (false, null);
             }
         }
+        public List<string> GetLineDisable()
+        {
+            try
+            {
+                var replySegmentData = client.RequestLineDisable(new Empty());
+                return replySegmentData.Lines.ToList();
+            }
+            catch (Exception ex)
+            {
+                return new List<string>();
+            }
+        }
     }
 }

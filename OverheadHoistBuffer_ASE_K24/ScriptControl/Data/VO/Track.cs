@@ -10,6 +10,92 @@ namespace com.mirle.ibg3k0.sc.Data.VO
 {
     public class Track : AUNIT
     {
+        public event EventHandler alarmCodeChange;
+        private class alarmCodeChangeArgs : EventArgs
+        {
+            public string railChanger_No;
+            public List<TrackAlarm> alarmList_old;
+            public List<TrackAlarm> alarmList_new;
+            public alarmCodeChangeArgs(int alarmCode_old, int alarmCode_new)
+            {
+                char[] alarmString = Convert.ToString(alarmCode_old, 2).PadLeft(16, '0').ToCharArray();
+                #region alarmCode to alarmList (old)
+                if (alarmString[15] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_EMO_Error);
+                if (alarmString[14] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_Servo_No_On);
+                if (alarmString[13] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_Servo_NotGoHome);
+                if (alarmString[12] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_CarOut_Timeout);
+                if (alarmString[11] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_ServoOn_Timeout);
+                if (alarmString[10] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_ServoOff_Timeout);
+                if (alarmString[9] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_GoHome_TimeOut);
+                if (alarmString[8] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_Pos1Move_TimeOut);
+                if (alarmString[7] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_Pos2Move_TimeOut);
+                if (alarmString[6] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_PosLimit_Error);
+                if (alarmString[5] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_NegLimit_Error);
+                if (alarmString[4] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_Drive_Error);
+                if (alarmString[3] == '1')
+                    alarmList_old.Add(TrackAlarm.TrackAlarm_IPCAlive_Error);
+                #endregion
+                alarmString = Convert.ToString(alarmCode_new, 2).PadLeft(16, '0').ToCharArray();
+                #region alarmCode to alarmList (new)
+                if (alarmString[15] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_EMO_Error);
+                if (alarmString[14] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_Servo_No_On);
+                if (alarmString[13] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_Servo_NotGoHome);
+                if (alarmString[12] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_CarOut_Timeout);
+                if (alarmString[11] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_ServoOn_Timeout);
+                if (alarmString[10] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_ServoOff_Timeout);
+                if (alarmString[9] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_GoHome_TimeOut);
+                if (alarmString[8] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_Pos1Move_TimeOut);
+                if (alarmString[7] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_Pos2Move_TimeOut);
+                if (alarmString[6] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_PosLimit_Error);
+                if (alarmString[5] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_NegLimit_Error);
+                if (alarmString[4] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_Drive_Error);
+                if (alarmString[3] == '1')
+                    alarmList_new.Add(TrackAlarm.TrackAlarm_IPCAlive_Error);
+                #endregion
+            }
+
+        }
+        private enum TrackAlarm
+        {
+            TrackAlarm_EMO_Error = 0,
+            TrackAlarm_Servo_No_On = 1,
+            TrackAlarm_Servo_NotGoHome = 2,
+            TrackAlarm_CarOut_Timeout = 3,
+            TrackAlarm_ServoOn_Timeout = 4,
+            TrackAlarm_ServoOff_Timeout = 5,
+            TrackAlarm_GoHome_TimeOut = 6,
+            TrackAlarm_Pos1Move_TimeOut = 7,
+            TrackAlarm_Pos2Move_TimeOut = 8,
+            TrackAlarm_PosLimit_Error = 9,
+            TrackAlarm_NegLimit_Error = 10,
+            TrackAlarm_Drive_Error = 11,
+            TrackAlarm_IPCAlive_Error = 12,
+        }
+
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         public RailChangerProtocol.TrackBlock TrackBlock { get; private set; }
         public bool IsBlocking { get { return TrackBlock == RailChangerProtocol.TrackBlock.Block; } }
@@ -41,6 +127,9 @@ namespace com.mirle.ibg3k0.sc.Data.VO
             }
 
             TrackDir = trackDir;
+            //如果現在狀態與先前不同而且現在狀態為alarm代表alarm第一次發生
+            if (TrackStatus != trackInfo.Status && trackInfo.Status == RailChangerProtocol.TrackStatus.Alarm)
+                this.onAlarmCodeChange(AlarmCode, trackInfo.AlarmCode, UNIT_ID);
             TrackStatus = trackInfo.Status;
             AlarmCode = trackInfo.AlarmCode;
             TrackBlock = trackInfo.IsBlock;
@@ -86,5 +175,19 @@ namespace com.mirle.ibg3k0.sc.Data.VO
                 ResetCount++;
             }
         }
+        
+        public Track()
+        {
+            
+        }
+        
+        public void onAlarmCodeChange(int alarmCode_old, int alarmCode_new, string no)
+        {
+            alarmCodeChangeArgs args = new alarmCodeChangeArgs(alarmCode_old, alarmCode_new);
+            args.railChanger_No = no;
+
+            alarmCodeChange?.Invoke(this, args);
+        }
+
     }
 }

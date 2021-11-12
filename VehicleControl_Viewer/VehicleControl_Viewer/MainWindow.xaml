@@ -30,7 +30,7 @@
                 <Menu Margin="0,0,-547,0">
 
                     <!--System Menu-->
-                    <MenuItem Header="{DynamicResource SYSTEM}" Height="35">
+                    <MenuItem Header="{DynamicResource SYSTEM}" Height="35" Cursor="Hand">
                         <MenuItem x:Name="mi_LogIn" Header="{DynamicResource LOGIN}" Height="35" FontSize="30"  />
                         <MenuItem x:Name="mi_LogOff" Header="{DynamicResource LOGOUT}" Height="35" FontSize="16" />
                         <MenuItem x:Name="mi_PasswordChange" Header="{DynamicResource PASSWORD_CHANGE}" Height="35" FontSize="16" />
@@ -39,7 +39,7 @@
                     </MenuItem>
 
                     <!--Parameter-->
-                    <MenuItem Header="{DynamicResource PARAMETER}" Height="35" >
+                    <MenuItem Header="{DynamicResource PARAMETER}" Height="35" Cursor="Hand" >
                         <MenuItem x:Name="mi_ParameterSetting" Header="{DynamicResource SETTING_PARAMETER}" Height="35" FontSize="16"  CommandParameter="FUNC_PARAMETER_SETTING"/>
                         <MenuItem x:Name="mi_SystemParameter" Header="{DynamicResource SYSTEM_PARAMETER}" Height="35" FontSize="16" CommandParameter="FUNC_SYSTEM_PARAMETER"/>
                     </MenuItem>
@@ -59,6 +59,11 @@
                     <!--Maintenance-->
                     <MenuItem Header="{DynamicResource MAINTENANCE}" Height="35" >
                         <MenuItem x:Name="mi_GuideTest" Header="{DynamicResource GIUDE_TEST}" Height="35" FontSize="16" Click="mi_GuideTest_Click"/>
+                    </MenuItem>
+
+                    <MenuItem Header="{DynamicResource LANGUAGE}" Height="35" >
+                        <MenuItem x:Name="mi_Chinese" Header="{DynamicResource LANGUAGE_CHINESE}" Height="35" FontSize="16" Click="mi_LanguageChinese_Click"/>
+                        <MenuItem x:Name="mi_English" Header="{DynamicResource LANGUAGE_ENGLISH}" Height="35" FontSize="16" Click="mi_LanguageEnglish_Click"/>
                     </MenuItem>
 
                     <!--Help-->

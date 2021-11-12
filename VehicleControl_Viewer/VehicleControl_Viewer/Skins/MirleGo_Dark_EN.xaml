@@ -959,7 +959,12 @@ b.其不设置的时候，默认所有TargetType使用此Style。  -->
 
     <s:String x:Key="PORT_ID">Port ID</s:String>
     <s:String x:Key="ADR_ID">Adr ID</s:String>
-    <!--#region -->
+    <!--#region OHB -->
     <s:String x:Key="OHB_ZoneTitle">OHB</s:String>
+    <!--#endregion-->
+    <!--#region Language -->
+    <s:String x:Key="LANGUAGE">LANGUAGE</s:String>
+    <s:String x:Key="LANGUAGE_CHINESE">CHINESE</s:String>
+    <s:String x:Key="LANGUAGE_ENGLISH">ENGLISH</s:String>
     <!--#endregion-->
 </ResourceDictionary>

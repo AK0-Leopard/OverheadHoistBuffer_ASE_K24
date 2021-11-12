@@ -25,6 +25,7 @@ namespace VehicleControl_Viewer.App
         public const string NATS_SUBJECT_TRANSFER_COMMAND_CHANGE = "NATS_SUBJECT_TRANSFER_COMMAND_CHANGE";
         public const string NATS_SUBJECT_TASK_COMMAND_CHANGE = "NATS_SUBJECT_TASK_COMMAND_CHANGE";
         public const string NATS_SUBJECT_LINE_STATUS_CHANGE = "NATS_SUBJECT_LINE_STATUS_CHANGE";
+        public const string NATS_SUBJECT_TRACK_STATUS_CHANGE = "NATS_SUBJECT_TRACK_STATUS_CHANGE"; //註冊如果有section因轉轍器被暫時不用，OHBC會透過這個訂閱來告訴Viewer有section不能用了
 
         private IScheduler Scheduler { get; set; }
 

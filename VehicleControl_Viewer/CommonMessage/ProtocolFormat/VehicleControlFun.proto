@@ -11,6 +11,7 @@ service VehicleControlFun {
 	rpc RequestPortsInfo(Empty) returns (ReplyPortsInfo) {}
     rpc RequestSegmentDisable(Empty) returns (ReplyPortsInfo) {}
     rpc RequestSegDisable(disableSegRequest) returns (disableSegReply) {}
+    rpc RequestLineDisable(Empty) returns (ReplyLineDisable){}
 }
 
 //comm enum
@@ -155,3 +156,8 @@ message disableSegReply
     string result = 1;
 }
 //End Seg Disable
+
+message ReplyLineDisable
+{
+    repeated string Lines=1;
+}

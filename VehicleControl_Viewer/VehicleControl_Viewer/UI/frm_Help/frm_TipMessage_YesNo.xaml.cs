@@ -15,7 +15,6 @@ using NLog;
 using System;
 using System.Windows;
 
-
 namespace VehicleControl_Viewer.frm_Help
 {
 

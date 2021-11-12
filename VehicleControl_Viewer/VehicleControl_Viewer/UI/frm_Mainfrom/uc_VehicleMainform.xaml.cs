@@ -37,6 +37,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         ShapeCollection RailsCollection = null;
         ShapeCollection DisableRailsCollection = null;
         ShapeCollection TestGuideRailsCollection = null;
+        ShapeCollection TrackStatusChangeSection = null;
         object lock_guide_info_refresh = new object();
         Dictionary<VehicleInfo, ShapeCollection> GuideRailCollection = null;
         private readonly WindownApplication app;
@@ -54,6 +55,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
             RailsCollection = new ShapeCollection();
             DisableRailsCollection = new ShapeCollection();
             TestGuideRailsCollection = new ShapeCollection();
+            TrackStatusChangeSection = new ShapeCollection();
             GuideRailCollection = new Dictionary<VehicleInfo, ShapeCollection>();
             this.app = _app;
 
@@ -128,6 +130,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         private void registeredEvent()
         {
             app.objCacheManager.RailStatusChanged += ObjCacheManager_RailStatusChanged;
+            app.objCacheManager.TrackStatusChanged += ObjectManager_TrackStatusChanged;
             RailsCollection.AddressSelected += RailsCollection_AddressSelected;
             RailsCollection.SectionSelected += RailsCollection_SectionSelected;
         }
@@ -180,6 +183,35 @@ namespace VehicleControl_Viewer.frm_Mainfrom
             refreshRailStatus();
         }
 
+        private void ObjectManager_TrackStatusChanged(object sender, EventArgs e) 
+        {
+            List<string> lines = app.objCacheManager.TrackStatusChangeLines; //取得因轉轍器被ban掉的路
+            SolidColorBrush brush = new SolidColorBrush(Color.FromRgb(0xFF, 0x00, 0x00));
+            //先把所有因轉轍器而不能走行的路先全部清掉，然後再接收新的再畫
+            TrackStatusChangeSection.shapes.ForEach(s => VehicleTrack.Children.Remove(s));
+            TrackStatusChangeSection.shapes.Clear();
+
+            foreach (string l in lines)
+            {
+                foreach (Section s in sections)
+                {
+                    if (s.ID == l)
+                    {
+                        TrackStatusChangeSection.AddLineSegment(this, s.ID, new Point(s.StartAddress.Point.X * 1, s.StartAddress.Point.Y),
+                            new Point(s.EndAddress.Point.X * 1, s.EndAddress.Point.Y), brush, false);
+                    }
+                }
+            }
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                foreach (var s in TrackStatusChangeSection.shapes)
+                {
+                    VehicleTrack.Children.Add(s);
+                }
+            }));
+
+        }
+
         private void initialDisablePath()
         {
             setDisablePath();
@@ -188,8 +220,9 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         private void setDisablePath()
         {
             SolidColorBrush Brush = new SolidColorBrush();
-            Brush.Color = Color.FromRgb(0xFF, 0x00, 0x00);
-
+            //Brush.Color = Color.FromRgb(0xFF, 0x00, 0x00);
+            //被disable的路要改畫灰色
+            Brush.Color = Color.FromRgb(0x29, 0x24, 0x21);
             var disable_segments = app.objCacheManager.getDisableSegment();
             foreach (var segment in disable_segments)
             {
@@ -199,7 +232,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
                 foreach (var sec_obj in disable_secitons)
                 {
                     DisableRailsCollection.AddLineSegment(this, sec_obj.ID, new Point(sec_obj.StartAddress.Point.X * 1, sec_obj.StartAddress.Point.Y),
-                                                          new Point(sec_obj.EndAddress.Point.X * 1, sec_obj.EndAddress.Point.Y), Brush, false);
+                    new Point(sec_obj.EndAddress.Point.X * 1, sec_obj.EndAddress.Point.Y), Brush, false);
                 }
             }
             foreach (var s in DisableRailsCollection.shapes)
@@ -624,7 +657,26 @@ namespace VehicleControl_Viewer.frm_Mainfrom
                 MessageBox.setMessage($"Send command to vh Fail,{Environment.NewLine}Reson:{result.Reason}");
             }
             MessageBox.ShowDialog();
-
+            //測試畫弧線的工具
+            /*System.Windows.Shapes.Path path = new System.Windows.Shapes.Path();
+            path.Stroke = Brushes.Red;
+            path.StrokeThickness =200;
+            var aaa = new PathSegmentCollection();
+            //aaa.Add(new LineSegment(new Point(5000, 5000), true));
+            aaa.Add(new ArcSegment(new Point(649, 3302), new Size(40, 40), 90, true, SweepDirection.Counterclockwise, true));
+            path.Data = new PathGeometry()
+            {
+                Figures = new PathFigureCollection()
+                    {
+                        new PathFigure()
+                        {
+                            IsClosed = true,
+                            StartPoint = new Point(1409,2092),
+                            Segments = aaa
+                        }
+                    }
+            };
+            VehicleTrack.Children.Add(path);*/
         }
 
         private VehicleCommandInfo getVehicleTranCommandInfo()

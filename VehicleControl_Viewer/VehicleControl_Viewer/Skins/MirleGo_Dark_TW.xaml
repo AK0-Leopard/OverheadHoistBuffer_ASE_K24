@@ -890,5 +890,36 @@ b.其不设置的时候，默认所有TargetType使用此Style。  -->
 
     <s:String x:Key="LOCATION">位置</s:String>
     <s:String x:Key="SIZE">尺寸</s:String>
-    
+
+    <!--#region 左方車輛命令-->
+    <s:String x:Key="VH_ID">OHT車輛ID</s:String>
+    <s:String x:Key="COMM_ACTION_TYPE">命令型態</s:String>
+    <s:String x:Key="VH_CST">盒號(CST_ID)</s:String>
+    <s:String x:Key="ADR_ID">ADR_ID</s:String>
+    <s:String x:Key="PORT_ID">PORT_ID</s:String>
+    <s:String x:Key="VH_LOAD_PORT">命令起始點</s:String>
+    <s:String x:Key="VH_UNLOAD_PORT">命令結束點</s:String>
+    <!--#endregion-->
+
+    <!--#region 下方資訊列-->
+    <s:String x:Key="VEHICLE_STATUS">車輛資訊</s:String>
+    <!--<s:String x:Key="SYSTEM_CONSOLE">系統訊息</s:String>-->
+    <!--<s:String x:Key="CURRENT_ALARM">警告訊息</s:String>-->
+    <s:String x:Key="TRANSFER_COMMAND">搬送命令</s:String>
+    <s:String x:Key="TASK_COMMAND">一般命令</s:String>
+    <!--<s:String x:Key="TASK_COMMAND">EQ訊號</s:String>-->
+    <!--#endregion-->
+
+    <!--#region 資訊列中的車輛狀態-->
+    <s:String x:Key="VH_STATE">車輛狀態</s:String>
+    <s:String x:Key="VH_MODE">車輛模式</s:String>
+    <!--<s:String x:Key="VH_CST">車載貨號</s:String>-->
+    <s:String x:Key="VH_TRAN_ID">MCS命令ID</s:String>
+    <s:String x:Key="VH_CMD_ID">OHBC命令ID</s:String>
+    <!--<s:String x:Key="VH_LOAD_PORT">命令起點</s:String>-->
+    <!--<s:String x:Key="VH_UNLOAD_PORT">命令終點</s:String>-->
+    <s:String x:Key="VH_CST_MCS">命令貨號</s:String>
+    <s:String x:Key="VH_PRIORITY">優先權</s:String>
+    <!--#endregion-->
+
 </ResourceDictionary>
