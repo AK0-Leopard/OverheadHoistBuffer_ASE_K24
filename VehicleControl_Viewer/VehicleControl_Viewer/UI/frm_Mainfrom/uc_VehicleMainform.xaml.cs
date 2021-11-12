@@ -282,6 +282,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
             var transfer_command_infos = app.objCacheManager.TransferCommandInfos.Select(tran => new Vo.ObjToShow.TransferCommandShow(tran));
             dgv_TransferCommand.ItemsSource = transfer_command_infos;
             dgv_TaskCommand.ItemsSource = app.objCacheManager.TaskCommandInfos;
+            refreshCurrentAlarm();
         }
 
         private void initialObj()
@@ -723,6 +724,21 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         private void rdo_transferByPort_Checked(object sender, RoutedEventArgs e)
         {
             transferByPort();
+        }
+    
+        private void refreshCurrentAlarm()
+        {
+            var dgv = dgv_CurrentAlarm;
+            //先清除所有alarm
+            dgv.Items.Clear();
+            //取得alarmList
+            var alarmList = app.objCacheManager.alarmList;
+            //把alarm丟上去
+            foreach(var alarm in alarmList)
+            {
+                dgv.Items.Add(new string[] { alarm.EQ_ID, alarm.Unit_ID, alarm.RPT_dateTime, alarm.Code, alarm.level,
+                alarm.alarmStatus, alarm.alarmAffectCount, alarm.Description});
+            }
         }
     }
 }

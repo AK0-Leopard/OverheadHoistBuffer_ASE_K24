@@ -22,7 +22,7 @@ namespace VehicleControl_Viewer.UI.Components
         public List<TaskCommand> TaskCommandInfos { get; private set; } = new List<TaskCommand>();
         VehicleControlService vehicleControlService = null;
         public List<string>TrackStatusChangeLines = new List<string>();
-
+        public List<Alarm>alarmList = new List<Alarm>();
         public LineInfo LineInfo { get; private set; } = new LineInfo();
         
         public ObjCacheManager(WindownApplication app)
@@ -53,6 +53,24 @@ namespace VehicleControl_Viewer.UI.Components
         public void refreshTaskCommandInfos(List<TaskCommand> newTaskCmdInfos)
         {
             TaskCommandInfos = newTaskCmdInfos;
+        }
+        public void refreshAlarmList(List<alarm> _alarmList)
+        {
+            //alarmList = _alarmList;
+            alarmList.Clear();
+            foreach(var v in _alarmList)
+            {
+                Alarm temp = new Alarm();
+                temp.EQ_ID = v.EQID;
+                temp.Unit_ID = v.UnitID;
+                temp.RPT_dateTime = v.RPTDateTime;
+                temp.Code = v.Code;
+                temp.level = v.Level;
+                temp.alarmStatus = v.AlarmStatus;
+                temp.alarmAffectCount = v.AlarmAffectCount;
+                temp.Description = v.Description;
+                alarmList.Add(temp);
+            }
         }
 
         private void initialRailObjectInfo()

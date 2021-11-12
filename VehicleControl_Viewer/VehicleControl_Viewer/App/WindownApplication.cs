@@ -26,7 +26,7 @@ namespace VehicleControl_Viewer.App
         public const string NATS_SUBJECT_TASK_COMMAND_CHANGE = "NATS_SUBJECT_TASK_COMMAND_CHANGE";
         public const string NATS_SUBJECT_LINE_STATUS_CHANGE = "NATS_SUBJECT_LINE_STATUS_CHANGE";
         public const string NATS_SUBJECT_TRACK_STATUS_CHANGE = "NATS_SUBJECT_TRACK_STATUS_CHANGE"; //註冊如果有section因轉轍器被暫時不用，OHBC會透過這個訂閱來告訴Viewer有section不能用了
-
+        public const string NATS_SUBJECT_ALARM_LIST_CHANGE = "NATS_SUBJECT_ALARM_LIST_CHANGE"; //註冊OHBC若alarmList有變動就呼叫
         private IScheduler Scheduler { get; set; }
 
         private RedisCacheManager redisCacheManager = null;
@@ -37,7 +37,7 @@ namespace VehicleControl_Viewer.App
         public TransferCommandBLL TransferCommandBLL { get; private set; }
         public TaskCommandBLL TaskCommandBLL { get; private set; }
         public LineBLL LineBLL { get; private set; }
-
+        public AlarmBLL AlarmBLL {  get; private set;}
         public VehicleControlService VehicleControlService { get; private set; }
 
         private static Object _lock = new Object();
@@ -70,6 +70,7 @@ namespace VehicleControl_Viewer.App
             objCacheManager = new ObjCacheManager(this);
             TaskCommandBLL = new TaskCommandBLL(this);
             LineBLL = new LineBLL(this);
+            AlarmBLL = new AlarmBLL(this);
         }
         public async void Start()
         {
@@ -87,6 +88,8 @@ namespace VehicleControl_Viewer.App
                 TransferCommandBLL.SubscriberTransferCommandInfoChangeEvent();
                 TaskCommandBLL.SubscriberTaskCommandInfoChangeEvent();
                 LineBLL.SubscriberLineInfoEvent();
+                AlarmBLL.SubscriberAlarmListChangedEvent();
+                
             }
             catch (Exception ex)
             {
