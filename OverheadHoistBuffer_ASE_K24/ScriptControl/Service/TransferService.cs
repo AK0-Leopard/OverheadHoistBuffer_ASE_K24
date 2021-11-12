@@ -765,6 +765,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
             }
         }
+
+        const int IDLE_VH_WITH_AFTER_ON_THE_WAY_VH_DIFF_DISTANCE_MM = 2000;
         private long syncTranCmdPoint = 0;
         //public void TransferRun()
         public void TransferRun()
@@ -911,14 +913,22 @@ namespace com.mirle.ibg3k0.sc.Service
                                 #endregion 每分鐘權限 + 1
 
                                 #region 搬送命令
+                                bool can_after_on_the_way_tran = false;
                                 var check_can_after_on_the_way_result = checkHasVhAfterOnTheWay(v, transferCmdData);
                                 if (check_can_after_on_the_way_result.hasVh)
                                 {
-                                    SetTransferCommandNGReason(v.CMD_ID, $"vh:{check_can_after_on_the_way_result.sameSegmentTran.CRANE} 即將搬送貨物至該Bay，等待順途搬送");
-                                    SetTransferCommandPreAssignVh(v.CMD_ID, check_can_after_on_the_way_result.sameSegmentTran.CRANE);
+                                    bool is_idle_vh_closer = IsIdleVhBeCloseToSourceComparedWithAfterOnTheWayVh(v, check_can_after_on_the_way_result.sameSegmentTran.CRANE);
+                                    can_after_on_the_way_tran = !is_idle_vh_closer;
+                                    if (can_after_on_the_way_tran)
+                                    {
+                                        SetTransferCommandNGReason(v.CMD_ID, $"vh:{check_can_after_on_the_way_result.sameSegmentTran.CRANE} 即將搬送貨物至該Bay，等待順途搬送");
+                                        SetTransferCommandPreAssignVh(v.CMD_ID, check_can_after_on_the_way_result.sameSegmentTran.CRANE);
+                                    }
                                 }
+
                                 //if (TransferCommandHandler(v))
-                                if (!check_can_after_on_the_way_result.hasVh && TransferCommandHandler(v))
+                                //if (!check_can_after_on_the_way_result.hasVh && TransferCommandHandler(v))
+                                if (!can_after_on_the_way_tran && TransferCommandHandler(v))
                                 {
                                     cmdFail = false;
                                     OHBC_OHT_QueueCmdTimeOutCmdIDCleared(v.CMD_ID);
@@ -1077,6 +1087,34 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
             }
         }
+
+        private bool IsIdleVhBeCloseToSourceComparedWithAfterOnTheWayVh(ACMD_MCS v, string afterOnTheWayVhID)
+        {
+            try
+            {
+                APORTSTATION port_station = scApp.PortStationBLL.OperateCatch.getPortStation(v.HOSTSOURCE);
+                var bestSuitableVh = scApp.VehicleBLL.findBestSuitableVhStepByNearest(port_station.ADR_ID, port_station.LD_VH_TYPE);
+                if (bestSuitableVh != null)
+                {
+                    //比較最近的Idle VH(A)於同Bay搬送的車子(B)距離，若A車更近於B車超過20m時，就不用在保持順途搬送
+                    int idle_vh_to_source = scApp.GuideBLL.GetDistance(bestSuitableVh.CUR_ADR_ID, port_station.ADR_ID);
+                    AVEHICLE afterontheway_vh = scApp.VehicleBLL.cache.getVhByID(afterOnTheWayVhID);
+                    int afterontheway_vh_to_source = scApp.GuideBLL.GetDistance(afterontheway_vh.CUR_ADR_ID, port_station.ADR_ID);
+                    int diff_distance = afterontheway_vh_to_source - idle_vh_to_source;
+                    if (diff_distance > IDLE_VH_WITH_AFTER_ON_THE_WAY_VH_DIFF_DISTANCE_MM)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
+        }
+
         public void findTransferCommandByVhViewer(AVEHICLE vh)
         {
             if (Interlocked.Exchange(ref syncTranCmdPoint, 1) == 0)
@@ -1301,11 +1339,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
 
                     string transfering_cmd_adr = transfer_cmd.getHostDestAdr(scApp.PortStationBLL);
-                    if (SCUtility.isEmpty(transfering_cmd_adr))
-                    {
-                        same_segment_tran_cmds.Remove(transfer_cmd);
-                        continue;
-                    }
+
                     if (SCUtility.isEmpty(transfering_cmd_adr))
                     {
                         same_segment_tran_cmds.Remove(transfer_cmd);

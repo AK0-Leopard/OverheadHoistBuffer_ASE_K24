@@ -59,7 +59,27 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"get cst type fail,eq id:{entrySecID}");
+                logger.Error(ex, $"get block track info fail,track id:{entrySecID}");
+                throw;
+            }
+        }
+        public List<BlockTrackMap> loadBlockTrackInfoByTackID(SCApplication app, string trackID)
+        {
+            try
+            {
+                DataTable dt = app.OHxCConfig.Tables["BLOCKTRACKMAP"];
+                var query1 = from c in dt.AsEnumerable()
+                             select new BlockTrackMap
+                             {
+                                 ENTRY_SEC_ID = c.Field<string>("ENTRY_SEC_ID"),
+                                 TRACKS_ID = stringToStringArray(c.Field<string>("TRACKS_ID"))
+                             };
+                var query = query1.Where(t => t.TRACKS_ID.Contains(trackID));
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, $"get block track info fail,track id:{trackID}");
                 throw;
             }
         }

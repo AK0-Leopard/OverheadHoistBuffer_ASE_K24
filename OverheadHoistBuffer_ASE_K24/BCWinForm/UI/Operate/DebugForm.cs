@@ -82,6 +82,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_ForceStraightPass.Checked = DebugParameter.IsForceStraightPass;
             cb_ForceNonStraightPass.Checked = DebugParameter.IsForceNonStraightPass;
             cb_ignoreManualPort.Checked = DebugParameter.IsIgnoreManualPortStatus;
+            cb_paassErrorVhAndTrackStatus.Checked = DebugParameter.IsPaassErrorVhAndTrackStatus;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -1369,6 +1370,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_ignoreManualPort_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.IsIgnoreManualPortStatus = cb_ignoreManualPort.Checked;
+        }
+
+        private void cb_paassErrorVhAndTrackStatus_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsPaassErrorVhAndTrackStatus = cb_paassErrorVhAndTrackStatus.Checked;
         }
     }
 }

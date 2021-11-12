@@ -1551,12 +1551,11 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     using (DBConnection_EF con = DBConnection_EF.GetUContext())
                     {
-                        isSuccess &= scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.Execution);
                         if (activeType != ActiveType.Override)
                         {
                             isSuccess &= scApp.VehicleBLL.updateVehicleExcuteCMD(cmd.VH_ID, cmd.CMD_ID, cmd.CMD_ID_MCS);
                         }
-
+                        isSuccess &= scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.Execution);
                         if (isSuccess)
                         {
                             isSuccess &= TransferRequset
@@ -3249,6 +3248,18 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (!vh.IsOnAdr)
             {
+                ASECTION vh_current_sec = scApp.SectionBLL.cache.GetSection(vh_current_section_id);
+                //確認是否有車子是在to Address的位置上
+                var on_to_adr_vh = scApp.VehicleBLL.cache.getVhByAddressID(vh_current_sec.TO_ADR_ID);
+                if (on_to_adr_vh != null)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"Has vh:{on_to_adr_vh.VEHICLE_ID} on section:{vh_current_section_id} of to adr:{vh_current_sec.TO_ADR_ID}," +
+                             $"so request vh:{vh.VEHICLE_ID} it not closest block vh",
+                       VehicleID: vh.VEHICLE_ID,
+                       CarrierID: vh.CST_ID);
+                    return false;
+                }
                 //a.要先判斷在同一段Section是否有其他車輛且的他的距離在前面
                 var on_same_section_of_vhs = scApp.VehicleBLL.cache.loadVhsBySectionID(vh_current_section_id);
                 foreach (AVEHICLE same_section_vh in on_same_section_of_vhs)

@@ -41,35 +41,37 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             MainForm.removeForm(nameof(TrackMaintenanceForm));
         }
 
-        const int TRACK_DATA_TRACKSTATUS = 2;
-        const int TRACK_DATA_ALARM = 3;
+        const int TRACK_DATA_TRACKSTATUS = 4;
+        const int TRACK_DATA_ALARM = 5;
         private void dgv_shelfData_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
-            //if (dgv_trackData.Rows.Count <= e.RowIndex) return;
-            //if (e.RowIndex < 0) return;
-            //var track_status = dgv_trackData.Rows[e.RowIndex].Cells[TRACK_DATA_TRACKSTATUS].Value;
-            //var alarm_code = dgv_trackData.Rows[e.RowIndex].Cells[TRACK_DATA_ALARM].Value;
-            //if (!(track_status is string))
-            //    return;
-            //if (!(alarm_code is string))
-            //    return;
-            //string status = track_status as string;
-            //string alarm = track_status as string;
-            //if (sc.Common.SCUtility.isMatche(status, sc.App.SCAppConstants.YES_FLAG))
-            //{
-            //    //not thing...
-            //}
-            //else
-            //{
-            //    DataGridViewRow row = dgv_trackData.Rows[e.RowIndex];
-            //    row.DefaultCellStyle.BackColor = Color.GreenYellow;
-            //    row.DefaultCellStyle.ForeColor = Color.Black;
-            //    if (row.Selected)
-            //    {
-            //        row.DefaultCellStyle.SelectionBackColor = Color.SkyBlue;
-            //        row.DefaultCellStyle.SelectionForeColor = Color.Black;
-            //    }
-            //}
+            if (dgv_trackData.Rows.Count <= e.RowIndex) return;
+            if (e.RowIndex < 0) return;
+            string track_status = dgv_trackData.Rows[e.RowIndex].Cells[TRACK_DATA_TRACKSTATUS].Value?.ToString();
+            string alarm_code = dgv_trackData.Rows[e.RowIndex].Cells[TRACK_DATA_ALARM].Value?.ToString();
+            bool is_need_highlight = false;
+            if (!sc.Common.SCUtility.isEmpty(track_status) && !sc.Common.SCUtility.isMatche(track_status, "Auto"))
+                is_need_highlight = true;
+            if (!is_need_highlight && !sc.Common.SCUtility.isEmpty(alarm_code) && !sc.Common.SCUtility.isMatche(alarm_code, "0"))
+                is_need_highlight = true;
+
+            DataGridViewRow row = dgv_trackData.Rows[e.RowIndex];
+            if (is_need_highlight)
+            {
+                row.DefaultCellStyle.BackColor = Color.Yellow;
+                row.DefaultCellStyle.ForeColor = Color.Red;
+                if (row.Selected)
+                {
+                    row.DefaultCellStyle.SelectionBackColor = Color.SkyBlue;
+                    row.DefaultCellStyle.SelectionForeColor = Color.Red;
+                }
+            }
+            else
+            {
+                row.DefaultCellStyle.BackColor = Color.White;
+                row.DefaultCellStyle.ForeColor = Color.Black;
+
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)

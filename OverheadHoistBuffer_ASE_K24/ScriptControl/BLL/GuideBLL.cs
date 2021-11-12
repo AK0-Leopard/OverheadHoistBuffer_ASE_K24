@@ -30,7 +30,19 @@ namespace com.mirle.ibg3k0.sc.BLL
         getGuideInfo(string startAddress, string targetAddress)
         {
             List<string> mtx_section_ids = scApp.MTLService.All_Mtx_Devic_Section_Ids;
-            return getGuideInfo(startAddress, targetAddress, mtx_section_ids);
+            List<string> by_pass_section_ids = new List<string>();
+            by_pass_section_ids.AddRange(mtx_section_ids);
+            if (!DebugParameter.IsPaassErrorVhAndTrackStatus)
+            {
+                List<string> blocked_section_ids = loadBLockedSectionIDs(scApp.VehicleBLL, scApp.UnitBLL);
+                by_pass_section_ids.AddRange(blocked_section_ids);
+            }
+            else
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(GuideBLL), Device: "OHx",
+                   Data: $"Pass error vh and tarck status");
+            }
+            return getGuideInfo(startAddress, targetAddress, by_pass_section_ids);
         }
 
         public (bool isSuccess, List<string> guideSegmentIds, List<string> guideSectionIds, List<string> guideAddressIds, int totalCost)
@@ -135,6 +147,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return int.MaxValue;
             }
         }
+
         public ASEGMENT OpenSegment(string strSegCode, ASEGMENT.DisableType disableType)
         {
             ASEGMENT seg_vo = null;
@@ -231,6 +244,38 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             segment_do = scApp.MapBLL.EnableSegment(segmentID);
             return segment_do;
+        }
+
+        public List<string> loadBLockedSectionIDs(BLL.VehicleBLL vehicleBLL, BLL.UnitBLL unitBLL)
+        {
+            List<string> blocked_section_ids = new List<string>();
+            try
+            {
+                var alarm_vhs = vehicleBLL.cache.loadAlarmVhs();
+                //blocked_section_ids.AddRange(alarm_vhs.Select(v => v.getVIEW_SEC_ID(scApp.SectionBLL)));
+
+                foreach (var vh in alarm_vhs)
+                {
+                    string current_sec_id = vh.getVIEW_SEC_ID(scApp.SectionBLL);
+                    blocked_section_ids.Add(current_sec_id);
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(GuideBLL), Device: "OHx",
+                       Data: $"vh:{vh.VEHICLE_ID} error at section:{current_sec_id}");
+                }
+
+                var no_auto_tracks = unitBLL.cache.loadNoAutoTrack();
+                foreach (var track in no_auto_tracks)
+                {
+                    blocked_section_ids.AddRange(track.RelatedSection);
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(GuideBLL), Device: "OHx",
+                       Data: $"Track:{track.UNIT_ID} status:{track.TrackStatus},will pass section id:{track.sRelatedSection}");
+                }
+                return blocked_section_ids;
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception:");
+                return blocked_section_ids;
+            }
         }
     }
 

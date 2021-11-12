@@ -2538,6 +2538,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean IsForceNonStraightPass = false;
         public static Boolean IsPassTrackBlockStatus = false;
         public static Boolean IsIgnoreManualPortStatus = false;
+        public static Boolean IsPaassErrorVhAndTrackStatus = false;
 
     }
 }

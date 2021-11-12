@@ -3772,12 +3772,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                     _source = source;
                     _source_address = source_address;
                 }
+                string cmd_id_mcs_temp = SCUtility.Trim(cmd_id_mcs, true);
                 ACMD_OHTC cmd = new ACMD_OHTC
                 {
                     CMD_ID = commandID,
                     VH_ID = vh_id,
                     //CARRIER_ID = cst_id,
-                    CMD_ID_MCS = cmd_id_mcs,
+                    //CMD_ID_MCS = cmd_id_mcs,
+                    CMD_ID_MCS = cmd_id_mcs_temp,
                     CMD_TPYE = cmd_type,
                     SOURCE = _source,
                     DESTINATION = destination,
@@ -4089,6 +4091,15 @@ namespace com.mirle.ibg3k0.sc.BLL
                 count = cmd_ohtcDAO.getVhWillSendingCMDConut(con, vhID);
             }
             return count != 0;
+        }
+        public bool isCmdMcsExcute(string vhID)
+        {
+            int count = 0;
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                count = cmd_ohtcDAO.getVhExcuteCMDMCSConut(con, vhID);
+            }
+            return count > 0;
         }
 
         public bool isCMD_OHTCExcuteByVh(string vh_id)
@@ -5214,7 +5225,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                             if (isSuccess && !SCUtility.isMatche(source_adr, dest_adr))
                             {
                                 (isSuccess, guide_to_dest_segment_ids, guide_to_dest_section_ids, guide_to_dest_address_ids, total_cost)
-                                    = scApp.GuideBLL.getGuideInfo(source_adr, dest_adr, null);
+                                    //= scApp.GuideBLL.getGuideInfo(source_adr, dest_adr, null);
+                                    = scApp.GuideBLL.getGuideInfo(source_adr, dest_adr);
                             }
                         }
                         break;

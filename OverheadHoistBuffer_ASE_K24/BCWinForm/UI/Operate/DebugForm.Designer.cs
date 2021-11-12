@@ -381,6 +381,7 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
+            this.cb_paassErrorVhAndTrackStatus = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1322,12 +1323,13 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1370, 749);
+            this.tabControl1.Size = new System.Drawing.Size(1370, 851);
             this.tabControl1.TabIndex = 23;
             // 
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.cb_paassErrorVhAndTrackStatus);
             this.tabPage1.Controls.Add(this.cb_ignoreManualPort);
             this.tabPage1.Controls.Add(this.btn_reloadParkingAdr);
             this.tabPage1.Controls.Add(this.gb_cycleRunInfo);
@@ -1343,7 +1345,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 31);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage1.Size = new System.Drawing.Size(1362, 816);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1357,14 +1359,13 @@
             this.cb_ignoreManualPort.TabIndex = 67;
             this.cb_ignoreManualPort.Text = "Ignore Manual Port Status";
             this.cb_ignoreManualPort.UseVisualStyleBackColor = true;
-            this.cb_ignoreManualPort.Visible = false;
             this.cb_ignoreManualPort.CheckedChanged += new System.EventHandler(this.cb_ignoreManualPort_CheckedChanged);
             // 
             // btn_reloadParkingAdr
             // 
-            this.btn_reloadParkingAdr.Location = new System.Drawing.Point(1039, 741);
+            this.btn_reloadParkingAdr.Location = new System.Drawing.Point(1038, 773);
             this.btn_reloadParkingAdr.Name = "btn_reloadParkingAdr";
-            this.btn_reloadParkingAdr.Size = new System.Drawing.Size(203, 56);
+            this.btn_reloadParkingAdr.Size = new System.Drawing.Size(203, 33);
             this.btn_reloadParkingAdr.TabIndex = 66;
             this.btn_reloadParkingAdr.Text = "Reload Parking adr";
             this.btn_reloadParkingAdr.UseVisualStyleBackColor = true;
@@ -2722,7 +2723,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(85, 3);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(85, 6);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -4657,11 +4658,22 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
+            // cb_paassErrorVhAndTrackStatus
+            // 
+            this.cb_paassErrorVhAndTrackStatus.AutoSize = true;
+            this.cb_paassErrorVhAndTrackStatus.Location = new System.Drawing.Point(1039, 721);
+            this.cb_paassErrorVhAndTrackStatus.Name = "cb_paassErrorVhAndTrackStatus";
+            this.cb_paassErrorVhAndTrackStatus.Size = new System.Drawing.Size(344, 26);
+            this.cb_paassErrorVhAndTrackStatus.TabIndex = 68;
+            this.cb_paassErrorVhAndTrackStatus.Text = "規劃路徑不參考故障車、軌道狀態";
+            this.cb_paassErrorVhAndTrackStatus.UseVisualStyleBackColor = true;
+            this.cb_paassErrorVhAndTrackStatus.CheckedChanged += new System.EventHandler(this.cb_paassErrorVhAndTrackStatus_CheckedChanged);
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1370, 749);
+            this.ClientSize = new System.Drawing.Size(1370, 851);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -5095,5 +5107,6 @@
         private System.Windows.Forms.CheckBox cb_passTrack;
         private System.Windows.Forms.Button btn_receiveTraReq;
         private System.Windows.Forms.CheckBox cb_ignoreManualPort;
+        private System.Windows.Forms.CheckBox cb_paassErrorVhAndTrackStatus;
     }
 }

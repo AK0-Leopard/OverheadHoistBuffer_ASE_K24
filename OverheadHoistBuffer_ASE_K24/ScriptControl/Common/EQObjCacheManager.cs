@@ -268,9 +268,20 @@ namespace com.mirle.ibg3k0.sc.Common
                         Remote_IP = ap.REMOTE_IP
                     });
             }
-
+            initialTrackWithRelatedSection();
             //List<APORTSTATION> PORTSTATIONs = scApp.MapBLL.loadAllPort();
             //portStationList = PORTSTATIONs;
+        }
+
+        private void initialTrackWithRelatedSection()
+        {
+            foreach (var unit in unitList)
+            {
+                if (unit is Track)
+                {
+                    (unit as Track).setRelatedSection(scApp);
+                }
+            }
         }
 
         /// <summary>
