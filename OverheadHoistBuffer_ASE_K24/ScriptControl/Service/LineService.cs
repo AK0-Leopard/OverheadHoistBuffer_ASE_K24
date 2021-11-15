@@ -36,18 +36,65 @@ namespace com.mirle.ibg3k0.sc.Service
             lineBLL = _app.LineBLL;
             line = scApp.getEQObjCacheManager().getLine();
 
-            line.addEventHandler(nameof(LineService), nameof(line.Host_Control_State), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.SCStats), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.Currnet_Park_Type), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.Currnet_Cycle_Type), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.Secs_Link_Stat), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.Redis_Link_Stat), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.DetectionSystemExist), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.IsEarthquakeHappend), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.IsAlarmHappened), PublishLineInfo);
-            line.LineStatusChange += Line_LineStatusChange;
+            //line.addEventHandler(nameof(LineService), nameof(line.Host_Control_State), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.SCStats), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.Currnet_Park_Type), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.Currnet_Cycle_Type), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.Secs_Link_Stat), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.Redis_Link_Stat), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.DetectionSystemExist), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.IsEarthquakeHappend), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.IsAlarmHappened), PublishLineInfo);
+            //line.LineStatusChange += Line_LineStatusChange;
+        }
+
+
+        public void LineStatusChangeCheck()
+        {
+            bool host_is_connection = line.Host_Control_State == SCAppConstants.LineHostControlState.HostControlState.On_Line_Remote;
+            bool is_manual_port_alive = false;
+            bool is_track1_all_ready = false;
+            bool is_track2_all_ready = false;
+
+            var track_items = scApp.UnitBLL.cache.GetALLTracks();
+            var track1_items = track_items.Where(track => track.UNIT_ID.CompareTo("R50") < 0);
+            var track2_items = track_items.Where(track => track.UNIT_ID.CompareTo("R50") >= 0);
+            is_track1_all_ready = track1_items.Where(track => !track.IsAlive).Count() == 0;
+            is_track2_all_ready = track2_items.Where(track => !track.IsAlive).Count() == 0;
+
+            bool has_change = false;
+            if (line.LineInfo.IsConnectionWithHOST != host_is_connection)
+            {
+                line.LineInfo.IsConnectionWithHOST = host_is_connection;
+                has_change = true;
+            }
+            if (line.LineInfo.IsConnectionWithPLCMANUAL != is_manual_port_alive)
+            {
+                line.LineInfo.IsConnectionWithPLCMANUAL = is_manual_port_alive;
+                has_change = true;
+            }
+            if (line.LineInfo.IsConnectionWithPLCTRACK1 != is_track1_all_ready)
+            {
+                line.LineInfo.IsConnectionWithPLCTRACK1 = is_track1_all_ready;
+                has_change = true;
+            }
+            if (line.LineInfo.IsConnectionWithPLCTRACK2 != is_track2_all_ready)
+            {
+                line.LineInfo.IsConnectionWithPLCTRACK2 = is_track2_all_ready;
+                has_change = true;
+            }
+
+            if (has_change)
+            {
+                byte[] line_info_serialize = line.LineInfo.ToByteArray();
+                scApp.getNatsManager().PublishAsync
+                    (SCAppConstants.NATS_SUBJECT_LINE_STATUS_CHANGE, line_info_serialize);
+            }
+
+
 
         }
+
 
         public void startHostCommunication()
         {

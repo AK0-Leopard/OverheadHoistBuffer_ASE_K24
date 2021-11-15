@@ -38,6 +38,8 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler<EventArgs> OnLocalDisconnection;
         public event EventHandler<EventArgs> OnLocalConnection;
 
+        public AK0.ProtocolFormat.VehicleControlPublishMessage.LineInfo LineInfo { get; private set; } = new AK0.ProtocolFormat.VehicleControlPublishMessage.LineInfo();
+         
         #region MCS Online Check Item
         private bool alarmSetChecked = false;
         public bool AlarmSetChecked
@@ -1571,6 +1573,9 @@ namespace com.mirle.ibg3k0.sc
 
         }
 
-
     }
+
+
+
+
 }

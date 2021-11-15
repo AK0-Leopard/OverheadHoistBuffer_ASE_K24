@@ -36,6 +36,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         {
             app = _app;
             InitializeComponent();
+            initialTimer();
         }
 
 

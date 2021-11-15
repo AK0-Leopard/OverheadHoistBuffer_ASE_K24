@@ -1078,6 +1078,7 @@ namespace com.mirle.ibg3k0.sc.App
         public const string NATS_SUBJECT_SECS_LOG = "NATS_SUBJECT_KEY_SECS_LOG";
 
         public const string NATS_SUBJECT_Port_INFO_0 = "NATS_SUBJECT_KEY_Port_INFO_{0}";
+        public const string NATS_SUBJECT_LINE_STATUS_CHANGE = "NATS_SUBJECT_LINE_STATUS_CHANGE";
 
         #endregion NATS
         #region Eqpt Type
