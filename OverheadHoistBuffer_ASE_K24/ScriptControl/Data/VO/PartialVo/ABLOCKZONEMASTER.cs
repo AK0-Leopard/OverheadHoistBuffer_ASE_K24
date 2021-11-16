@@ -148,7 +148,7 @@ namespace com.mirle.ibg3k0.sc
                     LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
                        Data: $"Block:{ENTRY_SEC_ID} of related track:{related_track.UNIT_ID} current status:{related_track.TrackStatus}, return block not ready");
                     //return false;
-                    return (BlockTracksStatus.NotAuto,, related_track);
+                    return (BlockTracksStatus.NotAuto, related_track);
                 }
                 if (related_track.IsBlocking)
                 {
