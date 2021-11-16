@@ -4677,7 +4677,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             catch (Exception ex)
             {
-                updateCommand_OHTC_StatusByCmdID(acmd_ohtc.CMD_ID, E_CMD_STATUS.AbnormalEndByOHTC);
                 logger_VhRouteLog.Error(ex, "generateCmd_OHTC_Details happend");
                 return false;
             }

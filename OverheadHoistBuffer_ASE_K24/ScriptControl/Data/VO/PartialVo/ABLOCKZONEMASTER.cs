@@ -75,7 +75,7 @@ namespace com.mirle.ibg3k0.sc
                        Data: $"Block:{ENTRY_SEC_ID} of related track is null ,return not ready.");
                     return false;
                 }
-                if (!related_track.stopwatch.IsRunning || related_track.stopwatch.ElapsedMilliseconds > INTERVAL_TIME)
+                if (!related_track.LastUpdataStopwatch.IsRunning || related_track.LastUpdataStopwatch.ElapsedMilliseconds > INTERVAL_TIME)
                 {
                     LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
                        Data: $"Block:{ENTRY_SEC_ID} of related track:{related_track.UNIT_ID} stop watch no work or over time out {INTERVAL_TIME}ms, return not ready");
@@ -91,13 +91,25 @@ namespace com.mirle.ibg3k0.sc
             return true;
         }
 
-        public bool IsAllTrackBlockReady()
+        public enum BlockTracksStatus
+        {
+            Ready,
+            SyncTimeOut,
+            NotAuto,
+            Blocking,
+            NotInPlace
+        }
+
+
+        //public bool IsAllTrackBlockReady()
+        public (BlockTracksStatus BlockTracksStatus, Track notReadyTrack) IsAllTrackBlockReady()
         {
             if (DebugParameter.IsPassTrackBlockStatus)
             {
                 LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
                    Data: $"Block:{ENTRY_SEC_ID} request,but force pass track block status is open ,return block is ready.");
-                return true;
+                //return true;
+                return (BlockTracksStatus.Ready, null);
             }
 
 
@@ -105,7 +117,8 @@ namespace com.mirle.ibg3k0.sc
             {
                 LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
                    Data: $"Block:{ENTRY_SEC_ID} of no related track ,return block is ready.");
-                return true;
+                //return true;
+                return (BlockTracksStatus.Ready, null);
             }
 
             foreach (var related_track in RelatedTracks)
@@ -117,11 +130,12 @@ namespace com.mirle.ibg3k0.sc
                 }
 
 
-                if (!related_track.stopwatch.IsRunning || related_track.stopwatch.ElapsedMilliseconds > INTERVAL_TIME)
+                if (!related_track.LastUpdataStopwatch.IsRunning || related_track.LastUpdataStopwatch.ElapsedMilliseconds > INTERVAL_TIME)
                 {
                     LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
                        Data: $"Block:{ENTRY_SEC_ID} of related track:{related_track.UNIT_ID} stop watch no work or over time out {INTERVAL_TIME}ms,  return block not ready");
-                    return false;
+                    //return false;
+                    return (BlockTracksStatus.SyncTimeOut, related_track);
                 }
                 //if (!related_track.IsAlive)
                 //{
@@ -129,11 +143,19 @@ namespace com.mirle.ibg3k0.sc
                 //       Data: $"Block:{ENTRY_SEC_ID} of related track:{related_track.UNIT_ID} no alive, force return block ready ");
                 //    return true;
                 //}
+                if (related_track.TrackStatus != RailChangerProtocol.TrackStatus.Auto)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
+                       Data: $"Block:{ENTRY_SEC_ID} of related track:{related_track.UNIT_ID} current status:{related_track.TrackStatus}, return block not ready");
+                    //return false;
+                    return (BlockTracksStatus.NotAuto,, related_track);
+                }
                 if (related_track.IsBlocking)
                 {
                     LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
                        Data: $"Block:{ENTRY_SEC_ID} of related track:{related_track.UNIT_ID} current blocking:{related_track.IsBlocking}, return block not ready");
-                    return false;
+                    //return false;
+                    return (BlockTracksStatus.Blocking, related_track);
                 }
 
                 ProtocolFormat.OHTMessage.TrackDir trackDir = related_track.TrackDir;
@@ -141,14 +163,16 @@ namespace com.mirle.ibg3k0.sc
                 {
                     LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
                        Data: $"Block:{ENTRY_SEC_ID} of related track:{related_track.UNIT_ID} current dir:{trackDir}, return block not ready");
-                    return false;
+                    //return false;
+                    return (BlockTracksStatus.NotInPlace, related_track);
                 }
             }
             var track_ids = RelatedTracks.Select(t => t.UNIT_ID).ToList();
             string track_ready_message = string.Join(",", track_ids);
             LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
                Data: $"Block:{ENTRY_SEC_ID} of related tracks:{track_ready_message} status is ready, return true");
-            return true;
+            //return true;
+            return (BlockTracksStatus.Ready, null);
         }
 
     }

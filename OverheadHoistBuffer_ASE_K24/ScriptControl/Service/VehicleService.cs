@@ -1187,7 +1187,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 else
                 {
                     //如果失敗了，則要將該筆命令更新回Queue，並且AbnormalEnd該筆命令
-                    if (!SCUtility.isEmpty(cmd.CMD_ID_MCS))
+                    //if (!SCUtility.isEmpty(cmd.CMD_ID_MCS))
+                    if (cmd.IsTransferCmdByMCS)
                     {
                         //scApp.CMDBLL.updateCMD_MCS_TranStatus2Queue(cmd.CMD_ID_MCS);
                         ACMD_MCS cmd_mcs = scApp.CMDBLL.getCMD_MCSByID(cmd.CMD_ID_MCS);
@@ -1196,6 +1197,20 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                     scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHT);
                 }
+            }
+            else
+            {
+                if (cmd.IsTransferCmdByMCS)
+                {
+                    TransferServiceLogger.Info
+                    (
+                        DateTime.Now.ToString("HH:mm:ss.fff ") +
+                        $"發送命令失敗，cmd id:{cmd.CMD_ID} mcs cmd id:{cmd.CMD_ID_MCS} load port:{cmd.SOURCE}, unload port:{cmd.DESTINATION} 強制將命令改回Queue"
+                    );
+                    scApp.CMDBLL.updateCMD_MCS_CRANE(cmd.CMD_ID_MCS, "");
+                    scApp.CMDBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID_MCS, E_TRAN_STATUS.Queue);
+                }
+                scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHTC);
             }
             return isSuccess;
         }
@@ -3131,15 +3146,7 @@ namespace com.mirle.ibg3k0.sc.Service
                        CarrierID: eqpt.CST_ID);
                     return (false, TrackDir.None);
                 }
-                bool is_block_ready = block_master.IsAllTrackBlockReady();
-                if (!is_block_ready)
-                {
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                       Data: $"Vh:{eqpt.VEHICLE_ID} ask block:{req_block_id},but related track block not ready.",
-                       VehicleID: eqpt.VEHICLE_ID,
-                       CarrierID: eqpt.CST_ID);
-                    return (false, TrackDir.None);
-                }
+
 
                 bool is_first_vh = isNextPassVh(eqpt, req_block_id);
                 if (!is_first_vh)
@@ -3172,6 +3179,40 @@ namespace com.mirle.ibg3k0.sc.Service
                         return (false, TrackDir.None);
                     }
                 }
+
+                //bool is_block_ready = block_master.IsAllTrackBlockReady();
+                var block_tracks_status_check_result = block_master.IsAllTrackBlockReady();
+                if (block_tracks_status_check_result.BlockTracksStatus != ABLOCKZONEMASTER.BlockTracksStatus.Ready)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"Vh:{eqpt.VEHICLE_ID} ask block:{req_block_id}," +
+                             $"but related track block not ready,status:{block_tracks_status_check_result.BlockTracksStatus}.",
+                       VehicleID: eqpt.VEHICLE_ID,
+                       CarrierID: eqpt.CST_ID);
+                    if (block_tracks_status_check_result.BlockTracksStatus == ABLOCKZONEMASTER.BlockTracksStatus.Blocking)
+                    {
+                        var release_blocking_track = block_tracks_status_check_result.notReadyTrack;
+                        if (release_blocking_track.canExcuteBlockRelease)
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                               Data: $"track:{release_blocking_track.UNIT_ID} is blocking,try to reset it",
+                               VehicleID: eqpt.VEHICLE_ID,
+                               CarrierID: eqpt.CST_ID);
+
+                            release_blocking_track.ResetBlock(scApp.TrackInfoClient);
+                        }
+                        else
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                               Data: $"track:{release_blocking_track.UNIT_ID} is blocking,but ask block reset interval less then {Track.MIN_ALLOW_BLOCK_RELEASE_INTERVAL_ms} ms",
+                               VehicleID: eqpt.VEHICLE_ID,
+                               CarrierID: eqpt.CST_ID);
+                        }
+                    }
+                    return (false, TrackDir.None);
+                }
+
+
                 foreach (var detail in block_detail_section)
                 {
                     HltDirection hltDirection = HltDirection.None;
@@ -3179,6 +3220,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                                                          sensorDir: hltDirection,
                                                                          isAsk: false);
                 }
+
                 TrackDir track_dir = TrackDir.None;
                 if (DebugParameter.IsForceNonStraightPass)
                 {

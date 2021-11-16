@@ -46,7 +46,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                             else
                             {
                                 Common.LogHelper.Log(logger: logger, LogLevel: LogLevel.Trace, Class: nameof(TrackTimerAction), Device: "OHx",
-                                   Data: $"Track id:{track.UNIT_ID}: dir:{track.TrackDir} last updata time(ms):{track.stopwatch.ElapsedMilliseconds}.");
+                                   Data: $"Track id:{track.UNIT_ID}: dir:{track.TrackDir} last updata time(ms):{track.LastUpdataStopwatch.ElapsedMilliseconds}.");
                             }
                             track.setTrackInfo(track_info);
                         }
