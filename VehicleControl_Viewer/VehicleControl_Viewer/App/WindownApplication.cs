@@ -37,7 +37,7 @@ namespace VehicleControl_Viewer.App
         public TransferCommandBLL TransferCommandBLL { get; private set; }
         public TaskCommandBLL TaskCommandBLL { get; private set; }
         public LineBLL LineBLL { get; private set; }
-        public AlarmBLL AlarmBLL {  get; private set;}
+        public AlarmBLL AlarmBLL { get; private set; }
         public VehicleControlService VehicleControlService { get; private set; }
 
         private static Object _lock = new Object();
@@ -89,7 +89,7 @@ namespace VehicleControl_Viewer.App
                 TaskCommandBLL.SubscriberTaskCommandInfoChangeEvent();
                 LineBLL.SubscriberLineInfoEvent();
                 AlarmBLL.SubscriberAlarmListChangedEvent();
-                
+
             }
             catch (Exception ex)
             {

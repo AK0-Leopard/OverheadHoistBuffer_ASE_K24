@@ -917,6 +917,7 @@
     <Compile Include="Data\VO\Interface\IConnectionStatusChange.cs" />
     <Compile Include="Data\VO\Interface\IMaintainDevice.cs" />
     <Compile Include="Data\VO\MTLSetting.cs" />
+    <Compile Include="Data\VO\PartialVo\ALARM.cs" />
     <Compile Include="Data\VO\ReelNTB.cs" />
     <Compile Include="Data\VO\OHCV.cs" />
     <Compile Include="Data\VO\MaintainLift.cs" />

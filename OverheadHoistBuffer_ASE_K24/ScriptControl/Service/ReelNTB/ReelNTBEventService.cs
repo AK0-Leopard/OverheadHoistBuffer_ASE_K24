@@ -190,7 +190,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, "Exception");
+                    //logger.Error(ex, "Exception");
                 }
                 finally
                 {

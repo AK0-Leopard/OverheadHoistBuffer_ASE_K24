@@ -53,7 +53,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return (true, new List<string>(), new List<string>(), new List<string>(), 0);
             }
 
-            bool is_success = false;
             int.TryParse(startAddress, out int i_start_address);
             int.TryParse(targetAddress, out int i_target_address);
 
@@ -70,10 +69,13 @@ namespace com.mirle.ibg3k0.sc.BLL
             if (stratFromRouteInfoList != null && stratFromRouteInfoList.Count > 0)
             {
                 min_stratFromRouteInfo = stratFromRouteInfoList.First();
-                is_success = true;
+                return (true, null, min_stratFromRouteInfo.GetSectionIDs(), min_stratFromRouteInfo.GetAddressesIDs(), min_stratFromRouteInfo.total_cost);
+            }
+            else
+            {
+                return (false, null, null, null, int.MinValue);
             }
 
-            return (is_success, null, min_stratFromRouteInfo.GetSectionIDs(), min_stratFromRouteInfo.GetAddressesIDs(), min_stratFromRouteInfo.total_cost);
         }
 
 

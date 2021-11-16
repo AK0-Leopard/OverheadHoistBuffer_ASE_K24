@@ -29,7 +29,7 @@ namespace com.mirle.ibg3k0.sc.Common
             //redisCacheManager.SubscriptionEvent(SCAppConstants.REDIS_EVENT_KEY, RedisEventHandler);
 
             natsManager = app.getNatsManager();
-            natsManager.Subscriber(SCAppConstants.REDIS_EVENT_KEY, AMS_EVENT_HANDLER);
+            //natsManager.Subscriber(SCAppConstants.REDIS_EVENT_KEY, AMS_EVENT_HANDLER);
         }
 
         public void CheckCheckSystemIsExist()

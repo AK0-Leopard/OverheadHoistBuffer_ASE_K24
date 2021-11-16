@@ -1079,6 +1079,7 @@ namespace com.mirle.ibg3k0.sc.App
 
         public const string NATS_SUBJECT_Port_INFO_0 = "NATS_SUBJECT_KEY_Port_INFO_{0}";
         public const string NATS_SUBJECT_LINE_STATUS_CHANGE = "NATS_SUBJECT_LINE_STATUS_CHANGE";
+        public const string NATS_SUBJECT_ALARM_LIST_CHANGE = "NATS_SUBJECT_ALARM_LIST_CHANGE"; //註冊OHBC若alarmList有變動就呼叫
 
         #endregion NATS
         #region Eqpt Type

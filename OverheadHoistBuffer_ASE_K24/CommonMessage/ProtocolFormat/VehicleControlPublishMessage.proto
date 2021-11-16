@@ -109,3 +109,18 @@ message LineInfo {
     bool IsConnectionWithPLC_TRACK1 = 3;
     bool IsConnectionWithPLC_TRACK2 = 4;
 }//End Line Info
+
+message alarm{
+        string EQ_ID = 1;
+        string Unit_ID = 2;
+        string RPT_dateTime = 3;
+        string Code = 4;
+        string level = 5;
+        string alarmStatus = 6;
+        string alarmAffectCount = 7;
+        string Description = 8;
+}
+
+message alarmInfo{
+    repeated alarm alarmList = 1;
+}

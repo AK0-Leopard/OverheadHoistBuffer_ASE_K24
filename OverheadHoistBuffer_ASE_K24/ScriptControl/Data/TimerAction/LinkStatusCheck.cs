@@ -93,6 +93,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 try
                 {
                     scApp.LineService.LineStatusChangeCheck();
+                    scApp.LineService.refreshAlarmInfoList();
                     //doCheckEQAliveStatus();
                     //doCheckIPLinkStatus();
                     ////doCheckIPLinkStatusParallel();
