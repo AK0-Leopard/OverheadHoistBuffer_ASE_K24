@@ -153,8 +153,8 @@ namespace com.mirle.ibg3k0.sc.Data.VO
 
             TrackDir = trackDir;
             //如果現在狀態與先前不同而且現在狀態為alarm代表alarm第一次發生
-            if (TrackStatus != trackInfo.Status && trackInfo.Status == RailChangerProtocol.TrackStatus.Alarm)
-                this.onAlarmCodeChange(AlarmCode, trackInfo.AlarmCode, UNIT_ID);
+            //if (TrackStatus != trackInfo.Status && trackInfo.Status == RailChangerProtocol.TrackStatus.Alarm)
+            //    this.onAlarmCodeChange(AlarmCode, trackInfo.AlarmCode, UNIT_ID);
             TrackStatus = trackInfo.Status;
             AlarmCode = trackInfo.AlarmCode;
             TrackBlock = trackInfo.IsBlock;

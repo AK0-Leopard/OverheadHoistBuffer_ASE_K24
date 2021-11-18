@@ -1101,6 +1101,7 @@
     <Compile Include="Service\ReelNTB\ReelNTBEventService.cs" />
     <Compile Include="Service\RoadControlService.cs" />
     <Compile Include="Service\PortStationService.cs" />
+    <Compile Include="Service\TrackService.cs" />
     <Compile Include="Service\ShelfService.cs" />
     <Compile Include="Service\TransferService.cs" />
     <Compile Include="Service\ConnectionInfoService.cs" />

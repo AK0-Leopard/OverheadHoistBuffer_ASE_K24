@@ -647,6 +647,9 @@ namespace com.mirle.ibg3k0.sc.App
         private ReelNTBEventService reelNTBEventService = null;
         public ReelNTBEventService ReelNTBEventService { get { return reelNTBEventService; } }
 
+        private TrackService trackService = null;
+        public TrackService TrackService { get { return trackService; } }
+
         private IManualPortControlService manualPortControlService = null;
         public IManualPortControlService ManualPortControlService { get { return manualPortControlService; } }
         private IManualPortEventService manualPortEventService = null;
@@ -1588,6 +1591,7 @@ namespace com.mirle.ibg3k0.sc.App
             shelfService = new ShelfService();
             emptyBoxHandlerService = new EmptyBoxHandlerService();
             reelNTBEventService = new ReelNTBEventService();
+            trackService = new TrackService();
 
             manualPortControlService = new ManualPortControlService();
             manualPortEventService = new ManualPortEventService();
@@ -1664,6 +1668,8 @@ namespace com.mirle.ibg3k0.sc.App
             emptyBoxHandlerService.start(this);
 
             ReelNTBEventService.Start(this, reportBLL, equipmentBLL, PortStationBLL);
+            trackService.Start(this);
+
             var manual_port_map_action = PortStationBLL.OperateCatch.loadAllMgvPortStationMapAction();
             manualPortControlService.Start(manual_port_map_action);
             manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL);

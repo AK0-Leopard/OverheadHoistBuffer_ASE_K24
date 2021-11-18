@@ -1029,9 +1029,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             bool is_success = false;
             await Task.Run(() =>
-             {
-                 is_success = bcApp.SCApplication.VehicleService.startVehicleTcpIpServer(vh_id);
-             });
+            {
+                is_success = bcApp.SCApplication.VehicleService.startVehicleTcpIpServer(vh_id);
+            });
             MessageBox.Show(is_success ? "OK" : "NG");
         }
 
