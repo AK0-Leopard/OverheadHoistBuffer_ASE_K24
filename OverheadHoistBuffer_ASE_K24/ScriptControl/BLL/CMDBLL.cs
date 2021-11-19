@@ -5222,6 +5222,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                                 (isSuccess, guide_start_to_from_segment_ids, guide_start_to_from_section_ids, guide_start_to_from_address_ids, total_cost)
                                     = scApp.GuideBLL.getGuideInfo(vh_current_address, source_adr);
                             }
+                            else
+                            {
+                                isSuccess = true;//如果相同 代表是在同一個點上
+                            }
+
                             if (isSuccess && !SCUtility.isMatche(source_adr, dest_adr))
                             {
                                 (isSuccess, guide_to_dest_segment_ids, guide_to_dest_section_ids, guide_to_dest_address_ids, total_cost)
@@ -5289,7 +5294,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         }
                         else
                         {
-                            isSuccess = true;
+                            isSuccess = false;
                         }
                         break;
                 }
