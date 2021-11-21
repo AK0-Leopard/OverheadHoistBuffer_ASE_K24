@@ -1308,7 +1308,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             DebugParameter.cycleRunType = type;
 
-            if (type == DebugParameter.CycleRunType.shelfByOrder)
+            if (type == DebugParameter.CycleRunType.shelfByOrder||
+                type == DebugParameter.CycleRunType.DemoRun)
             {
                 gb_cycleRunInfo.Visible = true;
             }

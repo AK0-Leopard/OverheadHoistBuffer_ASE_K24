@@ -2538,6 +2538,7 @@ namespace com.mirle.ibg3k0.sc.App
             shelf,
             shelfByOrder,
             shelfByManualCMD,
+            DemoRun
         }
 
         public static Boolean IsForceStraightPass = false;
