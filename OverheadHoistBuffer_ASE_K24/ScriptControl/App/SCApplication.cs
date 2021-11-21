@@ -1674,7 +1674,7 @@ namespace com.mirle.ibg3k0.sc.App
             manualPortControlService.Start(manual_port_map_action);
             manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL);
             gRPC_With_VehicleControlFun.Start();
-            gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
+            //gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
         }
 
         /// <summary>
@@ -2538,6 +2538,7 @@ namespace com.mirle.ibg3k0.sc.App
             shelf,
             shelfByOrder,
             shelfByManualCMD,
+            DemoRun,
         }
 
         public static Boolean IsForceStraightPass = false;

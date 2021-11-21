@@ -3217,9 +3217,16 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     HltDirection hltDirection = HltDirection.None;
                     var result = scApp.ReserveBLL.TryAddReservedSection(vhID, detail,
-                                                                         sensorDir: hltDirection,
-                                                                         isAsk: false);
+                                                                        sensorDir: hltDirection,
+                                                                        isAsk: false);
                 }
+                //Block Request的From adr來重新計算路徑
+                //判斷是否需要進行命令改派，若算出來後不包含在原本行走路徑
+                //代表路徑有變化了就暫時不要給該block的通行權然後去下達cancel
+                //結束後再讓他把命令改回queue(尚未載到貨)、重新再派改該台車(已有載到貨)
+                //bool is_need_change_route = checkGuideSectionHasChange();
+
+
 
                 TrackDir track_dir = TrackDir.None;
                 if (DebugParameter.IsForceNonStraightPass)
@@ -3245,6 +3252,43 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
 
                 return (true, track_dir);
+            }
+        }
+
+        private bool checkGuideSectionHasChange(AVEHICLE vh, string requsetSecID)
+        {
+            ASECTION req_sec = scApp.SectionBLL.cache.GetSection(requsetSecID);
+            if (req_sec == null) return false;
+            List<string> will_pass_section_ids = vh.WillPassSectionID;
+            if (will_pass_section_ids == null || will_pass_section_ids.Count == 0)
+            {
+                return false;
+            }
+            string will_pass_final_sec_id = will_pass_section_ids.Last();
+            ASECTION will_pass_final_sec = scApp.SectionBLL.cache.GetSection(will_pass_final_sec_id);
+            if (will_pass_final_sec == null)
+            {
+                return false;
+            }
+            string req_sec_form_adr = req_sec.FROM_ADR_ID;
+            string target_adr = will_pass_final_sec.TO_ADR_ID;
+            var guide_info = scApp.GuideBLL.getGuideInfo(req_sec_form_adr, target_adr);
+            if (guide_info.isSuccess)
+            {
+                List<string> section_ids = guide_info.guideSectionIds;
+                List<string> exceptResult = section_ids.Except(will_pass_section_ids).ToList();
+                if (exceptResult.Count == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
             }
         }
 

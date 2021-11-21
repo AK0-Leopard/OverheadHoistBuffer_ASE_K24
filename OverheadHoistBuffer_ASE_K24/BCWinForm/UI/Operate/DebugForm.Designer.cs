@@ -105,10 +105,10 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cb_paassErrorVhAndTrackStatus = new System.Windows.Forms.CheckBox();
             this.cb_ignoreManualPort = new System.Windows.Forms.CheckBox();
             this.btn_reloadParkingAdr = new System.Windows.Forms.Button();
             this.gb_cycleRunInfo = new System.Windows.Forms.GroupBox();
-            this.cmb_cycleCstID = new System.Windows.Forms.ComboBox();
             this.label82 = new System.Windows.Forms.Label();
             this.cmb_cycleRunVhId = new System.Windows.Forms.ComboBox();
             this.label78 = new System.Windows.Forms.Label();
@@ -381,7 +381,7 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.cb_paassErrorVhAndTrackStatus = new System.Windows.Forms.CheckBox();
+            this.txt_cycleCstID = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -630,7 +630,7 @@
             // cb_StartGenAntoCmd
             // 
             this.cb_StartGenAntoCmd.AutoSize = true;
-            this.cb_StartGenAntoCmd.Location = new System.Drawing.Point(1039, 201);
+            this.cb_StartGenAntoCmd.Location = new System.Drawing.Point(1038, 230);
             this.cb_StartGenAntoCmd.Name = "cb_StartGenAntoCmd";
             this.cb_StartGenAntoCmd.Size = new System.Drawing.Size(349, 26);
             this.cb_StartGenAntoCmd.TabIndex = 18;
@@ -1350,6 +1350,17 @@
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // cb_paassErrorVhAndTrackStatus
+            // 
+            this.cb_paassErrorVhAndTrackStatus.AutoSize = true;
+            this.cb_paassErrorVhAndTrackStatus.Location = new System.Drawing.Point(1039, 721);
+            this.cb_paassErrorVhAndTrackStatus.Name = "cb_paassErrorVhAndTrackStatus";
+            this.cb_paassErrorVhAndTrackStatus.Size = new System.Drawing.Size(344, 26);
+            this.cb_paassErrorVhAndTrackStatus.TabIndex = 68;
+            this.cb_paassErrorVhAndTrackStatus.Text = "規劃路徑不參考故障車、軌道狀態";
+            this.cb_paassErrorVhAndTrackStatus.UseVisualStyleBackColor = true;
+            this.cb_paassErrorVhAndTrackStatus.CheckedChanged += new System.EventHandler(this.cb_paassErrorVhAndTrackStatus_CheckedChanged);
+            // 
             // cb_ignoreManualPort
             // 
             this.cb_ignoreManualPort.AutoSize = true;
@@ -1373,7 +1384,7 @@
             // 
             // gb_cycleRunInfo
             // 
-            this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleCstID);
+            this.gb_cycleRunInfo.Controls.Add(this.txt_cycleCstID);
             this.gb_cycleRunInfo.Controls.Add(this.label82);
             this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleRunVhId);
             this.gb_cycleRunInfo.Controls.Add(this.label78);
@@ -1381,25 +1392,15 @@
             this.gb_cycleRunInfo.Controls.Add(this.label77);
             this.gb_cycleRunInfo.Location = new System.Drawing.Point(1230, 0);
             this.gb_cycleRunInfo.Name = "gb_cycleRunInfo";
-            this.gb_cycleRunInfo.Size = new System.Drawing.Size(201, 196);
+            this.gb_cycleRunInfo.Size = new System.Drawing.Size(201, 234);
             this.gb_cycleRunInfo.TabIndex = 65;
             this.gb_cycleRunInfo.TabStop = false;
             this.gb_cycleRunInfo.Text = "Cycle Run Info";
             // 
-            // cmb_cycleCstID
-            // 
-            this.cmb_cycleCstID.FormattingEnabled = true;
-            this.cmb_cycleCstID.Location = new System.Drawing.Point(6, 161);
-            this.cmb_cycleCstID.Name = "cmb_cycleCstID";
-            this.cmb_cycleCstID.Size = new System.Drawing.Size(189, 30);
-            this.cmb_cycleCstID.TabIndex = 66;
-            this.cmb_cycleCstID.Visible = false;
-            this.cmb_cycleCstID.SelectedIndexChanged += new System.EventHandler(this.cmb_cycleCstID_SelectedIndexChanged);
-            // 
             // label82
             // 
             this.label82.AutoSize = true;
-            this.label82.Location = new System.Drawing.Point(18, 137);
+            this.label82.Location = new System.Drawing.Point(18, 125);
             this.label82.Name = "label82";
             this.label82.Size = new System.Drawing.Size(150, 22);
             this.label82.TabIndex = 65;
@@ -1409,7 +1410,7 @@
             // cmb_cycleRunVhId
             // 
             this.cmb_cycleRunVhId.FormattingEnabled = true;
-            this.cmb_cycleRunVhId.Location = new System.Drawing.Point(6, 103);
+            this.cmb_cycleRunVhId.Location = new System.Drawing.Point(6, 88);
             this.cmb_cycleRunVhId.Name = "cmb_cycleRunVhId";
             this.cmb_cycleRunVhId.Size = new System.Drawing.Size(189, 30);
             this.cmb_cycleRunVhId.TabIndex = 63;
@@ -1418,7 +1419,7 @@
             // label78
             // 
             this.label78.AutoSize = true;
-            this.label78.Location = new System.Drawing.Point(18, 79);
+            this.label78.Location = new System.Drawing.Point(18, 67);
             this.label78.Name = "label78";
             this.label78.Size = new System.Drawing.Size(140, 22);
             this.label78.TabIndex = 64;
@@ -1427,7 +1428,7 @@
             // cmb_cycleRunBayID
             // 
             this.cmb_cycleRunBayID.FormattingEnabled = true;
-            this.cmb_cycleRunBayID.Location = new System.Drawing.Point(6, 46);
+            this.cmb_cycleRunBayID.Location = new System.Drawing.Point(6, 37);
             this.cmb_cycleRunBayID.Name = "cmb_cycleRunBayID";
             this.cmb_cycleRunBayID.Size = new System.Drawing.Size(189, 30);
             this.cmb_cycleRunBayID.TabIndex = 58;
@@ -1436,7 +1437,7 @@
             // label77
             // 
             this.label77.AutoSize = true;
-            this.label77.Location = new System.Drawing.Point(18, 22);
+            this.label77.Location = new System.Drawing.Point(18, 16);
             this.label77.Name = "label77";
             this.label77.Size = new System.Drawing.Size(150, 22);
             this.label77.TabIndex = 62;
@@ -1561,7 +1562,7 @@
             this.gb_blockControl.Controls.Add(this.cb_ForceStraightPass);
             this.gb_blockControl.Controls.Add(this.cb_FroceReserveReject);
             this.gb_blockControl.Controls.Add(this.cb_FroceReservePass);
-            this.gb_blockControl.Location = new System.Drawing.Point(1039, 227);
+            this.gb_blockControl.Location = new System.Drawing.Point(1038, 262);
             this.gb_blockControl.Name = "gb_blockControl";
             this.gb_blockControl.Size = new System.Drawing.Size(310, 162);
             this.gb_blockControl.TabIndex = 23;
@@ -1625,7 +1626,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 31);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage2.Size = new System.Drawing.Size(1362, 816);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "PLC Control";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -2662,7 +2663,7 @@
             this.table_cache_data_pisplay.Location = new System.Drawing.Point(4, 31);
             this.table_cache_data_pisplay.Name = "table_cache_data_pisplay";
             this.table_cache_data_pisplay.Padding = new System.Windows.Forms.Padding(3);
-            this.table_cache_data_pisplay.Size = new System.Drawing.Size(1362, 714);
+            this.table_cache_data_pisplay.Size = new System.Drawing.Size(1362, 816);
             this.table_cache_data_pisplay.TabIndex = 3;
             this.table_cache_data_pisplay.Text = "Cache Data Display";
             this.table_cache_data_pisplay.UseVisualStyleBackColor = true;
@@ -2682,7 +2683,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.61165F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 95.38835F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1356, 708);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1356, 810);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // dgv_cache_object_data
@@ -2693,12 +2694,12 @@
             this.Column_cst_id});
             this.tableLayoutPanel2.SetColumnSpan(this.dgv_cache_object_data, 2);
             this.dgv_cache_object_data.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_cache_object_data.Location = new System.Drawing.Point(3, 35);
+            this.dgv_cache_object_data.Location = new System.Drawing.Point(3, 40);
             this.dgv_cache_object_data.MultiSelect = false;
             this.dgv_cache_object_data.Name = "dgv_cache_object_data";
             this.dgv_cache_object_data.RowTemplate.Height = 24;
             this.dgv_cache_object_data.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_cache_object_data.Size = new System.Drawing.Size(1350, 670);
+            this.dgv_cache_object_data.Size = new System.Drawing.Size(1350, 767);
             this.dgv_cache_object_data.TabIndex = 0;
             this.dgv_cache_object_data.EditModeChanged += new System.EventHandler(this.dgv_cache_object_data_EditModeChanged);
             // 
@@ -2723,7 +2724,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(85, 6);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(85, 3);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2735,7 +2736,7 @@
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(9, 0);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(70, 32);
+            this.label22.Size = new System.Drawing.Size(70, 37);
             this.label22.TabIndex = 2;
             this.label22.Text = "Cache Data Name";
             // 
@@ -2755,7 +2756,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 31);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage3.Size = new System.Drawing.Size(1362, 816);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -3155,7 +3156,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 31);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage4.Size = new System.Drawing.Size(1362, 816);
             this.tabPage4.TabIndex = 4;
             this.tabPage4.Text = "MTL Test";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -3928,7 +3929,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 31);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage6.Size = new System.Drawing.Size(1362, 816);
             this.tabPage6.TabIndex = 6;
             this.tabPage6.Text = "MTL/MTS Simulator";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -4074,7 +4075,7 @@
             this.tabPage5.Controls.Add(this.btn_SendHIDControl);
             this.tabPage5.Location = new System.Drawing.Point(4, 31);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage5.Size = new System.Drawing.Size(1362, 816);
             this.tabPage5.TabIndex = 5;
             this.tabPage5.Text = "HID Test";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -4293,7 +4294,7 @@
             this.tabPage7.Location = new System.Drawing.Point(4, 31);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage7.Size = new System.Drawing.Size(1362, 816);
             this.tabPage7.TabIndex = 7;
             this.tabPage7.Text = "CV Test";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -4658,16 +4659,13 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // cb_paassErrorVhAndTrackStatus
+            // txt_cycleCstID
             // 
-            this.cb_paassErrorVhAndTrackStatus.AutoSize = true;
-            this.cb_paassErrorVhAndTrackStatus.Location = new System.Drawing.Point(1039, 721);
-            this.cb_paassErrorVhAndTrackStatus.Name = "cb_paassErrorVhAndTrackStatus";
-            this.cb_paassErrorVhAndTrackStatus.Size = new System.Drawing.Size(344, 26);
-            this.cb_paassErrorVhAndTrackStatus.TabIndex = 68;
-            this.cb_paassErrorVhAndTrackStatus.Text = "規劃路徑不參考故障車、軌道狀態";
-            this.cb_paassErrorVhAndTrackStatus.UseVisualStyleBackColor = true;
-            this.cb_paassErrorVhAndTrackStatus.CheckedChanged += new System.EventHandler(this.cb_paassErrorVhAndTrackStatus_CheckedChanged);
+            this.txt_cycleCstID.Location = new System.Drawing.Point(6, 147);
+            this.txt_cycleCstID.Name = "txt_cycleCstID";
+            this.txt_cycleCstID.Size = new System.Drawing.Size(189, 30);
+            this.txt_cycleCstID.TabIndex = 69;
+            this.txt_cycleCstID.TextChanged += new System.EventHandler(this.txt_cycleCstID_TextChanged);
             // 
             // DebugForm
             // 
@@ -5099,7 +5097,6 @@
         private System.Windows.Forms.CheckBox cb_ForceNonStraightPass;
         private System.Windows.Forms.CheckBox cb_ForceStraightPass;
         private System.Windows.Forms.Label label82;
-        private System.Windows.Forms.ComboBox cmb_cycleCstID;
         private System.Windows.Forms.Button btn_reloadParkingAdr;
         private System.Windows.Forms.Button bt_ntb_hbReq;
         private System.Windows.Forms.Button bt_IoPortSignalQuery;
@@ -5108,5 +5105,6 @@
         private System.Windows.Forms.Button btn_receiveTraReq;
         private System.Windows.Forms.CheckBox cb_ignoreManualPort;
         private System.Windows.Forms.CheckBox cb_paassErrorVhAndTrackStatus;
+        private System.Windows.Forms.TextBox txt_cycleCstID;
     }
 }

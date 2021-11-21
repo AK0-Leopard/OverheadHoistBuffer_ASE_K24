@@ -1297,18 +1297,14 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             DebugParameter.IsForceNonStraightPass = cb_ForceNonStraightPass.Checked;
         }
 
-        private void cmb_cycleCstID_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //DebugParameter.cycleRunCST = cmb_cycleCstID.SelectedValue as string;
-        }
-
         private void combox_cycle_type_SelectionChangeCommitted(object sender, EventArgs e)
         {
             Enum.TryParse(combox_cycle_type.SelectedValue.ToString(), out DebugParameter.CycleRunType type);
 
             DebugParameter.cycleRunType = type;
 
-            if (type == DebugParameter.CycleRunType.shelfByOrder)
+            if (type == DebugParameter.CycleRunType.shelfByOrder||
+                type == DebugParameter.CycleRunType.DemoRun)
             {
                 gb_cycleRunInfo.Visible = true;
             }
@@ -1375,6 +1371,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_paassErrorVhAndTrackStatus_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.IsPaassErrorVhAndTrackStatus = cb_paassErrorVhAndTrackStatus.Checked;
+        }
+
+        private void txt_cycleCstID_TextChanged(object sender, EventArgs e)
+        {
+            DebugParameter.cycleRunCST = txt_cycleCstID.Text;
         }
     }
 }
