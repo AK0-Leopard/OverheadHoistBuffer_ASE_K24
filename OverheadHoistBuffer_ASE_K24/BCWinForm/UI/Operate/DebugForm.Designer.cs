@@ -35,7 +35,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.uctl_Send_Fun_71 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -61,24 +60,15 @@
             this.ck_retry = new System.Windows.Forms.CheckBox();
             this.lbl_listening_status = new System.Windows.Forms.Label();
             this.label42 = new System.Windows.Forms.Label();
-            this.btn_close_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_open_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.lbl_install_status = new System.Windows.Forms.Label();
             this.label73 = new System.Windows.Forms.Label();
             this.cb_test_duplicate = new System.Windows.Forms.CheckBox();
-            this.btn_changeToRemove = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_changeToInstall = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_changeToAutoLocal = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_changeToAutoMTL = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_changeToAutoMTS = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_changeToAutoRemote = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.ck_CycleRunTest = new System.Windows.Forms.CheckBox();
             this.cb_pauseFirst = new System.Windows.Forms.CheckBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.txt_rename_cst_id = new System.Windows.Forms.TextBox();
             this.label40 = new System.Windows.Forms.Label();
             this.btn_rename_cst_id = new System.Windows.Forms.Button();
-            this.uctl_SendFun2 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.btn_cmd_override_test = new System.Windows.Forms.Button();
             this.btn_reset_teach_result = new System.Windows.Forms.Button();
             this.ck_autoTech = new System.Windows.Forms.CheckBox();
@@ -91,24 +81,16 @@
             this.label6 = new System.Windows.Forms.Label();
             this.cmb_pauseType = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.btn_pause = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.cmb_pauseEvent = new System.Windows.Forms.ComboBox();
             this.btn_ForceReleaseBlock = new System.Windows.Forms.Button();
-            this.uctl_SendFun1 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun15 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun13 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun11 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun17 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun19 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun21 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendFun23 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.cb_ignoreManualPort = new System.Windows.Forms.CheckBox();
+            this.cb_IsSameBayAfterWay = new System.Windows.Forms.CheckBox();
+            this.cb_paassErrorVhAndTrackStatus = new System.Windows.Forms.CheckBox();
+            this.cb_ignoreNTBPort = new System.Windows.Forms.CheckBox();
             this.btn_reloadParkingAdr = new System.Windows.Forms.Button();
             this.gb_cycleRunInfo = new System.Windows.Forms.GroupBox();
-            this.cmb_cycleCstID = new System.Windows.Forms.ComboBox();
+            this.txt_cycleCstID = new System.Windows.Forms.TextBox();
             this.label82 = new System.Windows.Forms.Label();
             this.cmb_cycleRunVhId = new System.Windows.Forms.ComboBox();
             this.label78 = new System.Windows.Forms.Label();
@@ -119,12 +101,6 @@
             this.label12 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.combox_cycle_type = new System.Windows.Forms.ComboBox();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.txt_vh_order_in_segment = new System.Windows.Forms.TextBox();
-            this.label72 = new System.Windows.Forms.Label();
-            this.btn_refresh_vh_order_in_seg = new System.Windows.Forms.Button();
-            this.label71 = new System.Windows.Forms.Label();
-            this.cmb_refresh_vh_order_in_seg_id = new System.Windows.Forms.ComboBox();
             this.gb_blockControl = new System.Windows.Forms.GroupBox();
             this.cb_passTrack = new System.Windows.Forms.CheckBox();
             this.cb_ForceNonStraightPass = new System.Windows.Forms.CheckBox();
@@ -318,7 +294,6 @@
             this.btn_mtl_car_out_notify = new System.Windows.Forms.Button();
             this.btn_mtl_message_download = new System.Windows.Forms.Button();
             this.btn_mtl_dateTimeSync = new System.Windows.Forms.Button();
-            this.uctlButton1 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.set_Distance_btn = new System.Windows.Forms.Button();
             this.numericUpDown_distance = new System.Windows.Forms.NumericUpDown();
@@ -381,7 +356,27 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.cb_paassErrorVhAndTrackStatus = new System.Windows.Forms.CheckBox();
+            this.btn_close_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_open_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_changeToRemove = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_changeToInstall = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_changeToAutoLocal = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_changeToAutoMTL = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_changeToAutoMTS = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_changeToAutoRemote = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun2 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_pause = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun1 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun15 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun13 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun11 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun17 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun19 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun21 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendFun23 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_Send_Fun_71 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.uctlButton1 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -396,7 +391,6 @@
             this.tabPage1.SuspendLayout();
             this.gb_cycleRunInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            this.groupBox12.SuspendLayout();
             this.gb_blockControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -499,17 +493,6 @@
             this.label1.Size = new System.Drawing.Size(90, 22);
             this.label1.TabIndex = 15;
             this.label1.Text = "From Adr";
-            // 
-            // uctl_Send_Fun_71
-            // 
-            this.uctl_Send_Fun_71.Location = new System.Drawing.Point(10, 191);
-            this.uctl_Send_Fun_71.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_Send_Fun_71.Name = "uctl_Send_Fun_71";
-            this.uctl_Send_Fun_71.Size = new System.Drawing.Size(138, 42);
-            this.uctl_Send_Fun_71.TabIndex = 13;
-            this.uctl_Send_Fun_71.Text = "Send Func 71";
-            this.uctl_Send_Fun_71.UseVisualStyleBackColor = true;
-            this.uctl_Send_Fun_71.Click += new System.EventHandler(this.uctl_Send_Fun_71_Click);
             // 
             // button1
             // 
@@ -630,7 +613,7 @@
             // cb_StartGenAntoCmd
             // 
             this.cb_StartGenAntoCmd.AutoSize = true;
-            this.cb_StartGenAntoCmd.Location = new System.Drawing.Point(1039, 201);
+            this.cb_StartGenAntoCmd.Location = new System.Drawing.Point(1051, 216);
             this.cb_StartGenAntoCmd.Name = "cb_StartGenAntoCmd";
             this.cb_StartGenAntoCmd.Size = new System.Drawing.Size(349, 26);
             this.cb_StartGenAntoCmd.TabIndex = 18;
@@ -714,7 +697,7 @@
             this.groupBox4.Controls.Add(this.uctl_SendFun23);
             this.groupBox4.Controls.Add(this.groupBox1);
             this.groupBox4.Controls.Add(this.uctl_SendAllFun);
-            this.groupBox4.Location = new System.Drawing.Point(6, 6);
+            this.groupBox4.Location = new System.Drawing.Point(8, 6);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(1027, 806);
             this.groupBox4.TabIndex = 21;
@@ -854,28 +837,6 @@
             this.label42.TabIndex = 52;
             this.label42.Text = "Is Listening:";
             // 
-            // btn_close_tcp_port
-            // 
-            this.btn_close_tcp_port.Location = new System.Drawing.Point(664, 751);
-            this.btn_close_tcp_port.Name = "btn_close_tcp_port";
-            this.btn_close_tcp_port.Size = new System.Drawing.Size(166, 45);
-            this.btn_close_tcp_port.TabIndex = 51;
-            this.btn_close_tcp_port.Text = "Close Tcp Port";
-            this.btn_close_tcp_port.UseVisualStyleBackColor = true;
-            this.btn_close_tcp_port.Visible = false;
-            this.btn_close_tcp_port.Click += new System.EventHandler(this.btn_close_tcp_port_Click);
-            // 
-            // btn_open_tcp_port
-            // 
-            this.btn_open_tcp_port.Location = new System.Drawing.Point(492, 751);
-            this.btn_open_tcp_port.Name = "btn_open_tcp_port";
-            this.btn_open_tcp_port.Size = new System.Drawing.Size(166, 45);
-            this.btn_open_tcp_port.TabIndex = 50;
-            this.btn_open_tcp_port.Text = "Open Tcp Port";
-            this.btn_open_tcp_port.UseVisualStyleBackColor = true;
-            this.btn_open_tcp_port.Visible = false;
-            this.btn_open_tcp_port.Click += new System.EventHandler(this.btn_open_tcp_port_Click);
-            // 
             // lbl_install_status
             // 
             this.lbl_install_status.AutoSize = true;
@@ -907,66 +868,6 @@
             this.cb_test_duplicate.UseVisualStyleBackColor = true;
             this.cb_test_duplicate.Visible = false;
             this.cb_test_duplicate.CheckedChanged += new System.EventHandler(this.cb_test_duplicate_CheckedChanged);
-            // 
-            // btn_changeToRemove
-            // 
-            this.btn_changeToRemove.Location = new System.Drawing.Point(813, 189);
-            this.btn_changeToRemove.Name = "btn_changeToRemove";
-            this.btn_changeToRemove.Size = new System.Drawing.Size(169, 43);
-            this.btn_changeToRemove.TabIndex = 46;
-            this.btn_changeToRemove.Text = "Remove";
-            this.btn_changeToRemove.UseVisualStyleBackColor = true;
-            this.btn_changeToRemove.Click += new System.EventHandler(this.btn_changeToRemove_Click);
-            // 
-            // btn_changeToInstall
-            // 
-            this.btn_changeToInstall.Location = new System.Drawing.Point(816, 240);
-            this.btn_changeToInstall.Name = "btn_changeToInstall";
-            this.btn_changeToInstall.Size = new System.Drawing.Size(169, 43);
-            this.btn_changeToInstall.TabIndex = 45;
-            this.btn_changeToInstall.Text = "Install";
-            this.btn_changeToInstall.UseVisualStyleBackColor = true;
-            this.btn_changeToInstall.Click += new System.EventHandler(this.btn_changeToInstall_Click);
-            // 
-            // btn_changeToAutoLocal
-            // 
-            this.btn_changeToAutoLocal.Location = new System.Drawing.Point(819, 364);
-            this.btn_changeToAutoLocal.Name = "btn_changeToAutoLocal";
-            this.btn_changeToAutoLocal.Size = new System.Drawing.Size(166, 45);
-            this.btn_changeToAutoLocal.TabIndex = 44;
-            this.btn_changeToAutoLocal.Text = "Auto Local";
-            this.btn_changeToAutoLocal.UseVisualStyleBackColor = true;
-            this.btn_changeToAutoLocal.Click += new System.EventHandler(this.btn_changeToAutoLocal_Click_1);
-            // 
-            // btn_changeToAutoMTL
-            // 
-            this.btn_changeToAutoMTL.Location = new System.Drawing.Point(819, 464);
-            this.btn_changeToAutoMTL.Name = "btn_changeToAutoMTL";
-            this.btn_changeToAutoMTL.Size = new System.Drawing.Size(166, 45);
-            this.btn_changeToAutoMTL.TabIndex = 43;
-            this.btn_changeToAutoMTL.Text = "Auto MTL";
-            this.btn_changeToAutoMTL.UseVisualStyleBackColor = true;
-            this.btn_changeToAutoMTL.Click += new System.EventHandler(this.btn_changeToAutoMTL_Click);
-            // 
-            // btn_changeToAutoMTS
-            // 
-            this.btn_changeToAutoMTS.Location = new System.Drawing.Point(819, 413);
-            this.btn_changeToAutoMTS.Name = "btn_changeToAutoMTS";
-            this.btn_changeToAutoMTS.Size = new System.Drawing.Size(166, 45);
-            this.btn_changeToAutoMTS.TabIndex = 42;
-            this.btn_changeToAutoMTS.Text = "Auto MTS";
-            this.btn_changeToAutoMTS.UseVisualStyleBackColor = true;
-            this.btn_changeToAutoMTS.Click += new System.EventHandler(this.btn_changeToAutoLocal_Click);
-            // 
-            // btn_changeToAutoRemote
-            // 
-            this.btn_changeToAutoRemote.Location = new System.Drawing.Point(819, 313);
-            this.btn_changeToAutoRemote.Name = "btn_changeToAutoRemote";
-            this.btn_changeToAutoRemote.Size = new System.Drawing.Size(166, 45);
-            this.btn_changeToAutoRemote.TabIndex = 41;
-            this.btn_changeToAutoRemote.Text = "Auto Remote";
-            this.btn_changeToAutoRemote.UseVisualStyleBackColor = true;
-            this.btn_changeToAutoRemote.Click += new System.EventHandler(this.btn_changeToAutoRemote_Click);
             // 
             // ck_CycleRunTest
             // 
@@ -1030,18 +931,6 @@
             this.btn_rename_cst_id.Text = "Send Func:35";
             this.btn_rename_cst_id.UseVisualStyleBackColor = true;
             this.btn_rename_cst_id.Click += new System.EventHandler(this.btn_rename_cst_id_Click);
-            // 
-            // uctl_SendFun2
-            // 
-            this.uctl_SendFun2.Location = new System.Drawing.Point(8, 112);
-            this.uctl_SendFun2.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun2.Name = "uctl_SendFun2";
-            this.uctl_SendFun2.Size = new System.Drawing.Size(214, 35);
-            this.uctl_SendFun2.TabIndex = 29;
-            this.uctl_SendFun2.Text = "Send Func:2";
-            this.uctl_SendFun2.UseVisualStyleBackColor = true;
-            this.uctl_SendFun2.Visible = false;
-            this.uctl_SendFun2.Click += new System.EventHandler(this.uctl_SendFun2_Click);
             // 
             // btn_cmd_override_test
             // 
@@ -1171,17 +1060,6 @@
             this.label5.TabIndex = 15;
             this.label5.Text = "Event";
             // 
-            // btn_pause
-            // 
-            this.btn_pause.Location = new System.Drawing.Point(8, 171);
-            this.btn_pause.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.btn_pause.Name = "btn_pause";
-            this.btn_pause.Size = new System.Drawing.Size(138, 42);
-            this.btn_pause.TabIndex = 13;
-            this.btn_pause.Text = "Send Func 39";
-            this.btn_pause.UseVisualStyleBackColor = true;
-            this.btn_pause.Click += new System.EventHandler(this.btn_pause_Click);
-            // 
             // cmb_pauseEvent
             // 
             this.cmb_pauseEvent.FormattingEnabled = true;
@@ -1201,114 +1079,6 @@
             this.btn_ForceReleaseBlock.UseVisualStyleBackColor = true;
             this.btn_ForceReleaseBlock.Click += new System.EventHandler(this.btn_ForceReleaseBlock_Click);
             // 
-            // uctl_SendFun1
-            // 
-            this.uctl_SendFun1.Location = new System.Drawing.Point(8, 69);
-            this.uctl_SendFun1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun1.Name = "uctl_SendFun1";
-            this.uctl_SendFun1.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun1.TabIndex = 8;
-            this.uctl_SendFun1.Text = "Send Func:1";
-            this.uctl_SendFun1.UseVisualStyleBackColor = true;
-            this.uctl_SendFun1.Visible = false;
-            this.uctl_SendFun1.Click += new System.EventHandler(this.uctl_Btn1_Click);
-            // 
-            // uctl_SendFun15
-            // 
-            this.uctl_SendFun15.Location = new System.Drawing.Point(8, 256);
-            this.uctl_SendFun15.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun15.Name = "uctl_SendFun15";
-            this.uctl_SendFun15.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun15.TabIndex = 8;
-            this.uctl_SendFun15.Text = "Send Func:15";
-            this.uctl_SendFun15.UseVisualStyleBackColor = true;
-            this.uctl_SendFun15.Visible = false;
-            this.uctl_SendFun15.Click += new System.EventHandler(this.uctl_SendFun15_Click);
-            // 
-            // uctl_SendFun13
-            // 
-            this.uctl_SendFun13.Location = new System.Drawing.Point(8, 203);
-            this.uctl_SendFun13.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun13.Name = "uctl_SendFun13";
-            this.uctl_SendFun13.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun13.TabIndex = 10;
-            this.uctl_SendFun13.Text = "Send Func:13";
-            this.uctl_SendFun13.UseVisualStyleBackColor = true;
-            this.uctl_SendFun13.Visible = false;
-            this.uctl_SendFun13.Click += new System.EventHandler(this.uctl_SendFun13_Click);
-            // 
-            // uctl_SendFun11
-            // 
-            this.uctl_SendFun11.Location = new System.Drawing.Point(8, 148);
-            this.uctl_SendFun11.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun11.Name = "uctl_SendFun11";
-            this.uctl_SendFun11.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun11.TabIndex = 10;
-            this.uctl_SendFun11.Text = "Send Func:11";
-            this.uctl_SendFun11.UseVisualStyleBackColor = true;
-            this.uctl_SendFun11.Visible = false;
-            this.uctl_SendFun11.Click += new System.EventHandler(this.uctl_SendFun11_Click);
-            // 
-            // uctl_SendFun17
-            // 
-            this.uctl_SendFun17.Location = new System.Drawing.Point(8, 309);
-            this.uctl_SendFun17.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun17.Name = "uctl_SendFun17";
-            this.uctl_SendFun17.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun17.TabIndex = 11;
-            this.uctl_SendFun17.Text = "Send Func:17";
-            this.uctl_SendFun17.UseVisualStyleBackColor = true;
-            this.uctl_SendFun17.Visible = false;
-            this.uctl_SendFun17.Click += new System.EventHandler(this.uctl_SendFun17_Click);
-            // 
-            // uctl_SendFun19
-            // 
-            this.uctl_SendFun19.Location = new System.Drawing.Point(8, 362);
-            this.uctl_SendFun19.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun19.Name = "uctl_SendFun19";
-            this.uctl_SendFun19.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun19.TabIndex = 12;
-            this.uctl_SendFun19.Text = "Send Func:19";
-            this.uctl_SendFun19.UseVisualStyleBackColor = true;
-            this.uctl_SendFun19.Visible = false;
-            this.uctl_SendFun19.Click += new System.EventHandler(this.uctl_SendFun19_Click);
-            // 
-            // uctl_SendFun21
-            // 
-            this.uctl_SendFun21.Location = new System.Drawing.Point(8, 416);
-            this.uctl_SendFun21.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun21.Name = "uctl_SendFun21";
-            this.uctl_SendFun21.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun21.TabIndex = 12;
-            this.uctl_SendFun21.Text = "Send Func:21";
-            this.uctl_SendFun21.UseVisualStyleBackColor = true;
-            this.uctl_SendFun21.Visible = false;
-            this.uctl_SendFun21.Click += new System.EventHandler(this.uctl_SendFun21_Click);
-            // 
-            // uctl_SendFun23
-            // 
-            this.uctl_SendFun23.Location = new System.Drawing.Point(8, 469);
-            this.uctl_SendFun23.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendFun23.Name = "uctl_SendFun23";
-            this.uctl_SendFun23.Size = new System.Drawing.Size(214, 42);
-            this.uctl_SendFun23.TabIndex = 12;
-            this.uctl_SendFun23.Text = "Send Func:23";
-            this.uctl_SendFun23.UseVisualStyleBackColor = true;
-            this.uctl_SendFun23.Visible = false;
-            this.uctl_SendFun23.Click += new System.EventHandler(this.uctl_SendFun23_Click);
-            // 
-            // uctl_SendAllFun
-            // 
-            this.uctl_SendAllFun.Location = new System.Drawing.Point(8, 522);
-            this.uctl_SendAllFun.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_SendAllFun.Name = "uctl_SendAllFun";
-            this.uctl_SendAllFun.Size = new System.Drawing.Size(214, 99);
-            this.uctl_SendAllFun.TabIndex = 12;
-            this.uctl_SendAllFun.Text = "Send ALL";
-            this.uctl_SendAllFun.UseVisualStyleBackColor = true;
-            this.uctl_SendAllFun.Visible = false;
-            this.uctl_SendAllFun.Click += new System.EventHandler(this.uctl_SendAllFun_Click);
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -1323,14 +1093,15 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1370, 851);
+            this.tabControl1.Size = new System.Drawing.Size(1459, 884);
             this.tabControl1.TabIndex = 23;
             // 
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.cb_IsSameBayAfterWay);
             this.tabPage1.Controls.Add(this.cb_paassErrorVhAndTrackStatus);
-            this.tabPage1.Controls.Add(this.cb_ignoreManualPort);
+            this.tabPage1.Controls.Add(this.cb_ignoreNTBPort);
             this.tabPage1.Controls.Add(this.btn_reloadParkingAdr);
             this.tabPage1.Controls.Add(this.gb_cycleRunInfo);
             this.tabPage1.Controls.Add(this.label16);
@@ -1338,32 +1109,53 @@
             this.tabPage1.Controls.Add(this.label12);
             this.tabPage1.Controls.Add(this.numericUpDown1);
             this.tabPage1.Controls.Add(this.combox_cycle_type);
-            this.tabPage1.Controls.Add(this.groupBox12);
             this.tabPage1.Controls.Add(this.gb_blockControl);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.cb_StartGenAntoCmd);
             this.tabPage1.Location = new System.Drawing.Point(4, 31);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1362, 816);
+            this.tabPage1.Size = new System.Drawing.Size(1451, 849);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // cb_ignoreManualPort
+            // cb_IsSameBayAfterWay
             // 
-            this.cb_ignoreManualPort.AutoSize = true;
-            this.cb_ignoreManualPort.Location = new System.Drawing.Point(1039, 696);
-            this.cb_ignoreManualPort.Name = "cb_ignoreManualPort";
-            this.cb_ignoreManualPort.Size = new System.Drawing.Size(279, 26);
-            this.cb_ignoreManualPort.TabIndex = 67;
-            this.cb_ignoreManualPort.Text = "Ignore Manual Port Status";
-            this.cb_ignoreManualPort.UseVisualStyleBackColor = true;
-            this.cb_ignoreManualPort.CheckedChanged += new System.EventHandler(this.cb_ignoreManualPort_CheckedChanged);
+            this.cb_IsSameBayAfterWay.AutoSize = true;
+            this.cb_IsSameBayAfterWay.Location = new System.Drawing.Point(1079, 422);
+            this.cb_IsSameBayAfterWay.Name = "cb_IsSameBayAfterWay";
+            this.cb_IsSameBayAfterWay.Size = new System.Drawing.Size(206, 26);
+            this.cb_IsSameBayAfterWay.TabIndex = 69;
+            this.cb_IsSameBayAfterWay.Text = "同Bay順途搬送開啟";
+            this.cb_IsSameBayAfterWay.UseVisualStyleBackColor = true;
+            this.cb_IsSameBayAfterWay.CheckedChanged += new System.EventHandler(this.cb_IsSameBayAfterWay_CheckedChanged);
+            // 
+            // cb_paassErrorVhAndTrackStatus
+            // 
+            this.cb_paassErrorVhAndTrackStatus.AutoSize = true;
+            this.cb_paassErrorVhAndTrackStatus.Location = new System.Drawing.Point(1051, 736);
+            this.cb_paassErrorVhAndTrackStatus.Name = "cb_paassErrorVhAndTrackStatus";
+            this.cb_paassErrorVhAndTrackStatus.Size = new System.Drawing.Size(344, 26);
+            this.cb_paassErrorVhAndTrackStatus.TabIndex = 68;
+            this.cb_paassErrorVhAndTrackStatus.Text = "規劃路徑不參考故障車、軌道狀態";
+            this.cb_paassErrorVhAndTrackStatus.UseVisualStyleBackColor = true;
+            this.cb_paassErrorVhAndTrackStatus.CheckedChanged += new System.EventHandler(this.cb_paassErrorVhAndTrackStatus_CheckedChanged);
+            // 
+            // cb_ignoreNTBPort
+            // 
+            this.cb_ignoreNTBPort.AutoSize = true;
+            this.cb_ignoreNTBPort.Location = new System.Drawing.Point(1051, 706);
+            this.cb_ignoreNTBPort.Name = "cb_ignoreNTBPort";
+            this.cb_ignoreNTBPort.Size = new System.Drawing.Size(249, 26);
+            this.cb_ignoreNTBPort.TabIndex = 67;
+            this.cb_ignoreNTBPort.Text = "Ignore NTB Port Status";
+            this.cb_ignoreNTBPort.UseVisualStyleBackColor = true;
+            this.cb_ignoreNTBPort.CheckedChanged += new System.EventHandler(this.cb_ignoreNTBPort_CheckedChanged);
             // 
             // btn_reloadParkingAdr
             // 
-            this.btn_reloadParkingAdr.Location = new System.Drawing.Point(1038, 773);
+            this.btn_reloadParkingAdr.Location = new System.Drawing.Point(1050, 788);
             this.btn_reloadParkingAdr.Name = "btn_reloadParkingAdr";
             this.btn_reloadParkingAdr.Size = new System.Drawing.Size(203, 33);
             this.btn_reloadParkingAdr.TabIndex = 66;
@@ -1373,28 +1165,26 @@
             // 
             // gb_cycleRunInfo
             // 
-            this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleCstID);
+            this.gb_cycleRunInfo.Controls.Add(this.txt_cycleCstID);
             this.gb_cycleRunInfo.Controls.Add(this.label82);
             this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleRunVhId);
             this.gb_cycleRunInfo.Controls.Add(this.label78);
             this.gb_cycleRunInfo.Controls.Add(this.cmb_cycleRunBayID);
             this.gb_cycleRunInfo.Controls.Add(this.label77);
-            this.gb_cycleRunInfo.Location = new System.Drawing.Point(1230, 0);
+            this.gb_cycleRunInfo.Location = new System.Drawing.Point(1242, 15);
             this.gb_cycleRunInfo.Name = "gb_cycleRunInfo";
             this.gb_cycleRunInfo.Size = new System.Drawing.Size(201, 196);
             this.gb_cycleRunInfo.TabIndex = 65;
             this.gb_cycleRunInfo.TabStop = false;
             this.gb_cycleRunInfo.Text = "Cycle Run Info";
             // 
-            // cmb_cycleCstID
+            // txt_cycleCstID
             // 
-            this.cmb_cycleCstID.FormattingEnabled = true;
-            this.cmb_cycleCstID.Location = new System.Drawing.Point(6, 161);
-            this.cmb_cycleCstID.Name = "cmb_cycleCstID";
-            this.cmb_cycleCstID.Size = new System.Drawing.Size(189, 30);
-            this.cmb_cycleCstID.TabIndex = 66;
-            this.cmb_cycleCstID.Visible = false;
-            this.cmb_cycleCstID.SelectedIndexChanged += new System.EventHandler(this.cmb_cycleCstID_SelectedIndexChanged);
+            this.txt_cycleCstID.Location = new System.Drawing.Point(6, 161);
+            this.txt_cycleCstID.Name = "txt_cycleCstID";
+            this.txt_cycleCstID.Size = new System.Drawing.Size(189, 30);
+            this.txt_cycleCstID.TabIndex = 69;
+            this.txt_cycleCstID.TextChanged += new System.EventHandler(this.txt_cycleCstID_TextChanged);
             // 
             // label82
             // 
@@ -1404,7 +1194,6 @@
             this.label82.Size = new System.Drawing.Size(150, 22);
             this.label82.TabIndex = 65;
             this.label82.Text = "Cycle Run CST:";
-            this.label82.Visible = false;
             // 
             // cmb_cycleRunVhId
             // 
@@ -1445,7 +1234,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(1035, 33);
+            this.label16.Location = new System.Drawing.Point(1047, 48);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(160, 22);
             this.label16.TabIndex = 61;
@@ -1454,7 +1243,7 @@
             // cb_passDriveOutByAreaSensor
             // 
             this.cb_passDriveOutByAreaSensor.AutoSize = true;
-            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1039, 480);
+            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1051, 680);
             this.cb_passDriveOutByAreaSensor.Name = "cb_passDriveOutByAreaSensor";
             this.cb_passDriveOutByAreaSensor.Size = new System.Drawing.Size(319, 26);
             this.cb_passDriveOutByAreaSensor.TabIndex = 60;
@@ -1465,7 +1254,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(1035, 419);
+            this.label12.Location = new System.Drawing.Point(1053, 608);
             this.label12.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(230, 22);
@@ -1474,7 +1263,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(1039, 444);
+            this.numericUpDown1.Location = new System.Drawing.Point(1051, 644);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -1488,71 +1277,11 @@
             // combox_cycle_type
             // 
             this.combox_cycle_type.FormattingEnabled = true;
-            this.combox_cycle_type.Location = new System.Drawing.Point(1038, 58);
+            this.combox_cycle_type.Location = new System.Drawing.Point(1050, 73);
             this.combox_cycle_type.Name = "combox_cycle_type";
             this.combox_cycle_type.Size = new System.Drawing.Size(186, 30);
             this.combox_cycle_type.TabIndex = 27;
             this.combox_cycle_type.SelectionChangeCommitted += new System.EventHandler(this.combox_cycle_type_SelectionChangeCommitted);
-            // 
-            // groupBox12
-            // 
-            this.groupBox12.Controls.Add(this.txt_vh_order_in_segment);
-            this.groupBox12.Controls.Add(this.label72);
-            this.groupBox12.Controls.Add(this.btn_refresh_vh_order_in_seg);
-            this.groupBox12.Controls.Add(this.label71);
-            this.groupBox12.Controls.Add(this.cmb_refresh_vh_order_in_seg_id);
-            this.groupBox12.Location = new System.Drawing.Point(1100, 505);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(302, 180);
-            this.groupBox12.TabIndex = 26;
-            this.groupBox12.TabStop = false;
-            this.groupBox12.Text = "Refresh Vh Order In Segment";
-            this.groupBox12.Visible = false;
-            // 
-            // txt_vh_order_in_segment
-            // 
-            this.txt_vh_order_in_segment.Location = new System.Drawing.Point(10, 90);
-            this.txt_vh_order_in_segment.Name = "txt_vh_order_in_segment";
-            this.txt_vh_order_in_segment.ReadOnly = true;
-            this.txt_vh_order_in_segment.Size = new System.Drawing.Size(286, 30);
-            this.txt_vh_order_in_segment.TabIndex = 52;
-            // 
-            // label72
-            // 
-            this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(6, 65);
-            this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(180, 22);
-            this.label72.TabIndex = 51;
-            this.label72.Text = "Current vh order:";
-            // 
-            // btn_refresh_vh_order_in_seg
-            // 
-            this.btn_refresh_vh_order_in_seg.Location = new System.Drawing.Point(10, 135);
-            this.btn_refresh_vh_order_in_seg.Name = "btn_refresh_vh_order_in_seg";
-            this.btn_refresh_vh_order_in_seg.Size = new System.Drawing.Size(286, 27);
-            this.btn_refresh_vh_order_in_seg.TabIndex = 50;
-            this.btn_refresh_vh_order_in_seg.Text = "Force Refersh";
-            this.btn_refresh_vh_order_in_seg.UseVisualStyleBackColor = true;
-            this.btn_refresh_vh_order_in_seg.Click += new System.EventHandler(this.btn_refresh_vh_order_in_seg_Click);
-            // 
-            // label71
-            // 
-            this.label71.AutoSize = true;
-            this.label71.Location = new System.Drawing.Point(6, 34);
-            this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(120, 22);
-            this.label71.TabIndex = 49;
-            this.label71.Text = "Segment ID:";
-            // 
-            // cmb_refresh_vh_order_in_seg_id
-            // 
-            this.cmb_refresh_vh_order_in_seg_id.FormattingEnabled = true;
-            this.cmb_refresh_vh_order_in_seg_id.Location = new System.Drawing.Point(128, 30);
-            this.cmb_refresh_vh_order_in_seg_id.Name = "cmb_refresh_vh_order_in_seg_id";
-            this.cmb_refresh_vh_order_in_seg_id.Size = new System.Drawing.Size(121, 30);
-            this.cmb_refresh_vh_order_in_seg_id.TabIndex = 48;
-            this.cmb_refresh_vh_order_in_seg_id.SelectedIndexChanged += new System.EventHandler(this.cmb_refresh_vh_order_in_seg_id_SelectedIndexChanged);
             // 
             // gb_blockControl
             // 
@@ -1561,7 +1290,7 @@
             this.gb_blockControl.Controls.Add(this.cb_ForceStraightPass);
             this.gb_blockControl.Controls.Add(this.cb_FroceReserveReject);
             this.gb_blockControl.Controls.Add(this.cb_FroceReservePass);
-            this.gb_blockControl.Location = new System.Drawing.Point(1039, 227);
+            this.gb_blockControl.Location = new System.Drawing.Point(1051, 242);
             this.gb_blockControl.Name = "gb_blockControl";
             this.gb_blockControl.Size = new System.Drawing.Size(310, 162);
             this.gb_blockControl.TabIndex = 23;
@@ -1625,7 +1354,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 31);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage2.Size = new System.Drawing.Size(1410, 849);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "PLC Control";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -2662,7 +2391,7 @@
             this.table_cache_data_pisplay.Location = new System.Drawing.Point(4, 31);
             this.table_cache_data_pisplay.Name = "table_cache_data_pisplay";
             this.table_cache_data_pisplay.Padding = new System.Windows.Forms.Padding(3);
-            this.table_cache_data_pisplay.Size = new System.Drawing.Size(1362, 714);
+            this.table_cache_data_pisplay.Size = new System.Drawing.Size(1410, 849);
             this.table_cache_data_pisplay.TabIndex = 3;
             this.table_cache_data_pisplay.Text = "Cache Data Display";
             this.table_cache_data_pisplay.UseVisualStyleBackColor = true;
@@ -2682,7 +2411,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.61165F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 95.38835F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1356, 708);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1404, 852);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // dgv_cache_object_data
@@ -2693,12 +2422,12 @@
             this.Column_cst_id});
             this.tableLayoutPanel2.SetColumnSpan(this.dgv_cache_object_data, 2);
             this.dgv_cache_object_data.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_cache_object_data.Location = new System.Drawing.Point(3, 35);
+            this.dgv_cache_object_data.Location = new System.Drawing.Point(3, 42);
             this.dgv_cache_object_data.MultiSelect = false;
             this.dgv_cache_object_data.Name = "dgv_cache_object_data";
             this.dgv_cache_object_data.RowTemplate.Height = 24;
             this.dgv_cache_object_data.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_cache_object_data.Size = new System.Drawing.Size(1350, 670);
+            this.dgv_cache_object_data.Size = new System.Drawing.Size(1398, 807);
             this.dgv_cache_object_data.TabIndex = 0;
             this.dgv_cache_object_data.EditModeChanged += new System.EventHandler(this.dgv_cache_object_data_EditModeChanged);
             // 
@@ -2723,7 +2452,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(85, 6);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(133, 4);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2733,9 +2462,9 @@
             // 
             this.label22.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(9, 0);
+            this.label22.Location = new System.Drawing.Point(7, 0);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(70, 32);
+            this.label22.Size = new System.Drawing.Size(120, 39);
             this.label22.TabIndex = 2;
             this.label22.Text = "Cache Data Name";
             // 
@@ -2755,7 +2484,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 31);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage3.Size = new System.Drawing.Size(1410, 849);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -3155,7 +2884,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 31);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage4.Size = new System.Drawing.Size(1410, 849);
             this.tabPage4.TabIndex = 4;
             this.tabPage4.Text = "MTL Test";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -3901,16 +3630,6 @@
             this.btn_mtl_dateTimeSync.UseVisualStyleBackColor = true;
             this.btn_mtl_dateTimeSync.Click += new System.EventHandler(this.btn_mtl_dateTimeSync_Click);
             // 
-            // uctlButton1
-            // 
-            this.uctlButton1.Location = new System.Drawing.Point(35, 578);
-            this.uctlButton1.Name = "uctlButton1";
-            this.uctlButton1.Size = new System.Drawing.Size(203, 35);
-            this.uctlButton1.TabIndex = 16;
-            this.uctlButton1.Text = "Refresh LFT Status";
-            this.uctlButton1.UseVisualStyleBackColor = true;
-            this.uctlButton1.Click += new System.EventHandler(this.uctlButton1_Click);
-            // 
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.set_Distance_btn);
@@ -3928,7 +3647,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 31);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage6.Size = new System.Drawing.Size(1410, 849);
             this.tabPage6.TabIndex = 6;
             this.tabPage6.Text = "MTL/MTS Simulator";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -4074,7 +3793,7 @@
             this.tabPage5.Controls.Add(this.btn_SendHIDControl);
             this.tabPage5.Location = new System.Drawing.Point(4, 31);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage5.Size = new System.Drawing.Size(1410, 849);
             this.tabPage5.TabIndex = 5;
             this.tabPage5.Text = "HID Test";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -4293,7 +4012,7 @@
             this.tabPage7.Location = new System.Drawing.Point(4, 31);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(1362, 714);
+            this.tabPage7.Size = new System.Drawing.Size(1410, 849);
             this.tabPage7.TabIndex = 7;
             this.tabPage7.Text = "CV Test";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -4658,22 +4377,245 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // cb_paassErrorVhAndTrackStatus
+            // btn_close_tcp_port
             // 
-            this.cb_paassErrorVhAndTrackStatus.AutoSize = true;
-            this.cb_paassErrorVhAndTrackStatus.Location = new System.Drawing.Point(1039, 721);
-            this.cb_paassErrorVhAndTrackStatus.Name = "cb_paassErrorVhAndTrackStatus";
-            this.cb_paassErrorVhAndTrackStatus.Size = new System.Drawing.Size(344, 26);
-            this.cb_paassErrorVhAndTrackStatus.TabIndex = 68;
-            this.cb_paassErrorVhAndTrackStatus.Text = "規劃路徑不參考故障車、軌道狀態";
-            this.cb_paassErrorVhAndTrackStatus.UseVisualStyleBackColor = true;
-            this.cb_paassErrorVhAndTrackStatus.CheckedChanged += new System.EventHandler(this.cb_paassErrorVhAndTrackStatus_CheckedChanged);
+            this.btn_close_tcp_port.Location = new System.Drawing.Point(664, 751);
+            this.btn_close_tcp_port.Name = "btn_close_tcp_port";
+            this.btn_close_tcp_port.Size = new System.Drawing.Size(166, 45);
+            this.btn_close_tcp_port.TabIndex = 51;
+            this.btn_close_tcp_port.Text = "Close Tcp Port";
+            this.btn_close_tcp_port.UseVisualStyleBackColor = true;
+            this.btn_close_tcp_port.Visible = false;
+            this.btn_close_tcp_port.Click += new System.EventHandler(this.btn_close_tcp_port_Click);
+            // 
+            // btn_open_tcp_port
+            // 
+            this.btn_open_tcp_port.Location = new System.Drawing.Point(492, 751);
+            this.btn_open_tcp_port.Name = "btn_open_tcp_port";
+            this.btn_open_tcp_port.Size = new System.Drawing.Size(166, 45);
+            this.btn_open_tcp_port.TabIndex = 50;
+            this.btn_open_tcp_port.Text = "Open Tcp Port";
+            this.btn_open_tcp_port.UseVisualStyleBackColor = true;
+            this.btn_open_tcp_port.Visible = false;
+            this.btn_open_tcp_port.Click += new System.EventHandler(this.btn_open_tcp_port_Click);
+            // 
+            // btn_changeToRemove
+            // 
+            this.btn_changeToRemove.Location = new System.Drawing.Point(813, 189);
+            this.btn_changeToRemove.Name = "btn_changeToRemove";
+            this.btn_changeToRemove.Size = new System.Drawing.Size(169, 43);
+            this.btn_changeToRemove.TabIndex = 46;
+            this.btn_changeToRemove.Text = "Remove";
+            this.btn_changeToRemove.UseVisualStyleBackColor = true;
+            this.btn_changeToRemove.Click += new System.EventHandler(this.btn_changeToRemove_Click);
+            // 
+            // btn_changeToInstall
+            // 
+            this.btn_changeToInstall.Location = new System.Drawing.Point(816, 240);
+            this.btn_changeToInstall.Name = "btn_changeToInstall";
+            this.btn_changeToInstall.Size = new System.Drawing.Size(169, 43);
+            this.btn_changeToInstall.TabIndex = 45;
+            this.btn_changeToInstall.Text = "Install";
+            this.btn_changeToInstall.UseVisualStyleBackColor = true;
+            this.btn_changeToInstall.Click += new System.EventHandler(this.btn_changeToInstall_Click);
+            // 
+            // btn_changeToAutoLocal
+            // 
+            this.btn_changeToAutoLocal.Location = new System.Drawing.Point(819, 364);
+            this.btn_changeToAutoLocal.Name = "btn_changeToAutoLocal";
+            this.btn_changeToAutoLocal.Size = new System.Drawing.Size(166, 45);
+            this.btn_changeToAutoLocal.TabIndex = 44;
+            this.btn_changeToAutoLocal.Text = "Auto Local";
+            this.btn_changeToAutoLocal.UseVisualStyleBackColor = true;
+            this.btn_changeToAutoLocal.Click += new System.EventHandler(this.btn_changeToAutoLocal_Click_1);
+            // 
+            // btn_changeToAutoMTL
+            // 
+            this.btn_changeToAutoMTL.Location = new System.Drawing.Point(819, 464);
+            this.btn_changeToAutoMTL.Name = "btn_changeToAutoMTL";
+            this.btn_changeToAutoMTL.Size = new System.Drawing.Size(166, 45);
+            this.btn_changeToAutoMTL.TabIndex = 43;
+            this.btn_changeToAutoMTL.Text = "Auto MTL";
+            this.btn_changeToAutoMTL.UseVisualStyleBackColor = true;
+            this.btn_changeToAutoMTL.Click += new System.EventHandler(this.btn_changeToAutoMTL_Click);
+            // 
+            // btn_changeToAutoMTS
+            // 
+            this.btn_changeToAutoMTS.Location = new System.Drawing.Point(819, 413);
+            this.btn_changeToAutoMTS.Name = "btn_changeToAutoMTS";
+            this.btn_changeToAutoMTS.Size = new System.Drawing.Size(166, 45);
+            this.btn_changeToAutoMTS.TabIndex = 42;
+            this.btn_changeToAutoMTS.Text = "Auto MTS";
+            this.btn_changeToAutoMTS.UseVisualStyleBackColor = true;
+            this.btn_changeToAutoMTS.Click += new System.EventHandler(this.btn_changeToAutoLocal_Click);
+            // 
+            // btn_changeToAutoRemote
+            // 
+            this.btn_changeToAutoRemote.Location = new System.Drawing.Point(819, 313);
+            this.btn_changeToAutoRemote.Name = "btn_changeToAutoRemote";
+            this.btn_changeToAutoRemote.Size = new System.Drawing.Size(166, 45);
+            this.btn_changeToAutoRemote.TabIndex = 41;
+            this.btn_changeToAutoRemote.Text = "Auto Remote";
+            this.btn_changeToAutoRemote.UseVisualStyleBackColor = true;
+            this.btn_changeToAutoRemote.Click += new System.EventHandler(this.btn_changeToAutoRemote_Click);
+            // 
+            // uctl_SendFun2
+            // 
+            this.uctl_SendFun2.Location = new System.Drawing.Point(8, 112);
+            this.uctl_SendFun2.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun2.Name = "uctl_SendFun2";
+            this.uctl_SendFun2.Size = new System.Drawing.Size(214, 35);
+            this.uctl_SendFun2.TabIndex = 29;
+            this.uctl_SendFun2.Text = "Send Func:2";
+            this.uctl_SendFun2.UseVisualStyleBackColor = true;
+            this.uctl_SendFun2.Visible = false;
+            this.uctl_SendFun2.Click += new System.EventHandler(this.uctl_SendFun2_Click);
+            // 
+            // btn_pause
+            // 
+            this.btn_pause.Location = new System.Drawing.Point(8, 171);
+            this.btn_pause.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.btn_pause.Name = "btn_pause";
+            this.btn_pause.Size = new System.Drawing.Size(138, 42);
+            this.btn_pause.TabIndex = 13;
+            this.btn_pause.Text = "Send Func 39";
+            this.btn_pause.UseVisualStyleBackColor = true;
+            this.btn_pause.Click += new System.EventHandler(this.btn_pause_Click);
+            // 
+            // uctl_SendFun1
+            // 
+            this.uctl_SendFun1.Location = new System.Drawing.Point(8, 69);
+            this.uctl_SendFun1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun1.Name = "uctl_SendFun1";
+            this.uctl_SendFun1.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun1.TabIndex = 8;
+            this.uctl_SendFun1.Text = "Send Func:1";
+            this.uctl_SendFun1.UseVisualStyleBackColor = true;
+            this.uctl_SendFun1.Visible = false;
+            this.uctl_SendFun1.Click += new System.EventHandler(this.uctl_Btn1_Click);
+            // 
+            // uctl_SendFun15
+            // 
+            this.uctl_SendFun15.Location = new System.Drawing.Point(8, 256);
+            this.uctl_SendFun15.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun15.Name = "uctl_SendFun15";
+            this.uctl_SendFun15.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun15.TabIndex = 8;
+            this.uctl_SendFun15.Text = "Send Func:15";
+            this.uctl_SendFun15.UseVisualStyleBackColor = true;
+            this.uctl_SendFun15.Visible = false;
+            this.uctl_SendFun15.Click += new System.EventHandler(this.uctl_SendFun15_Click);
+            // 
+            // uctl_SendFun13
+            // 
+            this.uctl_SendFun13.Location = new System.Drawing.Point(8, 203);
+            this.uctl_SendFun13.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun13.Name = "uctl_SendFun13";
+            this.uctl_SendFun13.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun13.TabIndex = 10;
+            this.uctl_SendFun13.Text = "Send Func:13";
+            this.uctl_SendFun13.UseVisualStyleBackColor = true;
+            this.uctl_SendFun13.Visible = false;
+            this.uctl_SendFun13.Click += new System.EventHandler(this.uctl_SendFun13_Click);
+            // 
+            // uctl_SendFun11
+            // 
+            this.uctl_SendFun11.Location = new System.Drawing.Point(8, 148);
+            this.uctl_SendFun11.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun11.Name = "uctl_SendFun11";
+            this.uctl_SendFun11.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun11.TabIndex = 10;
+            this.uctl_SendFun11.Text = "Send Func:11";
+            this.uctl_SendFun11.UseVisualStyleBackColor = true;
+            this.uctl_SendFun11.Visible = false;
+            this.uctl_SendFun11.Click += new System.EventHandler(this.uctl_SendFun11_Click);
+            // 
+            // uctl_SendFun17
+            // 
+            this.uctl_SendFun17.Location = new System.Drawing.Point(8, 309);
+            this.uctl_SendFun17.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun17.Name = "uctl_SendFun17";
+            this.uctl_SendFun17.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun17.TabIndex = 11;
+            this.uctl_SendFun17.Text = "Send Func:17";
+            this.uctl_SendFun17.UseVisualStyleBackColor = true;
+            this.uctl_SendFun17.Visible = false;
+            this.uctl_SendFun17.Click += new System.EventHandler(this.uctl_SendFun17_Click);
+            // 
+            // uctl_SendFun19
+            // 
+            this.uctl_SendFun19.Location = new System.Drawing.Point(8, 362);
+            this.uctl_SendFun19.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun19.Name = "uctl_SendFun19";
+            this.uctl_SendFun19.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun19.TabIndex = 12;
+            this.uctl_SendFun19.Text = "Send Func:19";
+            this.uctl_SendFun19.UseVisualStyleBackColor = true;
+            this.uctl_SendFun19.Visible = false;
+            this.uctl_SendFun19.Click += new System.EventHandler(this.uctl_SendFun19_Click);
+            // 
+            // uctl_SendFun21
+            // 
+            this.uctl_SendFun21.Location = new System.Drawing.Point(8, 416);
+            this.uctl_SendFun21.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun21.Name = "uctl_SendFun21";
+            this.uctl_SendFun21.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun21.TabIndex = 12;
+            this.uctl_SendFun21.Text = "Send Func:21";
+            this.uctl_SendFun21.UseVisualStyleBackColor = true;
+            this.uctl_SendFun21.Visible = false;
+            this.uctl_SendFun21.Click += new System.EventHandler(this.uctl_SendFun21_Click);
+            // 
+            // uctl_SendFun23
+            // 
+            this.uctl_SendFun23.Location = new System.Drawing.Point(8, 469);
+            this.uctl_SendFun23.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendFun23.Name = "uctl_SendFun23";
+            this.uctl_SendFun23.Size = new System.Drawing.Size(214, 42);
+            this.uctl_SendFun23.TabIndex = 12;
+            this.uctl_SendFun23.Text = "Send Func:23";
+            this.uctl_SendFun23.UseVisualStyleBackColor = true;
+            this.uctl_SendFun23.Visible = false;
+            this.uctl_SendFun23.Click += new System.EventHandler(this.uctl_SendFun23_Click);
+            // 
+            // uctl_Send_Fun_71
+            // 
+            this.uctl_Send_Fun_71.Location = new System.Drawing.Point(10, 191);
+            this.uctl_Send_Fun_71.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_Send_Fun_71.Name = "uctl_Send_Fun_71";
+            this.uctl_Send_Fun_71.Size = new System.Drawing.Size(138, 42);
+            this.uctl_Send_Fun_71.TabIndex = 13;
+            this.uctl_Send_Fun_71.Text = "Send Func 71";
+            this.uctl_Send_Fun_71.UseVisualStyleBackColor = true;
+            this.uctl_Send_Fun_71.Click += new System.EventHandler(this.uctl_Send_Fun_71_Click);
+            // 
+            // uctl_SendAllFun
+            // 
+            this.uctl_SendAllFun.Location = new System.Drawing.Point(8, 522);
+            this.uctl_SendAllFun.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_SendAllFun.Name = "uctl_SendAllFun";
+            this.uctl_SendAllFun.Size = new System.Drawing.Size(214, 99);
+            this.uctl_SendAllFun.TabIndex = 12;
+            this.uctl_SendAllFun.Text = "Send ALL";
+            this.uctl_SendAllFun.UseVisualStyleBackColor = true;
+            this.uctl_SendAllFun.Visible = false;
+            this.uctl_SendAllFun.Click += new System.EventHandler(this.uctl_SendAllFun_Click);
+            // 
+            // uctlButton1
+            // 
+            this.uctlButton1.Location = new System.Drawing.Point(35, 578);
+            this.uctlButton1.Name = "uctlButton1";
+            this.uctlButton1.Size = new System.Drawing.Size(203, 35);
+            this.uctlButton1.TabIndex = 16;
+            this.uctlButton1.Text = "Refresh LFT Status";
+            this.uctlButton1.UseVisualStyleBackColor = true;
+            this.uctlButton1.Click += new System.EventHandler(this.uctlButton1_Click);
             // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1370, 851);
+            this.ClientSize = new System.Drawing.Size(1459, 884);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -4704,8 +4646,6 @@
             this.gb_cycleRunInfo.ResumeLayout(false);
             this.gb_cycleRunInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            this.groupBox12.ResumeLayout(false);
-            this.groupBox12.PerformLayout();
             this.gb_blockControl.ResumeLayout(false);
             this.gb_blockControl.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -4998,12 +4938,6 @@
         private Components.uctlButton btn_changeToRemove;
         private Components.uctlButton btn_changeToInstall;
         private System.Windows.Forms.CheckBox cb_test_duplicate;
-        private System.Windows.Forms.GroupBox groupBox12;
-        private System.Windows.Forms.Button btn_refresh_vh_order_in_seg;
-        private System.Windows.Forms.Label label71;
-        private System.Windows.Forms.ComboBox cmb_refresh_vh_order_in_seg_id;
-        private System.Windows.Forms.Label label72;
-        private System.Windows.Forms.TextBox txt_vh_order_in_segment;
         private System.Windows.Forms.Label lbl_install_status;
         private System.Windows.Forms.Label label73;
         private System.Windows.Forms.Button button10;
@@ -5099,14 +5033,15 @@
         private System.Windows.Forms.CheckBox cb_ForceNonStraightPass;
         private System.Windows.Forms.CheckBox cb_ForceStraightPass;
         private System.Windows.Forms.Label label82;
-        private System.Windows.Forms.ComboBox cmb_cycleCstID;
         private System.Windows.Forms.Button btn_reloadParkingAdr;
         private System.Windows.Forms.Button bt_ntb_hbReq;
         private System.Windows.Forms.Button bt_IoPortSignalQuery;
         private System.Windows.Forms.Button bt_ReelStateUpdate;
         private System.Windows.Forms.CheckBox cb_passTrack;
         private System.Windows.Forms.Button btn_receiveTraReq;
-        private System.Windows.Forms.CheckBox cb_ignoreManualPort;
+        private System.Windows.Forms.CheckBox cb_ignoreNTBPort;
         private System.Windows.Forms.CheckBox cb_paassErrorVhAndTrackStatus;
+        private System.Windows.Forms.TextBox txt_cycleCstID;
+        private System.Windows.Forms.CheckBox cb_IsSameBayAfterWay;
     }
 }
