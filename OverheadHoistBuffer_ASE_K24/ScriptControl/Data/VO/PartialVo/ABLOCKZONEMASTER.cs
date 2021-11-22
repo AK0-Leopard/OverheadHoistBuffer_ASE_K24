@@ -45,7 +45,7 @@ namespace com.mirle.ibg3k0.sc
             onSectinoEntry(vh_id);
         }
 
-        public string RealSectionID
+        public string RealEntrySectionID
         {
             get
             {

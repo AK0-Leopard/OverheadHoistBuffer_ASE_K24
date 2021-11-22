@@ -10926,6 +10926,85 @@ namespace com.mirle.ibg3k0.sc.Service
 
     public partial class TransferService : IVehicleTransferHandler
     {
+        public void CommandCompleteByAbort(string vhID, string finishCommandID)
+        {
+            ACMD_OHTC ohtCmdData = cmdBLL.getCMD_OHTCByID(finishCommandID);
+            ACMD_MCS cmd = cmdBLL.getCMD_MCSByID(ohtCmdData.CMD_ID_MCS.Trim());
+            if (cmd == null) return;
+            if (cmd.TRANSFERSTATE == E_TRAN_STATUS.TransferCompleted) return;
+            if (cmd.TRANSFERSTATE == E_TRAN_STATUS.Aborting)
+            {
+                cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                scApp.ReportBLL.ReportTransferAbortCompleted(cmd.CMD_ID);
+            }
+            else
+            {
+                //如果狀態不是aborting，就進入abort complete
+                //就是因為命令被abort準備改派
+                //在這個case，就要直接把命令再下給車子，
+                //讓他可以接續命令並繞開故障的換軌器、車子
+                string cmd_mcs_pause_flag = scApp.CMDBLL.GetCmdMCSPauseFlag(cmd.CMD_ID);
+                if (SCUtility.isMatche(cmd_mcs_pause_flag, SCAppConstants.YES_FLAG))
+                {
+                    string hostdest = cmd.HOSTDESTINATION;
+                    bool isSuccess = true;
+                    scApp.MapBLL.getAddressID(hostdest, out string to_adr);
+                    isSuccess &= scApp.CMDBLL.doCreatTransferCommand(vhID, cmd.CMD_ID, cmd.CARRIER_ID,
+                                        E_CMD_TYPE.Unload,
+                                        "",
+                                        cmd.HOSTDESTINATION, cmd.PRIORITY_SUM, 0,
+                                        cmd.BOX_ID, cmd.LOT_ID,
+                                        "", to_adr);
+                }
+                else
+                {
+                    bool is_success = scApp.CassetteDataBLL.GetCarrierByBoxId(cmd.BOX_ID, out CassetteData cassetteData);
+                    if (is_success)
+                        ForceFinishMCSCmd(cmd, cassetteData, "CommandCompleteByCancel");
+                    else
+                    {
+
+                    }
+                }
+            }
+        }
+
+        public void CommandCompleteByCancel(string vhID, string finishCommandID)
+        {
+            ACMD_OHTC ohtCmdData = cmdBLL.getCMD_OHTCByID(finishCommandID);
+            ACMD_MCS cmd = cmdBLL.getCMD_MCSByID(ohtCmdData.CMD_ID_MCS.Trim());
+            if (cmd == null) return;
+            if (cmd.TRANSFERSTATE == E_TRAN_STATUS.TransferCompleted) return;
+            if (cmd.TRANSFERSTATE == E_TRAN_STATUS.Canceling)
+            {
+                cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                reportBLL.ReportTransferCancelCompleted(cmd.CMD_ID);
+            }
+            else
+            {
+                //如果狀態不是canceling，就進入cancel complete
+                //就是因為命令被cancel準備改派
+                //在這個case，就把命令直接改回queue讓命令重新選車
+                string cmd_mcs_pause_flag = scApp.CMDBLL.GetCmdMCSPauseFlag(cmd.CMD_ID);
+                if (SCUtility.isMatche(cmd_mcs_pause_flag, SCAppConstants.YES_FLAG))
+                {
+
+                    scApp.CMDBLL.updateCMD_MCS_CRANE(cmd.CMD_ID, "");
+                    scApp.CMDBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.Queue);
+                }
+                else
+                {
+                    bool is_success = scApp.CassetteDataBLL.GetCarrierByBoxId(cmd.BOX_ID, out CassetteData cassetteData);
+                    if (is_success)
+                        ForceFinishMCSCmd(cmd, cassetteData, "CommandCompleteByCancel");
+                    else
+                    {
+
+                    }
+                }
+            }
+        }
+
         public bool CommandCompleteByIDMismatch(string vhID, string finishCommandID)
         {
             try

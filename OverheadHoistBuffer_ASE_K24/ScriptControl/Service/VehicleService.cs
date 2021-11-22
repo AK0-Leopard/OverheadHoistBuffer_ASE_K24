@@ -3224,8 +3224,15 @@ namespace com.mirle.ibg3k0.sc.Service
                 //判斷是否需要進行命令改派，若算出來後不包含在原本行走路徑
                 //代表路徑有變化了就暫時不要給該block的通行權然後去下達cancel
                 //結束後再讓他把命令改回queue(尚未載到貨)、重新再派改該台車(已有載到貨)
-                //bool is_need_change_route = checkGuideSectionHasChange();
-
+                bool is_need_change_route = checkGuideSectionHasChange(eqpt, block_master.RealEntrySectionID);
+                if (is_need_change_route)
+                {
+                    bool is_interrupt_success = StartProcessCommandInterruptByChangeGuideSection(eqpt);
+                    if (is_interrupt_success)
+                    {
+                        return (false, TrackDir.None);
+                    }
+                }
 
 
                 TrackDir track_dir = TrackDir.None;
@@ -3250,8 +3257,68 @@ namespace com.mirle.ibg3k0.sc.Service
                     bool is_all_track_ready_straight = block_master.IsAllTrackReadyStraight();
                     track_dir = is_all_track_ready_straight ? TrackDir.Straight : TrackDir.None;
                 }
-
                 return (true, track_dir);
+            }
+        }
+
+        private bool StartProcessCommandInterruptByChangeGuideSection(AVEHICLE eqpt)
+        {
+            string excute_ohtc_cmd_id = eqpt.OHTC_CMD;
+            ACMD_OHTC cmd_ohtc = scApp.CMDBLL.getCMD_OHTCByID(excute_ohtc_cmd_id);
+            if (cmd_ohtc == null)
+                return false;
+            var getResult = getCMDCancelType(eqpt, cmd_ohtc);
+            if (getResult.isSuccess)
+            {
+                if (cmd_ohtc.IsTransferCmdByMCS)
+                {
+                    string cmd_mcs_pause_flag = scApp.CMDBLL.GetCmdMCSPauseFlag(cmd_ohtc.CMD_ID_MCS);
+                    if (SCUtility.isMatche(cmd_mcs_pause_flag, SCAppConstants.YES_FLAG))
+                    {
+                        return true;
+                    }
+                    using (TransactionScope tx = SCUtility.getTransactionScope())
+                    {
+                        using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                        {
+                            scApp.CMDBLL.updateCMD_MCS_PauseFlag(cmd_ohtc.CMD_ID_MCS, SCAppConstants.YES_FLAG);
+                            bool is_success = doAbortCommand(eqpt, excute_ohtc_cmd_id, getResult.cancelType); //A0.01
+                            if (is_success)
+                                tx.Complete();
+                        }
+                    }
+                    return true;
+                }
+                else
+                {
+                    doAbortCommand(eqpt, excute_ohtc_cmd_id, getResult.cancelType); //A0.01
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private (bool isSuccess, CMDCancelType cancelType) getCMDCancelType(AVEHICLE vh, ACMD_OHTC cmd_ohtc)
+        {
+            if (cmd_ohtc == null)
+                return (false, default(CMDCancelType));
+            switch (cmd_ohtc.CMD_TPYE)
+            {
+                case E_CMD_TYPE.Unload:
+                    return (true, CMDCancelType.CmdAbort);
+                case E_CMD_TYPE.LoadUnload:
+                    if (vh.HAS_BOX == 1)
+                    {
+                        return (true, CMDCancelType.CmdAbort);
+                    }
+                    else
+                    {
+                        return (true, CMDCancelType.CmdCancel);
+                    }
+                default:
+                    return (true, CMDCancelType.CmdCancel);
             }
         }
 
@@ -3981,6 +4048,14 @@ namespace com.mirle.ibg3k0.sc.Service
             else if (recive_str.CmpStatus == CompleteStatus.CmpStatusIdreadFailed)
             {
                 scApp.TransferService.CommandCompleteByIDReadFail(vh_id, finish_ohxc_cmd);
+            }
+            else if (recive_str.CmpStatus == CompleteStatus.CmpStatusCancel)
+            {
+                scApp.TransferService.CommandCompleteByCancel(vh_id, finish_ohxc_cmd);
+            }
+            else if (recive_str.CmpStatus == CompleteStatus.CmpStatusAbort)
+            {
+                scApp.TransferService.CommandCompleteByAbort(vh_id, finish_ohxc_cmd);
             }
             else
             {

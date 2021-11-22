@@ -341,6 +341,21 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+        public string GetCmdMCSPauseFlag(string cmdMcsID)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    return cmd_mcsDao.GetCmdPauseFlag(con, cmdMcsID);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return "";
+            }
+        }
 
         //public string doCheckMCSCommand(SCApplication app, string command_id, string Priority, string cstID, string box_id, string lotID, string cstType,
         //                                ref string HostSource, ref string HostDestination,
@@ -1347,6 +1362,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     if (status == E_TRAN_STATUS.Queue)
                     {
                         cmd.COMMANDSTATE = 0;
+                        cmd.PAUSEFLAG = "";
                     }
 
                     cmd_mcsDao.update(con, cmd);
@@ -1899,6 +1915,27 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exection:");
                 isSuccess = false;
             }
+            return isSuccess;
+        }
+        public bool updateCMD_MCS_PauseFlag(string cmd_id, string flag)
+        {
+            bool isSuccess = true;
+
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    ACMD_MCS cmd = cmd_mcsDao.getByID(con, cmd_id);
+                    cmd.PAUSEFLAG = flag;
+                    cmd_mcsDao.update(con, cmd);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                isSuccess = false;
+            }
+
             return isSuccess;
         }
 
