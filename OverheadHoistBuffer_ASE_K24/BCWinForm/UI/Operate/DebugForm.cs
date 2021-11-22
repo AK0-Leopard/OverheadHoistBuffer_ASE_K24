@@ -58,11 +58,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             //    BCUtility.setComboboxDataSource(cmb_cycleCstID, cst_data_ids.ToArray());
             //}
 
-            List<ASEGMENT> segments = bcApp.SCApplication.SegmentBLL.cache.GetSegments();
-            string[] segment_ids = segments.Select(seg => seg.SEG_NUM).ToArray();
-            BCUtility.setComboboxDataSource(cmb_refresh_vh_order_in_seg_id, segment_ids.ToArray());
-
-
             List<AADDRESS> allAddress_obj = bcApp.SCApplication.MapBLL.loadAllAddress();
             string[] allAdr_ID = allAddress_obj.Select(adr => adr.ADR_ID).ToArray();
             BCUtility.setComboboxDataSource(cmb_teach_from_adr, allAdr_ID);
@@ -73,6 +68,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             string[] ohcv_devices_id = ohcvDevices.Select(eq => eq.EQPT_ID).ToArray();
             BCUtility.setComboboxDataSource(cb_cv_ids, ohcv_devices_id.ToArray());
 
+            var shelfDefs = bcApp.SCApplication.ShelfDefBLL.LoadShelf();
+            List<string> current_bay_ids = shelfDefs.Select(s => s.BayID).Distinct().OrderBy(s => s).ToList();
+            cmb_cycleRunBayID.DataSource = current_bay_ids;
+
+
             numericUpDown1.Value = DebugParameter.PreDriveOutDistance_MM;
             cb_passDriveOutByAreaSensor.Checked = DebugParameter.isPassDriveOutByAreaSensor;
             cmb_cycleRunVhId.SelectedItem = DebugParameter.cycleRunVh;
@@ -81,8 +81,10 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             cb_ForceStraightPass.Checked = DebugParameter.IsForceStraightPass;
             cb_ForceNonStraightPass.Checked = DebugParameter.IsForceNonStraightPass;
-            cb_ignoreManualPort.Checked = DebugParameter.IsIgnoreManualPortStatus;
+            cb_ignoreNTBPort.Checked = DebugParameter.IsIgnoreNTBPortStatus;
             cb_paassErrorVhAndTrackStatus.Checked = DebugParameter.IsPaassErrorVhAndTrackStatus;
+            txt_cycleCstID.Text = DebugParameter.cycleRunCSTs;
+            cb_IsSameBayAfterWay.Checked = DebugParameter.IsSameByAfterWay;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -120,11 +122,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             dgv_cache_object_data.AutoGenerateColumns = false;
             comboBox_HID_control.SelectedIndex = 0;
 
-            var shelfDefs = bcApp.SCApplication.ShelfDefBLL.LoadShelf();
-
-            List<string> current_bay_ids = shelfDefs.Select(s => s.BayID).Distinct().OrderBy(s => s).ToList();
-
-            cmb_cycleRunBayID.DataSource = current_bay_ids;
 
 
         }
@@ -878,33 +875,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             DebugParameter.TestDuplicate = cb_test_duplicate.Checked;
         }
 
-        private async void btn_refresh_vh_order_in_seg_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                btn_refresh_vh_order_in_seg.Enabled = false;
-                string seg_id = cmb_refresh_vh_order_in_seg_id.Text;
-                var seg_obj = bcApp.SCApplication.SegmentBLL.cache.GetSegment(seg_id);
-                //await Task.Run(() => seg_obj.RefreshVhOrder(bcApp.SCApplication.VehicleBLL, bcApp.SCApplication.SectionBLL));
-                RefreshVehicleOrderInSegment(seg_id);
-            }
-            finally
-            {
-                btn_refresh_vh_order_in_seg.Enabled = true;
-            }
-        }
 
-        private void cmb_refresh_vh_order_in_seg_id_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string seg_id = (sender as ComboBox).Text;
-            RefreshVehicleOrderInSegment(seg_id);
-        }
 
-        private void RefreshVehicleOrderInSegment(string seg_id)
-        {
-            var seg_obj = bcApp.SCApplication.SegmentBLL.cache.GetSegment(seg_id);
-            txt_vh_order_in_segment.Text = string.Join(",", seg_obj.GetVehicleOrderInSegment());
-        }
 
         private void tabPage6_Click(object sender, EventArgs e)
         {
@@ -1303,7 +1275,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             DebugParameter.cycleRunType = type;
 
-            if (type == DebugParameter.CycleRunType.shelfByOrder||
+            if (type == DebugParameter.CycleRunType.shelfByOrder ||
                 type == DebugParameter.CycleRunType.DemoRun)
             {
                 gb_cycleRunInfo.Visible = true;
@@ -1363,9 +1335,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             await Task.Run(() => ntb.CarrierTransferRequestTest("CST03", "P01", "E0081367", "TestPort_P01"));
         }
 
-        private void cb_ignoreManualPort_CheckedChanged(object sender, EventArgs e)
+        private void cb_ignoreNTBPort_CheckedChanged(object sender, EventArgs e)
         {
-            DebugParameter.IsIgnoreManualPortStatus = cb_ignoreManualPort.Checked;
+            DebugParameter.IsIgnoreNTBPortStatus = cb_ignoreNTBPort.Checked;
         }
 
         private void cb_paassErrorVhAndTrackStatus_CheckedChanged(object sender, EventArgs e)
@@ -1375,7 +1347,14 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void txt_cycleCstID_TextChanged(object sender, EventArgs e)
         {
-            DebugParameter.cycleRunCST = txt_cycleCstID.Text;
+            string scycle_run_csts = txt_cycleCstID.Text;
+            DebugParameter.cycleRunCSTs = scycle_run_csts;
+
+        }
+
+        private void cb_IsSameBayAfterWay_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsSameByAfterWay = cb_IsSameBayAfterWay.Checked;
         }
     }
 }

@@ -1324,6 +1324,11 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
+                if (!DebugParameter.IsSameByAfterWay)
+                {
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "OHB >> OHB| 同Bay順途功能關閉中...");
+                    return (false, null);
+                }
                 string queue_cmd_adr_id = queueCmd.getHostSourceAdr(scApp.PortStationBLL);
                 if (SCUtility.isEmpty(queue_cmd_adr_id)) return (false, null);
 
@@ -2420,11 +2425,11 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 if (isNTBPort(destName))
                 {
-                    if (DebugParameter.IsIgnoreManualPortStatus)
+                    if (DebugParameter.IsIgnoreNTBPortStatus)
                     {
                         TransferServiceLogger.Info
                         (
-                            $"{DateTime.Now.ToString("HH:mm:ss.fff ")} Port:{destName} is reel ntb port, 但目前是忽略Manual Port狀態，直接回覆True."
+                            $"{DateTime.Now.ToString("HH:mm:ss.fff ")} Port:{destName} is reel ntb port, 但目前是忽略NTB Port狀態，直接回覆True."
                         );
                         return true;
                     }

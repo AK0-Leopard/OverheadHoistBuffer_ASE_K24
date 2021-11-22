@@ -86,9 +86,9 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 
                     switch (DebugParameter.cycleRunType)
                     {
-                        case DebugParameter.CycleRunType.shelf:
-                            ShelfTest();
-                            break;
+                        //case DebugParameter.CycleRunType.shelf:
+                        //    ShelfTest();
+                        //    break;
                         case DebugParameter.CycleRunType.shelfByOrder:
                             ShelfTestByOrder();
                             break;
@@ -453,9 +453,13 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             //}
         }
 
-        bool isLastSelectedDemoRun_ForemostShelf = false;
         private void DemoRun()
         {
+            List<string> cycle_run_csts = stringToStringArray(DebugParameter.cycleRunCSTs);
+            if (cycle_run_csts == null || cycle_run_csts.Count == 0)
+            {
+                return;
+            }
             var mcs_cmds = scApp.CMDBLL.loadACMD_MCSIsUnfinished();
             string demo_run_bay = DebugParameter.cycleRunBay;
 
@@ -483,6 +487,11 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             CassetteData process_cst = null;
             foreach (var cst in process_csts)
             {
+                bool is_cycle_run_cst = cycle_run_csts.Contains(cst.BOXID);
+                if (!is_cycle_run_cst)
+                {
+                    continue;
+                }
                 bool hsa_mcd_excute = mcs_cmds.Where(cmd => SCUtility.isMatche(cmd.BOX_ID, cst.BOXID)).Count() > 0;
                 if (hsa_mcd_excute)
                 {
@@ -521,6 +530,24 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                  );
 
 
+        }
+        List<string> stringToStringArray(string value)
+        {
+            if (value.Contains(","))
+            {
+                return value.Split(',').ToList();
+            }
+            else
+            {
+                if (SCUtility.isEmpty(value))
+                {
+                    return new List<string>();
+                }
+                else
+                {
+                    return new List<string>() { value };
+                }
+            }
         }
         public string getCurrentBayID(string shelfID)
         {

@@ -4700,6 +4700,11 @@ namespace com.mirle.ibg3k0.sc.Service
                 if (is_success)
                 {
                     AVEHICLE vh_vo = scApp.VehicleBLL.cache.getVhByID(vhID);
+                    if (!vh_vo.isTcpIpConnect)
+                    {
+                        vh_vo.CUR_SEC_ID = "";
+                        vh_vo.CUR_ADR_ID = "";
+                    }
                     vh_vo.VechileRemove();
                     scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vhID);
                     scApp.ReserveBLL.RemoveVehicle(vhID);

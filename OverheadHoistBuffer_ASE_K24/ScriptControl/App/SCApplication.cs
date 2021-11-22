@@ -1674,7 +1674,7 @@ namespace com.mirle.ibg3k0.sc.App
             manualPortControlService.Start(manual_port_map_action);
             manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL);
             gRPC_With_VehicleControlFun.Start();
-            //gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
+            gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
         }
 
         /// <summary>
@@ -2511,7 +2511,8 @@ namespace com.mirle.ibg3k0.sc.App
         public static CycleRunType cycleRunType;
         public static string cycleRunBay = "";
         public static string cycleRunVh = "";
-        public static string cycleRunCST = "";
+        public static string cycleRunCSTs = "";
+        public static bool IsSameByAfterWay = true;
 
         private static Boolean isforcedpassblockcontrol = false;
         public static Boolean isForcedPassBlockControl
@@ -2535,16 +2536,16 @@ namespace com.mirle.ibg3k0.sc.App
         public static string CST_TYPE = "";
         public enum CycleRunType
         {
-            shelf,
+            //shelf,
             shelfByOrder,
             shelfByManualCMD,
-            DemoRun,
+            DemoRun
         }
 
         public static Boolean IsForceStraightPass = false;
         public static Boolean IsForceNonStraightPass = false;
         public static Boolean IsPassTrackBlockStatus = false;
-        public static Boolean IsIgnoreManualPortStatus = false;
+        public static Boolean IsIgnoreNTBPortStatus = false;
         public static Boolean IsPaassErrorVhAndTrackStatus = false;
 
     }
