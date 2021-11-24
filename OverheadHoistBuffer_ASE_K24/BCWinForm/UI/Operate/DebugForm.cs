@@ -85,6 +85,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_paassErrorVhAndTrackStatus.Checked = DebugParameter.IsPaassErrorVhAndTrackStatus;
             txt_cycleCstID.Text = DebugParameter.cycleRunCSTs;
             cb_IsSameBayAfterWay.Checked = DebugParameter.IsSameByAfterWay;
+            ch_IsAutoDriveOut.Checked = DebugParameter.IsAutoDriveOut;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -1355,6 +1356,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_IsSameBayAfterWay_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.IsSameByAfterWay = cb_IsSameBayAfterWay.Checked;
+        }
+
+        private void ch_IsAutoDriveOut_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsAutoDriveOut = ch_IsAutoDriveOut.Checked;
         }
     }
 }

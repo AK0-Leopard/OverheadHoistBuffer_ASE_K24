@@ -2513,6 +2513,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static string cycleRunVh = "";
         public static string cycleRunCSTs = "";
         public static bool IsSameByAfterWay = true;
+        public static bool IsAutoDriveOut = true;
 
         private static Boolean isforcedpassblockcontrol = false;
         public static Boolean isForcedPassBlockControl

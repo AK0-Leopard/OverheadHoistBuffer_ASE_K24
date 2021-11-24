@@ -2034,6 +2034,14 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private void tryDriveOutTheVh(string willPassVhID, string inTheWayVhID)
         {
+            if (!DebugParameter.IsAutoDriveOut)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"auto drive out vh current is off,IsAutoDriveOut:{DebugParameter.IsAutoDriveOut}",
+                   VehicleID: willPassVhID);
+                return;
+            }
+
             if (System.Threading.Interlocked.Exchange(ref syncPoint_NotifyVhAvoid, 1) == 0)
             {
                 try
