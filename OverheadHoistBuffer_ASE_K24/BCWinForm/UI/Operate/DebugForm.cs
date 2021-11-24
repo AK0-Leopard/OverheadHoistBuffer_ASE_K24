@@ -85,6 +85,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_paassErrorVhAndTrackStatus.Checked = DebugParameter.IsPaassErrorVhAndTrackStatus;
             txt_cycleCstID.Text = DebugParameter.cycleRunCSTs;
             cb_IsSameBayAfterWay.Checked = DebugParameter.IsSameByAfterWay;
+            ch_IsAutoDriveOut.Checked = DebugParameter.IsAutoDriveOut;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -1185,7 +1186,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 EventType = report_event,
                 BOXID = cst_id,
                 BCRReadResult = bCRReadResult,
-                RequestBlockID = "31705L"
             };
             var bcfApp = bcApp.SCApplication.getBCFApplication();
             Task.Run(() =>
@@ -1212,7 +1212,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void btn_cmp_vh_abort_Click(object sender, EventArgs e)
         {
-            var completeStatus = sc.ProtocolFormat.OHTMessage.CompleteStatus.CmpStatusCancel;
+            var completeStatus = sc.ProtocolFormat.OHTMessage.CompleteStatus.CmpStatusVehicleAbort;
             McsCommandCompleteTest(completeStatus);
         }
 
@@ -1358,21 +1358,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             DebugParameter.IsSameByAfterWay = cb_IsSameBayAfterWay.Checked;
         }
 
-        private void btn_changeGuideTest_Click(object sender, EventArgs e)
+        private void ch_IsAutoDriveOut_CheckedChanged(object sender, EventArgs e)
         {
-            AVEHICLE vh = bcApp.SCApplication.VehicleBLL.cache.getVhByID(cmb_mcsReportTestVHID.Text);
-            bcApp.SCApplication.VehicleService.checkGuideSectionHasChangeTest(vh,"35501");
-        }
-
-        private void button11_Click_1(object sender, EventArgs e)
-        {
-            var report_event = sc.ProtocolFormat.OHTMessage.EventType.BlockReq;
-            McsReportEventTest(report_event);
-        }
-
-        private void btn_cancel_cmp_Click(object sender, EventArgs e)
-        {
-
+            DebugParameter.IsAutoDriveOut = ch_IsAutoDriveOut.Checked;
         }
     }
 }

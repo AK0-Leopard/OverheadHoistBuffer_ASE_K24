@@ -209,13 +209,11 @@
             this.cb_Cache_data_Name = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.btn_changeGuideTest = new System.Windows.Forms.Button();
             this.btn_receiveTraReq = new System.Windows.Forms.Button();
             this.bt_ReelStateUpdate = new System.Windows.Forms.Button();
             this.bt_IoPortSignalQuery = new System.Windows.Forms.Button();
             this.bt_ntb_hbReq = new System.Windows.Forms.Button();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
-            this.button11 = new System.Windows.Forms.Button();
             this.btn_initial = new System.Windows.Forms.Button();
             this.btn_cmp_vh_complete = new System.Windows.Forms.Button();
             this.btn_cmp_vh_abort = new System.Windows.Forms.Button();
@@ -379,6 +377,7 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
+            this.ch_IsAutoDriveOut = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1325,6 +1324,7 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.ch_IsAutoDriveOut);
             this.tabPage1.Controls.Add(this.cb_IsSameBayAfterWay);
             this.tabPage1.Controls.Add(this.cb_paassErrorVhAndTrackStatus);
             this.tabPage1.Controls.Add(this.cb_ignoreNTBPort);
@@ -2678,7 +2678,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(174, 4);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(174, 9);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2696,7 +2696,6 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.btn_changeGuideTest);
             this.tabPage3.Controls.Add(this.btn_receiveTraReq);
             this.tabPage3.Controls.Add(this.bt_ReelStateUpdate);
             this.tabPage3.Controls.Add(this.bt_IoPortSignalQuery);
@@ -2716,19 +2715,9 @@
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // btn_changeGuideTest
-            // 
-            this.btn_changeGuideTest.Location = new System.Drawing.Point(971, 187);
-            this.btn_changeGuideTest.Name = "btn_changeGuideTest";
-            this.btn_changeGuideTest.Size = new System.Drawing.Size(353, 30);
-            this.btn_changeGuideTest.TabIndex = 59;
-            this.btn_changeGuideTest.Text = "Change Guide Test";
-            this.btn_changeGuideTest.UseVisualStyleBackColor = true;
-            this.btn_changeGuideTest.Click += new System.EventHandler(this.btn_changeGuideTest_Click);
-            // 
             // btn_receiveTraReq
             // 
-            this.btn_receiveTraReq.Location = new System.Drawing.Point(971, 149);
+            this.btn_receiveTraReq.Location = new System.Drawing.Point(971, 187);
             this.btn_receiveTraReq.Name = "btn_receiveTraReq";
             this.btn_receiveTraReq.Size = new System.Drawing.Size(353, 30);
             this.btn_receiveTraReq.TabIndex = 58;
@@ -2771,7 +2760,6 @@
             // 
             // groupBox18
             // 
-            this.groupBox18.Controls.Add(this.button11);
             this.groupBox18.Controls.Add(this.btn_initial);
             this.groupBox18.Controls.Add(this.btn_cmp_vh_complete);
             this.groupBox18.Controls.Add(this.btn_cmp_vh_abort);
@@ -2803,16 +2791,6 @@
             this.groupBox18.TabIndex = 38;
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "MCS Report Test";
-            // 
-            // button11
-            // 
-            this.button11.Location = new System.Drawing.Point(238, 225);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(176, 30);
-            this.button11.TabIndex = 55;
-            this.button11.Text = "Block Req Test";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click_1);
             // 
             // btn_initial
             // 
@@ -2961,7 +2939,6 @@
             this.btn_cancel_cmp.TabIndex = 38;
             this.btn_cancel_cmp.Text = "Cancel Complete";
             this.btn_cancel_cmp.UseVisualStyleBackColor = true;
-            this.btn_cancel_cmp.Click += new System.EventHandler(this.btn_cancel_cmp_Click);
             // 
             // btn_id_bcr_read
             // 
@@ -4636,6 +4613,17 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
+            // ch_IsAutoDriveOut
+            // 
+            this.ch_IsAutoDriveOut.AutoSize = true;
+            this.ch_IsAutoDriveOut.Location = new System.Drawing.Point(1079, 454);
+            this.ch_IsAutoDriveOut.Name = "ch_IsAutoDriveOut";
+            this.ch_IsAutoDriveOut.Size = new System.Drawing.Size(197, 26);
+            this.ch_IsAutoDriveOut.TabIndex = 70;
+            this.ch_IsAutoDriveOut.Text = "自動趕車功能開啟";
+            this.ch_IsAutoDriveOut.UseVisualStyleBackColor = true;
+            this.ch_IsAutoDriveOut.CheckedChanged += new System.EventHandler(this.ch_IsAutoDriveOut_CheckedChanged);
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -5068,7 +5056,6 @@
         private System.Windows.Forms.CheckBox cb_paassErrorVhAndTrackStatus;
         private System.Windows.Forms.TextBox txt_cycleCstID;
         private System.Windows.Forms.CheckBox cb_IsSameBayAfterWay;
-        private System.Windows.Forms.Button btn_changeGuideTest;
-        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.CheckBox ch_IsAutoDriveOut;
     }
 }
