@@ -10960,6 +10960,21 @@ namespace com.mirle.ibg3k0.sc.Service
                                         cmd.HOSTDESTINATION, cmd.PRIORITY_SUM, 0,
                                         cmd.BOX_ID, cmd.LOT_ID,
                                         "", to_adr);
+                    if (isSuccess)
+                    {
+                        scApp.CMDBLL.updateCMD_MCS_PauseFlag(cmd.CMD_ID, "");
+                    }
+                    else
+                    {
+                        bool is_success = scApp.CassetteDataBLL.GetCarrierByBoxId(cmd.BOX_ID, out CassetteData cassetteData);
+                        if (is_success)
+                            ForceFinishMCSCmd(cmd, cassetteData, "CommandCompleteByCancel");
+                        else
+                        {
+
+                        }
+                    }
+
                 }
                 else
                 {

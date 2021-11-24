@@ -3213,13 +3213,6 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
 
 
-                foreach (var detail in block_detail_section)
-                {
-                    HltDirection hltDirection = HltDirection.None;
-                    var result = scApp.ReserveBLL.TryAddReservedSection(vhID, detail,
-                                                                        sensorDir: hltDirection,
-                                                                        isAsk: false);
-                }
                 //Block Request的From adr來重新計算路徑
                 //判斷是否需要進行命令改派，若算出來後不包含在原本行走路徑
                 //代表路徑有變化了就暫時不要給該block的通行權然後去下達cancel
@@ -3234,6 +3227,14 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                 }
 
+
+                foreach (var detail in block_detail_section)
+                {
+                    HltDirection hltDirection = HltDirection.None;
+                    var result = scApp.ReserveBLL.TryAddReservedSection(vhID, detail,
+                                                                        sensorDir: hltDirection,
+                                                                        isAsk: false);
+                }
 
                 TrackDir track_dir = TrackDir.None;
                 if (DebugParameter.IsForceNonStraightPass)
@@ -3320,6 +3321,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 default:
                     return (true, CMDCancelType.CmdCancel);
             }
+        }
+        public void checkGuideSectionHasChangeTest(AVEHICLE vh, string requsetSecID)
+        {
+            checkGuideSectionHasChange(vh, requsetSecID);
         }
 
         private bool checkGuideSectionHasChange(AVEHICLE vh, string requsetSecID)
