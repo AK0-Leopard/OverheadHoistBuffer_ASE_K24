@@ -1134,7 +1134,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                            CarrierID: vh.CST_ID);
                     }
                     else if (vh.VEHICLE_TYPE != E_VH_TYPE.None
-                        && vh.VEHICLE_TYPE != vh_type)
+                          && vh.VEHICLE_TYPE != vh_type)
                     {
                         vhs.Remove(vh);
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
