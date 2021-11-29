@@ -94,6 +94,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             scApp = app;
             SubscriptionPositionChangeEvent();
+            scApp.getEQObjCacheManager().getLine().HasHIDPowerAlarmHappendChange += VehicleService_HasHIDPowerAlarmHappendChange;
 
             List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();
 
@@ -116,6 +117,99 @@ namespace com.mirle.ibg3k0.sc.Service
 
             transferService = app.TransferService;
         }
+
+        public void AllVhContinue()
+        {
+            try
+            {
+                List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();
+                foreach (var vh in vhs)
+                {
+                    Task.Run(() =>
+                    {
+                        try
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                               Data: $"Start Process continue vh:{vh.VEHICLE_ID} by manual",
+                               VehicleID: vh.VEHICLE_ID,
+                               CarrierID: vh.CST_ID);
+                            bool is_success = PauseRequest(vh.VEHICLE_ID, PauseEvent.Continue, OHxCPauseType.Normal);
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                               Data: $"End Process continue vh:{vh.VEHICLE_ID} by manual,Result:{is_success}",
+                               VehicleID: vh.VEHICLE_ID,
+                               CarrierID: vh.CST_ID);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error(ex, "Exception:");
+                        }
+                    }
+                    );
+                    SpinWait.SpinUntil(() => false, 200);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+        private void VehicleService_HasHIDPowerAlarmHappendChange(object sender, bool e)
+        {
+            try
+            {
+
+                if (e)
+                {
+                    List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();
+                    foreach (var vh in vhs)
+                    {
+                        if (SCUtility.isEmpty(DebugParameter.TestHIDAbnormalVhID))
+                        {
+                            //not thing...
+                        }
+                        else
+                        {
+                            if (!SCUtility.isMatche(DebugParameter.TestHIDAbnormalVhID, vh.VEHICLE_ID))
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                                   Data: $"目前測試HID Abmormal vh:{DebugParameter.TestHIDAbnormalVhID} ,不對vh:{vh.VEHICLE_ID} 下暫停",
+                                   VehicleID: vh.VEHICLE_ID,
+                                   CarrierID: vh.CST_ID);
+                                continue;
+                            }
+                        }
+                        Task.Run(() =>
+                        {
+                            try
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                                   Data: $"Start Process paused vh:{vh.VEHICLE_ID} by HID Alarm happend",
+                                   VehicleID: vh.VEHICLE_ID,
+                                   CarrierID: vh.CST_ID);
+                                bool is_success = PauseRequest(vh.VEHICLE_ID, PauseEvent.Pause, OHxCPauseType.Normal);
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                                   Data: $"End Process paused vh:{vh.VEHICLE_ID} by HID Alarm happend,Result:{is_success}",
+                                   VehicleID: vh.VEHICLE_ID,
+                                   CarrierID: vh.CST_ID);
+                            }
+                            catch (Exception ex)
+                            {
+                                logger.Error(ex, "Exception:");
+                            }
+                        }
+                        );
+                        SpinWait.SpinUntil(() => false, 200);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+
 
         private void Vh_LongTimeBlocking(object sender, EventArgs e)
         {

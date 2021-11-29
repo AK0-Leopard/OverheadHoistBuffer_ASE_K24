@@ -66,7 +66,8 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 switch (runLevel)
                 {
                     case BCFAppConstants.RUN_LEVEL.ZERO:
-                        initHID_ChargeInfo();
+                        //initHID_ChargeInfo();
+                        PowerAlarm(null, null);
                         break;
                     case BCFAppConstants.RUN_LEVEL.ONE:
                         break;
@@ -145,6 +146,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             {
                 //1.建立各個Function物件
                 recevie_function.Read(bcfApp, eqpt.EqptObjectCate, eqpt.EQPT_ID);
+                eqpt.IsNormal = recevie_function.IsNormal;
                 //2.read log
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(HIDValueDefMapAction), Device: DEVICE_NAME_MTL,
                          Data: recevie_function.ToString(),
@@ -222,18 +224,18 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             try
             {
                 ValueRead vr = null;
-                if (bcfApp.tryGetReadValueEventstring(eqpt.EqptObjectCate, eqpt.EQPT_ID, "HID_TO_OHXC_TRIGGER", out vr))
-                {
-                    vr.afterValueChange += (_sender, _e) => HID_ChargeInfo(_sender, _e);
-                }
+                //if (bcfApp.tryGetReadValueEventstring(eqpt.EqptObjectCate, eqpt.EQPT_ID, "HID_TO_OHXC_TRIGGER", out vr))
+                //{
+                //    vr.afterValueChange += (_sender, _e) => HID_ChargeInfo(_sender, _e);
+                //}
                 if (bcfApp.tryGetReadValueEventstring(eqpt.EqptObjectCate, eqpt.EQPT_ID, "HID_TO_OHXC_POWER_ALARM", out vr))
                 {
                     vr.afterValueChange += (_sender, _e) => PowerAlarm(_sender, _e);
                 }
-                if (bcfApp.tryGetReadValueEventstring(eqpt.EqptObjectCate, eqpt.EQPT_ID, "HID_TO_OHXC_TEMP_ALARM", out vr))
-                {
-                    vr.afterValueChange += (_sender, _e) => TempAlarm(_sender, _e);
-                }
+                //if (bcfApp.tryGetReadValueEventstring(eqpt.EqptObjectCate, eqpt.EQPT_ID, "HID_TO_OHXC_TEMP_ALARM", out vr))
+                //{
+                //    vr.afterValueChange += (_sender, _e) => TempAlarm(_sender, _e);
+                //}
 
             }
             catch (Exception ex)

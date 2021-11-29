@@ -37,6 +37,7 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler<EventArgs> LineStatusChange;
         public event EventHandler<EventArgs> OnLocalDisconnection;
         public event EventHandler<EventArgs> OnLocalConnection;
+        public event EventHandler<bool> HasHIDPowerAlarmHappendChange;
 
         public AK0.ProtocolFormat.VehicleControlPublishMessage.LineInfo LineInfo { get; private set; } = new AK0.ProtocolFormat.VehicleControlPublishMessage.LineInfo();
 
@@ -971,6 +972,21 @@ namespace com.mirle.ibg3k0.sc
         }
         #endregion
 
+        private bool hIDPowerAlarmHappend = false;
+        public bool HasHIDsPowerAlarmHappend
+        {
+            get { return hIDPowerAlarmHappend; }
+            set
+            {
+                if (hIDPowerAlarmHappend != value)
+                {
+                    hIDPowerAlarmHappend = value;
+                    HasHIDPowerAlarmHappendChange?.Invoke(this, value);
+                }
+            }
+
+        }
+
         private AlarmHisList alarmHisList = new AlarmHisList();
         private string current_park_type;
         public virtual string Currnet_Park_Type
@@ -1573,6 +1589,8 @@ namespace com.mirle.ibg3k0.sc
             }
 
         }
+
+
 
     }
 

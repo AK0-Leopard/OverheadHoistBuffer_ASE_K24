@@ -2131,6 +2131,15 @@ namespace com.mirle.ibg3k0.sc.Service
 
                         if (cstTimeOut != 0 && success)
                         {
+                            if (!DebugParameter.IsAutoUnloadOnvh)
+                            {
+                                TransferServiceLogger.Info
+                                (
+                                    DateTime.Now.ToString("HH:mm:ss.fff ")
+                                    + $"OHB >> OHB| 卡匣停留的逾時功能關閉中，DebugParameter.IsAutoUnloadOnvh:{DebugParameter.IsAutoUnloadOnvh} "
+                                );
+                                return;
+                            }
                             TimeSpan cstTimeSpan = DateTime.Now - DateTime.Parse(cst.TrnDT);
 
                             //if (cstTimeSpan.TotalSeconds >= cstTimeOut)   //停在Port上 30秒(之後要設成可調)，自動搬到儲位上

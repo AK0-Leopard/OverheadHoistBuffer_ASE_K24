@@ -2514,6 +2514,9 @@ namespace com.mirle.ibg3k0.sc.App
         public static string cycleRunCSTs = "";
         public static bool IsSameByAfterWay = true;
         public static bool IsAutoDriveOut = true;
+        public static bool IsCheckHIDStatus = false;
+        public static string TestHIDAbnormalVhID = "";
+        public static bool IsAutoUnloadOnvh = true;
 
         private static Boolean isforcedpassblockcontrol = false;
         public static Boolean isForcedPassBlockControl

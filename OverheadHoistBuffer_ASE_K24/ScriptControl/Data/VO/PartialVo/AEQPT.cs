@@ -270,7 +270,7 @@ namespace com.mirle.ibg3k0.sc
         }
         public string test { get; set; }
 
-
+        public bool IsNormal { get; set; } = true;
 
 
 

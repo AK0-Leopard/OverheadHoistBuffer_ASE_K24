@@ -49,6 +49,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             BCUtility.setComboboxDataSource(cmb_plcctr_Vehicle, allVh.ToArray());
             BCUtility.setComboboxDataSource(cmb_car_out_vh, allVh.ToArray());
             BCUtility.setComboboxDataSource(cmb_cycleRunVhId, allVh.ToArray());
+            BCUtility.setComboboxDataSource(cb_testHIDAbnormalVh, allVh.ToArray());
             //var cst_data = CassetteData.CassetteData_InfoList;
             //if (cst_data != null && cst_data.Count() != 0)
             //{
@@ -86,6 +87,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             txt_cycleCstID.Text = DebugParameter.cycleRunCSTs;
             cb_IsSameBayAfterWay.Checked = DebugParameter.IsSameByAfterWay;
             ch_IsAutoDriveOut.Checked = DebugParameter.IsAutoDriveOut;
+            cb_isCheckHIDStatus.Checked = DebugParameter.IsCheckHIDStatus;
+            cb_testHIDAbnormalVh.SelectedItem = DebugParameter.TestHIDAbnormalVhID;
+            cb_autoUnloadOnVh.Checked = DebugParameter.IsAutoUnloadOnvh;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -121,6 +125,13 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_Cache_data_Name.Items.Add("");
             cb_Cache_data_Name.Items.Add("APORTSTATION");
             dgv_cache_object_data.AutoGenerateColumns = false;
+
+            var hids = bcApp.SCApplication.EquipmentBLL.cache.loadHID();
+            if (hids.Count > 0)
+            {
+                string[] hid_ids = hids.Select(h => h.EQPT_ID).ToArray();
+                BCUtility.setComboboxDataSource(comboBox_HID_control, hid_ids.ToArray());
+            }
             comboBox_HID_control.SelectedIndex = 0;
 
 
@@ -754,23 +765,40 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void btn_hid_info_Click(object sender, EventArgs e)
         {
-            AEQPT eqpt_HID = bcApp.SCApplication.getEQObjCacheManager().getEquipmentByEQPTID("HID");
-            var hid_info = eqpt_HID.HID_Info;
-            if (hid_info == null) return;
+            setHIDNormalStatus(lbl_isHID1Normal, "HID1");
+            setHIDNormalStatus(lbl_isHID2Normal, "HID2");
+            setHIDNormalStatus(lbl_isHID3Normal, "HID3");
+            setHIDNormalStatus(lbl_isHID4Normal, "HID4");
+            setHIDNormalStatus(lbl_isHID5Normal, "HID5");
+
+            //AEQPT eqpt_HID = bcApp.SCApplication.getEQObjCacheManager().getEquipmentByEQPTID(comboBox_HID_control.Text);
+            //if (eqpt_HID == null) return;
+            ////var hid_info = eqpt_HID.HID_Info;
+            ////if (hid_info == null) return;
+            //Adapter.Invoke((obj) =>
+            //{
+            //    //lbl_hour_sigma_word_value.Text = hid_info.Hour_Sigma_Converted.ToString();
+            //    //lbl_vr_value.Text = hid_info.VR_Converted.ToString();
+            //    //lbl_vs_value.Text = hid_info.VS_Converted.ToString();
+            //    //lbl_vt_value.Text = hid_info.VT_Converted.ToString();
+
+            //    //lbl_ar_value.Text = hid_info.AR_Converted.ToString();
+            //    //lbl_as_value.Text = hid_info.AS_Converted.ToString();
+            //    //lbl_at_value.Text = hid_info.AT_Converted.ToString();
+
+            //    //lbl_sigma_w_value.Text = hid_info.Sigma_W_Converted.ToString();
+            //    lbl_isHID1Normal.Text = eqpt_HID.IsNormal.ToString();
+
+            //}, null);
+        }
+
+        private void setHIDNormalStatus(Label lbl, string eqID)
+        {
+            AEQPT eqpt_HID = bcApp.SCApplication.getEQObjCacheManager().getEquipmentByEQPTID(eqID);
+            if (eqpt_HID == null) return;
             Adapter.Invoke((obj) =>
             {
-                lbl_hour_sigma_word_value.Text = hid_info.Hour_Sigma_Converted.ToString();
-                lbl_vr_value.Text = hid_info.VR_Converted.ToString();
-                lbl_vs_value.Text = hid_info.VS_Converted.ToString();
-                lbl_vt_value.Text = hid_info.VT_Converted.ToString();
-
-                lbl_ar_value.Text = hid_info.AR_Converted.ToString();
-                lbl_as_value.Text = hid_info.AS_Converted.ToString();
-                lbl_at_value.Text = hid_info.AT_Converted.ToString();
-
-                lbl_sigma_w_value.Text = hid_info.Sigma_W_Converted.ToString();
-
-
+                lbl.Text = eqpt_HID.IsNormal.ToString();
 
             }, null);
         }
@@ -1361,6 +1389,26 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void ch_IsAutoDriveOut_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.IsAutoDriveOut = ch_IsAutoDriveOut.Checked;
+        }
+
+        private void cb_isCheckHIDStatus_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsCheckHIDStatus = cb_isCheckHIDStatus.Checked;
+        }
+
+        private void btn_allVhContinue_Click(object sender, EventArgs e)
+        {
+            Task.Run(() => bcApp.SCApplication.VehicleService.AllVhContinue());
+        }
+
+        private void cb_testHIDAbnormalVh_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            DebugParameter.TestHIDAbnormalVhID = cb_testHIDAbnormalVh.SelectedValue as string;
+        }
+
+        private void cb_autoUnloadOnVh_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsAutoUnloadOnvh = cb_autoUnloadOnVh.Checked;
         }
     }
 }

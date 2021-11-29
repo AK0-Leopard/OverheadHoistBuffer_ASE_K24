@@ -92,6 +92,8 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 
                 try
                 {
+
+                    scApp.LineService.HIDStatusCheck();
                     scApp.LineService.LineStatusChangeCheck();
                     scApp.LineService.refreshAlarmInfoList();
                     //doCheckEQAliveStatus();

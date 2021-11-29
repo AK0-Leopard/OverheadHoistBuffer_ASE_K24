@@ -12,7 +12,7 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
     public class HIDToOHxC_PowerAlarm : PLC_FunBase
     {
         [PLCElement(ValueName = "HID_TO_OHXC_POWER_ALARM")]
-        public bool PowerAlarmHappend;
+        public bool IsNormal;
 
     }
 
