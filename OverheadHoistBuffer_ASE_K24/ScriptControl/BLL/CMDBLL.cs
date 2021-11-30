@@ -3589,13 +3589,24 @@ namespace com.mirle.ibg3k0.sc.BLL
                 bool is_walk_able = true;
                 switch (cmd_type)
                 {
-                    case E_CMD_TYPE.Move:
-                    case E_CMD_TYPE.Unload:
-                    case E_CMD_TYPE.Move_Park:
+
                     case E_CMD_TYPE.MoveToMTL:
                     case E_CMD_TYPE.MTLHome:
                     case E_CMD_TYPE.SystemIn:
                     case E_CMD_TYPE.SystemOut:
+                        if (!scApp.GuideBLL.IsRoadWalkableForMTx(vh_current_adr, destination).isSuccess)
+                        {
+                            result = $" vh:{vh_id},want excute cmd type:{cmd_type}, current address:[{vh_current_adr}] to destination address:[{destination}] no find path";
+                            is_walk_able = false;
+                        }
+                        else
+                        {
+                            result = "";
+                        }
+                        break;
+                    case E_CMD_TYPE.Move:
+                    case E_CMD_TYPE.Unload:
+                    case E_CMD_TYPE.Move_Park:
                         if (!scApp.GuideBLL.IsRoadWalkable(vh_current_adr, destination).isSuccess)
                         {
                             result = $" vh:{vh_id},want excute cmd type:{cmd_type}, current address:[{vh_current_adr}] to destination address:[{destination}] no find path";

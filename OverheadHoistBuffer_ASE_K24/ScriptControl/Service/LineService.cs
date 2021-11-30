@@ -93,6 +93,34 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
+        public void HIDStatusCheck()
+        {
+            try
+            {
+                if (!DebugParameter.IsCheckHIDStatus)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: "OHxC",
+                       Data: $"By pass hid status check.");
+                    return;
+                }
+                var hids = scApp.EquipmentBLL.cache.loadHID();
+                var hid_notnormal = hids.Where(hid => !hid.IsNormal).ToList();
+
+
+                bool has_hid_power_alarm_happ = hid_notnormal.Count() > 0;
+                if (has_hid_power_alarm_happ)
+                {
+                    List<string> notnormal_hid_ids = hid_notnormal.Select(hid => hid.EQPT_ID).ToList();
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: "OHxC",
+                       Data: $"current has hids:{string.Join(",", notnormal_hid_ids)} is not normal.");
+                }
+                line.HasHIDsPowerAlarmHappend = has_hid_power_alarm_happ;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+        }
 
         public void refreshAlarmInfoList()
         {

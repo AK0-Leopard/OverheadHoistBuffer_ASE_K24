@@ -105,6 +105,8 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cb_autoUnloadOnVh = new System.Windows.Forms.CheckBox();
+            this.ch_IsAutoDriveOut = new System.Windows.Forms.CheckBox();
             this.cb_IsSameBayAfterWay = new System.Windows.Forms.CheckBox();
             this.cb_paassErrorVhAndTrackStatus = new System.Windows.Forms.CheckBox();
             this.cb_ignoreNTBPort = new System.Windows.Forms.CheckBox();
@@ -329,6 +331,20 @@
             this.MTLMTS_cb_box = new System.Windows.Forms.ComboBox();
             this.plc_link_btn = new System.Windows.Forms.Button();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.label71 = new System.Windows.Forms.Label();
+            this.cb_testHIDAbnormalVh = new System.Windows.Forms.ComboBox();
+            this.lbl_isHID5Normal = new System.Windows.Forms.Label();
+            this.label88 = new System.Windows.Forms.Label();
+            this.lbl_isHID4Normal = new System.Windows.Forms.Label();
+            this.label86 = new System.Windows.Forms.Label();
+            this.lbl_isHID3Normal = new System.Windows.Forms.Label();
+            this.label84 = new System.Windows.Forms.Label();
+            this.lbl_isHID2Normal = new System.Windows.Forms.Label();
+            this.label72 = new System.Windows.Forms.Label();
+            this.btn_allVhContinue = new System.Windows.Forms.Button();
+            this.lbl_isHID1Normal = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.cb_isCheckHIDStatus = new System.Windows.Forms.CheckBox();
             this.button10 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.lbl_sigma_w_value = new System.Windows.Forms.Label();
@@ -377,7 +393,16 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.ch_IsAutoDriveOut = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply01 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply02 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply03 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply05 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply06 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply07 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply08 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply09 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply10 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply11 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1324,6 +1349,7 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.cb_autoUnloadOnVh);
             this.tabPage1.Controls.Add(this.ch_IsAutoDriveOut);
             this.tabPage1.Controls.Add(this.cb_IsSameBayAfterWay);
             this.tabPage1.Controls.Add(this.cb_paassErrorVhAndTrackStatus);
@@ -1346,6 +1372,28 @@
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // cb_autoUnloadOnVh
+            // 
+            this.cb_autoUnloadOnVh.AutoSize = true;
+            this.cb_autoUnloadOnVh.Location = new System.Drawing.Point(1079, 491);
+            this.cb_autoUnloadOnVh.Name = "cb_autoUnloadOnVh";
+            this.cb_autoUnloadOnVh.Size = new System.Drawing.Size(290, 26);
+            this.cb_autoUnloadOnVh.TabIndex = 71;
+            this.cb_autoUnloadOnVh.Text = "自動車上CST卸貨至儲位開啟";
+            this.cb_autoUnloadOnVh.UseVisualStyleBackColor = true;
+            this.cb_autoUnloadOnVh.CheckedChanged += new System.EventHandler(this.cb_autoUnloadOnVh_CheckedChanged);
+            // 
+            // ch_IsAutoDriveOut
+            // 
+            this.ch_IsAutoDriveOut.AutoSize = true;
+            this.ch_IsAutoDriveOut.Location = new System.Drawing.Point(1079, 454);
+            this.ch_IsAutoDriveOut.Name = "ch_IsAutoDriveOut";
+            this.ch_IsAutoDriveOut.Size = new System.Drawing.Size(197, 26);
+            this.ch_IsAutoDriveOut.TabIndex = 70;
+            this.ch_IsAutoDriveOut.Text = "自動趕車功能開啟";
+            this.ch_IsAutoDriveOut.UseVisualStyleBackColor = true;
+            this.ch_IsAutoDriveOut.CheckedChanged += new System.EventHandler(this.ch_IsAutoDriveOut_CheckedChanged);
+            // 
             // cb_IsSameBayAfterWay
             // 
             this.cb_IsSameBayAfterWay.AutoSize = true;
@@ -1360,7 +1408,7 @@
             // cb_paassErrorVhAndTrackStatus
             // 
             this.cb_paassErrorVhAndTrackStatus.AutoSize = true;
-            this.cb_paassErrorVhAndTrackStatus.Location = new System.Drawing.Point(1051, 736);
+            this.cb_paassErrorVhAndTrackStatus.Location = new System.Drawing.Point(1053, 721);
             this.cb_paassErrorVhAndTrackStatus.Name = "cb_paassErrorVhAndTrackStatus";
             this.cb_paassErrorVhAndTrackStatus.Size = new System.Drawing.Size(344, 26);
             this.cb_paassErrorVhAndTrackStatus.TabIndex = 68;
@@ -1371,7 +1419,7 @@
             // cb_ignoreNTBPort
             // 
             this.cb_ignoreNTBPort.AutoSize = true;
-            this.cb_ignoreNTBPort.Location = new System.Drawing.Point(1051, 706);
+            this.cb_ignoreNTBPort.Location = new System.Drawing.Point(1053, 691);
             this.cb_ignoreNTBPort.Name = "cb_ignoreNTBPort";
             this.cb_ignoreNTBPort.Size = new System.Drawing.Size(249, 26);
             this.cb_ignoreNTBPort.TabIndex = 67;
@@ -1381,7 +1429,7 @@
             // 
             // btn_reloadParkingAdr
             // 
-            this.btn_reloadParkingAdr.Location = new System.Drawing.Point(1050, 788);
+            this.btn_reloadParkingAdr.Location = new System.Drawing.Point(1052, 773);
             this.btn_reloadParkingAdr.Name = "btn_reloadParkingAdr";
             this.btn_reloadParkingAdr.Size = new System.Drawing.Size(203, 33);
             this.btn_reloadParkingAdr.TabIndex = 66;
@@ -1469,7 +1517,7 @@
             // cb_passDriveOutByAreaSensor
             // 
             this.cb_passDriveOutByAreaSensor.AutoSize = true;
-            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1051, 680);
+            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1053, 665);
             this.cb_passDriveOutByAreaSensor.Name = "cb_passDriveOutByAreaSensor";
             this.cb_passDriveOutByAreaSensor.Size = new System.Drawing.Size(319, 26);
             this.cb_passDriveOutByAreaSensor.TabIndex = 60;
@@ -1480,7 +1528,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(1053, 608);
+            this.label12.Location = new System.Drawing.Point(1055, 593);
             this.label12.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(230, 22);
@@ -1489,7 +1537,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(1051, 644);
+            this.numericUpDown1.Location = new System.Drawing.Point(1053, 629);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -2678,7 +2726,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(174, 9);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(174, 4);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2696,6 +2744,16 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply11);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply10);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply09);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply08);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply07);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply06);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply05);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply03);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply02);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply01);
             this.tabPage3.Controls.Add(this.btn_receiveTraReq);
             this.tabPage3.Controls.Add(this.bt_ReelStateUpdate);
             this.tabPage3.Controls.Add(this.bt_IoPortSignalQuery);
@@ -4006,6 +4064,20 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.label71);
+            this.tabPage5.Controls.Add(this.cb_testHIDAbnormalVh);
+            this.tabPage5.Controls.Add(this.lbl_isHID5Normal);
+            this.tabPage5.Controls.Add(this.label88);
+            this.tabPage5.Controls.Add(this.lbl_isHID4Normal);
+            this.tabPage5.Controls.Add(this.label86);
+            this.tabPage5.Controls.Add(this.lbl_isHID3Normal);
+            this.tabPage5.Controls.Add(this.label84);
+            this.tabPage5.Controls.Add(this.lbl_isHID2Normal);
+            this.tabPage5.Controls.Add(this.label72);
+            this.tabPage5.Controls.Add(this.btn_allVhContinue);
+            this.tabPage5.Controls.Add(this.lbl_isHID1Normal);
+            this.tabPage5.Controls.Add(this.label18);
+            this.tabPage5.Controls.Add(this.cb_isCheckHIDStatus);
             this.tabPage5.Controls.Add(this.button10);
             this.tabPage5.Controls.Add(this.button7);
             this.tabPage5.Controls.Add(this.lbl_sigma_w_value);
@@ -4034,6 +4106,141 @@
             this.tabPage5.Text = "HID Test";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // label71
+            // 
+            this.label71.AutoSize = true;
+            this.label71.Location = new System.Drawing.Point(8, 513);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(167, 22);
+            this.label71.TabIndex = 84;
+            this.label71.Text = "指定測試的車子:";
+            // 
+            // cb_testHIDAbnormalVh
+            // 
+            this.cb_testHIDAbnormalVh.FormattingEnabled = true;
+            this.cb_testHIDAbnormalVh.Location = new System.Drawing.Point(184, 510);
+            this.cb_testHIDAbnormalVh.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.cb_testHIDAbnormalVh.Name = "cb_testHIDAbnormalVh";
+            this.cb_testHIDAbnormalVh.Size = new System.Drawing.Size(197, 30);
+            this.cb_testHIDAbnormalVh.TabIndex = 83;
+            this.cb_testHIDAbnormalVh.SelectionChangeCommitted += new System.EventHandler(this.cb_testHIDAbnormalVh_SelectionChangeCommitted);
+            // 
+            // lbl_isHID5Normal
+            // 
+            this.lbl_isHID5Normal.AutoSize = true;
+            this.lbl_isHID5Normal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_isHID5Normal.Location = new System.Drawing.Point(209, 330);
+            this.lbl_isHID5Normal.Name = "lbl_isHID5Normal";
+            this.lbl_isHID5Normal.Size = new System.Drawing.Size(212, 24);
+            this.lbl_isHID5Normal.TabIndex = 82;
+            this.lbl_isHID5Normal.Text = "                    ";
+            // 
+            // label88
+            // 
+            this.label88.AutoSize = true;
+            this.label88.Location = new System.Drawing.Point(43, 330);
+            this.label88.Name = "label88";
+            this.label88.Size = new System.Drawing.Size(160, 22);
+            this.label88.TabIndex = 81;
+            this.label88.Text = "HID5 Is Normal:";
+            // 
+            // lbl_isHID4Normal
+            // 
+            this.lbl_isHID4Normal.AutoSize = true;
+            this.lbl_isHID4Normal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_isHID4Normal.Location = new System.Drawing.Point(209, 283);
+            this.lbl_isHID4Normal.Name = "lbl_isHID4Normal";
+            this.lbl_isHID4Normal.Size = new System.Drawing.Size(212, 24);
+            this.lbl_isHID4Normal.TabIndex = 80;
+            this.lbl_isHID4Normal.Text = "                    ";
+            // 
+            // label86
+            // 
+            this.label86.AutoSize = true;
+            this.label86.Location = new System.Drawing.Point(43, 283);
+            this.label86.Name = "label86";
+            this.label86.Size = new System.Drawing.Size(160, 22);
+            this.label86.TabIndex = 79;
+            this.label86.Text = "HID4 Is Normal:";
+            // 
+            // lbl_isHID3Normal
+            // 
+            this.lbl_isHID3Normal.AutoSize = true;
+            this.lbl_isHID3Normal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_isHID3Normal.Location = new System.Drawing.Point(209, 239);
+            this.lbl_isHID3Normal.Name = "lbl_isHID3Normal";
+            this.lbl_isHID3Normal.Size = new System.Drawing.Size(212, 24);
+            this.lbl_isHID3Normal.TabIndex = 78;
+            this.lbl_isHID3Normal.Text = "                    ";
+            // 
+            // label84
+            // 
+            this.label84.AutoSize = true;
+            this.label84.Location = new System.Drawing.Point(43, 239);
+            this.label84.Name = "label84";
+            this.label84.Size = new System.Drawing.Size(160, 22);
+            this.label84.TabIndex = 77;
+            this.label84.Text = "HID3 Is Normal:";
+            // 
+            // lbl_isHID2Normal
+            // 
+            this.lbl_isHID2Normal.AutoSize = true;
+            this.lbl_isHID2Normal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_isHID2Normal.Location = new System.Drawing.Point(209, 198);
+            this.lbl_isHID2Normal.Name = "lbl_isHID2Normal";
+            this.lbl_isHID2Normal.Size = new System.Drawing.Size(212, 24);
+            this.lbl_isHID2Normal.TabIndex = 76;
+            this.lbl_isHID2Normal.Text = "                    ";
+            // 
+            // label72
+            // 
+            this.label72.AutoSize = true;
+            this.label72.Location = new System.Drawing.Point(43, 198);
+            this.label72.Name = "label72";
+            this.label72.Size = new System.Drawing.Size(160, 22);
+            this.label72.TabIndex = 75;
+            this.label72.Text = "HID2 Is Normal:";
+            // 
+            // btn_allVhContinue
+            // 
+            this.btn_allVhContinue.Location = new System.Drawing.Point(38, 437);
+            this.btn_allVhContinue.Name = "btn_allVhContinue";
+            this.btn_allVhContinue.Size = new System.Drawing.Size(266, 33);
+            this.btn_allVhContinue.TabIndex = 74;
+            this.btn_allVhContinue.Text = "All Vh Continue(Normal)";
+            this.btn_allVhContinue.UseVisualStyleBackColor = true;
+            this.btn_allVhContinue.Click += new System.EventHandler(this.btn_allVhContinue_Click);
+            // 
+            // lbl_isHID1Normal
+            // 
+            this.lbl_isHID1Normal.AutoSize = true;
+            this.lbl_isHID1Normal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_isHID1Normal.Location = new System.Drawing.Point(209, 153);
+            this.lbl_isHID1Normal.Name = "lbl_isHID1Normal";
+            this.lbl_isHID1Normal.Size = new System.Drawing.Size(212, 24);
+            this.lbl_isHID1Normal.TabIndex = 73;
+            this.lbl_isHID1Normal.Text = "                    ";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(43, 153);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(160, 22);
+            this.label18.TabIndex = 72;
+            this.label18.Text = "HID1 Is Normal:";
+            // 
+            // cb_isCheckHIDStatus
+            // 
+            this.cb_isCheckHIDStatus.AutoSize = true;
+            this.cb_isCheckHIDStatus.Location = new System.Drawing.Point(38, 394);
+            this.cb_isCheckHIDStatus.Name = "cb_isCheckHIDStatus";
+            this.cb_isCheckHIDStatus.Size = new System.Drawing.Size(227, 26);
+            this.cb_isCheckHIDStatus.TabIndex = 71;
+            this.cb_isCheckHIDStatus.Text = "檢查HID狀態功能開啟";
+            this.cb_isCheckHIDStatus.UseVisualStyleBackColor = true;
+            this.cb_isCheckHIDStatus.CheckedChanged += new System.EventHandler(this.cb_isCheckHIDStatus_CheckedChanged);
+            // 
             // button10
             // 
             this.button10.Location = new System.Drawing.Point(467, 115);
@@ -4042,6 +4249,7 @@
             this.button10.TabIndex = 21;
             this.button10.Text = "Log Test (Temp)";
             this.button10.UseVisualStyleBackColor = true;
+            this.button10.Visible = false;
             this.button10.Click += new System.EventHandler(this.button10_Click_1);
             // 
             // button7
@@ -4052,163 +4260,180 @@
             this.button7.TabIndex = 20;
             this.button7.Text = "Log Test (Power)";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Visible = false;
             this.button7.Click += new System.EventHandler(this.button7_Click_2);
             // 
             // lbl_sigma_w_value
             // 
             this.lbl_sigma_w_value.AutoSize = true;
             this.lbl_sigma_w_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbl_sigma_w_value.Location = new System.Drawing.Point(210, 403);
+            this.lbl_sigma_w_value.Location = new System.Drawing.Point(677, 425);
             this.lbl_sigma_w_value.Name = "lbl_sigma_w_value";
             this.lbl_sigma_w_value.Size = new System.Drawing.Size(212, 24);
             this.lbl_sigma_w_value.TabIndex = 19;
             this.lbl_sigma_w_value.Text = "                    ";
+            this.lbl_sigma_w_value.Visible = false;
             // 
             // lbl_at_value
             // 
             this.lbl_at_value.AutoSize = true;
             this.lbl_at_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbl_at_value.Location = new System.Drawing.Point(210, 364);
+            this.lbl_at_value.Location = new System.Drawing.Point(677, 386);
             this.lbl_at_value.Name = "lbl_at_value";
             this.lbl_at_value.Size = new System.Drawing.Size(212, 24);
             this.lbl_at_value.TabIndex = 18;
             this.lbl_at_value.Text = "                    ";
+            this.lbl_at_value.Visible = false;
             // 
             // lbl_as_value
             // 
             this.lbl_as_value.AutoSize = true;
             this.lbl_as_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbl_as_value.Location = new System.Drawing.Point(210, 336);
+            this.lbl_as_value.Location = new System.Drawing.Point(677, 358);
             this.lbl_as_value.Name = "lbl_as_value";
             this.lbl_as_value.Size = new System.Drawing.Size(212, 24);
             this.lbl_as_value.TabIndex = 17;
             this.lbl_as_value.Text = "                    ";
+            this.lbl_as_value.Visible = false;
             // 
             // lbl_ar_value
             // 
             this.lbl_ar_value.AutoSize = true;
             this.lbl_ar_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbl_ar_value.Location = new System.Drawing.Point(210, 308);
+            this.lbl_ar_value.Location = new System.Drawing.Point(677, 330);
             this.lbl_ar_value.Name = "lbl_ar_value";
             this.lbl_ar_value.Size = new System.Drawing.Size(212, 24);
             this.lbl_ar_value.TabIndex = 16;
             this.lbl_ar_value.Text = "                    ";
+            this.lbl_ar_value.Visible = false;
             // 
             // lbl_vt_value
             // 
             this.lbl_vt_value.AutoSize = true;
             this.lbl_vt_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbl_vt_value.Location = new System.Drawing.Point(210, 276);
+            this.lbl_vt_value.Location = new System.Drawing.Point(677, 298);
             this.lbl_vt_value.Name = "lbl_vt_value";
             this.lbl_vt_value.Size = new System.Drawing.Size(212, 24);
             this.lbl_vt_value.TabIndex = 15;
             this.lbl_vt_value.Text = "                    ";
+            this.lbl_vt_value.Visible = false;
             // 
             // lbl_vs_value
             // 
             this.lbl_vs_value.AutoSize = true;
             this.lbl_vs_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbl_vs_value.Location = new System.Drawing.Point(210, 250);
+            this.lbl_vs_value.Location = new System.Drawing.Point(677, 272);
             this.lbl_vs_value.Name = "lbl_vs_value";
             this.lbl_vs_value.Size = new System.Drawing.Size(212, 24);
             this.lbl_vs_value.TabIndex = 14;
             this.lbl_vs_value.Text = "                    ";
+            this.lbl_vs_value.Visible = false;
             // 
             // lbl_vr_value
             // 
             this.lbl_vr_value.AutoSize = true;
             this.lbl_vr_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbl_vr_value.Location = new System.Drawing.Point(210, 223);
+            this.lbl_vr_value.Location = new System.Drawing.Point(677, 245);
             this.lbl_vr_value.Name = "lbl_vr_value";
             this.lbl_vr_value.Size = new System.Drawing.Size(212, 24);
             this.lbl_vr_value.TabIndex = 13;
             this.lbl_vr_value.Text = "                    ";
+            this.lbl_vr_value.Visible = false;
             // 
             // lbl_hour_sigma_word_value
             // 
             this.lbl_hour_sigma_word_value.AutoSize = true;
             this.lbl_hour_sigma_word_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbl_hour_sigma_word_value.Location = new System.Drawing.Point(210, 188);
+            this.lbl_hour_sigma_word_value.Location = new System.Drawing.Point(677, 210);
             this.lbl_hour_sigma_word_value.Name = "lbl_hour_sigma_word_value";
             this.lbl_hour_sigma_word_value.Size = new System.Drawing.Size(212, 24);
             this.lbl_hour_sigma_word_value.TabIndex = 12;
             this.lbl_hour_sigma_word_value.Text = "                    ";
+            this.lbl_hour_sigma_word_value.Visible = false;
             // 
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(164, 405);
+            this.label58.Location = new System.Drawing.Point(631, 427);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(40, 22);
             this.label58.TabIndex = 11;
             this.label58.Text = "ΣW:";
+            this.label58.Visible = false;
             // 
             // label57
             // 
             this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(164, 364);
+            this.label57.Location = new System.Drawing.Point(631, 386);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(40, 22);
             this.label57.TabIndex = 10;
             this.label57.Text = "AT:";
+            this.label57.Visible = false;
             // 
             // label56
             // 
             this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(164, 338);
+            this.label56.Location = new System.Drawing.Point(631, 360);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(40, 22);
             this.label56.TabIndex = 9;
             this.label56.Text = "AS:";
+            this.label56.Visible = false;
             // 
             // label55
             // 
             this.label55.AutoSize = true;
-            this.label55.Location = new System.Drawing.Point(164, 312);
+            this.label55.Location = new System.Drawing.Point(631, 334);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(40, 22);
             this.label55.TabIndex = 8;
             this.label55.Text = "AR:";
+            this.label55.Visible = false;
             // 
             // label54
             // 
             this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(164, 276);
+            this.label54.Location = new System.Drawing.Point(631, 298);
             this.label54.Name = "label54";
             this.label54.Size = new System.Drawing.Size(40, 22);
             this.label54.TabIndex = 7;
             this.label54.Text = "VT:";
+            this.label54.Visible = false;
             // 
             // label52
             // 
             this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(164, 252);
+            this.label52.Location = new System.Drawing.Point(631, 274);
             this.label52.Name = "label52";
             this.label52.Size = new System.Drawing.Size(40, 22);
             this.label52.TabIndex = 6;
             this.label52.Text = "VS:";
+            this.label52.Visible = false;
             // 
             // label50
             // 
             this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(164, 227);
+            this.label50.Location = new System.Drawing.Point(631, 249);
             this.label50.Name = "label50";
             this.label50.Size = new System.Drawing.Size(40, 22);
             this.label50.TabIndex = 5;
             this.label50.Text = "VR:";
+            this.label50.Visible = false;
             // 
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(34, 188);
+            this.label48.Location = new System.Drawing.Point(501, 210);
             this.label48.Name = "label48";
             this.label48.Size = new System.Drawing.Size(170, 22);
             this.label48.TabIndex = 4;
             this.label48.Text = "Hour(Σ) Hi word:";
+            this.label48.Visible = false;
             // 
             // btn_hid_info
             // 
-            this.btn_hid_info.Location = new System.Drawing.Point(38, 101);
+            this.btn_hid_info.Location = new System.Drawing.Point(38, 91);
             this.btn_hid_info.Name = "btn_hid_info";
             this.btn_hid_info.Size = new System.Drawing.Size(228, 47);
             this.btn_hid_info.TabIndex = 3;
@@ -4235,6 +4460,7 @@
             this.btn_SendHIDControl.TabIndex = 0;
             this.btn_SendHIDControl.Text = "Send HID ON/OFF";
             this.btn_SendHIDControl.UseVisualStyleBackColor = true;
+            this.btn_SendHIDControl.Visible = false;
             this.btn_SendHIDControl.Click += new System.EventHandler(this.btn_SendHIDControl_Click);
             // 
             // tabPage7
@@ -4613,16 +4839,115 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // ch_IsAutoDriveOut
+            // cb_unloadArrivePassReply01
             // 
-            this.ch_IsAutoDriveOut.AutoSize = true;
-            this.ch_IsAutoDriveOut.Location = new System.Drawing.Point(1079, 454);
-            this.ch_IsAutoDriveOut.Name = "ch_IsAutoDriveOut";
-            this.ch_IsAutoDriveOut.Size = new System.Drawing.Size(197, 26);
-            this.ch_IsAutoDriveOut.TabIndex = 70;
-            this.ch_IsAutoDriveOut.Text = "自動趕車功能開啟";
-            this.ch_IsAutoDriveOut.UseVisualStyleBackColor = true;
-            this.ch_IsAutoDriveOut.CheckedChanged += new System.EventHandler(this.ch_IsAutoDriveOut_CheckedChanged);
+            this.cb_unloadArrivePassReply01.AutoSize = true;
+            this.cb_unloadArrivePassReply01.Location = new System.Drawing.Point(10, 291);
+            this.cb_unloadArrivePassReply01.Name = "cb_unloadArrivePassReply01";
+            this.cb_unloadArrivePassReply01.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply01.TabIndex = 59;
+            this.cb_unloadArrivePassReply01.Text = "Unload Arrive Reply Pass(OHT01)";
+            this.cb_unloadArrivePassReply01.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply01.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply01_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply02
+            // 
+            this.cb_unloadArrivePassReply02.AutoSize = true;
+            this.cb_unloadArrivePassReply02.Location = new System.Drawing.Point(10, 323);
+            this.cb_unloadArrivePassReply02.Name = "cb_unloadArrivePassReply02";
+            this.cb_unloadArrivePassReply02.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply02.TabIndex = 60;
+            this.cb_unloadArrivePassReply02.Text = "Unload Arrive Reply Pass(OHT02)";
+            this.cb_unloadArrivePassReply02.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply02.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply02_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply03
+            // 
+            this.cb_unloadArrivePassReply03.AutoSize = true;
+            this.cb_unloadArrivePassReply03.Location = new System.Drawing.Point(10, 355);
+            this.cb_unloadArrivePassReply03.Name = "cb_unloadArrivePassReply03";
+            this.cb_unloadArrivePassReply03.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply03.TabIndex = 61;
+            this.cb_unloadArrivePassReply03.Text = "Unload Arrive Reply Pass(OHT03)";
+            this.cb_unloadArrivePassReply03.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply03.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply03_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply05
+            // 
+            this.cb_unloadArrivePassReply05.AutoSize = true;
+            this.cb_unloadArrivePassReply05.Location = new System.Drawing.Point(10, 387);
+            this.cb_unloadArrivePassReply05.Name = "cb_unloadArrivePassReply05";
+            this.cb_unloadArrivePassReply05.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply05.TabIndex = 62;
+            this.cb_unloadArrivePassReply05.Text = "Unload Arrive Reply Pass(OHT05)";
+            this.cb_unloadArrivePassReply05.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply05.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply05_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply06
+            // 
+            this.cb_unloadArrivePassReply06.AutoSize = true;
+            this.cb_unloadArrivePassReply06.Location = new System.Drawing.Point(10, 419);
+            this.cb_unloadArrivePassReply06.Name = "cb_unloadArrivePassReply06";
+            this.cb_unloadArrivePassReply06.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply06.TabIndex = 63;
+            this.cb_unloadArrivePassReply06.Text = "Unload Arrive Reply Pass(OHT06)";
+            this.cb_unloadArrivePassReply06.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply06.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply06_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply07
+            // 
+            this.cb_unloadArrivePassReply07.AutoSize = true;
+            this.cb_unloadArrivePassReply07.Location = new System.Drawing.Point(10, 451);
+            this.cb_unloadArrivePassReply07.Name = "cb_unloadArrivePassReply07";
+            this.cb_unloadArrivePassReply07.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply07.TabIndex = 64;
+            this.cb_unloadArrivePassReply07.Text = "Unload Arrive Reply Pass(OHT07)";
+            this.cb_unloadArrivePassReply07.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply07.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply07_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply08
+            // 
+            this.cb_unloadArrivePassReply08.AutoSize = true;
+            this.cb_unloadArrivePassReply08.Location = new System.Drawing.Point(10, 484);
+            this.cb_unloadArrivePassReply08.Name = "cb_unloadArrivePassReply08";
+            this.cb_unloadArrivePassReply08.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply08.TabIndex = 65;
+            this.cb_unloadArrivePassReply08.Text = "Unload Arrive Reply Pass(OHT08)";
+            this.cb_unloadArrivePassReply08.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply08.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply08_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply09
+            // 
+            this.cb_unloadArrivePassReply09.AutoSize = true;
+            this.cb_unloadArrivePassReply09.Location = new System.Drawing.Point(10, 516);
+            this.cb_unloadArrivePassReply09.Name = "cb_unloadArrivePassReply09";
+            this.cb_unloadArrivePassReply09.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply09.TabIndex = 66;
+            this.cb_unloadArrivePassReply09.Text = "Unload Arrive Reply Pass(OHT09)";
+            this.cb_unloadArrivePassReply09.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply09.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply09_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply10
+            // 
+            this.cb_unloadArrivePassReply10.AutoSize = true;
+            this.cb_unloadArrivePassReply10.Location = new System.Drawing.Point(10, 548);
+            this.cb_unloadArrivePassReply10.Name = "cb_unloadArrivePassReply10";
+            this.cb_unloadArrivePassReply10.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply10.TabIndex = 67;
+            this.cb_unloadArrivePassReply10.Text = "Unload Arrive Reply Pass(OHT10)";
+            this.cb_unloadArrivePassReply10.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply10.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply10_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply11
+            // 
+            this.cb_unloadArrivePassReply11.AutoSize = true;
+            this.cb_unloadArrivePassReply11.Location = new System.Drawing.Point(10, 580);
+            this.cb_unloadArrivePassReply11.Name = "cb_unloadArrivePassReply11";
+            this.cb_unloadArrivePassReply11.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply11.TabIndex = 68;
+            this.cb_unloadArrivePassReply11.Text = "Unload Arrive Reply Pass(OHT11)";
+            this.cb_unloadArrivePassReply11.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply11.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply11_CheckedChanged);
             // 
             // DebugForm
             // 
@@ -5057,5 +5382,30 @@
         private System.Windows.Forms.TextBox txt_cycleCstID;
         private System.Windows.Forms.CheckBox cb_IsSameBayAfterWay;
         private System.Windows.Forms.CheckBox ch_IsAutoDriveOut;
+        private System.Windows.Forms.CheckBox cb_isCheckHIDStatus;
+        private System.Windows.Forms.Label lbl_isHID1Normal;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button btn_allVhContinue;
+        private System.Windows.Forms.Label lbl_isHID5Normal;
+        private System.Windows.Forms.Label label88;
+        private System.Windows.Forms.Label lbl_isHID4Normal;
+        private System.Windows.Forms.Label label86;
+        private System.Windows.Forms.Label lbl_isHID3Normal;
+        private System.Windows.Forms.Label label84;
+        private System.Windows.Forms.Label lbl_isHID2Normal;
+        private System.Windows.Forms.Label label72;
+        private System.Windows.Forms.Label label71;
+        private System.Windows.Forms.ComboBox cb_testHIDAbnormalVh;
+        private System.Windows.Forms.CheckBox cb_autoUnloadOnVh;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply05;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply03;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply02;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply01;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply11;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply10;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply09;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply08;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply07;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply06;
     }
 }

@@ -94,6 +94,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             scApp = app;
             SubscriptionPositionChangeEvent();
+            scApp.getEQObjCacheManager().getLine().HasHIDPowerAlarmHappendChange += VehicleService_HasHIDPowerAlarmHappendChange;
 
             List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();
 
@@ -116,6 +117,99 @@ namespace com.mirle.ibg3k0.sc.Service
 
             transferService = app.TransferService;
         }
+
+        public void AllVhContinue()
+        {
+            try
+            {
+                List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();
+                foreach (var vh in vhs)
+                {
+                    Task.Run(() =>
+                    {
+                        try
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                               Data: $"Start Process continue vh:{vh.VEHICLE_ID} by manual",
+                               VehicleID: vh.VEHICLE_ID,
+                               CarrierID: vh.CST_ID);
+                            bool is_success = PauseRequest(vh.VEHICLE_ID, PauseEvent.Continue, OHxCPauseType.Normal);
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                               Data: $"End Process continue vh:{vh.VEHICLE_ID} by manual,Result:{is_success}",
+                               VehicleID: vh.VEHICLE_ID,
+                               CarrierID: vh.CST_ID);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error(ex, "Exception:");
+                        }
+                    }
+                    );
+                    SpinWait.SpinUntil(() => false, 200);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+        private void VehicleService_HasHIDPowerAlarmHappendChange(object sender, bool e)
+        {
+            try
+            {
+
+                if (e)
+                {
+                    List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();
+                    foreach (var vh in vhs)
+                    {
+                        if (SCUtility.isEmpty(DebugParameter.TestHIDAbnormalVhID))
+                        {
+                            //not thing...
+                        }
+                        else
+                        {
+                            if (!SCUtility.isMatche(DebugParameter.TestHIDAbnormalVhID, vh.VEHICLE_ID))
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                                   Data: $"目前測試HID Abmormal vh:{DebugParameter.TestHIDAbnormalVhID} ,不對vh:{vh.VEHICLE_ID} 下暫停",
+                                   VehicleID: vh.VEHICLE_ID,
+                                   CarrierID: vh.CST_ID);
+                                continue;
+                            }
+                        }
+                        Task.Run(() =>
+                        {
+                            try
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                                   Data: $"Start Process paused vh:{vh.VEHICLE_ID} by HID Alarm happend",
+                                   VehicleID: vh.VEHICLE_ID,
+                                   CarrierID: vh.CST_ID);
+                                bool is_success = PauseRequest(vh.VEHICLE_ID, PauseEvent.Pause, OHxCPauseType.Normal);
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                                   Data: $"End Process paused vh:{vh.VEHICLE_ID} by HID Alarm happend,Result:{is_success}",
+                                   VehicleID: vh.VEHICLE_ID,
+                                   CarrierID: vh.CST_ID);
+                            }
+                            catch (Exception ex)
+                            {
+                                logger.Error(ex, "Exception:");
+                            }
+                        }
+                        );
+                        SpinWait.SpinUntil(() => false, 200);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+
 
         private void Vh_LongTimeBlocking(object sender, EventArgs e)
         {
@@ -3546,6 +3640,14 @@ namespace com.mirle.ibg3k0.sc.Service
                     break;
 
                 case EventType.UnloadArrivals:
+                    if (eqpt.IsUnloadArriveByPassReply)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"vh:{eqpt.VEHICLE_ID} unlaod arrive reply by pass, is open.eqpt.IsUnloadArriveByPassReply:{eqpt.IsUnloadArriveByPassReply}",
+                           VehicleID: eqpt.VEHICLE_ID);
+                        return;
+                    }
+
                     if (!SCUtility.isEmpty(eqpt.MCS_CMD))
                     {
                         scApp.CMDBLL.updateCMD_MCS_CmdStatus2UnloadArrive(eqpt.MCS_CMD);
@@ -4526,28 +4628,28 @@ namespace com.mirle.ibg3k0.sc.Service
         public bool doAskVhToSystemOutAddress(string vhID, string carOutBufferAdr)
         {
             bool isSuccess = true;
-            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.SystemOut, destination: carOutBufferAdr);
+            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.SystemOut, destination_address: carOutBufferAdr);
             return isSuccess;
         }
 
         public bool doAskVhToMaintainsAddress(string vhID, string mtlAdtID)
         {
             bool isSuccess = true;
-            isSuccess = isSuccess && scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.MoveToMTL, destination: mtlAdtID);
+            isSuccess = isSuccess && scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.MoveToMTL, destination_address: mtlAdtID);
             return isSuccess;
         }
 
         public bool doAskVhToCarInBufferAddress(string vhID, string carInBufferAdr)
         {
             bool isSuccess = true;
-            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.MTLHome, destination: carInBufferAdr);
+            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.MTLHome, destination_address: carInBufferAdr);
             return isSuccess;
         }
 
         public bool doAskVhToSystemInAddress(string vhID, string systemInAdr)
         {
             bool isSuccess = true;
-            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.SystemIn, destination: systemInAdr);
+            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.SystemIn, destination_address: systemInAdr);
             return isSuccess;
         }
 

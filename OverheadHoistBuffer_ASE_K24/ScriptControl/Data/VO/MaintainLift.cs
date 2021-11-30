@@ -109,7 +109,20 @@ namespace com.mirle.ibg3k0.sc.Data.VO
                 }
             }
         }
-        public bool IsAlive { get { return base.Is_Eq_Alive; } set { } }
+
+        //public bool IsAlive { get { return base.Is_Eq_Alive; } set { } }
+        double MAX_ALLOW_ALIVE_NOT_CHANGE_TIME = 10;
+        public bool IsAlive
+        {
+            get
+            {
+                // 12:00:00 + 10 = 12:00:10 > 12:00:05
+                // 12:00:00 + 10 = 12:00:10 > 12:00:11
+                return base.Eq_Alive_Last_Change_time.AddSeconds(MAX_ALLOW_ALIVE_NOT_CHANGE_TIME) > DateTime.Now;
+                //base.Is_Eq_Alive;
+            }
+            set { }
+        }
 
         public (bool isSendSuccess, UInt16 returnCode) carOutRequest(UInt16 carNum)
         {
