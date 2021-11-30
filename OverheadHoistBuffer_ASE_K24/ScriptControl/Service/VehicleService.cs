@@ -3524,6 +3524,14 @@ namespace com.mirle.ibg3k0.sc.Service
                     break;
 
                 case EventType.UnloadArrivals:
+                    if (eqpt.IsUnloadArriveByPassReply)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"vh:{eqpt.VEHICLE_ID} unlaod arrive reply by pass, is open.eqpt.IsUnloadArriveByPassReply:{eqpt.IsUnloadArriveByPassReply}",
+                           VehicleID: eqpt.VEHICLE_ID);
+                        return;
+                    }
+
                     if (!SCUtility.isEmpty(eqpt.MCS_CMD))
                     {
                         scApp.CMDBLL.updateCMD_MCS_CmdStatus2UnloadArrive(eqpt.MCS_CMD);
@@ -4496,28 +4504,28 @@ namespace com.mirle.ibg3k0.sc.Service
         public bool doAskVhToSystemOutAddress(string vhID, string carOutBufferAdr)
         {
             bool isSuccess = true;
-            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.SystemOut, destination: carOutBufferAdr);
+            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.SystemOut, destination_address: carOutBufferAdr);
             return isSuccess;
         }
 
         public bool doAskVhToMaintainsAddress(string vhID, string mtlAdtID)
         {
             bool isSuccess = true;
-            isSuccess = isSuccess && scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.MoveToMTL, destination: mtlAdtID);
+            isSuccess = isSuccess && scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.MoveToMTL, destination_address: mtlAdtID);
             return isSuccess;
         }
 
         public bool doAskVhToCarInBufferAddress(string vhID, string carInBufferAdr)
         {
             bool isSuccess = true;
-            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.MTLHome, destination: carInBufferAdr);
+            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.MTLHome, destination_address: carInBufferAdr);
             return isSuccess;
         }
 
         public bool doAskVhToSystemInAddress(string vhID, string systemInAdr)
         {
             bool isSuccess = true;
-            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.SystemIn, destination: systemInAdr);
+            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.SystemIn, destination_address: systemInAdr);
             return isSuccess;
         }
 

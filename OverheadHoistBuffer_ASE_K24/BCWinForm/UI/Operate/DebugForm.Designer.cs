@@ -105,6 +105,7 @@
             this.uctl_SendAllFun = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cb_autoUnloadOnVh = new System.Windows.Forms.CheckBox();
             this.ch_IsAutoDriveOut = new System.Windows.Forms.CheckBox();
             this.cb_IsSameBayAfterWay = new System.Windows.Forms.CheckBox();
             this.cb_paassErrorVhAndTrackStatus = new System.Windows.Forms.CheckBox();
@@ -392,7 +393,16 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.cb_autoUnloadOnVh = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply01 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply02 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply03 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply05 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply06 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply07 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply08 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply09 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply10 = new System.Windows.Forms.CheckBox();
+            this.cb_unloadArrivePassReply11 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1361,6 +1371,17 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // cb_autoUnloadOnVh
+            // 
+            this.cb_autoUnloadOnVh.AutoSize = true;
+            this.cb_autoUnloadOnVh.Location = new System.Drawing.Point(1079, 491);
+            this.cb_autoUnloadOnVh.Name = "cb_autoUnloadOnVh";
+            this.cb_autoUnloadOnVh.Size = new System.Drawing.Size(290, 26);
+            this.cb_autoUnloadOnVh.TabIndex = 71;
+            this.cb_autoUnloadOnVh.Text = "自動車上CST卸貨至儲位開啟";
+            this.cb_autoUnloadOnVh.UseVisualStyleBackColor = true;
+            this.cb_autoUnloadOnVh.CheckedChanged += new System.EventHandler(this.cb_autoUnloadOnVh_CheckedChanged);
             // 
             // ch_IsAutoDriveOut
             // 
@@ -2705,7 +2726,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(174, 9);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(174, 4);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2723,6 +2744,16 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply11);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply10);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply09);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply08);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply07);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply06);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply05);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply03);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply02);
+            this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply01);
             this.tabPage3.Controls.Add(this.btn_receiveTraReq);
             this.tabPage3.Controls.Add(this.bt_ReelStateUpdate);
             this.tabPage3.Controls.Add(this.bt_IoPortSignalQuery);
@@ -4808,16 +4839,115 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // cb_autoUnloadOnVh
+            // cb_unloadArrivePassReply01
             // 
-            this.cb_autoUnloadOnVh.AutoSize = true;
-            this.cb_autoUnloadOnVh.Location = new System.Drawing.Point(1079, 491);
-            this.cb_autoUnloadOnVh.Name = "cb_autoUnloadOnVh";
-            this.cb_autoUnloadOnVh.Size = new System.Drawing.Size(290, 26);
-            this.cb_autoUnloadOnVh.TabIndex = 71;
-            this.cb_autoUnloadOnVh.Text = "自動車上CST卸貨至儲位開啟";
-            this.cb_autoUnloadOnVh.UseVisualStyleBackColor = true;
-            this.cb_autoUnloadOnVh.CheckedChanged += new System.EventHandler(this.cb_autoUnloadOnVh_CheckedChanged);
+            this.cb_unloadArrivePassReply01.AutoSize = true;
+            this.cb_unloadArrivePassReply01.Location = new System.Drawing.Point(10, 291);
+            this.cb_unloadArrivePassReply01.Name = "cb_unloadArrivePassReply01";
+            this.cb_unloadArrivePassReply01.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply01.TabIndex = 59;
+            this.cb_unloadArrivePassReply01.Text = "Unload Arrive Reply Pass(OHT01)";
+            this.cb_unloadArrivePassReply01.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply01.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply01_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply02
+            // 
+            this.cb_unloadArrivePassReply02.AutoSize = true;
+            this.cb_unloadArrivePassReply02.Location = new System.Drawing.Point(10, 323);
+            this.cb_unloadArrivePassReply02.Name = "cb_unloadArrivePassReply02";
+            this.cb_unloadArrivePassReply02.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply02.TabIndex = 60;
+            this.cb_unloadArrivePassReply02.Text = "Unload Arrive Reply Pass(OHT02)";
+            this.cb_unloadArrivePassReply02.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply02.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply02_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply03
+            // 
+            this.cb_unloadArrivePassReply03.AutoSize = true;
+            this.cb_unloadArrivePassReply03.Location = new System.Drawing.Point(10, 355);
+            this.cb_unloadArrivePassReply03.Name = "cb_unloadArrivePassReply03";
+            this.cb_unloadArrivePassReply03.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply03.TabIndex = 61;
+            this.cb_unloadArrivePassReply03.Text = "Unload Arrive Reply Pass(OHT03)";
+            this.cb_unloadArrivePassReply03.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply03.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply03_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply05
+            // 
+            this.cb_unloadArrivePassReply05.AutoSize = true;
+            this.cb_unloadArrivePassReply05.Location = new System.Drawing.Point(10, 387);
+            this.cb_unloadArrivePassReply05.Name = "cb_unloadArrivePassReply05";
+            this.cb_unloadArrivePassReply05.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply05.TabIndex = 62;
+            this.cb_unloadArrivePassReply05.Text = "Unload Arrive Reply Pass(OHT05)";
+            this.cb_unloadArrivePassReply05.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply05.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply05_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply06
+            // 
+            this.cb_unloadArrivePassReply06.AutoSize = true;
+            this.cb_unloadArrivePassReply06.Location = new System.Drawing.Point(10, 419);
+            this.cb_unloadArrivePassReply06.Name = "cb_unloadArrivePassReply06";
+            this.cb_unloadArrivePassReply06.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply06.TabIndex = 63;
+            this.cb_unloadArrivePassReply06.Text = "Unload Arrive Reply Pass(OHT06)";
+            this.cb_unloadArrivePassReply06.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply06.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply06_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply07
+            // 
+            this.cb_unloadArrivePassReply07.AutoSize = true;
+            this.cb_unloadArrivePassReply07.Location = new System.Drawing.Point(10, 451);
+            this.cb_unloadArrivePassReply07.Name = "cb_unloadArrivePassReply07";
+            this.cb_unloadArrivePassReply07.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply07.TabIndex = 64;
+            this.cb_unloadArrivePassReply07.Text = "Unload Arrive Reply Pass(OHT07)";
+            this.cb_unloadArrivePassReply07.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply07.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply07_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply08
+            // 
+            this.cb_unloadArrivePassReply08.AutoSize = true;
+            this.cb_unloadArrivePassReply08.Location = new System.Drawing.Point(10, 484);
+            this.cb_unloadArrivePassReply08.Name = "cb_unloadArrivePassReply08";
+            this.cb_unloadArrivePassReply08.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply08.TabIndex = 65;
+            this.cb_unloadArrivePassReply08.Text = "Unload Arrive Reply Pass(OHT08)";
+            this.cb_unloadArrivePassReply08.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply08.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply08_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply09
+            // 
+            this.cb_unloadArrivePassReply09.AutoSize = true;
+            this.cb_unloadArrivePassReply09.Location = new System.Drawing.Point(10, 516);
+            this.cb_unloadArrivePassReply09.Name = "cb_unloadArrivePassReply09";
+            this.cb_unloadArrivePassReply09.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply09.TabIndex = 66;
+            this.cb_unloadArrivePassReply09.Text = "Unload Arrive Reply Pass(OHT09)";
+            this.cb_unloadArrivePassReply09.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply09.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply09_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply10
+            // 
+            this.cb_unloadArrivePassReply10.AutoSize = true;
+            this.cb_unloadArrivePassReply10.Location = new System.Drawing.Point(10, 548);
+            this.cb_unloadArrivePassReply10.Name = "cb_unloadArrivePassReply10";
+            this.cb_unloadArrivePassReply10.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply10.TabIndex = 67;
+            this.cb_unloadArrivePassReply10.Text = "Unload Arrive Reply Pass(OHT10)";
+            this.cb_unloadArrivePassReply10.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply10.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply10_CheckedChanged);
+            // 
+            // cb_unloadArrivePassReply11
+            // 
+            this.cb_unloadArrivePassReply11.AutoSize = true;
+            this.cb_unloadArrivePassReply11.Location = new System.Drawing.Point(10, 580);
+            this.cb_unloadArrivePassReply11.Name = "cb_unloadArrivePassReply11";
+            this.cb_unloadArrivePassReply11.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply11.TabIndex = 68;
+            this.cb_unloadArrivePassReply11.Text = "Unload Arrive Reply Pass(OHT11)";
+            this.cb_unloadArrivePassReply11.UseVisualStyleBackColor = true;
+            this.cb_unloadArrivePassReply11.CheckedChanged += new System.EventHandler(this.cb_unloadArrivePassReply11_CheckedChanged);
             // 
             // DebugForm
             // 
@@ -5267,5 +5397,15 @@
         private System.Windows.Forms.Label label71;
         private System.Windows.Forms.ComboBox cb_testHIDAbnormalVh;
         private System.Windows.Forms.CheckBox cb_autoUnloadOnVh;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply05;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply03;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply02;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply01;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply11;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply10;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply09;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply08;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply07;
+        private System.Windows.Forms.CheckBox cb_unloadArrivePassReply06;
     }
 }

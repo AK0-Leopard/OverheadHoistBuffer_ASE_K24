@@ -102,6 +102,17 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             combox_cycle_type.SelectedItem = DebugParameter.cycleRunType;
             cb_passTrack.Checked = DebugParameter.IsPassTrackBlockStatus;
 
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR01", cb_unloadArrivePassReply01);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR02", cb_unloadArrivePassReply02);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR03", cb_unloadArrivePassReply03);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR05", cb_unloadArrivePassReply05);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR06", cb_unloadArrivePassReply06);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR07", cb_unloadArrivePassReply07);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR08", cb_unloadArrivePassReply08);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR09", cb_unloadArrivePassReply09);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR10", cb_unloadArrivePassReply10);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR11", cb_unloadArrivePassReply11);
+
 
             radioButtons.Add(radio_bit0);
             radioButtons.Add(radio_bit1);
@@ -1256,7 +1267,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void btn_initial_Click(object sender, EventArgs e)
         {
-            var report_event = sc.ProtocolFormat.OHTMessage.EventType.Initial;
+            var report_event = sc.ProtocolFormat.OHTMessage.EventType.UnloadArrivals;
             McsReportEventTest(report_event, sc.ProtocolFormat.OHTMessage.BCRReadResult.BcrMisMatch);
         }
 
@@ -1409,6 +1420,68 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_autoUnloadOnVh_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.IsAutoUnloadOnvh = cb_autoUnloadOnVh.Checked;
+        }
+
+        private void cb_unloadArrivePassReply01_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR01", cb_unloadArrivePassReply01.Checked);
+        }
+        private void setUnloadArrivePassReplyFlag(string vhID, bool isOpen)
+        {
+            var vh1 = bcApp.SCApplication.VehicleBLL.cache.getVhByID(vhID);
+            if (vh1 == null) return;
+            vh1.IsUnloadArriveByPassReply = isOpen;
+        }
+        private void setUnloadArrivePassReplyCheckBox(string vhID, CheckBox checkBox)
+        {
+            var vh1 = bcApp.SCApplication.VehicleBLL.cache.getVhByID(vhID);
+            if (vh1 == null) return;
+            checkBox.Checked = vh1.IsUnloadArriveByPassReply;
+        }
+
+        private void cb_unloadArrivePassReply02_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR02", cb_unloadArrivePassReply02.Checked);
+        }
+
+        private void cb_unloadArrivePassReply03_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR03", cb_unloadArrivePassReply03.Checked);
+        }
+
+        private void cb_unloadArrivePassReply05_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR05", cb_unloadArrivePassReply05.Checked);
+        }
+
+        private void cb_unloadArrivePassReply06_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR06", cb_unloadArrivePassReply06.Checked);
+        }
+
+        private void cb_unloadArrivePassReply07_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR07", cb_unloadArrivePassReply07.Checked);
+        }
+
+        private void cb_unloadArrivePassReply08_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR08", cb_unloadArrivePassReply08.Checked);
+        }
+
+        private void cb_unloadArrivePassReply09_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR09", cb_unloadArrivePassReply09.Checked);
+        }
+
+        private void cb_unloadArrivePassReply10_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR10", cb_unloadArrivePassReply10.Checked);
+        }
+
+        private void cb_unloadArrivePassReply11_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR11", cb_unloadArrivePassReply11.Checked);
         }
     }
 }
