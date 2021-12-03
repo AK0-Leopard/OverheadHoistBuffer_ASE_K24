@@ -1915,9 +1915,10 @@
           <Member Name="TransferCompleted" Value="6" />
         </EnumType>
         <EnumType Name="E_VH_TYPE" >
-          <Member Name="Clean" Value="1" />
-          <Member Name="Dirty" Value="2" />
+          <Member Name="Light" Value="1" />
+          <Member Name="Foup" Value="2" />
           <Member Name="None" Value="0" />
+          <Member Name="ReelCST" Value="3" />
         </EnumType>
         <EntityType Name="APORTICON">
           <Key>

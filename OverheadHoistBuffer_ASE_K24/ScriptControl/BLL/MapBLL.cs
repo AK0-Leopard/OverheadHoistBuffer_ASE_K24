@@ -799,6 +799,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 if (shelf != null)
                 {
                     adr = shelf.ADR_ID.Trim();
+                    vh_type = tryGetCSTTypeOnShelf(adr_port_id, vh_type);
                     return true;
                 }
                 else
@@ -814,6 +815,44 @@ namespace com.mirle.ibg3k0.sc.BLL
                         adr = adr_port_id;
                         return false;
                     }
+                }
+            }
+        }
+
+        private E_VH_TYPE tryGetCSTTypeOnShelf(string adr_port_id, E_VH_TYPE vh_type)
+        {
+            CassetteData cassetteData = scApp.CassetteDataBLL.loadCassetteDataByLoc(adr_port_id);
+            if (cassetteData == null)
+            {
+                return vh_type;
+            }
+
+            var check_is_unknow = cassetteData.IsUnknowBox();
+            if (check_is_unknow.isUnknow)
+            {
+                switch (check_is_unknow.cstType)
+                {
+                    case Data.PLC_Functions.MGV.Enums.CstType.A:
+                        return E_VH_TYPE.Foup;
+                    case Data.PLC_Functions.MGV.Enums.CstType.B:
+                        return E_VH_TYPE.Light;
+                    default:
+                        return E_VH_TYPE.None;
+                }
+            }
+            else
+            {
+                if (cassetteData.IsLightCST)
+                {
+                    return E_VH_TYPE.Light;
+                }
+                else if (cassetteData.IsFoupCST)
+                {
+                    return E_VH_TYPE.Foup;
+                }
+                else
+                {
+                    return vh_type;
                 }
             }
         }

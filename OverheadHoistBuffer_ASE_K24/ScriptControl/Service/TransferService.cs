@@ -2695,7 +2695,11 @@ namespace com.mirle.ibg3k0.sc.Service
             return s;
         }
 
-        public bool OHT_TransferStatus(string oht_cmdid, string ohtName, int status)   //OHT目前狀態
+        public bool OHT_TransferStatus(string oht_cmdid, string ohtName, int status)
+        {
+            return OHT_TransferStatus(oht_cmdid, ohtName, status, "");
+        }
+        public bool OHT_TransferStatus(string oht_cmdid, string ohtName, int status, string cstType)   //OHT目前狀態
         {
             try
             {
@@ -2858,7 +2862,12 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
+
         public bool OHT_TransferProcess(ACMD_MCS cmd, ACMD_OHTC ohtCmd, string ohtName, int status)
+        {
+            return OHT_TransferProcess(cmd, ohtCmd, ohtName, status, "");
+        }
+        public bool OHT_TransferProcess(ACMD_MCS cmd, ACMD_OHTC ohtCmd, string ohtName, int status, string cstType)
         {
             try
             {
@@ -3068,7 +3077,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         reportBLL.ReportTransferAbortCompleted(cmd.CMD_ID);
                         //reportBLL.ReportTransferCompleted(cmd, null, ResultCode.InterlockError);
 
-                        string boxID = CarrierDouble(ohtCmd.DESTINATION.Trim());
+                        string boxID = CarrierDouble(ohtCmd.DESTINATION.Trim(), cstType);
                         string loc = ohtCmd.DESTINATION;
 
                         OHBC_InsertCassette(boxID, loc, "二重格異常");
@@ -6216,15 +6225,26 @@ namespace com.mirle.ibg3k0.sc.Service
         #region 命令、卡匣處理
 
         #region 命名規則
+        public const string SYMBOL_UNKNOW_CST_ID = "UNK";
 
-        public string CarrierTypeMisMatch(string carrierID)   //Cst Type Mismatch
+        //public string CarrierDouble(string loc)   //二重格
+        public string CarrierDouble(string loc, string cstType)   //二重格
         {
-            return "UNKT" + carrierID + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            //return "UNKS" + loc + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            string cst_type_symbol = convertCSTTypeSymbol(cstType);
+            return $"{SYMBOL_UNKNOW_CST_ID}S{cst_type_symbol}" + loc + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
         }
-
-        public string CarrierDouble(string loc)   //二重格
+        public string convertCSTTypeSymbol(string scstType)
         {
-            return "UNKS" + loc + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            switch (scstType)
+            {
+                case "A":
+                    return CassetteData.SYMBLE_FOUP;
+                case "B":
+                    return CassetteData.SYMBLE_LITE_CASSETTE;
+                default:
+                    return "";
+            }
         }
 
         public string CarrierReadFail(string vhID, string loc)   //卡匣讀不到
@@ -6232,11 +6252,13 @@ namespace com.mirle.ibg3k0.sc.Service
             E_VH_TYPE vh_type = tryGetVhType(vhID);
             if (vh_type == E_VH_TYPE.ReelCST)
             {
-                return "UNKT" + "REELCA01" + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+                //return "UNKT" + "REELCA01" + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+                return $"{SYMBOL_UNKNOW_CST_ID}T" + "REELCA01" + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
             }
             else
             {
-                return "UNKF" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+                //return "UNKF" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+                return $"{SYMBOL_UNKNOW_CST_ID}F" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
             }
             //return "UNKT" + "REELCA01" + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
         }
@@ -6254,12 +6276,14 @@ namespace com.mirle.ibg3k0.sc.Service
 
         public string CarrierReadFailAtTargetAGV(string loc)   //卡匣讀不到
         {
-            return "UNKU" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            //return "UNKU" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            return $"{SYMBOL_UNKNOW_CST_ID}U" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
         }
 
         public string CarrierReadduplicate(string bcrcsid)  //卡匣重複
         {
-            return "UNKD" + bcrcsid + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            //return "UNKD" + bcrcsid + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            return $"{SYMBOL_UNKNOW_CST_ID}D" + bcrcsid + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
         }
 
         public bool ase_ID_Check(string str)    //ASE CST BOX 帳料命名規則

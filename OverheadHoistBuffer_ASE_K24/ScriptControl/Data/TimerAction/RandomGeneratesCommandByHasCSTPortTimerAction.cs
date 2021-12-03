@@ -84,23 +84,23 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     }
                     dicTranTaskSchedule_Clear_Dirty["N"].Add(task);
                 }
-                else if (dest_port_station.ULD_VH_TYPE == E_VH_TYPE.Clean &&
-                         sourece_port_station.LD_VH_TYPE == E_VH_TYPE.Clean)
-                {
-                    if (!dicTranTaskSchedule_Clear_Dirty.ContainsKey("CC"))
-                    {
-                        dicTranTaskSchedule_Clear_Dirty.Add("CC", new List<TranTask>());
-                    }
-                    dicTranTaskSchedule_Clear_Dirty["CC"].Add(task);
-                }
-                else if (sourece_port_station.ULD_VH_TYPE == E_VH_TYPE.Dirty)
-                {
-                    if (!dicTranTaskSchedule_Clear_Dirty.ContainsKey("D"))
-                    {
-                        dicTranTaskSchedule_Clear_Dirty.Add("D", new List<TranTask>());
-                    }
-                    dicTranTaskSchedule_Clear_Dirty["D"].Add(task);
-                }
+                //else if (dest_port_station.ULD_VH_TYPE == E_VH_TYPE.Clean &&
+                //         sourece_port_station.LD_VH_TYPE == E_VH_TYPE.Clean)
+                //{
+                //    if (!dicTranTaskSchedule_Clear_Dirty.ContainsKey("CC"))
+                //    {
+                //        dicTranTaskSchedule_Clear_Dirty.Add("CC", new List<TranTask>());
+                //    }
+                //    dicTranTaskSchedule_Clear_Dirty["CC"].Add(task);
+                //}
+                //else if (sourece_port_station.ULD_VH_TYPE == E_VH_TYPE.Dirty)
+                //{
+                //    if (!dicTranTaskSchedule_Clear_Dirty.ContainsKey("D"))
+                //    {
+                //        dicTranTaskSchedule_Clear_Dirty.Add("D", new List<TranTask>());
+                //    }
+                //    dicTranTaskSchedule_Clear_Dirty["D"].Add(task);
+                //}
             }
             if (dicTranTaskSchedule_Clear_Dirty.ContainsKey("N"))
                 SourcePorts_None = dicTranTaskSchedule_Clear_Dirty["N"].Select(task => task.SourcePort).Distinct().ToList();
@@ -136,14 +136,6 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             //scApp.BCSystemBLL.reWriteBCSystemRunTime();
         }
 
-        private void OHS100()
-        {
-            if (scApp.VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Clean) > 0)
-                RandomGenerates_TranTask_Clear_Drity("C");
-            Thread.Sleep(1000);
-            if (scApp.VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Dirty) > 0)
-                RandomGenerates_TranTask_Clear_Drity("D");
-        }
 
         private void RandomGenerates_TranTask_Clear_Drity(string car_type)
         {

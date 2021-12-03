@@ -242,25 +242,25 @@ namespace com.mirle.ibg3k0.sc.WebAPI
 				return response;
 			};
 
-			Get["metrics"] = (p) =>
-			{
-				int total_idle_vh_clean = SCApplication.getInstance().VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Clean);
-				int total_idle_vh_Dirty = SCApplication.getInstance().VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Dirty);
-				int total_cmd_is_queue_count = SCApplication.getInstance().CMDBLL.getCMD_MCSIsQueueCount();
-				int total_cmd_is_running_count = SCApplication.getInstance().CMDBLL.getCMD_MCSIsRunningCount();
+			//Get["metrics"] = (p) =>
+			//{
+			//	int total_idle_vh_clean = SCApplication.getInstance().VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Clean);
+			//	int total_idle_vh_Dirty = SCApplication.getInstance().VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Dirty);
+			//	int total_cmd_is_queue_count = SCApplication.getInstance().CMDBLL.getCMD_MCSIsQueueCount();
+			//	int total_cmd_is_running_count = SCApplication.getInstance().CMDBLL.getCMD_MCSIsRunningCount();
 
-				string ohxc_excute_info = string.Empty;
+			//	string ohxc_excute_info = string.Empty;
 
-				StringBuilder sb = new StringBuilder();
-				setOhxCContent(sb, nameof(total_idle_vh_clean), total_idle_vh_clean, "current idle clean car");
-				setOhxCContent(sb, nameof(total_idle_vh_Dirty), total_idle_vh_Dirty, "current idle dirty car");
-				setOhxCContent(sb, nameof(total_cmd_is_queue_count), total_cmd_is_queue_count, "cmd number being queued");
-				setOhxCContent(sb, nameof(total_cmd_is_running_count), total_cmd_is_running_count, "cmd number being executed");
+			//	StringBuilder sb = new StringBuilder();
+			//	setOhxCContent(sb, nameof(total_idle_vh_clean), total_idle_vh_clean, "current idle clean car");
+			//	setOhxCContent(sb, nameof(total_idle_vh_Dirty), total_idle_vh_Dirty, "current idle dirty car");
+			//	setOhxCContent(sb, nameof(total_cmd_is_queue_count), total_cmd_is_queue_count, "cmd number being queued");
+			//	setOhxCContent(sb, nameof(total_cmd_is_running_count), total_cmd_is_running_count, "cmd number being executed");
 
-				var response = (Response)sb.ToString();
-				response.ContentType = restfulContentType;
-				return response;
-			};
+			//	var response = (Response)sb.ToString();
+			//	response.ContentType = restfulContentType;
+			//	return response;
+			//};
 
 			Post["AVEHICLES/ViewerUpdate"] = (p) =>
 			{
@@ -852,11 +852,11 @@ namespace com.mirle.ibg3k0.sc.WebAPI
 				try
 				{
 					var shelf = d.shelf;
-					foreach(string item in shelf)
+					foreach (string item in shelf)
 					{
-						if (scApp.TransferService. isShelfPort(item))
+						if (scApp.TransferService.isShelfPort(item))
 						{
-							scApp.TransferService. SetScanCmd( "", item);
+							scApp.TransferService.SetScanCmd("", item);
 						}
 					}
 					//foreach (var v in )
@@ -868,7 +868,7 @@ namespace com.mirle.ibg3k0.sc.WebAPI
 					//}
 					//bool enable = d.enable?.Value;
 					//string s = scApp.TransferService.Manual_ShelfEnable(shelf_id, enable);
-					isSuccess =true ;
+					isSuccess = true;
 					result = isSuccess ? "OK" : "Update Shlef Enable failed.";
 				}
 				catch (Exception ex)

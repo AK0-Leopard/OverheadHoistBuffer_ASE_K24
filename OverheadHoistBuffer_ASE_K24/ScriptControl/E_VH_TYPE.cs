@@ -10,11 +10,11 @@
 namespace com.mirle.ibg3k0.sc
 {
     using System;
-
+    
     public enum E_VH_TYPE : int
     {
-        Clean = 1,
-        Dirty = 2,
+        Light = 1,
+        Foup = 2,
         None = 0,
         ReelCST = 3
     }
