@@ -3282,6 +3282,20 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                 }
 
+                //Block Request的From adr來重新計算路徑
+                //判斷是否需要進行命令改派，若算出來後不包含在原本行走路徑
+                //代表路徑有變化了就暫時不要給該block的通行權然後去下達cancel
+                //結束後再讓他把命令改回queue(尚未載到貨)、重新再派改該台車(已有載到貨)
+                bool is_need_change_route = checkGuideSectionHasChange(eqpt, block_master.RealEntrySectionID);
+                if (is_need_change_route)
+                {
+                    bool is_interrupt_success = StartProcessCommandInterruptByChangeGuideSection(eqpt);
+                    if (is_interrupt_success)
+                    {
+                        return (false, TrackDir.None);
+                    }
+                }
+
                 //bool is_block_ready = block_master.IsAllTrackBlockReady();
                 var block_tracks_status_check_result = block_master.IsAllTrackBlockReady();
                 if (block_tracks_status_check_result.BlockTracksStatus != ABLOCKZONEMASTER.BlockTracksStatus.Ready)
@@ -3314,20 +3328,6 @@ namespace com.mirle.ibg3k0.sc.Service
                     return (false, TrackDir.None);
                 }
 
-
-                //Block Request的From adr來重新計算路徑
-                //判斷是否需要進行命令改派，若算出來後不包含在原本行走路徑
-                //代表路徑有變化了就暫時不要給該block的通行權然後去下達cancel
-                //結束後再讓他把命令改回queue(尚未載到貨)、重新再派改該台車(已有載到貨)
-                bool is_need_change_route = checkGuideSectionHasChange(eqpt, block_master.RealEntrySectionID);
-                if (is_need_change_route)
-                {
-                    bool is_interrupt_success = StartProcessCommandInterruptByChangeGuideSection(eqpt);
-                    if (is_interrupt_success)
-                    {
-                        return (false, TrackDir.None);
-                    }
-                }
 
 
                 foreach (var detail in block_detail_section)
@@ -3433,15 +3433,23 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             ASECTION req_sec = scApp.SectionBLL.cache.GetSection(requsetSecID);
             if (req_sec == null) return false;
-            List<string> will_pass_section_ids = vh.WillPassSectionID;
-            if (will_pass_section_ids == null || will_pass_section_ids.Count == 0)
+            List<string> original_pass_section_ids = vh.WillPassSectionID;
+            if (original_pass_section_ids == null || original_pass_section_ids.Count == 0)
             {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Want to check guide section has change,but wiil pass section is null.",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
                 return false;
             }
-            string will_pass_final_sec_id = will_pass_section_ids.Last();
+            string will_pass_final_sec_id = original_pass_section_ids.Last();
             ASECTION will_pass_final_sec = scApp.SectionBLL.cache.GetSection(will_pass_final_sec_id);
             if (will_pass_final_sec == null)
             {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Want to check guide section has change,but final section:{will_pass_final_sec_id} not exist.",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
                 return false;
             }
             string req_sec_form_adr = req_sec.FROM_ADR_ID;
@@ -3449,19 +3457,35 @@ namespace com.mirle.ibg3k0.sc.Service
             var guide_info = scApp.GuideBLL.getGuideInfo(req_sec_form_adr, target_adr);
             if (guide_info.isSuccess)
             {
-                List<string> section_ids = guide_info.guideSectionIds;
-                List<string> exceptResult = section_ids.Except(will_pass_section_ids).ToList();
+                List<string> new_guide_section_ids = guide_info.guideSectionIds;
+                List<string> exceptResult = new_guide_section_ids.Except(original_pass_section_ids).ToList();
                 if (exceptResult.Count == 0)
                 {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"Want to check guide section has change,result:[No change].",
+                       VehicleID: vh.VEHICLE_ID,
+                       CarrierID: vh.CST_ID);
                     return false;
                 }
                 else
                 {
+                    string s_new_guide_section = string.Join(",", new_guide_section_ids);
+                    string s_original_guide_section = string.Join(",", original_pass_section_ids);
+                    string s_except_guide_section = string.Join(",", original_pass_section_ids);
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"Want to check guide section has change,result:[Is diff]." +
+                             $"new:{s_new_guide_section},original:{s_original_guide_section},except:{s_except_guide_section}",
+                       VehicleID: vh.VEHICLE_ID,
+                       CarrierID: vh.CST_ID);
                     return true;
                 }
             }
             else
             {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Want to check guide section has change,result:[No guide section to go]." ,
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
                 return false;
             }
         }

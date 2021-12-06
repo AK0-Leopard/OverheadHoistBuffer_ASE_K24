@@ -10943,11 +10943,17 @@ namespace com.mirle.ibg3k0.sc.Service
         public void CommandCompleteByAbort(string vhID, string finishCommandID)
         {
             ACMD_OHTC ohtCmdData = cmdBLL.getCMD_OHTCByID(finishCommandID);
-            ACMD_MCS cmd = cmdBLL.getCMD_MCSByID(ohtCmdData.CMD_ID_MCS.Trim());
+            if (!ohtCmdData.IsTransferCmdByMCS)
+            {
+                return;
+            }
+            string mcs_cmd_id = SCUtility.Trim(ohtCmdData.CMD_ID_MCS, true);
+            ACMD_MCS cmd = cmdBLL.getCMD_MCSByID(mcs_cmd_id);
             if (cmd == null) return;
             if (cmd.TRANSFERSTATE == E_TRAN_STATUS.TransferCompleted) return;
             if (cmd.TRANSFERSTATE == E_TRAN_STATUS.Aborting)
             {
+                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command abort流程, id:{mcs_cmd_id}");
                 cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                 scApp.ReportBLL.ReportTransferAbortCompleted(cmd.CMD_ID);
             }
@@ -10960,6 +10966,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 string cmd_mcs_pause_flag = scApp.CMDBLL.GetCmdMCSPauseFlag(cmd.CMD_ID);
                 if (SCUtility.isMatche(cmd_mcs_pause_flag, SCAppConstants.YES_FLAG))
                 {
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command 改派流程(Abort),mcs cmd id:{mcs_cmd_id}...");
                     string hostdest = cmd.HOSTDESTINATION;
                     bool isSuccess = true;
                     scApp.MapBLL.getAddressID(hostdest, out string to_adr);
@@ -10971,28 +10978,30 @@ namespace com.mirle.ibg3k0.sc.Service
                                         "", to_adr);
                     if (isSuccess)
                     {
+                        TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command 改派流程,mcs cmd id:{mcs_cmd_id}.result:[改派成功]");
                         scApp.CMDBLL.updateCMD_MCS_PauseFlag(cmd.CMD_ID, "");
                     }
                     else
                     {
+                        TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command 改派流程,mcs cmd id:{mcs_cmd_id}.result:[改派失敗] 將該筆命令強制結束...");
                         bool is_success = scApp.CassetteDataBLL.GetCarrierByBoxId(cmd.BOX_ID, out CassetteData cassetteData);
                         if (is_success)
                             ForceFinishMCSCmd(cmd, cassetteData, "CommandCompleteByCancel");
                         else
                         {
-
+                            TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 要強制結束命令，但並無對應的BOX資料存在:{cmd.BOX_ID}");
                         }
                     }
-
                 }
                 else
                 {
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 車子上報abort complete,但無對應的流程進行中，強制結束命令.");
                     bool is_success = scApp.CassetteDataBLL.GetCarrierByBoxId(cmd.BOX_ID, out CassetteData cassetteData);
                     if (is_success)
                         ForceFinishMCSCmd(cmd, cassetteData, "CommandCompleteByCancel");
                     else
                     {
-
+                        TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 要強制結束命令，但並無對應的BOX資料存在:{cmd.BOX_ID}");
                     }
                 }
             }
@@ -11001,11 +11010,17 @@ namespace com.mirle.ibg3k0.sc.Service
         public void CommandCompleteByCancel(string vhID, string finishCommandID)
         {
             ACMD_OHTC ohtCmdData = cmdBLL.getCMD_OHTCByID(finishCommandID);
-            ACMD_MCS cmd = cmdBLL.getCMD_MCSByID(ohtCmdData.CMD_ID_MCS.Trim());
+            if (!ohtCmdData.IsTransferCmdByMCS)
+            {
+                return;
+            }
+            string mcs_cmd_id = SCUtility.Trim(ohtCmdData.CMD_ID_MCS, true);
+            ACMD_MCS cmd = cmdBLL.getCMD_MCSByID(mcs_cmd_id);
             if (cmd == null) return;
             if (cmd.TRANSFERSTATE == E_TRAN_STATUS.TransferCompleted) return;
             if (cmd.TRANSFERSTATE == E_TRAN_STATUS.Canceling)
             {
+                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command cancel流程, id:{mcs_cmd_id}");
                 cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                 reportBLL.ReportTransferCancelCompleted(cmd.CMD_ID);
             }
@@ -11017,18 +11032,20 @@ namespace com.mirle.ibg3k0.sc.Service
                 string cmd_mcs_pause_flag = scApp.CMDBLL.GetCmdMCSPauseFlag(cmd.CMD_ID);
                 if (SCUtility.isMatche(cmd_mcs_pause_flag, SCAppConstants.YES_FLAG))
                 {
-
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command 改派流程(Cancel),mcs cmd id:{mcs_cmd_id}...");
                     scApp.CMDBLL.updateCMD_MCS_CRANE(cmd.CMD_ID, "");
                     scApp.CMDBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.Queue);
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command 改派流程,mcs cmd id:{mcs_cmd_id}.result:[改派成功](成功將命令改成Qeue)");
                 }
                 else
                 {
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 車子上報cancel complete,但無對應的流程進行中，強制結束命令.");
                     bool is_success = scApp.CassetteDataBLL.GetCarrierByBoxId(cmd.BOX_ID, out CassetteData cassetteData);
                     if (is_success)
                         ForceFinishMCSCmd(cmd, cassetteData, "CommandCompleteByCancel");
                     else
                     {
-
+                        TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 要強制結束命令，但並無對應的BOX資料存在:{cmd.BOX_ID}");
                     }
                 }
             }
