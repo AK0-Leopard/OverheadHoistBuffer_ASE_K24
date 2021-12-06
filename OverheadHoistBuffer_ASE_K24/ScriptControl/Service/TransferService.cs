@@ -1337,6 +1337,12 @@ namespace com.mirle.ibg3k0.sc.Service
                 //確認確認命令是否可以順途搬送
                 foreach (var transfer_cmd in same_segment_tran_cmds.ToList())
                 {
+                    if (!SCUtility.isMatche(queueCmd.getCSTType(), transfer_cmd.getCSTType()))
+                    {
+                        same_segment_tran_cmds.Remove(transfer_cmd);
+                        continue;
+                    }
+
                     if (transfer_cmd.COMMANDSTATE < ACMD_MCS.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE)
                     {
                         same_segment_tran_cmds.Remove(transfer_cmd);
@@ -3755,7 +3761,8 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "OHT_IDRead 沒有帳在:" + ohtName);
 
-                if (string.IsNullOrWhiteSpace(readBOXID) || readBOXID == "ERROR1")
+                //if (string.IsNullOrWhiteSpace(readBOXID) || readBOXID == "ERROR1")
+                if (string.IsNullOrWhiteSpace(readBOXID) || readBOXID.ToUpper().Contains("ERROR"))
                 {
                     readBOXID = CarrierReadFail(ohtName, ohtName);
                 }

@@ -90,7 +90,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_isCheckHIDStatus.Checked = DebugParameter.IsCheckHIDStatus;
             cb_testHIDAbnormalVh.SelectedItem = DebugParameter.TestHIDAbnormalVhID;
             cb_autoUnloadOnVh.Checked = DebugParameter.IsAutoUnloadOnvh;
-
+            cb_openSpecifyVh.Checked = DebugParameter.IsSpecifyVhTransfer;
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
             cb_PwrMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingPowerMode));
@@ -1482,6 +1482,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_unloadArrivePassReply11_CheckedChanged(object sender, EventArgs e)
         {
             setUnloadArrivePassReplyFlag("B6_OHB01_CR11", cb_unloadArrivePassReply11.Checked);
+        }
+
+        private void cb_openSpecifyVh_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsSpecifyVhTransfer = cb_openSpecifyVh.Checked;
         }
     }
 }

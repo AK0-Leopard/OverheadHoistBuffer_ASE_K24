@@ -1120,16 +1120,44 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
             }
 
-            foreach (AVEHICLE vh in vhs.ToList())
+            if (vh_type == E_VH_TYPE.ReelCST)
             {
-                if (vh.VEHICLE_TYPE != vh_type)
+                foreach (AVEHICLE vh in vhs.ToList())
                 {
-                    vhs.Remove(vh);
+                    if (vh.VEHICLE_TYPE != vh_type)
+                    {
+                        vhs.Remove(vh);
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
+                           Data: $"vh id:{vh.VEHICLE_ID} vh type:{vh.VEHICLE_TYPE}, vehicle type not match current find vh type:{vh_type}," +
+                                 $"so filter it out",
+                           VehicleID: vh.VEHICLE_ID,
+                           CarrierID: vh.CST_ID);
+                    }
+                }
+            }
+            else
+            {
+                if (DebugParameter.IsSpecifyVhTransfer)
+                {
+                    foreach (AVEHICLE vh in vhs.ToList())
+                    {
+                        if (vh.VEHICLE_TYPE == E_VH_TYPE.None) continue;
+
+                        if (vh.VEHICLE_TYPE != vh_type)
+                        {
+                            vhs.Remove(vh);
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
+                               Data: $"vh id:{vh.VEHICLE_ID} vh type:{vh.VEHICLE_TYPE}, vehicle type not match current find vh type:{vh_type}," +
+                                     $"so filter it out",
+                               VehicleID: vh.VEHICLE_ID,
+                               CarrierID: vh.CST_ID);
+                        }
+                    }
+                }
+                else
+                {
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
-                       Data: $"vh id:{vh.VEHICLE_ID} vh type:{vh.VEHICLE_TYPE}, vehicle type not match current find vh type:{vh_type}," +
-                             $"so filter it out",
-                       VehicleID: vh.VEHICLE_ID,
-                       CarrierID: vh.CST_ID);
+                       Data: $"Specify vh transfer is close.");
                 }
             }
 

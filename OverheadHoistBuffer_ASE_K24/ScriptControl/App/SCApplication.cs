@@ -2517,6 +2517,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static bool IsCheckHIDStatus = false;
         public static string TestHIDAbnormalVhID = "";
         public static bool IsAutoUnloadOnvh = true;
+        public static bool IsSpecifyVhTransfer = true;
 
         private static Boolean isforcedpassblockcontrol = false;
         public static Boolean isForcedPassBlockControl

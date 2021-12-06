@@ -617,7 +617,8 @@ namespace com.mirle.ibg3k0.sc.Common
                             _lockPorStationtDic.Add(port_id, new Object());
                             E_VH_TYPE load_vh_type = (E_VH_TYPE)portStationConfig.Load_Vh_Type;
                             E_VH_TYPE unload_vh_type = (E_VH_TYPE)portStationConfig.Unload_Vh_Type;
-                            string carrier_cst_type = getPortCstCarrierType(port_id);
+                            //string carrier_cst_type = getPortCstCarrierType(port_id);
+                            string carrier_cst_type = getPortCstCarrierType(load_vh_type);
 
                             if (eqptType == SCAppConstants.EqptType.MANUALPORT)
                             {
@@ -864,6 +865,18 @@ namespace com.mirle.ibg3k0.sc.Common
             else
             {
                 return setting.CST_TYPE;
+            }
+        }
+        private string getPortCstCarrierType(E_VH_TYPE vhType)
+        {
+            switch (vhType)
+            {
+                case E_VH_TYPE.Foup:
+                    return Data.PLC_Functions.MGV.Enums.CstType.A.ToString();
+                case E_VH_TYPE.Light:
+                    return Data.PLC_Functions.MGV.Enums.CstType.B.ToString();
+                default:
+                    return "";
             }
         }
         private MTLSetting getMTLSetting(string mtlID)

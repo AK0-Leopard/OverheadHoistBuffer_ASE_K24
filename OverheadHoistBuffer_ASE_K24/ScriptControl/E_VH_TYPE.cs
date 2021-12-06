@@ -13,8 +13,8 @@ namespace com.mirle.ibg3k0.sc
     
     public enum E_VH_TYPE : int
     {
-        Light = 1,
-        Foup = 2,
+        Foup = 1,
+        Light = 2,
         None = 0,
         ReelCST = 3
     }
