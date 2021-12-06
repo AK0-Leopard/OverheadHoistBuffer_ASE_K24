@@ -4762,6 +4762,20 @@ namespace com.mirle.ibg3k0.sc.Service
                 PauseRequest(vh.VEHICLE_ID, PauseEvent.Continue, OHxCPauseType.Earthquake);
             }
         }
+        public void updateVhType(string vhID, E_VH_TYPE vhType)
+        {
+            try
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"update vh:{vhID} to type:{vhType}");
+                scApp.VehicleBLL.updataVehicleType(vhID, vhType);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: ex);
+            }
+        }
 
         #endregion Specially Control
 

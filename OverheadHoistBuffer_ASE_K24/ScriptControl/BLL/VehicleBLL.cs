@@ -879,6 +879,32 @@ namespace com.mirle.ibg3k0.sc.BLL
             return isSuccess;
             //}
         }
+        public bool updataVehicleType(string vhID, E_VH_TYPE vhType)
+        {
+            bool isSuccess = false;
+            AVEHICLE vh = new AVEHICLE();
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    vh.VEHICLE_ID = vhID;
+                    con.AVEHICLE.Attach(vh);
+                    vh.VEHICLE_TYPE = vhType;
+                    con.Entry(vh).Property(p => p.VEHICLE_TYPE).IsModified = true;
+                    vehicleDAO.doUpdate(scApp, con, vh);
+                    con.Entry(vh).State = EntityState.Detached;
+                    isSuccess = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception");
+            }
+            return isSuccess;
+        }
+
+
+
 
         public AVEHICLE getVehicleByIDFromDB(string vh_id, bool isAttached = false)
         {
@@ -2290,6 +2316,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 var vhs = eqObjCacheManager.getAllVehicle();
                 return vhs.Where(vh => vh.IsError).
                            ToList();
+            }
+            public void updataVehicleType(string vhID, E_VH_TYPE vhType)
+            {
+                var vh = eqObjCacheManager.getVehicletByVHID(vhID);
+                vh.VEHICLE_TYPE = vhType;
             }
 
         }

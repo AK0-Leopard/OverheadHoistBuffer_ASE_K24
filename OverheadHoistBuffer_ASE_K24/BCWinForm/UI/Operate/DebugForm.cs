@@ -98,6 +98,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cmb_pauseType.DataSource = Enum.GetValues(typeof(OHxCPauseType));
             cb_Abort_Type.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.CMDCancelType));
             combox_cycle_type.DataSource = Enum.GetValues(typeof(DebugParameter.CycleRunType));
+            cmbVhType.DataSource = Enum.GetValues(typeof(E_VH_TYPE));
 
             combox_cycle_type.SelectedItem = DebugParameter.cycleRunType;
             cb_passTrack.Checked = DebugParameter.IsPassTrackBlockStatus;
@@ -179,6 +180,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             lbl_id_37_cmdID_value.Text = noticeCar?.OHTC_CMD;
             lbl_install_status.Text = noticeCar?.IS_INSTALLED.ToString();
             lbl_listening_status.Text = noticeCar?.IsTcpIpListening(bcApp.SCApplication.getBCFApplication()).ToString();
+            cmbVhType.SelectedItem = noticeCar?.VEHICLE_TYPE;
         }
 
         private void uctl_Btn1_Click(object sender, EventArgs e)
@@ -555,15 +557,15 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private async void ck_autoTech_Click(object sender, EventArgs e)
         {
-            sc.App.SystemParameter.AutoTeching = ck_autoTech.Checked;
-            if (!ck_autoTech.Checked) return;
-            string vh_id = cmb_tcpipctr_Vehicle.Text;
-            await Task.Run(() =>
-             {
-                 bcApp.SCApplication.VehicleService.AutoTeaching(vh_id);
-                 SpinWait.SpinUntil(() => !sc.App.SystemParameter.AutoTeching);
-             });
-            ck_autoTech.Checked = sc.App.SystemParameter.AutoTeching;
+            //sc.App.SystemParameter.AutoTeching = ck_autoTech.Checked;
+            //if (!ck_autoTech.Checked) return;
+            //string vh_id = cmb_tcpipctr_Vehicle.Text;
+            //await Task.Run(() =>
+            // {
+            //     bcApp.SCApplication.VehicleService.AutoTeaching(vh_id);
+            //     SpinWait.SpinUntil(() => !sc.App.SystemParameter.AutoTeching);
+            // });
+            //ck_autoTech.Checked = sc.App.SystemParameter.AutoTeching;
 
         }
 
@@ -585,12 +587,12 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void btn_cmd_override_test_Click(object sender, EventArgs e)
         {
-            string vh_id = cmb_tcpipctr_Vehicle.Text;
-            bool is_need_pause_first = cb_pauseFirst.Checked;
-            Task.Run(() =>
-            {
-                bcApp.SCApplication.VehicleService.VhicleChangeThePath(vh_id, is_need_pause_first);
-            });
+            //string vh_id = cmb_tcpipctr_Vehicle.Text;
+            //bool is_need_pause_first = cb_pauseFirst.Checked;
+            //Task.Run(() =>
+            //{
+            //    bcApp.SCApplication.VehicleService.VhicleChangeThePath(vh_id, is_need_pause_first);
+            //});
         }
 
         private void uctl_SendFun2_Click(object sender, EventArgs e)
@@ -1487,6 +1489,23 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_openSpecifyVh_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.IsSpecifyVhTransfer = cb_openSpecifyVh.Checked;
+        }
+
+        private async void btnVhTypeUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                E_VH_TYPE vh_type;
+                Enum.TryParse(cmbVhType.SelectedValue.ToString(), out vh_type);
+                btnVhTypeUpdate.Enabled = false;
+                await Task.Run(() => bcApp.SCApplication.VehicleService.updateVhType(vh_id, vh_type));
+                cmbVhType.SelectedItem = noticeCar.VEHICLE_TYPE;
+                MessageBox.Show($"update vh:[{vh_id}] to type:[{vh_type}] is success.");
+            }
+            finally
+            {
+                btnVhTypeUpdate.Enabled = true;
+            }
         }
     }
 }
