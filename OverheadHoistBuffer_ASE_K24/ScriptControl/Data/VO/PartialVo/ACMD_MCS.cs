@@ -73,6 +73,72 @@ namespace com.mirle.ibg3k0.sc
                 return COMMANDSTATE == COMMAND_STATUS_BIT_INDEX_UNLOADING;
             }
         }
+        public string getCSTType()
+        {
+            try
+            {
+
+                if (sc.Common.SCUtility.isEmpty(BOX_ID)) return "";
+                if (BOX_ID.Length < 4)
+                {
+                    return "";
+                }
+                var sub_crrierID = BOX_ID.Substring(2, 2);
+                if (sc.Common.SCUtility.isMatche(sub_crrierID, CassetteData.SYMBLE_LITE_CASSETTE))
+                {
+                    return CassetteData.SYMBLE_LITE_CASSETTE;
+                }
+                else if (sc.Common.SCUtility.isMatche(sub_crrierID, CassetteData.SYMBLE_FOUP))
+                {
+                    return CassetteData.SYMBLE_FOUP;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            catch (Exception e)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(e, "Exception:");
+                return "";
+            }
+        }
+
+        public bool isCarrierLightCST
+        {
+            get
+            {
+                if (sc.Common.SCUtility.isEmpty(BOX_ID)) return false;
+                if (BOX_ID.Length < 4)
+                {
+                    return false;
+                }
+                var sub_crrierID = BOX_ID.Substring(2, 2);
+                if (sc.Common.SCUtility.isMatche(sub_crrierID, CassetteData.SYMBLE_LITE_CASSETTE))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public bool isCarrierFoupCST
+        {
+            get
+            {
+                if (sc.Common.SCUtility.isEmpty(BOX_ID)) return false;
+                if (BOX_ID.Length < 4)
+                {
+                    return false;
+                }
+                var sub_crrierID = BOX_ID.Substring(2, 2);
+                if (sc.Common.SCUtility.isMatche(sub_crrierID, CassetteData.SYMBLE_FOUP))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
 
         public string CARRIER_ID { get { return BOX_ID; } }
 

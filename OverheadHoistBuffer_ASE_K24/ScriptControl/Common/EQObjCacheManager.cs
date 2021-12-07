@@ -866,6 +866,18 @@ namespace com.mirle.ibg3k0.sc.Common
                 return setting.CST_TYPE;
             }
         }
+        private string getPortCstCarrierType(E_VH_TYPE vhType)
+        {
+            switch (vhType)
+            {
+                case E_VH_TYPE.Foup:
+                    return Data.PLC_Functions.MGV.Enums.CstType.A.ToString();
+                case E_VH_TYPE.Light:
+                    return Data.PLC_Functions.MGV.Enums.CstType.B.ToString();
+                default:
+                    return "";
+            }
+        }
         private MTLSetting getMTLSetting(string mtlID)
         {
             //var setting = MTLSettings.Where(id => id.ID.Trim() == mtlID.Trim()).SingleOrDefault();

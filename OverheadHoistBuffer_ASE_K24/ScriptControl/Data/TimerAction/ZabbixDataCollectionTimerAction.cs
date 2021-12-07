@@ -55,10 +55,10 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             {
                 try
                 {
-                    int total_idle_vh_clean = scApp.VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Clean);
-                    int total_idle_vh_Dirty = scApp.VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Dirty);
-                    scApp.ReportBLL.ZabbixPush(SCAppConstants.ZabbixServerInfo.ZABBIX_OHXC_IDLE_DIRTY_CAR, total_idle_vh_Dirty);
-                    scApp.ReportBLL.ZabbixPush(SCAppConstants.ZabbixServerInfo.ZABBIX_OHXC_IDLE_CLEAR_CAR, total_idle_vh_clean);
+                    //int total_idle_vh_clean = scApp.VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Clean);
+                    //int total_idle_vh_Dirty = scApp.VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Dirty);
+                    //scApp.ReportBLL.ZabbixPush(SCAppConstants.ZabbixServerInfo.ZABBIX_OHXC_IDLE_DIRTY_CAR, total_idle_vh_Dirty);
+                    //scApp.ReportBLL.ZabbixPush(SCAppConstants.ZabbixServerInfo.ZABBIX_OHXC_IDLE_CLEAR_CAR, total_idle_vh_clean);
                     //scApp.ZabbixService.Send(SCAppConstants.ZABBIX_SERVER_NAME, "OHxC_IDLE_Dirty_Car", total_idle_vh_Dirty.ToString());
                     //scApp.ZabbixService.Send(SCAppConstants.ZABBIX_SERVER_NAME, "OHxC_IDLE_Clean_Car", total_idle_vh_clean.ToString());
                     scApp.ReportBLL.ZabbixPush
@@ -66,7 +66,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                             line.ServiceMode == SCAppConstants.AppServiceMode.Active ? 1 : 0);
 
                     ohxHeartBeat = ohxHeartBeat == SCAppConstants.ZabbixOHxCAlive.ZABBIX_OHXC_ALIVE_HEARTBEAT_ON ?
-                                                   SCAppConstants.ZabbixOHxCAlive.ZABBIX_OHXC_ALIVE_HEARTBEAT_OFF:
+                                                   SCAppConstants.ZabbixOHxCAlive.ZABBIX_OHXC_ALIVE_HEARTBEAT_OFF :
                                                    SCAppConstants.ZabbixOHxCAlive.ZABBIX_OHXC_ALIVE_HEARTBEAT_ON;
                     scApp.ReportBLL.ZabbixPush
                             (SCAppConstants.ZabbixServerInfo.ZABBIX_OHXC_ALIVE, ohxHeartBeat);

@@ -98,11 +98,11 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 
         private void OHS100()
         {
-            if (scApp.VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Clean) > 0)
-                RandomGenerates_TranTask_Clear_Drity("C");
-            Thread.Sleep(1000);
-            if (scApp.VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Dirty) > 0)
-                RandomGenerates_TranTask_Clear_Drity("D");
+            //if (scApp.VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Clean) > 0)
+            //    RandomGenerates_TranTask_Clear_Drity("C");
+            //Thread.Sleep(1000);
+            //if (scApp.VehicleBLL.getNoExcuteMcsCmdVhCount(E_VH_TYPE.Dirty) > 0)
+            //    RandomGenerates_TranTask_Clear_Drity("D");
         }
 
         private void RandomGenerates_TranTask_Clear_Drity(string car_type)
@@ -120,8 +120,8 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             tryCreatMCSCommand(E_VH_TYPE.None, SourcePorts_None);
             tryCreatMCSCommand(E_VH_TYPE.None, SourcePorts_Clear);
             tryCreatMCSCommand(E_VH_TYPE.None, SourcePorts_Dirty);
-            tryCreatMCSCommand(E_VH_TYPE.Clean, SourcePorts_Clear);
-            tryCreatMCSCommand(E_VH_TYPE.Dirty, SourcePorts_Dirty);
+            //tryCreatMCSCommand(E_VH_TYPE.Clean, SourcePorts_Clear);
+            //tryCreatMCSCommand(E_VH_TYPE.Dirty, SourcePorts_Dirty);
         }
 
         private void tryCreatMCSCommand(E_VH_TYPE vh_type, List<string> load_port_lst)
@@ -137,9 +137,9 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             string find_task_type = "";
             switch (vh_type)
             {
-                case E_VH_TYPE.Clean:
-                    find_task_type = "CC";
-                    break;
+                //case E_VH_TYPE.Clean:
+                //    find_task_type = "CC";
+                //    break;
                 default:
                     find_task_type = vh_type.ToString().Substring(0, 1);
                     break;
@@ -183,7 +183,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
         {
             string cmdType = string.Concat(source_port, "To", destn_port);
             string cmdID = DateTime.Now.ToString("yyyyMMddHHmmssfffff");
-            scApp.CMDBLL.doCreatMCSCommand(cmdID, "0", "0", carrier_id, source_port, destn_port,"0", "0","0" ,SECSConst.HCACK_Confirm, false);
+            scApp.CMDBLL.doCreatMCSCommand(cmdID, "0", "0", carrier_id, source_port, destn_port, "0", "0", "0", SECSConst.HCACK_Confirm, false);
             scApp.SysExcuteQualityBLL.creatSysExcuteQuality(cmdID, carrier_id, source_port, destn_port);
             SpinWait.SpinUntil(() => false, 10000);
             scApp.CMDBLL.checkMCS_TransferCommand();

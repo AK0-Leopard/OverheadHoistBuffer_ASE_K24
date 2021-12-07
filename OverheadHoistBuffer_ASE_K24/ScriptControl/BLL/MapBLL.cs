@@ -788,7 +788,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                 APORTSTATION port_station = scApp.PortStationBLL.OperateCatch.getPortStation(adr_port_id);
                 if (port_station != null)
                 {
-                    vh_type = port_station.LD_VH_TYPE;
+                    if (port_station.LD_VH_TYPE == E_VH_TYPE.ReelCST)
+                    {
+                        vh_type = E_VH_TYPE.ReelCST;
+                    }
+                    else
+                    {
+                        vh_type = tryGetCSTTypeOnShelf(adr_port_id);
+                    }
                 }
                 return true;
             }
@@ -799,6 +806,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 if (shelf != null)
                 {
                     adr = shelf.ADR_ID.Trim();
+                    vh_type = tryGetCSTTypeOnShelf(adr_port_id);
                     return true;
                 }
                 else
@@ -814,6 +822,46 @@ namespace com.mirle.ibg3k0.sc.BLL
                         adr = adr_port_id;
                         return false;
                     }
+                }
+            }
+        }
+
+        private E_VH_TYPE tryGetCSTTypeOnShelf(string adr_port_id)
+        {
+            CassetteData cassetteData = scApp.CassetteDataBLL.loadCassetteDataByLoc(adr_port_id);
+            if (cassetteData == null)
+            {
+                return E_VH_TYPE.None;
+            }
+
+            var check_is_unknow = cassetteData.IsUnknowBox();
+            if (check_is_unknow.isUnknow)
+            {
+                return E_VH_TYPE.None;
+
+                //switch (check_is_unknow.cstType)
+                //{
+                //    case Data.PLC_Functions.MGV.Enums.CstType.A:
+                //        return E_VH_TYPE.Foup;
+                //    case Data.PLC_Functions.MGV.Enums.CstType.B:
+                //        return E_VH_TYPE.Light;
+                //    default:
+                //        return E_VH_TYPE.None;
+                //}
+            }
+            else
+            {
+                if (cassetteData.IsLightCST)
+                {
+                    return E_VH_TYPE.Light;
+                }
+                else if (cassetteData.IsFoupCST)
+                {
+                    return E_VH_TYPE.Foup;
+                }
+                else
+                {
+                    return  E_VH_TYPE.None;
                 }
             }
         }
