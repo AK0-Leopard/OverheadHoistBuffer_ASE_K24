@@ -10,12 +10,10 @@
 namespace com.mirle.ibg3k0.sc
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
-
+    
     public partial class ACMD_OHTC
     {
-
         public string CMD_ID { get; set; }
         public string VH_ID { get; set; }
         public string CMD_ID_MCS { get; set; }

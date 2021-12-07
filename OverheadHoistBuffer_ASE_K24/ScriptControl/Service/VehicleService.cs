@@ -2380,7 +2380,7 @@ namespace com.mirle.ibg3k0.sc.Service
             string load_port_id = recive_str.LoadPortID;     //B0.01
             string unload_port_id = recive_str.UnloadPortID; //B0.01
             var reserveInfos = recive_str.ReserveInfos;
-
+            string cst_type = recive_str.RequestHIDID;
             scApp.VehicleBLL.updateVehicleActionStatus(vh, eventType);
 
             switch (eventType)
@@ -2421,7 +2421,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     break;
 
                 case EventType.DoubleStorage:
-                    PositionReport_DoubleStorage(bcfApp, vh, seq_num, recive_str.EventType, recive_str.CurrentAdrID, recive_str.CurrentSecID, carrier_id);
+                    PositionReport_DoubleStorage(bcfApp, vh, seq_num, recive_str.EventType, recive_str.CurrentAdrID, recive_str.CurrentSecID, carrier_id, cst_type);
                     break;
 
                 case EventType.EmptyRetrieval:
@@ -3659,7 +3659,8 @@ namespace com.mirle.ibg3k0.sc.Service
 
 
         private void PositionReport_DoubleStorage(BCFApplication bcfApp, AVEHICLE eqpt, int seqNum
-                                                    , EventType eventType, string current_adr_id, string current_sec_id, string carrier_id)
+                                                  , EventType eventType, string current_adr_id, string current_sec_id, string carrier_id
+                                                  , string cstType)
         {
             try
             {
@@ -3672,7 +3673,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     bool retryOrAbort = true;
                     retryOrAbort = scApp.TransferService.OHT_TransferStatus(eqpt.OHTC_CMD,
-                            eqpt.VEHICLE_ID, ACMD_MCS.COMMAND_STATUS_BIT_INDEX_DOUBLE_STORAGE);
+                            eqpt.VEHICLE_ID, ACMD_MCS.COMMAND_STATUS_BIT_INDEX_DOUBLE_STORAGE
+                            , cstType);
                     Boolean resp_cmp;
                     resp_cmp = replyTranEventReport(bcfApp, eventType, eqpt, seqNum, true, true, true, "", CMDCancelType.CmdCancel);
                 }
@@ -4758,6 +4760,20 @@ namespace com.mirle.ibg3k0.sc.Service
             foreach (var vh in vhs)
             {
                 PauseRequest(vh.VEHICLE_ID, PauseEvent.Continue, OHxCPauseType.Earthquake);
+            }
+        }
+        public void updateVhType(string vhID, E_VH_TYPE vhType)
+        {
+            try
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"update vh:{vhID} to type:{vhType}");
+                scApp.VehicleBLL.updataVehicleType(vhID, vhType);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: ex);
             }
         }
 

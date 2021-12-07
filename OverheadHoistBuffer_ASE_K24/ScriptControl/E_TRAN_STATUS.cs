@@ -18,6 +18,6 @@ namespace com.mirle.ibg3k0.sc
         Aborting = 5,
         Canceling = 4,
         Paused = 3,
-        TransferCompleted = 6 
+        TransferCompleted = 6
     }
 }

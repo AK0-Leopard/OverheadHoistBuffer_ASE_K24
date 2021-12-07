@@ -435,7 +435,7 @@ namespace com.mirle.ibg3k0.bc.winform
                 string portName = dataGridView1.Rows[v.RowIndex].Cells["PLCPortID"].Value.ToString();
                 transferService.PortInOutService(portName, E_PORT_STATUS.OutOfService, "TestGetPortData");
             }
-            GetPortData();
+            GetPortData();     //test
         }
 
         private void button30_Click(object sender, EventArgs e)

@@ -9,6 +9,8 @@ namespace com.mirle.ibg3k0.sc
 {
     public partial class CassetteData
     {
+        public const string SYMBLE_LITE_CASSETTE = "LC";
+        public const string SYMBLE_FOUP = "BE";
         public static List<CassetteData> CassetteData_InfoList { get; set; } = new List<CassetteData>();
         public enum OHCV_STAGE
         {
@@ -64,9 +66,80 @@ namespace com.mirle.ibg3k0.sc
 
     public partial class CassetteData
     {
+        //因為Reel CST 沒有明確的CST ID命令命令規則，因此透過CST TYPE來確認
         public bool IsReelCST
         {
             get { return CSTType == ((int)Data.PLC_Functions.MGV.Enums.CstType.ReelCST).ToString(); }
+        }
+        public bool IsFoupCST
+        {
+            get
+            {
+                if (BOXID.Length < 4)
+                {
+                    return false;
+                }
+                var sub_crrierID = BOXID.Substring(2, 2);
+                if (sc.Common.SCUtility.isMatche(sub_crrierID, SYMBLE_FOUP))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public bool IsLightCST
+        {
+            get
+            {
+                if (BOXID.Length < 4)
+                {
+                    return false;
+                }
+                var sub_crrierID = BOXID.Substring(2, 2);
+                if (sc.Common.SCUtility.isMatche(sub_crrierID, SYMBLE_LITE_CASSETTE))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public (bool isUnknow, Data.PLC_Functions.MGV.Enums.CstType cstType) IsUnknowBox()
+        {
+            if (IsUnknow)
+            {
+                var cst_type = getUnknowCSTType();
+                return (true, cst_type);
+            }
+            return (false, Data.PLC_Functions.MGV.Enums.CstType.Undefined);
+        }
+
+        private bool IsUnknow
+        {
+            get
+            {
+                return BOXID.StartsWith(Service.TransferService.SYMBOL_UNKNOW_CST_ID);
+            }
+        }
+        private Data.PLC_Functions.MGV.Enums.CstType getUnknowCSTType()
+        {
+            if (BOXID.Length < 6)
+            {
+                return Data.PLC_Functions.MGV.Enums.CstType.Undefined;
+            }
+            var sub_crrierID = BOXID.Substring(4, 2);
+            if (sc.Common.SCUtility.isMatche(sub_crrierID, SYMBLE_FOUP))
+            {
+                return Data.PLC_Functions.MGV.Enums.CstType.A;
+            }
+            else if (sc.Common.SCUtility.isMatche(sub_crrierID, SYMBLE_LITE_CASSETTE))
+            {
+                return Data.PLC_Functions.MGV.Enums.CstType.B;
+            }
+            else
+            {
+                return Data.PLC_Functions.MGV.Enums.CstType.Undefined;
+            }
         }
     }
 }

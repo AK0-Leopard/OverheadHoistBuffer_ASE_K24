@@ -94,6 +94,7 @@
             this.iSCYCLINGDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.cYCLERUNTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.aCCSECDIST2ShowDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VH_TYPE = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.uPDTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.vehicleObjToShowBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.tapTrace = new System.Windows.Forms.TabPage();
@@ -725,6 +726,7 @@
             this.iSCYCLINGDataGridViewCheckBoxColumn,
             this.cYCLERUNTIMEDataGridViewTextBoxColumn,
             this.aCCSECDIST2ShowDataGridViewTextBoxColumn,
+            this.VH_TYPE,
             this.uPDTIMEDataGridViewTextBoxColumn});
             this.dgv_vhStatus.DataSource = this.vehicleObjToShowBindingSource1;
             this.dgv_vhStatus.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -866,6 +868,14 @@
             this.aCCSECDIST2ShowDataGridViewTextBoxColumn.Name = "aCCSECDIST2ShowDataGridViewTextBoxColumn";
             this.aCCSECDIST2ShowDataGridViewTextBoxColumn.ReadOnly = true;
             this.aCCSECDIST2ShowDataGridViewTextBoxColumn.Width = 128;
+            // 
+            // VH_TYPE
+            // 
+            this.VH_TYPE.DataPropertyName = "VH_TYPE";
+            this.VH_TYPE.HeaderText = "VhType";
+            this.VH_TYPE.Name = "VH_TYPE";
+            this.VH_TYPE.ReadOnly = true;
+            this.VH_TYPE.Width = 92;
             // 
             // uPDTIMEDataGridViewTextBoxColumn
             // 
@@ -1296,23 +1306,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn alarm_desc;
         private Components.uctl_Map uctl_Map;
         private System.Windows.Forms.BindingSource vehicleObjToShowBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn vEHICLEIDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn mODESTATUSDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn aCTSTATUSDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn mCSCMDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn oHTCCMDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn bLOCKPAUSE2ShowDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn cMDPAUSE2ShowDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn oBSPAUSE2ShowDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn hIDPAUSE2ShowDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn oBSDIST2ShowDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn vEHICLEACCDIST2ShowDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn iSPARKINGDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pARKTIMEDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn iSCYCLINGDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cYCLERUNTIMEDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn aCCSECDIST2ShowDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn uPDTIMEDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource vehicleObjToShowBindingSource1;
         private System.Windows.Forms.Label lbl_HoseMode;
         private System.Windows.Forms.Label label11;
@@ -1336,5 +1329,23 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox txt_cstType;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn vEHICLEIDDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn mODESTATUSDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn aCTSTATUSDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn mCSCMDDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn oHTCCMDDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn bLOCKPAUSE2ShowDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn cMDPAUSE2ShowDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn oBSPAUSE2ShowDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn hIDPAUSE2ShowDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn oBSDIST2ShowDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn vEHICLEACCDIST2ShowDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn iSPARKINGDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn pARKTIMEDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn iSCYCLINGDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cYCLERUNTIMEDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn aCCSECDIST2ShowDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VH_TYPE;
+        private System.Windows.Forms.DataGridViewTextBoxColumn uPDTIMEDataGridViewTextBoxColumn;
     }
 }
