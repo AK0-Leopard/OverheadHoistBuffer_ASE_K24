@@ -3386,8 +3386,11 @@ namespace com.mirle.ibg3k0.sc.Service
                         {
                             scApp.CMDBLL.updateCMD_MCS_PauseFlag(cmd_ohtc.CMD_ID_MCS, SCAppConstants.YES_FLAG);
                             bool is_success = doAbortCommand(eqpt, excute_ohtc_cmd_id, getResult.cancelType); //A0.01
+
                             if (is_success)
+                            {
                                 tx.Complete();
+                            }
                         }
                     }
                     return true;
@@ -3431,6 +3434,35 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private bool checkGuideSectionHasChange(AVEHICLE vh, string requsetSecID)
         {
+            if (!DebugParameter.IsOpneChangeGuideSection)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"change guide section funcion is close.",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+                return false;
+            }
+
+            if (DebugParameter.IsOnlyChangeGuideSectionManualCommand)
+            {
+                if (SCUtility.isEmpty(vh.MCS_CMD))
+                {
+                    return false;
+                }
+                else
+                {
+                    string mcs_cmd_id = SCUtility.Trim(vh.MCS_CMD, true);
+                    if (!mcs_cmd_id.StartsWith(TransferService.SYMBOL_MANUAL_COMMAND))
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"Current is change manual command only.",
+                           VehicleID: vh.VEHICLE_ID,
+                           CarrierID: vh.CST_ID);
+                        return false;
+                    }
+                }
+            }
+
             ASECTION req_sec = scApp.SectionBLL.cache.GetSection(requsetSecID);
             if (req_sec == null) return false;
             List<string> original_pass_section_ids = vh.WillPassSectionID;
@@ -3483,7 +3515,7 @@ namespace com.mirle.ibg3k0.sc.Service
             else
             {
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                   Data: $"Want to check guide section has change,result:[No guide section to go]." ,
+                   Data: $"Want to check guide section has change,result:[No guide section to go].",
                    VehicleID: vh.VEHICLE_ID,
                    CarrierID: vh.CST_ID);
                 return false;

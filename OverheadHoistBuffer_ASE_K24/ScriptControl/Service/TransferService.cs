@@ -8209,7 +8209,7 @@ namespace com.mirle.ibg3k0.sc.Service
         #endregion OHBC 狀態操作
 
         #region 命令操作
-
+        public const string SYMBOL_MANUAL_COMMAND = "MANUAL";
         public string Manual_InsertCmd(string source, string dest, int priority = 5, string sourceCmd = "UI", CmdType cmdType = CmdType.Manual, string craneID = "")   //手動搬送，sourceCmd : 誰呼叫
         {
             try
@@ -8269,7 +8269,8 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 ACMD_MCS datainfo = new ACMD_MCS();
 
-                string cmdID = "MANAUL" + GetStDate();
+                //string cmdID = "MANAUL" + GetStDate();
+                string cmdID = $"{SYMBOL_MANUAL_COMMAND}{GetStDate()}";
 
                 while (cmdExist)
                 {

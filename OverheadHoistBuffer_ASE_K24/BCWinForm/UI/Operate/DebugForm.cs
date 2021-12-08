@@ -91,6 +91,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_testHIDAbnormalVh.SelectedItem = DebugParameter.TestHIDAbnormalVhID;
             cb_autoUnloadOnVh.Checked = DebugParameter.IsAutoUnloadOnvh;
             cb_openSpecifyVh.Checked = DebugParameter.IsSpecifyVhTransfer;
+            cb_openGuideSectionChange.Checked = DebugParameter.IsOpneChangeGuideSection;
+            cb_guideSectionChangeOnlyManualCmd.Checked = DebugParameter.IsOnlyChangeGuideSectionManualCommand;
+
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
             cb_PwrMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingPowerMode));
@@ -1506,6 +1509,16 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             {
                 btnVhTypeUpdate.Enabled = true;
             }
+        }
+
+        private void cb_openGuideSectionChange_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsOpneChangeGuideSection = cb_openGuideSectionChange.Checked;
+        }
+
+        private void cb_guideSectionChangeOnlyManualCmd_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsOnlyChangeGuideSectionManualCommand = cb_guideSectionChangeOnlyManualCmd.Checked;
         }
     }
 }
