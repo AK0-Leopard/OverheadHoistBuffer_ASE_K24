@@ -3415,7 +3415,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 case E_CMD_TYPE.Unload:
                     return (true, CMDCancelType.CmdAbort);
                 case E_CMD_TYPE.LoadUnload:
-                    if (vh.HAS_BOX == 1)
+                    //if (vh.HAS_BOX == 1)
+                    if (vh.HAS_CST == 1)
                     {
                         return (true, CMDCancelType.CmdAbort);
                     }
