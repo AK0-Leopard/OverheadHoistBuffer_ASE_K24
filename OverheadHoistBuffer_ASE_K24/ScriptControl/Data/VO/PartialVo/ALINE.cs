@@ -37,7 +37,11 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler<EventArgs> LineStatusChange;
         public event EventHandler<EventArgs> OnLocalDisconnection;
         public event EventHandler<EventArgs> OnLocalConnection;
+        public event EventHandler<bool> HasHIDPowerAlarmHappendChange;
 
+        public AK0.ProtocolFormat.VehicleControlPublishMessage.LineInfo LineInfo { get; private set; } = new AK0.ProtocolFormat.VehicleControlPublishMessage.LineInfo();
+
+        public List<ALARM> CurrentAlarms { get; private set; } = new List<ALARM>();
         #region MCS Online Check Item
         private bool alarmSetChecked = false;
         public bool AlarmSetChecked
@@ -897,24 +901,24 @@ namespace com.mirle.ibg3k0.sc
                     case "AP10":
                         AP10ConnectionSuccess = Info.IsConnectinoSuccess;
                         break;
-                    //case "CHARGER_PLC":
-                    //    ChargePLCConnectionSuccess = Info.IsConnectinoSuccess;
-                    //    break;
-                    //case "ADAM_1":
-                    //    ADAM1ConnectionSuccess = Info.IsConnectinoSuccess;
-                    //    break;
-                    //case "ADAM_2":
-                    //    ADAM2ConnectionSuccess = Info.IsConnectinoSuccess;
-                    //    break;
-                    //case "ADAM_3":
-                    //    ADAM3ConnectionSuccess = Info.IsConnectinoSuccess;
-                    //    break;
-                    //case "ADAM_4":
-                    //    ADAM4ConnectionSuccess = Info.IsConnectinoSuccess;
-                    //    break;
-                    //case "ADAM_5":
-                    //    ADAM5ConnectionSuccess = Info.IsConnectinoSuccess;
-                    //    break;
+                        //case "CHARGER_PLC":
+                        //    ChargePLCConnectionSuccess = Info.IsConnectinoSuccess;
+                        //    break;
+                        //case "ADAM_1":
+                        //    ADAM1ConnectionSuccess = Info.IsConnectinoSuccess;
+                        //    break;
+                        //case "ADAM_2":
+                        //    ADAM2ConnectionSuccess = Info.IsConnectinoSuccess;
+                        //    break;
+                        //case "ADAM_3":
+                        //    ADAM3ConnectionSuccess = Info.IsConnectinoSuccess;
+                        //    break;
+                        //case "ADAM_4":
+                        //    ADAM4ConnectionSuccess = Info.IsConnectinoSuccess;
+                        //    break;
+                        //case "ADAM_5":
+                        //    ADAM5ConnectionSuccess = Info.IsConnectinoSuccess;
+                        //    break;
                 }
             }
         }
@@ -967,6 +971,21 @@ namespace com.mirle.ibg3k0.sc
             Priority
         }
         #endregion
+
+        private bool hIDPowerAlarmHappend = false;
+        public bool HasHIDsPowerAlarmHappend
+        {
+            get { return hIDPowerAlarmHappend; }
+            set
+            {
+                if (hIDPowerAlarmHappend != value)
+                {
+                    hIDPowerAlarmHappend = value;
+                    HasHIDPowerAlarmHappendChange?.Invoke(this, value);
+                }
+            }
+
+        }
 
         private AlarmHisList alarmHisList = new AlarmHisList();
         private string current_park_type;
@@ -1558,13 +1577,13 @@ namespace com.mirle.ibg3k0.sc
 
             switch (lineInfoGpb.HostMode)
             {
-                case  HostMode.Offline:
+                case HostMode.Offline:
                     Host_Control_State = SCAppConstants.LineHostControlState.HostControlState.EQ_Off_line;
                     break;
-                case  HostMode.OnlineLocal:
+                case HostMode.OnlineLocal:
                     Host_Control_State = SCAppConstants.LineHostControlState.HostControlState.On_Line_Local;
                     break;
-                case  HostMode.OnlineRemote:
+                case HostMode.OnlineRemote:
                     Host_Control_State = SCAppConstants.LineHostControlState.HostControlState.On_Line_Remote;
                     break;
             }
@@ -1572,5 +1591,10 @@ namespace com.mirle.ibg3k0.sc
         }
 
 
+
     }
+
+
+
+
 }

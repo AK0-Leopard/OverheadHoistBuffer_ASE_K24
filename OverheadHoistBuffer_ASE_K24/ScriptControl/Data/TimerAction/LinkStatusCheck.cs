@@ -92,22 +92,26 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 
                 try
                 {
-                    doCheckEQAliveStatus();
-                    doCheckIPLinkStatus();
-                    //doCheckIPLinkStatusParallel();
-                    scApp.CheckSystemEventHandler.CheckCheckSystemIsExist();
 
-                    ALINE line = scApp.getEQObjCacheManager().getLine();
-                    InlineEfficiencyMonitor(line);
-                    Task.Run(() =>
-                    {
-                        CheckLinkStatus(line);
-                    });
-                    if (SCUtility.getCallContext<bool>(ALINE.CONTEXT_KEY_WORD_LINE_STATUS_HAS_CHANGE))
-                    {
-                        line.NotifyLineStatusChange();
-                        SCUtility.setCallContext(ALINE.CONTEXT_KEY_WORD_LINE_STATUS_HAS_CHANGE, null);
-                    }
+                    scApp.LineService.HIDStatusCheck();
+                    scApp.LineService.LineStatusChangeCheck();
+                    scApp.LineService.refreshAlarmInfoList();
+                    //doCheckEQAliveStatus();
+                    //doCheckIPLinkStatus();
+                    ////doCheckIPLinkStatusParallel();
+                    //scApp.CheckSystemEventHandler.CheckCheckSystemIsExist();
+
+                    //ALINE line = scApp.getEQObjCacheManager().getLine();
+                    //InlineEfficiencyMonitor(line);
+                    //Task.Run(() =>
+                    //{
+                    //    CheckLinkStatus(line);
+                    //});
+                    //if (SCUtility.getCallContext<bool>(ALINE.CONTEXT_KEY_WORD_LINE_STATUS_HAS_CHANGE))
+                    //{
+                    //    line.NotifyLineStatusChange();
+                    //    SCUtility.setCallContext(ALINE.CONTEXT_KEY_WORD_LINE_STATUS_HAS_CHANGE, null);
+                    //}
                 }
                 catch (Exception ex)
                 {

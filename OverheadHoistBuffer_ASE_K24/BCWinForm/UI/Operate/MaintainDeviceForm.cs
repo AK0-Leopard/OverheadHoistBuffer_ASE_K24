@@ -60,7 +60,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             CarOutNotify(MTLValueDefMapActionBase, car_id, 2);
         }
 
-        private void CarOutNotify(MTxValueDefMapActionBase mTxValueDefMapActionBase, ushort carNum,ushort action_type)
+        private void CarOutNotify(MTxValueDefMapActionBase mTxValueDefMapActionBase, ushort carNum, ushort action_type)
         {
             Task.Run(() =>
             {
@@ -191,7 +191,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void timer1_Tick(object sender, EventArgs e)
         {
 
-            lbl_mtl_alive.Text = MTL.Is_Eq_Alive.ToString();
+            //lbl_mtl_alive.Text = MTL.Is_Eq_Alive.ToString();
+            lbl_mtl_alive.Text = MTL.IsAlive.ToString();
             lbl_mtl_current_car_id.Text = MTL.CurrentCarID;
             lbl_mtl_has_vh.Text = MTL.HasVehicle.ToString();
             lbl_mtl_stop_single.Text = MTL.StopSingle.ToString();
@@ -218,7 +219,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 //btn_mtl_o2m_u2d_caroutInterlock.Checked = MTL.CarOutInterlock;
                 //btn_mtl_o2m_d2u_moving.Checked = MTL.CarInMoving;
             }
-          
+
             MTLCarOutExcuting = !SCUtility.isEmpty(MTL.PreCarOutVhID);
 
 

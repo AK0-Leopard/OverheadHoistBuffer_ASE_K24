@@ -220,6 +220,13 @@ namespace com.mirle.ibg3k0.sc.BLL
                             FirstOrDefault();
                 return eqpt;
             }
+            public List<AEQPT> loadHID()
+            {
+                var eqpts = eqObjCacheManager.getAllEquipment().
+                            Where(eq => eq.Type == SCAppConstants.EqptType.HID).
+                            ToList();
+                return eqpts;
+            }
 
         }
 

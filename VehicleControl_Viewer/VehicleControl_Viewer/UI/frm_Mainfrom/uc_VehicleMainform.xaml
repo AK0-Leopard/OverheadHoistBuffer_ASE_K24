@@ -221,55 +221,43 @@
                                 <DataGrid 
                                 x:Name="dgv_CurrentAlarm"
                                 IsReadOnly="True"
-                                ItemsSource="{Binding ALARM_INFO}" 
+                                 ItemsSource="{Binding Path=., Mode=OneWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" 
                                 AlternationCount="2"
                                 Margin="0,0,0,0"
                                 AutoGenerateColumns="False">
                                     <DataGrid.Columns>
 
-                                        <DataGridTextColumn Binding="{Binding EQPTID}">
+                                        <DataGridTextColumn Binding="{Binding EQ_ID}">
                                             <DataGridTextColumn.Header>
                                                 <TextBlock Text ="{DynamicResource EQ_ID}" Margin="0,-10,0,-12"/>
                                             </DataGridTextColumn.Header>
                                         </DataGridTextColumn>
 
-                                        <DataGridTextColumn Binding="{Binding UNITNO}">
+                                        <DataGridTextColumn Binding="{Binding Unit_ID}">
                                             <DataGridTextColumn.Header>
                                                 <TextBlock Text ="{DynamicResource UNIT_ID}" Margin="0,-10,0,-12"/>
                                             </DataGridTextColumn.Header>
                                         </DataGridTextColumn>
 
-                                        <DataGridTextColumn Binding="{Binding RPTDATETIME}">
+                                        <DataGridTextColumn Binding="{Binding RPT_dateTime}">
                                             <DataGridTextColumn.Header>
                                                 <TextBlock Text ="{DynamicResource REPORT_DATE_TIME}" Margin="0,-10,0,-12"/>
                                             </DataGridTextColumn.Header>
                                         </DataGridTextColumn>
 
-                                        <DataGridTextColumn Binding="{Binding ALARMCODE}">
+                                        <DataGridTextColumn Binding="{Binding Code}">
                                             <DataGridTextColumn.Header>
                                                 <TextBlock Text ="{DynamicResource ALARM_CODE}" Margin="0,-10,0,-12"/>
                                             </DataGridTextColumn.Header>
                                         </DataGridTextColumn>
 
-                                        <DataGridTextColumn Binding="{Binding ALARMLVL}">
+                                        <DataGridTextColumn Binding="{Binding level}">
                                             <DataGridTextColumn.Header>
                                                 <TextBlock Text ="{DynamicResource ALARM_LEVEL}" Margin="0,-10,0,-12"/>
                                             </DataGridTextColumn.Header>
                                         </DataGridTextColumn>
 
-                                        <DataGridTextColumn Binding="{Binding ALARMSTAT}">
-                                            <DataGridTextColumn.Header>
-                                                <TextBlock Text ="{DynamicResource ALARM_STATUS}" Margin="0,-10,0,-12"/>
-                                            </DataGridTextColumn.Header>
-                                        </DataGridTextColumn>
-
-                                        <DataGridTextColumn Binding="{Binding ALARMAFFECTCNT}">
-                                            <DataGridTextColumn.Header>
-                                                <TextBlock Text ="{DynamicResource ALARM_AFFECT_CNT}" Margin="0,-10,0,-12"/>
-                                            </DataGridTextColumn.Header>
-                                        </DataGridTextColumn>
-
-                                        <DataGridTextColumn Binding="{Binding ALARMDESC}">
+                                        <DataGridTextColumn Binding="{Binding Description}">
                                             <DataGridTextColumn.Header>
                                                 <TextBlock Text ="{DynamicResource ALARM_DESC}" Margin="0,-10,0,-12"/>
                                             </DataGridTextColumn.Header>

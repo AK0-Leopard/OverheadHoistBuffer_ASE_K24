@@ -1017,6 +1017,13 @@ namespace com.mirle.ibg3k0.sc
         [BaseElement(NonChangeFromOtherVO = true)]
         public int Num { get; set; }
 
+        [JsonIgnore]
+        [BaseElement(NonChangeFromOtherVO = true)]
+        public bool IsUnloadArriveByPassReply { get; set; }
+
+
+
+
 
         void TransitionedHandler(Stateless.StateMachine<VehicleState, VehicleTrigger>.Transition transition)
         {

@@ -105,6 +105,14 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
                 NotifyPropertyChanged(BCFUtility.getPropertyName(() => this.OHTC_CMD));
             }
         }
+        [DisplayName("Vh Type")]
+        public E_VH_TYPE VH_TYPE
+        {
+            get
+            {
+                return vehicle.VEHICLE_TYPE;
+            }
+        }
         //[DisplayName("CST ID")]
         //public string cST_ID
         //{

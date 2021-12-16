@@ -49,6 +49,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             BCUtility.setComboboxDataSource(cmb_plcctr_Vehicle, allVh.ToArray());
             BCUtility.setComboboxDataSource(cmb_car_out_vh, allVh.ToArray());
             BCUtility.setComboboxDataSource(cmb_cycleRunVhId, allVh.ToArray());
+            BCUtility.setComboboxDataSource(cb_testHIDAbnormalVh, allVh.ToArray());
             //var cst_data = CassetteData.CassetteData_InfoList;
             //if (cst_data != null && cst_data.Count() != 0)
             //{
@@ -57,11 +58,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             //    cst_data_ids.AddRange(cst_data.Select(cst => cst.BOXID).ToList());
             //    BCUtility.setComboboxDataSource(cmb_cycleCstID, cst_data_ids.ToArray());
             //}
-
-            List<ASEGMENT> segments = bcApp.SCApplication.SegmentBLL.cache.GetSegments();
-            string[] segment_ids = segments.Select(seg => seg.SEG_NUM).ToArray();
-            BCUtility.setComboboxDataSource(cmb_refresh_vh_order_in_seg_id, segment_ids.ToArray());
-
 
             List<AADDRESS> allAddress_obj = bcApp.SCApplication.MapBLL.loadAllAddress();
             string[] allAdr_ID = allAddress_obj.Select(adr => adr.ADR_ID).ToArray();
@@ -73,6 +69,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             string[] ohcv_devices_id = ohcvDevices.Select(eq => eq.EQPT_ID).ToArray();
             BCUtility.setComboboxDataSource(cb_cv_ids, ohcv_devices_id.ToArray());
 
+            var shelfDefs = bcApp.SCApplication.ShelfDefBLL.LoadShelf();
+            List<string> current_bay_ids = shelfDefs.Select(s => s.BayID).Distinct().OrderBy(s => s).ToList();
+            cmb_cycleRunBayID.DataSource = current_bay_ids;
+
+
             numericUpDown1.Value = DebugParameter.PreDriveOutDistance_MM;
             cb_passDriveOutByAreaSensor.Checked = DebugParameter.isPassDriveOutByAreaSensor;
             cmb_cycleRunVhId.SelectedItem = DebugParameter.cycleRunVh;
@@ -81,8 +82,17 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
             cb_ForceStraightPass.Checked = DebugParameter.IsForceStraightPass;
             cb_ForceNonStraightPass.Checked = DebugParameter.IsForceNonStraightPass;
-            cb_ignoreManualPort.Checked = DebugParameter.IsIgnoreManualPortStatus;
+            cb_ignoreNTBPort.Checked = DebugParameter.IsIgnoreNTBPortStatus;
             cb_paassErrorVhAndTrackStatus.Checked = DebugParameter.IsPaassErrorVhAndTrackStatus;
+            txt_cycleCstID.Text = DebugParameter.cycleRunCSTs;
+            cb_IsSameBayAfterWay.Checked = DebugParameter.IsSameByAfterWay;
+            ch_IsAutoDriveOut.Checked = DebugParameter.IsAutoDriveOut;
+            cb_isCheckHIDStatus.Checked = DebugParameter.IsCheckHIDStatus;
+            cb_testHIDAbnormalVh.SelectedItem = DebugParameter.TestHIDAbnormalVhID;
+            cb_autoUnloadOnVh.Checked = DebugParameter.IsAutoUnloadOnvh;
+            cb_openSpecifyVh.Checked = DebugParameter.IsSpecifyVhTransfer;
+            cb_openGuideSectionChange.Checked = DebugParameter.IsOpneChangeGuideSection;
+            cb_guideSectionChangeOnlyManualCmd.Checked = DebugParameter.IsOnlyChangeGuideSectionManualCommand;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -91,9 +101,21 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cmb_pauseType.DataSource = Enum.GetValues(typeof(OHxCPauseType));
             cb_Abort_Type.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.CMDCancelType));
             combox_cycle_type.DataSource = Enum.GetValues(typeof(DebugParameter.CycleRunType));
+            cmbVhType.DataSource = Enum.GetValues(typeof(E_VH_TYPE));
 
             combox_cycle_type.SelectedItem = DebugParameter.cycleRunType;
             cb_passTrack.Checked = DebugParameter.IsPassTrackBlockStatus;
+
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR01", cb_unloadArrivePassReply01);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR02", cb_unloadArrivePassReply02);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR03", cb_unloadArrivePassReply03);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR05", cb_unloadArrivePassReply05);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR06", cb_unloadArrivePassReply06);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR07", cb_unloadArrivePassReply07);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR08", cb_unloadArrivePassReply08);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR09", cb_unloadArrivePassReply09);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR10", cb_unloadArrivePassReply10);
+            setUnloadArrivePassReplyCheckBox("B6_OHB01_CR11", cb_unloadArrivePassReply11);
 
 
             radioButtons.Add(radio_bit0);
@@ -118,13 +140,15 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_Cache_data_Name.Items.Add("");
             cb_Cache_data_Name.Items.Add("APORTSTATION");
             dgv_cache_object_data.AutoGenerateColumns = false;
+
+            var hids = bcApp.SCApplication.EquipmentBLL.cache.loadHID();
+            if (hids.Count > 0)
+            {
+                string[] hid_ids = hids.Select(h => h.EQPT_ID).ToArray();
+                BCUtility.setComboboxDataSource(comboBox_HID_control, hid_ids.ToArray());
+            }
             comboBox_HID_control.SelectedIndex = 0;
 
-            var shelfDefs = bcApp.SCApplication.ShelfDefBLL.LoadShelf();
-
-            List<string> current_bay_ids = shelfDefs.Select(s => s.BayID).Distinct().OrderBy(s => s).ToList();
-
-            cmb_cycleRunBayID.DataSource = current_bay_ids;
 
 
         }
@@ -159,6 +183,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             lbl_id_37_cmdID_value.Text = noticeCar?.OHTC_CMD;
             lbl_install_status.Text = noticeCar?.IS_INSTALLED.ToString();
             lbl_listening_status.Text = noticeCar?.IsTcpIpListening(bcApp.SCApplication.getBCFApplication()).ToString();
+            cmbVhType.SelectedItem = noticeCar?.VEHICLE_TYPE;
         }
 
         private void uctl_Btn1_Click(object sender, EventArgs e)
@@ -535,15 +560,15 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private async void ck_autoTech_Click(object sender, EventArgs e)
         {
-            sc.App.SystemParameter.AutoTeching = ck_autoTech.Checked;
-            if (!ck_autoTech.Checked) return;
-            string vh_id = cmb_tcpipctr_Vehicle.Text;
-            await Task.Run(() =>
-             {
-                 bcApp.SCApplication.VehicleService.AutoTeaching(vh_id);
-                 SpinWait.SpinUntil(() => !sc.App.SystemParameter.AutoTeching);
-             });
-            ck_autoTech.Checked = sc.App.SystemParameter.AutoTeching;
+            //sc.App.SystemParameter.AutoTeching = ck_autoTech.Checked;
+            //if (!ck_autoTech.Checked) return;
+            //string vh_id = cmb_tcpipctr_Vehicle.Text;
+            //await Task.Run(() =>
+            // {
+            //     bcApp.SCApplication.VehicleService.AutoTeaching(vh_id);
+            //     SpinWait.SpinUntil(() => !sc.App.SystemParameter.AutoTeching);
+            // });
+            //ck_autoTech.Checked = sc.App.SystemParameter.AutoTeching;
 
         }
 
@@ -565,12 +590,12 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void btn_cmd_override_test_Click(object sender, EventArgs e)
         {
-            string vh_id = cmb_tcpipctr_Vehicle.Text;
-            bool is_need_pause_first = cb_pauseFirst.Checked;
-            Task.Run(() =>
-            {
-                bcApp.SCApplication.VehicleService.VhicleChangeThePath(vh_id, is_need_pause_first);
-            });
+            //string vh_id = cmb_tcpipctr_Vehicle.Text;
+            //bool is_need_pause_first = cb_pauseFirst.Checked;
+            //Task.Run(() =>
+            //{
+            //    bcApp.SCApplication.VehicleService.VhicleChangeThePath(vh_id, is_need_pause_first);
+            //});
         }
 
         private void uctl_SendFun2_Click(object sender, EventArgs e)
@@ -756,23 +781,40 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void btn_hid_info_Click(object sender, EventArgs e)
         {
-            AEQPT eqpt_HID = bcApp.SCApplication.getEQObjCacheManager().getEquipmentByEQPTID("HID");
-            var hid_info = eqpt_HID.HID_Info;
-            if (hid_info == null) return;
+            setHIDNormalStatus(lbl_isHID1Normal, "HID1");
+            setHIDNormalStatus(lbl_isHID2Normal, "HID2");
+            setHIDNormalStatus(lbl_isHID3Normal, "HID3");
+            setHIDNormalStatus(lbl_isHID4Normal, "HID4");
+            setHIDNormalStatus(lbl_isHID5Normal, "HID5");
+
+            //AEQPT eqpt_HID = bcApp.SCApplication.getEQObjCacheManager().getEquipmentByEQPTID(comboBox_HID_control.Text);
+            //if (eqpt_HID == null) return;
+            ////var hid_info = eqpt_HID.HID_Info;
+            ////if (hid_info == null) return;
+            //Adapter.Invoke((obj) =>
+            //{
+            //    //lbl_hour_sigma_word_value.Text = hid_info.Hour_Sigma_Converted.ToString();
+            //    //lbl_vr_value.Text = hid_info.VR_Converted.ToString();
+            //    //lbl_vs_value.Text = hid_info.VS_Converted.ToString();
+            //    //lbl_vt_value.Text = hid_info.VT_Converted.ToString();
+
+            //    //lbl_ar_value.Text = hid_info.AR_Converted.ToString();
+            //    //lbl_as_value.Text = hid_info.AS_Converted.ToString();
+            //    //lbl_at_value.Text = hid_info.AT_Converted.ToString();
+
+            //    //lbl_sigma_w_value.Text = hid_info.Sigma_W_Converted.ToString();
+            //    lbl_isHID1Normal.Text = eqpt_HID.IsNormal.ToString();
+
+            //}, null);
+        }
+
+        private void setHIDNormalStatus(Label lbl, string eqID)
+        {
+            AEQPT eqpt_HID = bcApp.SCApplication.getEQObjCacheManager().getEquipmentByEQPTID(eqID);
+            if (eqpt_HID == null) return;
             Adapter.Invoke((obj) =>
             {
-                lbl_hour_sigma_word_value.Text = hid_info.Hour_Sigma_Converted.ToString();
-                lbl_vr_value.Text = hid_info.VR_Converted.ToString();
-                lbl_vs_value.Text = hid_info.VS_Converted.ToString();
-                lbl_vt_value.Text = hid_info.VT_Converted.ToString();
-
-                lbl_ar_value.Text = hid_info.AR_Converted.ToString();
-                lbl_as_value.Text = hid_info.AS_Converted.ToString();
-                lbl_at_value.Text = hid_info.AT_Converted.ToString();
-
-                lbl_sigma_w_value.Text = hid_info.Sigma_W_Converted.ToString();
-
-
+                lbl.Text = eqpt_HID.IsNormal.ToString();
 
             }, null);
         }
@@ -878,33 +920,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             DebugParameter.TestDuplicate = cb_test_duplicate.Checked;
         }
 
-        private async void btn_refresh_vh_order_in_seg_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                btn_refresh_vh_order_in_seg.Enabled = false;
-                string seg_id = cmb_refresh_vh_order_in_seg_id.Text;
-                var seg_obj = bcApp.SCApplication.SegmentBLL.cache.GetSegment(seg_id);
-                //await Task.Run(() => seg_obj.RefreshVhOrder(bcApp.SCApplication.VehicleBLL, bcApp.SCApplication.SectionBLL));
-                RefreshVehicleOrderInSegment(seg_id);
-            }
-            finally
-            {
-                btn_refresh_vh_order_in_seg.Enabled = true;
-            }
-        }
 
-        private void cmb_refresh_vh_order_in_seg_id_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string seg_id = (sender as ComboBox).Text;
-            RefreshVehicleOrderInSegment(seg_id);
-        }
 
-        private void RefreshVehicleOrderInSegment(string seg_id)
-        {
-            var seg_obj = bcApp.SCApplication.SegmentBLL.cache.GetSegment(seg_id);
-            txt_vh_order_in_segment.Text = string.Join(",", seg_obj.GetVehicleOrderInSegment());
-        }
 
         private void tabPage6_Click(object sender, EventArgs e)
         {
@@ -1029,9 +1046,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             bool is_success = false;
             await Task.Run(() =>
-             {
-                 is_success = bcApp.SCApplication.VehicleService.startVehicleTcpIpServer(vh_id);
-             });
+            {
+                is_success = bcApp.SCApplication.VehicleService.startVehicleTcpIpServer(vh_id);
+            });
             MessageBox.Show(is_success ? "OK" : "NG");
         }
 
@@ -1255,7 +1272,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void btn_initial_Click(object sender, EventArgs e)
         {
-            var report_event = sc.ProtocolFormat.OHTMessage.EventType.Initial;
+            var report_event = sc.ProtocolFormat.OHTMessage.EventType.UnloadArrivals;
             McsReportEventTest(report_event, sc.ProtocolFormat.OHTMessage.BCRReadResult.BcrMisMatch);
         }
 
@@ -1297,18 +1314,14 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             DebugParameter.IsForceNonStraightPass = cb_ForceNonStraightPass.Checked;
         }
 
-        private void cmb_cycleCstID_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //DebugParameter.cycleRunCST = cmb_cycleCstID.SelectedValue as string;
-        }
-
         private void combox_cycle_type_SelectionChangeCommitted(object sender, EventArgs e)
         {
             Enum.TryParse(combox_cycle_type.SelectedValue.ToString(), out DebugParameter.CycleRunType type);
 
             DebugParameter.cycleRunType = type;
 
-            if (type == DebugParameter.CycleRunType.shelfByOrder)
+            if (type == DebugParameter.CycleRunType.shelfByOrder ||
+                type == DebugParameter.CycleRunType.DemoRun)
             {
                 gb_cycleRunInfo.Visible = true;
             }
@@ -1367,14 +1380,145 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             await Task.Run(() => ntb.CarrierTransferRequestTest("CST03", "P01", "E0081367", "TestPort_P01"));
         }
 
-        private void cb_ignoreManualPort_CheckedChanged(object sender, EventArgs e)
+        private void cb_ignoreNTBPort_CheckedChanged(object sender, EventArgs e)
         {
-            DebugParameter.IsIgnoreManualPortStatus = cb_ignoreManualPort.Checked;
+            DebugParameter.IsIgnoreNTBPortStatus = cb_ignoreNTBPort.Checked;
         }
 
         private void cb_paassErrorVhAndTrackStatus_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.IsPaassErrorVhAndTrackStatus = cb_paassErrorVhAndTrackStatus.Checked;
+        }
+
+        private void txt_cycleCstID_TextChanged(object sender, EventArgs e)
+        {
+            string scycle_run_csts = txt_cycleCstID.Text;
+            DebugParameter.cycleRunCSTs = scycle_run_csts;
+
+        }
+
+        private void cb_IsSameBayAfterWay_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsSameByAfterWay = cb_IsSameBayAfterWay.Checked;
+        }
+
+        private void ch_IsAutoDriveOut_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsAutoDriveOut = ch_IsAutoDriveOut.Checked;
+        }
+
+        private void cb_isCheckHIDStatus_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsCheckHIDStatus = cb_isCheckHIDStatus.Checked;
+        }
+
+        private void btn_allVhContinue_Click(object sender, EventArgs e)
+        {
+            Task.Run(() => bcApp.SCApplication.VehicleService.AllVhContinue());
+        }
+
+        private void cb_testHIDAbnormalVh_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            DebugParameter.TestHIDAbnormalVhID = cb_testHIDAbnormalVh.SelectedValue as string;
+        }
+
+        private void cb_autoUnloadOnVh_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsAutoUnloadOnvh = cb_autoUnloadOnVh.Checked;
+        }
+
+        private void cb_unloadArrivePassReply01_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR01", cb_unloadArrivePassReply01.Checked);
+        }
+        private void setUnloadArrivePassReplyFlag(string vhID, bool isOpen)
+        {
+            var vh1 = bcApp.SCApplication.VehicleBLL.cache.getVhByID(vhID);
+            if (vh1 == null) return;
+            vh1.IsUnloadArriveByPassReply = isOpen;
+        }
+        private void setUnloadArrivePassReplyCheckBox(string vhID, CheckBox checkBox)
+        {
+            var vh1 = bcApp.SCApplication.VehicleBLL.cache.getVhByID(vhID);
+            if (vh1 == null) return;
+            checkBox.Checked = vh1.IsUnloadArriveByPassReply;
+        }
+
+        private void cb_unloadArrivePassReply02_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR02", cb_unloadArrivePassReply02.Checked);
+        }
+
+        private void cb_unloadArrivePassReply03_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR03", cb_unloadArrivePassReply03.Checked);
+        }
+
+        private void cb_unloadArrivePassReply05_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR05", cb_unloadArrivePassReply05.Checked);
+        }
+
+        private void cb_unloadArrivePassReply06_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR06", cb_unloadArrivePassReply06.Checked);
+        }
+
+        private void cb_unloadArrivePassReply07_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR07", cb_unloadArrivePassReply07.Checked);
+        }
+
+        private void cb_unloadArrivePassReply08_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR08", cb_unloadArrivePassReply08.Checked);
+        }
+
+        private void cb_unloadArrivePassReply09_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR09", cb_unloadArrivePassReply09.Checked);
+        }
+
+        private void cb_unloadArrivePassReply10_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR10", cb_unloadArrivePassReply10.Checked);
+        }
+
+        private void cb_unloadArrivePassReply11_CheckedChanged(object sender, EventArgs e)
+        {
+            setUnloadArrivePassReplyFlag("B6_OHB01_CR11", cb_unloadArrivePassReply11.Checked);
+        }
+
+        private void cb_openSpecifyVh_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsSpecifyVhTransfer = cb_openSpecifyVh.Checked;
+        }
+
+        private async void btnVhTypeUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                E_VH_TYPE vh_type;
+                Enum.TryParse(cmbVhType.SelectedValue.ToString(), out vh_type);
+                btnVhTypeUpdate.Enabled = false;
+                await Task.Run(() => bcApp.SCApplication.VehicleService.updateVhType(vh_id, vh_type));
+                cmbVhType.SelectedItem = noticeCar.VEHICLE_TYPE;
+                MessageBox.Show($"update vh:[{vh_id}] to type:[{vh_type}] is success.");
+            }
+            finally
+            {
+                btnVhTypeUpdate.Enabled = true;
+            }
+        }
+
+        private void cb_openGuideSectionChange_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsOpneChangeGuideSection = cb_openGuideSectionChange.Checked;
+        }
+
+        private void cb_guideSectionChangeOnlyManualCmd_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsOnlyChangeGuideSectionManualCommand = cb_guideSectionChangeOnlyManualCmd.Checked;
         }
     }
 }

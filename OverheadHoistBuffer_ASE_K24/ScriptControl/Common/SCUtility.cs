@@ -1493,41 +1493,15 @@ namespace com.mirle.ibg3k0.sc.Common
         }
     }
 
-    public static class nameOfExtension
+    public static class IMessageExtension
     {
-        public static String nameof<T, TT>(this Expression<Func<T, TT>> accessor)
+        public static byte[] ToByteArray(this IMessage message)
         {
-            return nameof(accessor.Body);
+            byte[] arrayByte = new byte[message.CalculateSize()];
+            message.WriteTo(new Google.Protobuf.CodedOutputStream(arrayByte));
+            return arrayByte;
         }
 
-        public static String nameof<T>(this Expression<Func<T>> accessor)
-        {
-            return nameof(accessor.Body);
-        }
-
-        public static String nameof<T, TT>(this T obj, Expression<Func<T, TT>> propertyAccessor)
-        {
-            return nameof(propertyAccessor.Body);
-        }
-
-        private static String nameof(Expression expression)
-        {
-            if (expression.NodeType == ExpressionType.MemberAccess)
-            {
-                var memberExpression = expression as MemberExpression;
-                if (memberExpression == null)
-                    return null;
-                return memberExpression.Member.Name;
-            }
-            return null;
-        }
-
-        public static T[] SubArray<T>(this T[] data, int index, int length)
-        {
-            T[] result = new T[length];
-            Array.Copy(data, index, result, 0, length);
-            return result;
-        }
     }
 
 

@@ -161,7 +161,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                         SetHostControlState(line);
                     }
                     );
-            scApp.getNatsManager().Subscriber(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, SetCurrentAlarm);
+            //scApp.getNatsManager().Subscriber(SCAppConstants.NATS_SUBJECT_CURRENT_ALARM, SetCurrentAlarm);
         }
 
         private void SetCurrentAlarm(object sender, EventArgs e)

@@ -1324,6 +1324,11 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
+                if (!DebugParameter.IsSameByAfterWay)
+                {
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "OHB >> OHB| 同Bay順途功能關閉中...");
+                    return (false, null);
+                }
                 string queue_cmd_adr_id = queueCmd.getHostSourceAdr(scApp.PortStationBLL);
                 if (SCUtility.isEmpty(queue_cmd_adr_id)) return (false, null);
 
@@ -1332,6 +1337,12 @@ namespace com.mirle.ibg3k0.sc.Service
                 //確認確認命令是否可以順途搬送
                 foreach (var transfer_cmd in same_segment_tran_cmds.ToList())
                 {
+                    if (!SCUtility.isMatche(queueCmd.getCSTType(), transfer_cmd.getCSTType()))
+                    {
+                        same_segment_tran_cmds.Remove(transfer_cmd);
+                        continue;
+                    }
+
                     if (transfer_cmd.COMMANDSTATE < ACMD_MCS.COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE)
                     {
                         same_segment_tran_cmds.Remove(transfer_cmd);
@@ -2126,6 +2137,15 @@ namespace com.mirle.ibg3k0.sc.Service
 
                         if (cstTimeOut != 0 && success)
                         {
+                            if (!DebugParameter.IsAutoUnloadOnvh)
+                            {
+                                TransferServiceLogger.Info
+                                (
+                                    DateTime.Now.ToString("HH:mm:ss.fff ")
+                                    + $"OHB >> OHB| 卡匣停留的逾時功能關閉中，DebugParameter.IsAutoUnloadOnvh:{DebugParameter.IsAutoUnloadOnvh} "
+                                );
+                                return;
+                            }
                             TimeSpan cstTimeSpan = DateTime.Now - DateTime.Parse(cst.TrnDT);
 
                             //if (cstTimeSpan.TotalSeconds >= cstTimeOut)   //停在Port上 30秒(之後要設成可調)，自動搬到儲位上
@@ -2420,11 +2440,11 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 if (isNTBPort(destName))
                 {
-                    if (DebugParameter.IsIgnoreManualPortStatus)
+                    if (DebugParameter.IsIgnoreNTBPortStatus)
                     {
                         TransferServiceLogger.Info
                         (
-                            $"{DateTime.Now.ToString("HH:mm:ss.fff ")} Port:{destName} is reel ntb port, 但目前是忽略Manual Port狀態，直接回覆True."
+                            $"{DateTime.Now.ToString("HH:mm:ss.fff ")} Port:{destName} is reel ntb port, 但目前是忽略NTB Port狀態，直接回覆True."
                         );
                         return true;
                     }
@@ -2681,7 +2701,11 @@ namespace com.mirle.ibg3k0.sc.Service
             return s;
         }
 
-        public bool OHT_TransferStatus(string oht_cmdid, string ohtName, int status)   //OHT目前狀態
+        public bool OHT_TransferStatus(string oht_cmdid, string ohtName, int status)
+        {
+            return OHT_TransferStatus(oht_cmdid, ohtName, status, "");
+        }
+        public bool OHT_TransferStatus(string oht_cmdid, string ohtName, int status, string cstType)   //OHT目前狀態
         {
             try
             {
@@ -2844,7 +2868,12 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
+
         public bool OHT_TransferProcess(ACMD_MCS cmd, ACMD_OHTC ohtCmd, string ohtName, int status)
+        {
+            return OHT_TransferProcess(cmd, ohtCmd, ohtName, status, "");
+        }
+        public bool OHT_TransferProcess(ACMD_MCS cmd, ACMD_OHTC ohtCmd, string ohtName, int status, string cstType)
         {
             try
             {
@@ -3054,7 +3083,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         reportBLL.ReportTransferAbortCompleted(cmd.CMD_ID);
                         //reportBLL.ReportTransferCompleted(cmd, null, ResultCode.InterlockError);
 
-                        string boxID = CarrierDouble(ohtCmd.DESTINATION.Trim());
+                        string boxID = CarrierDouble(ohtCmd.DESTINATION.Trim(), cstType);
                         string loc = ohtCmd.DESTINATION;
 
                         OHBC_InsertCassette(boxID, loc, "二重格異常");
@@ -3732,7 +3761,8 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "OHT_IDRead 沒有帳在:" + ohtName);
 
-                if (string.IsNullOrWhiteSpace(readBOXID) || readBOXID == "ERROR1")
+                //if (string.IsNullOrWhiteSpace(readBOXID) || readBOXID == "ERROR1")
+                if (string.IsNullOrWhiteSpace(readBOXID) || readBOXID.ToUpper().Contains("ERROR"))
                 {
                     readBOXID = CarrierReadFail(ohtName, ohtName);
                 }
@@ -6202,15 +6232,26 @@ namespace com.mirle.ibg3k0.sc.Service
         #region 命令、卡匣處理
 
         #region 命名規則
+        public const string SYMBOL_UNKNOW_CST_ID = "UNK";
 
-        public string CarrierTypeMisMatch(string carrierID)   //Cst Type Mismatch
+        //public string CarrierDouble(string loc)   //二重格
+        public string CarrierDouble(string loc, string cstType)   //二重格
         {
-            return "UNKT" + carrierID + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            //return "UNKS" + loc + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            string cst_type_symbol = convertCSTTypeSymbol(cstType);
+            return $"{SYMBOL_UNKNOW_CST_ID}S{cst_type_symbol}" + loc + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
         }
-
-        public string CarrierDouble(string loc)   //二重格
+        public string convertCSTTypeSymbol(string scstType)
         {
-            return "UNKS" + loc + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            switch (scstType)
+            {
+                case "A":
+                    return CassetteData.SYMBLE_FOUP;
+                case "B":
+                    return CassetteData.SYMBLE_LITE_CASSETTE;
+                default:
+                    return "";
+            }
         }
 
         public string CarrierReadFail(string vhID, string loc)   //卡匣讀不到
@@ -6218,11 +6259,13 @@ namespace com.mirle.ibg3k0.sc.Service
             E_VH_TYPE vh_type = tryGetVhType(vhID);
             if (vh_type == E_VH_TYPE.ReelCST)
             {
-                return "UNKT" + "REELCA01" + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+                //return "UNKT" + "REELCA01" + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+                return $"{SYMBOL_UNKNOW_CST_ID}T" + "REELCA01" + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
             }
             else
             {
-                return "UNKF" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+                //return "UNKF" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+                return $"{SYMBOL_UNKNOW_CST_ID}F" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
             }
             //return "UNKT" + "REELCA01" + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
         }
@@ -6240,12 +6283,14 @@ namespace com.mirle.ibg3k0.sc.Service
 
         public string CarrierReadFailAtTargetAGV(string loc)   //卡匣讀不到
         {
-            return "UNKU" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            //return "UNKU" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            return $"{SYMBOL_UNKNOW_CST_ID}U" + loc.Trim() + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
         }
 
         public string CarrierReadduplicate(string bcrcsid)  //卡匣重複
         {
-            return "UNKD" + bcrcsid + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            //return "UNKD" + bcrcsid + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+            return $"{SYMBOL_UNKNOW_CST_ID}D" + bcrcsid + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
         }
 
         public bool ase_ID_Check(string str)    //ASE CST BOX 帳料命名規則
@@ -8164,7 +8209,7 @@ namespace com.mirle.ibg3k0.sc.Service
         #endregion OHBC 狀態操作
 
         #region 命令操作
-
+        public const string SYMBOL_MANUAL_COMMAND = "MANUAL";
         public string Manual_InsertCmd(string source, string dest, int priority = 5, string sourceCmd = "UI", CmdType cmdType = CmdType.Manual, string craneID = "")   //手動搬送，sourceCmd : 誰呼叫
         {
             try
@@ -8224,7 +8269,8 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 ACMD_MCS datainfo = new ACMD_MCS();
 
-                string cmdID = "MANAUL" + GetStDate();
+                //string cmdID = "MANAUL" + GetStDate();
+                string cmdID = $"{SYMBOL_MANUAL_COMMAND}{GetStDate()}";
 
                 while (cmdExist)
                 {
@@ -10926,6 +10972,117 @@ namespace com.mirle.ibg3k0.sc.Service
 
     public partial class TransferService : IVehicleTransferHandler
     {
+        public void CommandCompleteByAbort(string vhID, string finishCommandID)
+        {
+            ACMD_OHTC ohtCmdData = cmdBLL.getCMD_OHTCByID(finishCommandID);
+            if (!ohtCmdData.IsTransferCmdByMCS)
+            {
+                return;
+            }
+            string mcs_cmd_id = SCUtility.Trim(ohtCmdData.CMD_ID_MCS, true);
+            ACMD_MCS cmd = cmdBLL.getCMD_MCSByID(mcs_cmd_id);
+            if (cmd == null) return;
+            if (cmd.TRANSFERSTATE == E_TRAN_STATUS.TransferCompleted) return;
+            if (cmd.TRANSFERSTATE == E_TRAN_STATUS.Aborting)
+            {
+                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command abort流程, id:{mcs_cmd_id}");
+                cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                scApp.ReportBLL.ReportTransferAbortCompleted(cmd.CMD_ID);
+            }
+            else
+            {
+                //如果狀態不是aborting，就進入abort complete
+                //就是因為命令被abort準備改派
+                //在這個case，就要直接把命令再下給車子，
+                //讓他可以接續命令並繞開故障的換軌器、車子
+                string cmd_mcs_pause_flag = scApp.CMDBLL.GetCmdMCSPauseFlag(cmd.CMD_ID);
+                if (SCUtility.isMatche(cmd_mcs_pause_flag, SCAppConstants.YES_FLAG))
+                {
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command 改派流程(Abort),mcs cmd id:{mcs_cmd_id}...");
+                    string hostdest = cmd.HOSTDESTINATION;
+                    bool isSuccess = true;
+                    scApp.MapBLL.getAddressID(hostdest, out string to_adr);
+                    isSuccess &= scApp.CMDBLL.doCreatTransferCommand(vhID, cmd.CMD_ID, cmd.CARRIER_ID,
+                                        E_CMD_TYPE.Unload,
+                                        "",
+                                        cmd.HOSTDESTINATION, cmd.PRIORITY_SUM, 0,
+                                        cmd.BOX_ID, cmd.LOT_ID,
+                                        "", to_adr);
+                    if (isSuccess)
+                    {
+                        TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command 改派流程,mcs cmd id:{mcs_cmd_id}.result:[改派成功]");
+                        scApp.CMDBLL.updateCMD_MCS_PauseFlag(cmd.CMD_ID, "");
+                    }
+                    else
+                    {
+                        TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command 改派流程,mcs cmd id:{mcs_cmd_id}.result:[改派失敗] 將該筆命令強制結束...");
+                        bool is_success = scApp.CassetteDataBLL.GetCarrierByBoxId(cmd.BOX_ID, out CassetteData cassetteData);
+                        if (is_success)
+                            ForceFinishMCSCmd(cmd, cassetteData, "CommandCompleteByCancel");
+                        else
+                        {
+                            TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 要強制結束命令，但並無對應的BOX資料存在:{cmd.BOX_ID}");
+                        }
+                    }
+                }
+                else
+                {
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 車子上報abort complete,但無對應的流程進行中，強制結束命令.");
+                    bool is_success = scApp.CassetteDataBLL.GetCarrierByBoxId(cmd.BOX_ID, out CassetteData cassetteData);
+                    if (is_success)
+                        ForceFinishMCSCmd(cmd, cassetteData, "CommandCompleteByCancel");
+                    else
+                    {
+                        TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 要強制結束命令，但並無對應的BOX資料存在:{cmd.BOX_ID}");
+                    }
+                }
+            }
+        }
+
+        public void CommandCompleteByCancel(string vhID, string finishCommandID)
+        {
+            ACMD_OHTC ohtCmdData = cmdBLL.getCMD_OHTCByID(finishCommandID);
+            if (!ohtCmdData.IsTransferCmdByMCS)
+            {
+                return;
+            }
+            string mcs_cmd_id = SCUtility.Trim(ohtCmdData.CMD_ID_MCS, true);
+            ACMD_MCS cmd = cmdBLL.getCMD_MCSByID(mcs_cmd_id);
+            if (cmd == null) return;
+            if (cmd.TRANSFERSTATE == E_TRAN_STATUS.TransferCompleted) return;
+            if (cmd.TRANSFERSTATE == E_TRAN_STATUS.Canceling)
+            {
+                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command cancel流程, id:{mcs_cmd_id}");
+                cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                reportBLL.ReportTransferCancelCompleted(cmd.CMD_ID);
+            }
+            else
+            {
+                //如果狀態不是canceling，就進入cancel complete
+                //就是因為命令被cancel準備改派
+                //在這個case，就把命令直接改回queue讓命令重新選車
+                string cmd_mcs_pause_flag = scApp.CMDBLL.GetCmdMCSPauseFlag(cmd.CMD_ID);
+                if (SCUtility.isMatche(cmd_mcs_pause_flag, SCAppConstants.YES_FLAG))
+                {
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command 改派流程(Cancel),mcs cmd id:{mcs_cmd_id}...");
+                    scApp.CMDBLL.updateCMD_MCS_CRANE(cmd.CMD_ID, "");
+                    scApp.CMDBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.Queue);
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command 改派流程,mcs cmd id:{mcs_cmd_id}.result:[改派成功](成功將命令改成Qeue)");
+                }
+                else
+                {
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 車子上報cancel complete,但無對應的流程進行中，強制結束命令.");
+                    bool is_success = scApp.CassetteDataBLL.GetCarrierByBoxId(cmd.BOX_ID, out CassetteData cassetteData);
+                    if (is_success)
+                        ForceFinishMCSCmd(cmd, cassetteData, "CommandCompleteByCancel");
+                    else
+                    {
+                        TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 要強制結束命令，但並無對應的BOX資料存在:{cmd.BOX_ID}");
+                    }
+                }
+            }
+        }
+
         public bool CommandCompleteByIDMismatch(string vhID, string finishCommandID)
         {
             try

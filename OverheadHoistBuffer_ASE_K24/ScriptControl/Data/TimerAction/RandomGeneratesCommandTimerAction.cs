@@ -86,9 +86,9 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 
                     switch (DebugParameter.cycleRunType)
                     {
-                        case DebugParameter.CycleRunType.shelf:
-                            ShelfTest();
-                            break;
+                        //case DebugParameter.CycleRunType.shelf:
+                        //    ShelfTest();
+                        //    break;
                         case DebugParameter.CycleRunType.shelfByOrder:
                             ShelfTestByOrder();
                             break;
@@ -103,6 +103,9 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                         //    break;
                         case DebugParameter.CycleRunType.shelfByManualCMD:
                             ShelfByManualMCS();
+                            break;
+                        case DebugParameter.CycleRunType.DemoRun:
+                            DemoRun();
                             break;
                     }
                 }
@@ -449,6 +452,103 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             //    }
             //}
         }
+
+        private void DemoRun()
+        {
+            List<string> cycle_run_csts = stringToStringArray(DebugParameter.cycleRunCSTs);
+            if (cycle_run_csts == null || cycle_run_csts.Count == 0)
+            {
+                return;
+            }
+            var mcs_cmds = scApp.CMDBLL.loadACMD_MCSIsUnfinished();
+            string demo_run_bay = DebugParameter.cycleRunBay;
+
+            int mcs_cmds_excute_by_bay = mcs_cmds.Where(cmd =>
+            {
+                bool is_shelf = scApp.TransferService.isShelfPort(cmd.HOSTDESTINATION);
+                if (!is_shelf) return false;
+                string current_bay_id = getCurrentBayID(cmd.HOSTDESTINATION);
+                if (SCUtility.isMatche(current_bay_id, demo_run_bay))
+                {
+                    return true;
+                }
+                return false;
+            }).Count();
+
+            if (mcs_cmds_excute_by_bay >= 2) return;
+
+
+
+            List<CassetteData> cassetteDatas = scApp.CassetteDataBLL.loadCassetteData();
+            refreshCurrentCycleRunBay(cassetteDatas, mcs_cmds);
+
+            var process_csts = cassetteDatas.Where(cst => SCUtility.isMatche(cst.CurrentBayID(scApp), demo_run_bay)).ToList();
+            if (process_csts == null || process_csts.Count == 0) return;
+            CassetteData process_cst = null;
+            foreach (var cst in process_csts)
+            {
+                bool is_cycle_run_cst = cycle_run_csts.Contains(cst.BOXID);
+                if (!is_cycle_run_cst)
+                {
+                    continue;
+                }
+                bool hsa_mcd_excute = mcs_cmds.Where(cmd => SCUtility.isMatche(cmd.BOX_ID, cst.BOXID)).Count() > 0;
+                if (hsa_mcd_excute)
+                {
+                    continue;
+                }
+                if (!scApp.ShelfDefBLL.isEnable(cst.Carrier_LOC))
+                {
+                    continue;
+                }
+                process_cst = cst;
+                break;
+            }
+            if (process_cst == null)
+                return;
+
+            ShelfDef shelf = scApp.ShelfDefBLL.GetShelfDataByID(process_cst.Carrier_LOC);
+
+
+            ShelfDef next_cycle_run_shelf = null;
+            if (shelf.SeqNo.CompareTo("020") > 0)
+            {
+                next_cycle_run_shelf = shelfDefs.FirstOrDefault();
+            }
+            else
+            {
+                next_cycle_run_shelf = shelfDefs.Last();
+            }
+
+            if (next_cycle_run_shelf == null) return;
+
+            string result = scApp.TransferService.Manual_InsertCmd
+                 (
+                     source: process_cst.Carrier_LOC,
+                     dest: next_cycle_run_shelf.ShelfID,
+                     sourceCmd: "DemoRun"
+                 );
+
+
+        }
+        List<string> stringToStringArray(string value)
+        {
+            if (value.Contains(","))
+            {
+                return value.Split(',').ToList();
+            }
+            else
+            {
+                if (SCUtility.isEmpty(value))
+                {
+                    return new List<string>();
+                }
+                else
+                {
+                    return new List<string>() { value };
+                }
+            }
+        }
         public string getCurrentBayID(string shelfID)
         {
             if (shelfID == null || shelfID.Length < 6)
@@ -461,7 +561,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             return bay_id;
         }
 
-        private void refreshCurrentCycleRunBay(List<CassetteData> cassetteDatas)
+        private void refreshCurrentCycleRunBay(List<CassetteData> cassetteDatas, List<ACMD_MCS> cmdMCS = null)
         {
             shelfDefs = scApp.ShelfDefBLL.LoadEnableShelf();
 
@@ -470,7 +570,8 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             //取得目前當前在線內的Carrier
             //找出在儲位中的Cassette
             cassetteDatas = cassetteDatas.
-                        Where(cst => scApp.TransferService.isShelfPort(cst.Carrier_LOC)).ToList();
+                            Where(cst => scApp.TransferService.isShelfPort(cst.Carrier_LOC)).
+                            ToList();
             List<string> current_cst_at_shelf_id = cassetteDatas.
                 Select(cst => SCUtility.Trim(cst.Carrier_LOC, true)).
                 ToList();
@@ -481,7 +582,18 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     shelfDefs.Remove(shelf);
                 }
             }
+            //過濾掉目的地已經有命令的儲位
+            foreach (var shelf in shelfDefs.ToList())
+            {
+                bool has_cmd = cmdMCS.Where(cmd => SCUtility.isMatche(cmd.HOSTDESTINATION, shelf.ShelfID)).Count() > 0;
+
+                if (has_cmd)
+                {
+                    shelfDefs.Remove(shelf);
+                }
+            }
         }
+
 
         private void AGVStationTest()
         {

@@ -76,12 +76,12 @@ enum CmdStatus {
 }
 
 
-message TaskInfo {
+message TaskCommandInfo {
 	int64 LAST_UPDATE_TIME = 1;
-	repeated Task infos = 2;
+	repeated TaskCommand infos = 2;
 }
 
-message Task {
+message TaskCommand {
 	string CMD_ID = 1;
 	string VH_ID = 2;
 	string CMD_ID_MCS = 3;
@@ -101,3 +101,26 @@ message Task {
 	int64 CMD_INSER_TIME = 17;
 }
 //End Task Info
+
+//Start Line Info
+message LineInfo {
+    bool IsConnectionWithHOST = 1;
+    bool IsConnectionWithPLC_MANUAL = 2;
+    bool IsConnectionWithPLC_TRACK1 = 3;
+    bool IsConnectionWithPLC_TRACK2 = 4;
+}//End Line Info
+
+message alarm{
+        string EQ_ID = 1;
+        string Unit_ID = 2;
+        string RPT_dateTime = 3;
+        string Code = 4;
+        string level = 5;
+        string alarmStatus = 6;
+        string alarmAffectCount = 7;
+        string Description = 8;
+}
+
+message alarmInfo{
+    repeated alarm alarmList = 1;
+}

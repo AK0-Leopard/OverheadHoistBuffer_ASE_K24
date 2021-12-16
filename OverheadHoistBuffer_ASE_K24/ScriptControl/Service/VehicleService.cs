@@ -94,6 +94,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             scApp = app;
             SubscriptionPositionChangeEvent();
+            scApp.getEQObjCacheManager().getLine().HasHIDPowerAlarmHappendChange += VehicleService_HasHIDPowerAlarmHappendChange;
 
             List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();
 
@@ -122,6 +123,99 @@ namespace com.mirle.ibg3k0.sc.Service
                 t.alarmCodeChange += trackAlarmHappend;
             }
         }
+
+        public void AllVhContinue()
+        {
+            try
+            {
+                List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();
+                foreach (var vh in vhs)
+                {
+                    Task.Run(() =>
+                    {
+                        try
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                               Data: $"Start Process continue vh:{vh.VEHICLE_ID} by manual",
+                               VehicleID: vh.VEHICLE_ID,
+                               CarrierID: vh.CST_ID);
+                            bool is_success = PauseRequest(vh.VEHICLE_ID, PauseEvent.Continue, OHxCPauseType.Normal);
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                               Data: $"End Process continue vh:{vh.VEHICLE_ID} by manual,Result:{is_success}",
+                               VehicleID: vh.VEHICLE_ID,
+                               CarrierID: vh.CST_ID);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error(ex, "Exception:");
+                        }
+                    }
+                    );
+                    SpinWait.SpinUntil(() => false, 200);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+        private void VehicleService_HasHIDPowerAlarmHappendChange(object sender, bool e)
+        {
+            try
+            {
+
+                if (e)
+                {
+                    List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();
+                    foreach (var vh in vhs)
+                    {
+                        if (SCUtility.isEmpty(DebugParameter.TestHIDAbnormalVhID))
+                        {
+                            //not thing...
+                        }
+                        else
+                        {
+                            if (!SCUtility.isMatche(DebugParameter.TestHIDAbnormalVhID, vh.VEHICLE_ID))
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                                   Data: $"目前測試HID Abmormal vh:{DebugParameter.TestHIDAbnormalVhID} ,不對vh:{vh.VEHICLE_ID} 下暫停",
+                                   VehicleID: vh.VEHICLE_ID,
+                                   CarrierID: vh.CST_ID);
+                                continue;
+                            }
+                        }
+                        Task.Run(() =>
+                        {
+                            try
+                            {
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                                   Data: $"Start Process paused vh:{vh.VEHICLE_ID} by HID Alarm happend",
+                                   VehicleID: vh.VEHICLE_ID,
+                                   CarrierID: vh.CST_ID);
+                                bool is_success = PauseRequest(vh.VEHICLE_ID, PauseEvent.Pause, OHxCPauseType.Normal);
+                                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                                   Data: $"End Process paused vh:{vh.VEHICLE_ID} by HID Alarm happend,Result:{is_success}",
+                                   VehicleID: vh.VEHICLE_ID,
+                                   CarrierID: vh.CST_ID);
+                            }
+                            catch (Exception ex)
+                            {
+                                logger.Error(ex, "Exception:");
+                            }
+                        }
+                        );
+                        SpinWait.SpinUntil(() => false, 200);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+
 
         private void Vh_LongTimeBlocking(object sender, EventArgs e)
         {
@@ -241,13 +335,13 @@ namespace com.mirle.ibg3k0.sc.Service
                 //var endPoint = vh.getIPEndPoint(scApp.getBCFApplication());
                 int port_num = vh.getPortNum(scApp.getBCFApplication());
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                   Data: $"Over {AVEHICLE.MAX_STATUS_REQUEST_FAIL_TIMES} times request status fail, begin restart tcpip server port:{port_num}...",
+                   Data: $"Over {AVEHICLE.MAX_STATUS_REQUEST_FAIL_TIMES} times request status fail, begin restart tcpip server port:{port_num}...(current pass this function)",
                    VehicleID: vh.VEHICLE_ID,
                    CarrierID: vh.CST_ID);
 
-                stopVehicleTcpIpServer(vh);
-                SpinWait.SpinUntil(() => false, 2000);
-                startVehicleTcpIpServer(vh);
+                //stopVehicleTcpIpServer(vh);
+                //SpinWait.SpinUntil(() => false, 2000);
+                //startVehicleTcpIpServer(vh);
             }
             catch (Exception ex)
             {
@@ -1193,7 +1287,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 else
                 {
                     //如果失敗了，則要將該筆命令更新回Queue，並且AbnormalEnd該筆命令
-                    if (!SCUtility.isEmpty(cmd.CMD_ID_MCS))
+                    //if (!SCUtility.isEmpty(cmd.CMD_ID_MCS))
+                    if (cmd.IsTransferCmdByMCS)
                     {
                         //scApp.CMDBLL.updateCMD_MCS_TranStatus2Queue(cmd.CMD_ID_MCS);
                         ACMD_MCS cmd_mcs = scApp.CMDBLL.getCMD_MCSByID(cmd.CMD_ID_MCS);
@@ -1202,6 +1297,20 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                     scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHT);
                 }
+            }
+            else
+            {
+                if (cmd.IsTransferCmdByMCS)
+                {
+                    TransferServiceLogger.Info
+                    (
+                        DateTime.Now.ToString("HH:mm:ss.fff ") +
+                        $"發送命令失敗，cmd id:{cmd.CMD_ID} mcs cmd id:{cmd.CMD_ID_MCS} load port:{cmd.SOURCE}, unload port:{cmd.DESTINATION} 強制將命令改回Queue"
+                    );
+                    scApp.CMDBLL.updateCMD_MCS_CRANE(cmd.CMD_ID_MCS, "");
+                    scApp.CMDBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID_MCS, E_TRAN_STATUS.Queue);
+                }
+                scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHTC);
             }
             return isSuccess;
         }
@@ -2025,6 +2134,14 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private void tryDriveOutTheVh(string willPassVhID, string inTheWayVhID)
         {
+            if (!DebugParameter.IsAutoDriveOut)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"auto drive out vh current is off,IsAutoDriveOut:{DebugParameter.IsAutoDriveOut}",
+                   VehicleID: willPassVhID);
+                return;
+            }
+
             if (System.Threading.Interlocked.Exchange(ref syncPoint_NotifyVhAvoid, 1) == 0)
             {
                 try
@@ -2269,7 +2386,7 @@ namespace com.mirle.ibg3k0.sc.Service
             string load_port_id = recive_str.LoadPortID;     //B0.01
             string unload_port_id = recive_str.UnloadPortID; //B0.01
             var reserveInfos = recive_str.ReserveInfos;
-
+            string cst_type = recive_str.RequestHIDID;
             scApp.VehicleBLL.updateVehicleActionStatus(vh, eventType);
 
             switch (eventType)
@@ -2310,7 +2427,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     break;
 
                 case EventType.DoubleStorage:
-                    PositionReport_DoubleStorage(bcfApp, vh, seq_num, recive_str.EventType, recive_str.CurrentAdrID, recive_str.CurrentSecID, carrier_id);
+                    PositionReport_DoubleStorage(bcfApp, vh, seq_num, recive_str.EventType, recive_str.CurrentAdrID, recive_str.CurrentSecID, carrier_id, cst_type);
                     break;
 
                 case EventType.EmptyRetrieval:
@@ -3137,15 +3254,7 @@ namespace com.mirle.ibg3k0.sc.Service
                        CarrierID: eqpt.CST_ID);
                     return (false, TrackDir.None);
                 }
-                bool is_block_ready = block_master.IsAllTrackBlockReady();
-                if (!is_block_ready)
-                {
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                       Data: $"Vh:{eqpt.VEHICLE_ID} ask block:{req_block_id},but related track block not ready.",
-                       VehicleID: eqpt.VEHICLE_ID,
-                       CarrierID: eqpt.CST_ID);
-                    return (false, TrackDir.None);
-                }
+
 
                 bool is_first_vh = isNextPassVh(eqpt, req_block_id);
                 if (!is_first_vh)
@@ -3178,13 +3287,63 @@ namespace com.mirle.ibg3k0.sc.Service
                         return (false, TrackDir.None);
                     }
                 }
+
+                //Block Request的From adr來重新計算路徑
+                //判斷是否需要進行命令改派，若算出來後不包含在原本行走路徑
+                //代表路徑有變化了就暫時不要給該block的通行權然後去下達cancel
+                //結束後再讓他把命令改回queue(尚未載到貨)、重新再派改該台車(已有載到貨)
+                bool is_need_change_route = checkGuideSectionHasChange(eqpt, block_master.RealEntrySectionID);
+                if (is_need_change_route)
+                {
+                    bool is_interrupt_success = StartProcessCommandInterruptByChangeGuideSection(eqpt);
+                    if (is_interrupt_success)
+                    {
+                        return (false, TrackDir.None);
+                    }
+                }
+
+                //bool is_block_ready = block_master.IsAllTrackBlockReady();
+                var block_tracks_status_check_result = block_master.IsAllTrackBlockReady();
+                if (block_tracks_status_check_result.BlockTracksStatus != ABLOCKZONEMASTER.BlockTracksStatus.Ready)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"Vh:{eqpt.VEHICLE_ID} ask block:{req_block_id}," +
+                             $"but related track block not ready,status:{block_tracks_status_check_result.BlockTracksStatus}.",
+                       VehicleID: eqpt.VEHICLE_ID,
+                       CarrierID: eqpt.CST_ID);
+                    if (block_tracks_status_check_result.BlockTracksStatus == ABLOCKZONEMASTER.BlockTracksStatus.Blocking)
+                    {
+                        var release_blocking_track = block_tracks_status_check_result.notReadyTrack;
+                        if (release_blocking_track.canExcuteBlockRelease)
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                               Data: $"track:{release_blocking_track.UNIT_ID} is blocking,try to reset it",
+                               VehicleID: eqpt.VEHICLE_ID,
+                               CarrierID: eqpt.CST_ID);
+
+                            release_blocking_track.ResetBlock(scApp.TrackInfoClient);
+                        }
+                        else
+                        {
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                               Data: $"track:{release_blocking_track.UNIT_ID} is blocking,but ask block reset interval less then {Track.MIN_ALLOW_BLOCK_RELEASE_INTERVAL_ms} ms",
+                               VehicleID: eqpt.VEHICLE_ID,
+                               CarrierID: eqpt.CST_ID);
+                        }
+                    }
+                    return (false, TrackDir.None);
+                }
+
+
+
                 foreach (var detail in block_detail_section)
                 {
                     HltDirection hltDirection = HltDirection.None;
                     var result = scApp.ReserveBLL.TryAddReservedSection(vhID, detail,
-                                                                         sensorDir: hltDirection,
-                                                                         isAsk: false);
+                                                                        sensorDir: hltDirection,
+                                                                        isAsk: false);
                 }
+
                 TrackDir track_dir = TrackDir.None;
                 if (DebugParameter.IsForceNonStraightPass)
                 {
@@ -3207,8 +3366,166 @@ namespace com.mirle.ibg3k0.sc.Service
                     bool is_all_track_ready_straight = block_master.IsAllTrackReadyStraight();
                     track_dir = is_all_track_ready_straight ? TrackDir.Straight : TrackDir.None;
                 }
-
                 return (true, track_dir);
+            }
+        }
+
+        private bool StartProcessCommandInterruptByChangeGuideSection(AVEHICLE eqpt)
+        {
+            string excute_ohtc_cmd_id = eqpt.OHTC_CMD;
+            ACMD_OHTC cmd_ohtc = scApp.CMDBLL.getCMD_OHTCByID(excute_ohtc_cmd_id);
+            if (cmd_ohtc == null)
+                return false;
+            var getResult = getCMDCancelType(eqpt, cmd_ohtc);
+            if (getResult.isSuccess)
+            {
+                if (cmd_ohtc.IsTransferCmdByMCS)
+                {
+                    string cmd_mcs_pause_flag = scApp.CMDBLL.GetCmdMCSPauseFlag(cmd_ohtc.CMD_ID_MCS);
+                    if (SCUtility.isMatche(cmd_mcs_pause_flag, SCAppConstants.YES_FLAG))
+                    {
+                        return true;
+                    }
+                    using (TransactionScope tx = SCUtility.getTransactionScope())
+                    {
+                        using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                        {
+                            scApp.CMDBLL.updateCMD_MCS_PauseFlag(cmd_ohtc.CMD_ID_MCS, SCAppConstants.YES_FLAG);
+                            bool is_success = doAbortCommand(eqpt, excute_ohtc_cmd_id, getResult.cancelType); //A0.01
+
+                            if (is_success)
+                            {
+                                tx.Complete();
+                            }
+                        }
+                    }
+                    return true;
+                }
+                else
+                {
+                    doAbortCommand(eqpt, excute_ohtc_cmd_id, getResult.cancelType); //A0.01
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private (bool isSuccess, CMDCancelType cancelType) getCMDCancelType(AVEHICLE vh, ACMD_OHTC cmd_ohtc)
+        {
+            if (cmd_ohtc == null)
+                return (false, default(CMDCancelType));
+            switch (cmd_ohtc.CMD_TPYE)
+            {
+                case E_CMD_TYPE.Unload:
+                    return (true, CMDCancelType.CmdAbort);
+                case E_CMD_TYPE.LoadUnload:
+                    //if (vh.HAS_BOX == 1)
+                    if (vh.HAS_CST == 1)
+                    {
+                        return (true, CMDCancelType.CmdAbort);
+                    }
+                    else
+                    {
+                        return (true, CMDCancelType.CmdCancel);
+                    }
+                default:
+                    return (true, CMDCancelType.CmdCancel);
+            }
+        }
+        public void checkGuideSectionHasChangeTest(AVEHICLE vh, string requsetSecID)
+        {
+            checkGuideSectionHasChange(vh, requsetSecID);
+        }
+
+        private bool checkGuideSectionHasChange(AVEHICLE vh, string requsetSecID)
+        {
+            if (!DebugParameter.IsOpneChangeGuideSection)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"change guide section funcion is close.",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+                return false;
+            }
+
+            if (DebugParameter.IsOnlyChangeGuideSectionManualCommand)
+            {
+                if (SCUtility.isEmpty(vh.MCS_CMD))
+                {
+                    return false;
+                }
+                else
+                {
+                    string mcs_cmd_id = SCUtility.Trim(vh.MCS_CMD, true);
+                    if (!mcs_cmd_id.StartsWith(TransferService.SYMBOL_MANUAL_COMMAND))
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"Current is change manual command only.",
+                           VehicleID: vh.VEHICLE_ID,
+                           CarrierID: vh.CST_ID);
+                        return false;
+                    }
+                }
+            }
+
+            ASECTION req_sec = scApp.SectionBLL.cache.GetSection(requsetSecID);
+            if (req_sec == null) return false;
+            List<string> original_pass_section_ids = vh.WillPassSectionID;
+            if (original_pass_section_ids == null || original_pass_section_ids.Count == 0)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Want to check guide section has change,but wiil pass section is null.",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+                return false;
+            }
+            string will_pass_final_sec_id = original_pass_section_ids.Last();
+            ASECTION will_pass_final_sec = scApp.SectionBLL.cache.GetSection(will_pass_final_sec_id);
+            if (will_pass_final_sec == null)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Want to check guide section has change,but final section:{will_pass_final_sec_id} not exist.",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+                return false;
+            }
+            string req_sec_form_adr = req_sec.FROM_ADR_ID;
+            string target_adr = will_pass_final_sec.TO_ADR_ID;
+            var guide_info = scApp.GuideBLL.getGuideInfo(req_sec_form_adr, target_adr);
+            if (guide_info.isSuccess)
+            {
+                List<string> new_guide_section_ids = guide_info.guideSectionIds;
+                List<string> exceptResult = new_guide_section_ids.Except(original_pass_section_ids).ToList();
+                if (exceptResult.Count == 0)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"Want to check guide section has change,result:[No change].",
+                       VehicleID: vh.VEHICLE_ID,
+                       CarrierID: vh.CST_ID);
+                    return false;
+                }
+                else
+                {
+                    string s_new_guide_section = string.Join(",", new_guide_section_ids);
+                    string s_original_guide_section = string.Join(",", original_pass_section_ids);
+                    string s_except_guide_section = string.Join(",", original_pass_section_ids);
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"Want to check guide section has change,result:[Is diff]." +
+                             $"new:{s_new_guide_section},original:{s_original_guide_section},except:{s_except_guide_section}",
+                       VehicleID: vh.VEHICLE_ID,
+                       CarrierID: vh.CST_ID);
+                    return true;
+                }
+            }
+            else
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Want to check guide section has change,result:[No guide section to go].",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+                return false;
             }
         }
 
@@ -3386,6 +3703,14 @@ namespace com.mirle.ibg3k0.sc.Service
                     break;
 
                 case EventType.UnloadArrivals:
+                    if (eqpt.IsUnloadArriveByPassReply)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"vh:{eqpt.VEHICLE_ID} unlaod arrive reply by pass, is open.eqpt.IsUnloadArriveByPassReply:{eqpt.IsUnloadArriveByPassReply}",
+                           VehicleID: eqpt.VEHICLE_ID);
+                        return;
+                    }
+
                     if (!SCUtility.isEmpty(eqpt.MCS_CMD))
                     {
                         scApp.CMDBLL.updateCMD_MCS_CmdStatus2UnloadArrive(eqpt.MCS_CMD);
@@ -3513,7 +3838,8 @@ namespace com.mirle.ibg3k0.sc.Service
 
 
         private void PositionReport_DoubleStorage(BCFApplication bcfApp, AVEHICLE eqpt, int seqNum
-                                                    , EventType eventType, string current_adr_id, string current_sec_id, string carrier_id)
+                                                  , EventType eventType, string current_adr_id, string current_sec_id, string carrier_id
+                                                  , string cstType)
         {
             try
             {
@@ -3526,7 +3852,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     bool retryOrAbort = true;
                     retryOrAbort = scApp.TransferService.OHT_TransferStatus(eqpt.OHTC_CMD,
-                            eqpt.VEHICLE_ID, ACMD_MCS.COMMAND_STATUS_BIT_INDEX_DOUBLE_STORAGE);
+                            eqpt.VEHICLE_ID, ACMD_MCS.COMMAND_STATUS_BIT_INDEX_DOUBLE_STORAGE
+                            , cstType);
                     Boolean resp_cmp;
                     resp_cmp = replyTranEventReport(bcfApp, eventType, eqpt, seqNum, true, true, true, "", CMDCancelType.CmdCancel);
                 }
@@ -3901,6 +4228,14 @@ namespace com.mirle.ibg3k0.sc.Service
             else if (recive_str.CmpStatus == CompleteStatus.CmpStatusIdreadFailed)
             {
                 scApp.TransferService.CommandCompleteByIDReadFail(vh_id, finish_ohxc_cmd);
+            }
+            else if (recive_str.CmpStatus == CompleteStatus.CmpStatusCancel)
+            {
+                scApp.TransferService.CommandCompleteByCancel(vh_id, finish_ohxc_cmd);
+            }
+            else if (recive_str.CmpStatus == CompleteStatus.CmpStatusAbort)
+            {
+                scApp.TransferService.CommandCompleteByAbort(vh_id, finish_ohxc_cmd);
             }
             else
             {
@@ -4358,28 +4693,28 @@ namespace com.mirle.ibg3k0.sc.Service
         public bool doAskVhToSystemOutAddress(string vhID, string carOutBufferAdr)
         {
             bool isSuccess = true;
-            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.SystemOut, destination: carOutBufferAdr);
+            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.SystemOut, destination_address: carOutBufferAdr);
             return isSuccess;
         }
 
         public bool doAskVhToMaintainsAddress(string vhID, string mtlAdtID)
         {
             bool isSuccess = true;
-            isSuccess = isSuccess && scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.MoveToMTL, destination: mtlAdtID);
+            isSuccess = isSuccess && scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.MoveToMTL, destination_address: mtlAdtID);
             return isSuccess;
         }
 
         public bool doAskVhToCarInBufferAddress(string vhID, string carInBufferAdr)
         {
             bool isSuccess = true;
-            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.MTLHome, destination: carInBufferAdr);
+            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.MTLHome, destination_address: carInBufferAdr);
             return isSuccess;
         }
 
         public bool doAskVhToSystemInAddress(string vhID, string systemInAdr)
         {
             bool isSuccess = true;
-            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.SystemIn, destination: systemInAdr);
+            isSuccess = scApp.CMDBLL.doCreatTransferCommand(vh_id: vhID, cmd_type: E_CMD_TYPE.SystemIn, destination_address: systemInAdr);
             return isSuccess;
         }
 
@@ -4545,6 +4880,11 @@ namespace com.mirle.ibg3k0.sc.Service
                 if (is_success)
                 {
                     AVEHICLE vh_vo = scApp.VehicleBLL.cache.getVhByID(vhID);
+                    if (!vh_vo.isTcpIpConnect)
+                    {
+                        vh_vo.CUR_SEC_ID = "";
+                        vh_vo.CUR_ADR_ID = "";
+                    }
                     vh_vo.VechileRemove();
                     scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vhID);
                     scApp.ReserveBLL.RemoveVehicle(vhID);
@@ -4607,6 +4947,20 @@ namespace com.mirle.ibg3k0.sc.Service
             foreach (var vh in vhs)
             {
                 PauseRequest(vh.VEHICLE_ID, PauseEvent.Continue, OHxCPauseType.Earthquake);
+            }
+        }
+        public void updateVhType(string vhID, E_VH_TYPE vhType)
+        {
+            try
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"update vh:{vhID} to type:{vhType}");
+                scApp.VehicleBLL.updataVehicleType(vhID, vhType);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: ex);
             }
         }
 

@@ -8,13 +8,13 @@ namespace VehicleControl_Viewer.Vo
 {
     public class Alarm
     {
-        public string EQ_ID;
-        public string Unit_ID;
-        public string RPT_dateTime;
-        public string Code;
-        public string level;
-        public string alarmStatus;
-        public string alarmAffectCount;
-        public string Description;
+        public string EQ_ID { get; set; }
+        public string Unit_ID { get; set; }
+        public string RPT_dateTime { get; set; }
+        public string Code { get; set; }
+        public string level { get; set; }
+        public string alarmStatus { get; set; }
+        public string alarmAffectCount { get; set; }
+        public string Description { get; set; }
     }
 }

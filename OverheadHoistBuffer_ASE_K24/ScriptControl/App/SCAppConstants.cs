@@ -1078,6 +1078,9 @@ namespace com.mirle.ibg3k0.sc.App
         public const string NATS_SUBJECT_SECS_LOG = "NATS_SUBJECT_KEY_SECS_LOG";
 
         public const string NATS_SUBJECT_Port_INFO_0 = "NATS_SUBJECT_KEY_Port_INFO_{0}";
+        public const string NATS_SUBJECT_LINE_STATUS_CHANGE = "NATS_SUBJECT_LINE_STATUS_CHANGE";
+        public const string NATS_SUBJECT_ALARM_LIST_CHANGE = "NATS_SUBJECT_ALARM_LIST_CHANGE"; //註冊OHBC若alarmList有變動就呼叫
+        public const string NATS_SUBJECT_TRACK_STATUS_CHANGE = "NATS_SUBJECT_TRACK_STATUS_CHANGE"; //註冊如果有section因轉轍器被暫時不用，OHBC會透過這個訂閱來告訴Viewer有section不能用了
 
         #endregion NATS
         #region Eqpt Type

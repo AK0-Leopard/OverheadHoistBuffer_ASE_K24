@@ -732,17 +732,17 @@ namespace VehicleControl_Viewer.frm_Mainfrom
     
         private void refreshCurrentAlarm()
         {
-            var dgv = dgv_CurrentAlarm;
-            //先清除所有alarm
-            dgv.Items.Clear();
-            //取得alarmList
-            var alarmList = app.objCacheManager.alarmList;
-            //把alarm丟上去
-            foreach(var alarm in alarmList)
-            {
-                dgv.Items.Add(new string[] { alarm.EQ_ID, alarm.Unit_ID, alarm.RPT_dateTime, alarm.Code, alarm.level,
-                alarm.alarmStatus, alarm.alarmAffectCount, alarm.Description});
-            }
+            //var dgv = dgv_CurrentAlarm;
+            ////先清除所有alarm
+            //dgv.Items.Clear();
+            ////取得alarmList
+            //var alarmList = app.objCacheManager.alarmList;
+            ////把alarm丟上去
+            //foreach(var alarm in alarmList)
+            //{
+            //    dgv.Items.Add(new string[] { alarm.EQ_ID, alarm.Unit_ID, alarm.RPT_dateTime, alarm.Code, alarm.level,
+            //    alarm.alarmStatus, alarm.alarmAffectCount, alarm.Description});
+            //}
         }
     }
 }

@@ -12,5 +12,9 @@ namespace com.mirle.ibg3k0.sc.Service.Interface
         bool CommandCompleteByIDMismatch(string vhID, string finishCommandID);
         (bool isContinue, string RemaneBox) IDReadFailHappend(string vhID, string readBOXID);
         bool CommandCompleteByIDReadFail(string vhID, string finishCommandID);
+
+        void CommandCompleteByCancel(string vhID, string finishCommandID);
+        void CommandCompleteByAbort(string vhID, string finishCommandID);
+
     }
 }

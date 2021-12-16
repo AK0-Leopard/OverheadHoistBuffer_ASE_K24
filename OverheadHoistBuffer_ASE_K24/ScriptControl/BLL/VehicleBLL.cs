@@ -879,6 +879,32 @@ namespace com.mirle.ibg3k0.sc.BLL
             return isSuccess;
             //}
         }
+        public bool updataVehicleType(string vhID, E_VH_TYPE vhType)
+        {
+            bool isSuccess = false;
+            AVEHICLE vh = new AVEHICLE();
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    vh.VEHICLE_ID = vhID;
+                    con.AVEHICLE.Attach(vh);
+                    vh.VEHICLE_TYPE = vhType;
+                    con.Entry(vh).Property(p => p.VEHICLE_TYPE).IsModified = true;
+                    vehicleDAO.doUpdate(scApp, con, vh);
+                    con.Entry(vh).State = EntityState.Detached;
+                    isSuccess = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception");
+            }
+            return isSuccess;
+        }
+
+
+
 
         public AVEHICLE getVehicleByIDFromDB(string vh_id, bool isAttached = false)
         {
@@ -1120,21 +1146,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
             }
 
-            if (vh_type != E_VH_TYPE.None)
+            if (vh_type == E_VH_TYPE.ReelCST)
             {
                 foreach (AVEHICLE vh in vhs.ToList())
                 {
-                    if (vh.VEHICLE_TYPE == E_VH_TYPE.None)
-                    {
-                        vhs.Remove(vh);
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
-                           Data: $"vh id:{vh.VEHICLE_ID} vh type:{vh.VEHICLE_TYPE}, vehicle type not match current find vh type:{vh_type}," +
-                                 $"so filter it out",
-                           VehicleID: vh.VEHICLE_ID,
-                           CarrierID: vh.CST_ID);
-                    }
-                    else if (vh.VEHICLE_TYPE != E_VH_TYPE.None
-                        && vh.VEHICLE_TYPE != vh_type)
+                    if (vh.VEHICLE_TYPE != vh_type)
                     {
                         vhs.Remove(vh);
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
@@ -1147,19 +1163,70 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             else
             {
-                foreach (AVEHICLE vh in vhs.ToList())
+                if (DebugParameter.IsSpecifyVhTransfer)
                 {
-                    if (vh.VEHICLE_TYPE != E_VH_TYPE.None)
+                    foreach (AVEHICLE vh in vhs.ToList())
                     {
-                        vhs.Remove(vh);
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
-                           Data: $"vh id:{vh.VEHICLE_ID} vh type:{vh.VEHICLE_TYPE}, vehicle type not match current find vh type:{vh_type}," +
-                                 $"so filter it out",
-                           VehicleID: vh.VEHICLE_ID,
-                           CarrierID: vh.CST_ID);
+                        if (vh.VEHICLE_TYPE == E_VH_TYPE.None) continue;
+
+                        if (vh.VEHICLE_TYPE != vh_type)
+                        {
+                            vhs.Remove(vh);
+                            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
+                               Data: $"vh id:{vh.VEHICLE_ID} vh type:{vh.VEHICLE_TYPE}, vehicle type not match current find vh type:{vh_type}," +
+                                     $"so filter it out",
+                               VehicleID: vh.VEHICLE_ID,
+                               CarrierID: vh.CST_ID);
+                        }
                     }
                 }
+                else
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
+                       Data: $"Specify vh transfer is close.");
+                }
             }
+
+            //if (vh_type != E_VH_TYPE.None)
+            //{
+            //    foreach (AVEHICLE vh in vhs.ToList())
+            //    {
+            //        if (vh.VEHICLE_TYPE == E_VH_TYPE.None)
+            //        {
+            //            vhs.Remove(vh);
+            //            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
+            //               Data: $"vh id:{vh.VEHICLE_ID} vh type:{vh.VEHICLE_TYPE}, vehicle type not match current find vh type:{vh_type}," +
+            //                     $"so filter it out",
+            //               VehicleID: vh.VEHICLE_ID,
+            //               CarrierID: vh.CST_ID);
+            //        }
+            //        else if (vh.VEHICLE_TYPE != E_VH_TYPE.None
+            //              && vh.VEHICLE_TYPE != vh_type)
+            //        {
+            //            vhs.Remove(vh);
+            //            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
+            //               Data: $"vh id:{vh.VEHICLE_ID} vh type:{vh.VEHICLE_TYPE}, vehicle type not match current find vh type:{vh_type}," +
+            //                     $"so filter it out",
+            //               VehicleID: vh.VEHICLE_ID,
+            //               CarrierID: vh.CST_ID);
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    foreach (AVEHICLE vh in vhs.ToList())
+            //    {
+            //        if (vh.VEHICLE_TYPE != E_VH_TYPE.None)
+            //        {
+            //            vhs.Remove(vh);
+            //            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleBLL), Device: "OHxC",
+            //               Data: $"vh id:{vh.VEHICLE_ID} vh type:{vh.VEHICLE_TYPE}, vehicle type not match current find vh type:{vh_type}," +
+            //                     $"so filter it out",
+            //               VehicleID: vh.VEHICLE_ID,
+            //               CarrierID: vh.CST_ID);
+            //        }
+            //    }
+            //}
 
             foreach (AVEHICLE vh in vhs.ToList())
             {
@@ -2249,6 +2316,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 var vhs = eqObjCacheManager.getAllVehicle();
                 return vhs.Where(vh => vh.IsError).
                            ToList();
+            }
+            public void updataVehicleType(string vhID, E_VH_TYPE vhType)
+            {
+                var vh = eqObjCacheManager.getVehicletByVHID(vhID);
+                vh.VEHICLE_TYPE = vhType;
             }
 
         }

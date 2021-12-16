@@ -10,6 +10,7 @@ namespace com.mirle.ibg3k0.sc.Data.VO
 {
     public class Track : AUNIT
     {
+        public const int MIN_ALLOW_BLOCK_RELEASE_INTERVAL_ms = 10_000;
         public event EventHandler<alarmCodeChangeArgs> alarmCodeChange;
         public class alarmCodeChangeArgs : EventArgs
         {
@@ -106,12 +107,21 @@ namespace com.mirle.ibg3k0.sc.Data.VO
 
         public List<string> RelatedSection { get; private set; } = new List<string>();
         public string sRelatedSection { get; private set; } = "";
-        public Stopwatch stopwatch { get; private set; } = new Stopwatch();
+        public Stopwatch LastUpdataStopwatch { get; private set; } = new Stopwatch();
+        public Stopwatch LastBlockReleaseStopwatch { get; private set; } = new Stopwatch();
         public string LastUpdateTime
         {
             get
             {
-                return stopwatch.ElapsedMilliseconds.ToString();
+                return LastUpdataStopwatch.ElapsedMilliseconds.ToString();
+            }
+        }
+        public bool canExcuteBlockRelease
+        {
+            get
+            {
+                return !LastBlockReleaseStopwatch.IsRunning ||
+                        LastBlockReleaseStopwatch.ElapsedMilliseconds > MIN_ALLOW_BLOCK_RELEASE_INTERVAL_ms;
             }
         }
         public void setRelatedSection(sc.App.SCApplication app)
@@ -142,14 +152,14 @@ namespace com.mirle.ibg3k0.sc.Data.VO
 
             TrackDir = trackDir;
             //如果現在狀態與先前不同而且現在狀態為alarm代表alarm第一次發生
-            if (TrackStatus != trackInfo.Status && trackInfo.Status == RailChangerProtocol.TrackStatus.Alarm)
-                this.onAlarmCodeChange(AlarmCode, trackInfo.AlarmCode, UNIT_ID);
+            //if (TrackStatus != trackInfo.Status && trackInfo.Status == RailChangerProtocol.TrackStatus.Alarm)
+            //    this.onAlarmCodeChange(AlarmCode, trackInfo.AlarmCode, UNIT_ID);
             TrackStatus = trackInfo.Status;
             AlarmCode = trackInfo.AlarmCode;
             TrackBlock = trackInfo.IsBlock;
             IsAlive = trackInfo.Alive;
 
-            stopwatch.Restart();
+            LastUpdataStopwatch.Restart();
         }
 
         private bool hasDifferent(RailChangerProtocol.TrackInfo trackInfo)
@@ -187,14 +197,15 @@ namespace com.mirle.ibg3k0.sc.Data.VO
             if (is_success)
             {
                 ResetCount++;
+                LastBlockReleaseStopwatch.Restart();
             }
         }
-        
+
         public Track()
         {
-            
+
         }
-        
+
         public void onAlarmCodeChange(int alarmCode_old, int alarmCode_new, string no)
         {
             try

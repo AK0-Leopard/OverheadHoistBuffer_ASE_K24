@@ -341,6 +341,21 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return null;
             }
         }
+        public string GetCmdMCSPauseFlag(string cmdMcsID)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    return cmd_mcsDao.GetCmdPauseFlag(con, cmdMcsID);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return "";
+            }
+        }
 
         //public string doCheckMCSCommand(SCApplication app, string command_id, string Priority, string cstID, string box_id, string lotID, string cstType,
         //                                ref string HostSource, ref string HostDestination,
@@ -1347,6 +1362,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     if (status == E_TRAN_STATUS.Queue)
                     {
                         cmd.COMMANDSTATE = 0;
+                        cmd.PAUSEFLAG = "";
                     }
 
                     cmd_mcsDao.update(con, cmd);
@@ -1899,6 +1915,27 @@ namespace com.mirle.ibg3k0.sc.BLL
                 logger.Error(ex, "Exection:");
                 isSuccess = false;
             }
+            return isSuccess;
+        }
+        public bool updateCMD_MCS_PauseFlag(string cmd_id, string flag)
+        {
+            bool isSuccess = true;
+
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    ACMD_MCS cmd = cmd_mcsDao.getByID(con, cmd_id);
+                    cmd.PAUSEFLAG = flag;
+                    cmd_mcsDao.update(con, cmd);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                isSuccess = false;
+            }
+
             return isSuccess;
         }
 
@@ -3552,13 +3589,24 @@ namespace com.mirle.ibg3k0.sc.BLL
                 bool is_walk_able = true;
                 switch (cmd_type)
                 {
-                    case E_CMD_TYPE.Move:
-                    case E_CMD_TYPE.Unload:
-                    case E_CMD_TYPE.Move_Park:
+
                     case E_CMD_TYPE.MoveToMTL:
                     case E_CMD_TYPE.MTLHome:
                     case E_CMD_TYPE.SystemIn:
                     case E_CMD_TYPE.SystemOut:
+                        if (!scApp.GuideBLL.IsRoadWalkableForMTx(vh_current_adr, destination).isSuccess)
+                        {
+                            result = $" vh:{vh_id},want excute cmd type:{cmd_type}, current address:[{vh_current_adr}] to destination address:[{destination}] no find path";
+                            is_walk_able = false;
+                        }
+                        else
+                        {
+                            result = "";
+                        }
+                        break;
+                    case E_CMD_TYPE.Move:
+                    case E_CMD_TYPE.Unload:
+                    case E_CMD_TYPE.Move_Park:
                         if (!scApp.GuideBLL.IsRoadWalkable(vh_current_adr, destination).isSuccess)
                         {
                             result = $" vh:{vh_id},want excute cmd type:{cmd_type}, current address:[{vh_current_adr}] to destination address:[{destination}] no find path";
@@ -4433,14 +4481,14 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             if (has_change)
             {
-                AK0.ProtocolFormat.VehicleControlPublishMessage.TaskInfo info =
-                    new AK0.ProtocolFormat.VehicleControlPublishMessage.TaskInfo();
+                AK0.ProtocolFormat.VehicleControlPublishMessage.TaskCommandInfo info =
+                    new AK0.ProtocolFormat.VehicleControlPublishMessage.TaskCommandInfo();
                 info.LASTUPDATETIME = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
                 foreach (var tran_item in ACMD_OHTC.CMD_OHTC_InfoList)
                 {
                     var cmd_ohtc = tran_item.Value;
                     SCUtility.TrimAllParameter(cmd_ohtc);
-                    var task = new AK0.ProtocolFormat.VehicleControlPublishMessage.Task();
+                    var task = new AK0.ProtocolFormat.VehicleControlPublishMessage.TaskCommand();
                     task.CMDID = cmd_ohtc.CMD_ID ?? "";
                     task.VHID = cmd_ohtc.VH_ID ?? "";
                     task.CMDIDMCS = cmd_ohtc.CMD_ID_MCS ?? "";
@@ -4677,7 +4725,6 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             catch (Exception ex)
             {
-                updateCommand_OHTC_StatusByCmdID(acmd_ohtc.CMD_ID, E_CMD_STATUS.AbnormalEndByOHTC);
                 logger_VhRouteLog.Error(ex, "generateCmd_OHTC_Details happend");
                 return false;
             }
@@ -5193,7 +5240,8 @@ namespace com.mirle.ibg3k0.sc.BLL
              List<string> guide_to_dest_address_ids)
             FindGuideInfo(string vh_current_address, string source_adr, string dest_adr, ActiveType active_type, bool has_carray = false)
         {
-            bool isSuccess = true;
+            //bool isSuccess = true;
+            bool isSuccess = false;
             List<string> guide_start_to_from_segment_ids = null;
             List<string> guide_start_to_from_section_ids = null;
             List<string> guide_start_to_from_address_ids = null;
@@ -5222,6 +5270,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                                 (isSuccess, guide_start_to_from_segment_ids, guide_start_to_from_section_ids, guide_start_to_from_address_ids, total_cost)
                                     = scApp.GuideBLL.getGuideInfo(vh_current_address, source_adr);
                             }
+                            else
+                            {
+                                isSuccess = true;//如果相同 代表是在同一個點上
+                            }
+
                             if (isSuccess && !SCUtility.isMatche(source_adr, dest_adr))
                             {
                                 (isSuccess, guide_to_dest_segment_ids, guide_to_dest_section_ids, guide_to_dest_address_ids, total_cost)
@@ -5289,7 +5342,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         }
                         else
                         {
-                            isSuccess = true;
+                            isSuccess = false;
                         }
                         break;
                 }

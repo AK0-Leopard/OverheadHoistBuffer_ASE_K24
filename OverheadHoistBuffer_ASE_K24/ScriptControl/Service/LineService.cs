@@ -36,18 +36,146 @@ namespace com.mirle.ibg3k0.sc.Service
             lineBLL = _app.LineBLL;
             line = scApp.getEQObjCacheManager().getLine();
 
-            line.addEventHandler(nameof(LineService), nameof(line.Host_Control_State), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.SCStats), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.Currnet_Park_Type), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.Currnet_Cycle_Type), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.Secs_Link_Stat), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.Redis_Link_Stat), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.DetectionSystemExist), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.IsEarthquakeHappend), PublishLineInfo);
-            line.addEventHandler(nameof(LineService), nameof(line.IsAlarmHappened), PublishLineInfo);
-            line.LineStatusChange += Line_LineStatusChange;
-
+            //line.addEventHandler(nameof(LineService), nameof(line.Host_Control_State), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.SCStats), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.Currnet_Park_Type), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.Currnet_Cycle_Type), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.Secs_Link_Stat), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.Redis_Link_Stat), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.DetectionSystemExist), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.IsEarthquakeHappend), PublishLineInfo);
+            //line.addEventHandler(nameof(LineService), nameof(line.IsAlarmHappened), PublishLineInfo);
+            //line.LineStatusChange += Line_LineStatusChange;
         }
+
+
+        public void LineStatusChangeCheck()
+        {
+            bool host_is_connection = line.Host_Control_State == SCAppConstants.LineHostControlState.HostControlState.On_Line_Remote;
+            bool is_manual_port_alive = true;
+            bool is_track1_all_ready = false;
+            bool is_track2_all_ready = false;
+
+            var track_items = scApp.UnitBLL.cache.GetALLTracks();
+            track_items = track_items.OrderBy(track => track.UNIT_ID).ToList();
+            var track1_items = track_items.Where(track => track.UNIT_ID.CompareTo("R35") < 0);
+            var track2_items = track_items.Where(track => track.UNIT_ID.CompareTo("R35") >= 0);
+            is_track1_all_ready = track1_items.Where(track => !track.IsAlive).Count() == 0;
+            is_track2_all_ready = track2_items.Where(track => !track.IsAlive).Count() == 0;
+
+            bool has_change = false;
+            if (line.LineInfo.IsConnectionWithHOST != host_is_connection)
+            {
+                line.LineInfo.IsConnectionWithHOST = host_is_connection;
+                has_change = true;
+            }
+            if (line.LineInfo.IsConnectionWithPLCMANUAL != is_manual_port_alive)
+            {
+                line.LineInfo.IsConnectionWithPLCMANUAL = is_manual_port_alive;
+                has_change = true;
+            }
+            if (line.LineInfo.IsConnectionWithPLCTRACK1 != is_track1_all_ready)
+            {
+                line.LineInfo.IsConnectionWithPLCTRACK1 = is_track1_all_ready;
+                has_change = true;
+            }
+            if (line.LineInfo.IsConnectionWithPLCTRACK2 != is_track2_all_ready)
+            {
+                line.LineInfo.IsConnectionWithPLCTRACK2 = is_track2_all_ready;
+                has_change = true;
+            }
+
+            if (has_change)
+            {
+                byte[] line_info_serialize = line.LineInfo.ToByteArray();
+                scApp.getNatsManager().PublishAsync
+                    (SCAppConstants.NATS_SUBJECT_LINE_STATUS_CHANGE, line_info_serialize);
+            }
+        }
+
+        public void HIDStatusCheck()
+        {
+            try
+            {
+                if (!DebugParameter.IsCheckHIDStatus)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: "OHxC",
+                       Data: $"By pass hid status check.");
+                    return;
+                }
+                var hids = scApp.EquipmentBLL.cache.loadHID();
+                var hid_notnormal = hids.Where(hid => !hid.IsNormal).ToList();
+
+
+                bool has_hid_power_alarm_happ = hid_notnormal.Count() > 0;
+                if (has_hid_power_alarm_happ)
+                {
+                    List<string> notnormal_hid_ids = hid_notnormal.Select(hid => hid.EQPT_ID).ToList();
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: "OHxC",
+                       Data: $"current has hids:{string.Join(",", notnormal_hid_ids)} is not normal.");
+                }
+                line.HasHIDsPowerAlarmHappend = has_hid_power_alarm_happ;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+        }
+
+        public void refreshAlarmInfoList()
+        {
+            var current_alarms = scApp.AlarmBLL.loadSetAlarmList();
+            current_alarms = current_alarms.Where(a => !a.EQPT_ID.Contains("MTL")).ToList();
+            bool has_change = false;
+            List<string> new_current_alarm_complex_keys = current_alarms.Select(alarm => alarm.ComplexKey).ToList();
+            List<string> old_current_alarm_complex_keys = ALARM.Alarm_InfoList.Keys.ToList();
+
+            List<string> new_add_alarms = new_current_alarm_complex_keys.Except(old_current_alarm_complex_keys).ToList();
+            //1.新增多出來的命令
+            foreach (string new_alarm_complex_key in new_add_alarms)
+            {
+                ALARM new_alarm_obj = new ALARM();
+                var current_alarm = current_alarms.Where(alarm => SCUtility.isMatche(alarm.ComplexKey, new_alarm_complex_key)).FirstOrDefault();
+                if (current_alarm == null) continue;
+                new_alarm_obj.put(current_alarm);
+                ALARM.Alarm_InfoList.TryAdd(new_alarm_complex_key, new_alarm_obj);
+                has_change = true;
+            }
+            //2.刪除以結束的命令
+            List<string> will_del_mcs_cmds = old_current_alarm_complex_keys.Except(new_current_alarm_complex_keys).ToList();
+            foreach (string old_cmd in will_del_mcs_cmds)
+            {
+                ALARM.Alarm_InfoList.TryRemove(old_cmd, out ALARM _a);
+                has_change = true;
+            }
+
+            if (has_change)
+            {
+                AK0.ProtocolFormat.VehicleControlPublishMessage.alarmInfo info =
+                    new AK0.ProtocolFormat.VehicleControlPublishMessage.alarmInfo();
+                foreach (var alarmItem in ALARM.Alarm_InfoList)
+                {
+                    var alarm = alarmItem.Value;
+                    var publish_alarm = new AK0.ProtocolFormat.VehicleControlPublishMessage.alarm();
+                    publish_alarm.EQID = alarm.EQPT_ID;
+                    publish_alarm.UnitID = alarm.UnitID;
+                    publish_alarm.RPTDateTime = alarm.RPT_DATE_TIME;
+                    publish_alarm.Code = alarm.ALAM_CODE;
+                    publish_alarm.Level = alarm.ALAM_LVL.ToString();
+                    //publish_alarm.AlarmStatus = alarm.ALAM_STAT;
+                    //publish_alarm.AlarmAffectCount = alarm.;
+                    publish_alarm.Description = alarm.ALAM_DESC;
+                    info.AlarmList.Add(publish_alarm);
+                }
+                byte[] alarm_info_serialize = new byte[info.CalculateSize()];
+                info.WriteTo(new Google.Protobuf.CodedOutputStream(alarm_info_serialize));
+
+                scApp.getNatsManager().PublishAsync
+                    (SCAppConstants.NATS_SUBJECT_ALARM_LIST_CHANGE, alarm_info_serialize);
+            }
+        }
+
+
 
         public void startHostCommunication()
         {

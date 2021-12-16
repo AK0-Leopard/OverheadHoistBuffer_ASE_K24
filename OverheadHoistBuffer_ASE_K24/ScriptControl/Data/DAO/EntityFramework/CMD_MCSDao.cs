@@ -111,7 +111,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO.EntityFramework
                         select cmd;
             return query.SingleOrDefault();
         }
-        public ACMD_MCS getByCstBoxID(DBConnection_EF con,  string box_id)
+        public ACMD_MCS getByCstBoxID(DBConnection_EF con, string box_id)
         {
             var query = from cmd in con.ACMD_MCS
                             //cmd.CARRIER_ID.Trim() == cst_id.Trim()
@@ -144,6 +144,13 @@ namespace com.mirle.ibg3k0.sc.Data.DAO.EntityFramework
                            && cmd.TRANSFERSTATE != E_TRAN_STATUS.TransferCompleted
                         select cmd;
             return query.SingleOrDefault();
+        }
+        public string GetCmdPauseFlag(DBConnection_EF con, String cmdMcsID)
+        {
+            var query = from cmd in con.ACMD_MCS
+                        where cmd.CMD_ID == cmdMcsID.Trim()
+                        select cmd.PAUSEFLAG;
+            return query.FirstOrDefault();
         }
         public List<ACMD_MCS> loadACMD_MCSIsQueue(DBConnection_EF con)
         {

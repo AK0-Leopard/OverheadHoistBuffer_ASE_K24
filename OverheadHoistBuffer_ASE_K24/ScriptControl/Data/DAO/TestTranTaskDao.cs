@@ -39,9 +39,9 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                         var target_port_station = portStationBLL.OperateCatch.getPortStation(destination_port);
                         if (source_port_station != null)
                         {
-                            if (source_port_station.LD_VH_TYPE == E_VH_TYPE.Clean ||
-                                target_port_station == null)
-                                car_type = ((int)source_port_station.LD_VH_TYPE).ToString();
+                            //if (source_port_station.LD_VH_TYPE == E_VH_TYPE.Clean ||
+                            //    target_port_station == null)
+                            car_type = ((int)source_port_station.LD_VH_TYPE).ToString();
                         }
                         lstTranTask.Add(new TranTask()
                         {
