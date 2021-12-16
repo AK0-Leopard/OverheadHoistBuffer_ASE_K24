@@ -27,6 +27,7 @@ namespace VehicleControl_Viewer.Vo.ValueObjToShow
         private string uNLOAD_PORT_ID;
         private string cMD_CST_ID;
         private string pRIORITY;
+        private bool iS_INSTALLED;
         private readonly Vehicle vh;
 
         public string VEHICLE_ID { get => vEHICLE_ID; set { if (vEHICLE_ID != value) { vEHICLE_ID = value; OnPropertyChanged(); } } }
@@ -39,7 +40,7 @@ namespace VehicleControl_Viewer.Vo.ValueObjToShow
         public string UNLOAD_PORT_ID { get => uNLOAD_PORT_ID; set { if (uNLOAD_PORT_ID != value) { uNLOAD_PORT_ID = value; OnPropertyChanged(); } } }
         public string CMD_CST_ID { get => cMD_CST_ID; set { if (cMD_CST_ID != value) { cMD_CST_ID = value; OnPropertyChanged(); } } }
         public string PRIORITY { get => pRIORITY; set { if (pRIORITY != value) { pRIORITY = value; OnPropertyChanged(); } } }
-
+        public bool IS_INSTALLED { get => iS_INSTALLED; set { iS_INSTALLED = value; OnPropertyChanged(); } }
         public void resresh()
         {
             ACT_STATUS = vh.ACT_STATUS;
@@ -47,6 +48,7 @@ namespace VehicleControl_Viewer.Vo.ValueObjToShow
             MCS_CMD = vh.MCS_CMD;
             OHTC_CMD = vh.OHTC_CMD;
             CST_ID = vh.CST_ID;
+            IS_INSTALLED = vh.IS_INSTALLED;
         }
 
 

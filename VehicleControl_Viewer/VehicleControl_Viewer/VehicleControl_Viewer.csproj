@@ -241,6 +241,7 @@
     </Compile>
     <Compile Include="Vo\Address.cs" />
     <Compile Include="Vo\Alarm.cs" />
+    <Compile Include="Vo\ObjToShow\TaskCommandShow.cs" />
     <Compile Include="Vo\ObjToShow\TransferCommandShow.cs" />
     <Compile Include="Vo\OHB_Zone.cs" />
     <Compile Include="Vo\Section.cs" />

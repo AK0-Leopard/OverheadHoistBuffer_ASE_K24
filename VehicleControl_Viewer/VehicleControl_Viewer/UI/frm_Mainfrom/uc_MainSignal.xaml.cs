@@ -32,19 +32,23 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         //建構子
         List<TextBlock> OHB_ZoneList= new List<TextBlock>();
         private readonly WindownApplication app;
+
+        List<TextBlock> zoneData = new List<TextBlock>();
         public uc_MainSignal(WindownApplication _app)
         {
             app = _app;
+            initialTimer();
             InitializeComponent();
+            setFakeZoneData(); //為了表演所以讓ZONE DATA秀假資料
         }
 
 
         private void Home_Click(object sender, RoutedEventArgs e)
         {
-            this.CIMLinkStatus.Fill = new SolidColorBrush(Colors.Green);
-            this.MGV_PLC.Fill = new SolidColorBrush(Colors.Green);
-            this.RAIL_PLC1.Fill = new SolidColorBrush(Colors.Green);
-            this.RAIL_PLC2.Fill = new SolidColorBrush(Colors.Green);
+            //this.CIMLinkStatus.Fill = new SolidColorBrush(Colors.Green);
+            //this.MGV_PLC.Fill = new SolidColorBrush(Colors.Green);
+            //this.RAIL_PLC1.Fill = new SolidColorBrush(Colors.Green);
+            //this.RAIL_PLC2.Fill = new SolidColorBrush(Colors.Green);
             //this.OHB_Zone01_value.Foreground = new SolidColorBrush(Colors.Green);
         }
         private void WIPView_Click(object sender, RoutedEventArgs e)
@@ -86,6 +90,33 @@ namespace VehicleControl_Viewer.frm_Mainfrom
             this.RAIL_PLC2.Fill = (app.objCacheManager.LineInfo.IsConnectionWithPLCTRACK2) ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Red);
         }
 
+        private void setFakeZoneData()
+        {
+            OHB_Zone01_value.Text = "95%";
+            OHB_Zone02_value.Text = "42%";
+            OHB_Zone03_value.Text = "-";
+            OHB_Zone04_value.Text = "-";
+            OHB_Zone05_value.Text = "47%";
+            OHB_Zone06_value.Text = "-";
+            OHB_Zone07_value.Text = "0%";
+            OHB_Zone08_value.Text = "16%";
+            OHB_Zone09_value.Text = "-";
+            OHB_Zone10_value.Text = "-";
+            OHB_Zone11_value.Text = "-";
+            OHB_Zone12_value.Text = "0%";
+            OHB_Zone13_value.Text = "0%";
+            OHB_Zone14_value.Text = "-";
+            OHB_Zone15_value.Text = "-";
+            OHB_Zone16_value.Text = "-";
+            OHB_Zone17_value.Text = "-";
+            OHB_Zone18_value.Text = "4%";
+            OHB_Zone19_value.Text = "18%";
+            OHB_Zone20_value.Text = "-";
+            OHB_Zone21_value.Text = "1%";
+            OHB_Zone22_value.Text = "-";
+            OHB_Zone23_value.Text = "0%";
+            OHB_Zone24_value.Text = "0%";
+        }
 
     }
 }

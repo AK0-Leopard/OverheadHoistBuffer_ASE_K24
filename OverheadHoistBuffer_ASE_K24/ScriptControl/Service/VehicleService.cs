@@ -115,6 +115,12 @@ namespace com.mirle.ibg3k0.sc.Service
             }
 
             transferService = app.TransferService;
+            //註冊trackAlarmHappend
+            //var v = app.getEQObjCacheManager().getAllUnit().
+            foreach(Track t in scApp.UnitBLL.cache.GetALLTracks())
+            {
+                t.alarmCodeChange += trackAlarmHappend;
+            }
         }
 
         private void Vh_LongTimeBlocking(object sender, EventArgs e)
@@ -4928,5 +4934,23 @@ namespace com.mirle.ibg3k0.sc.Service
         }
 
         #endregion TEST
+
+        #region 轉轍器alarm發生的對應事件處理
+        private void trackAlarmHappend(object sender, Track.alarmCodeChangeArgs e)
+        {
+            //要再上報Alamr Rerport給MCS
+            scApp.TransferService.OHBC_AlarmSet(scApp.getEQObjCacheManager().getLine().LINE_ID, ((int)AlarmLst.OHT_CommandNotFinishedInTime).ToString());
+            foreach(Track.TrackAlarm alarm in e.alarmList_new)
+            {
+                string alarmCode = ((int)alarm).ToString();
+                string alarmDesc = alarm.ToString();
+                //逐一上報
+                scApp.TransferService.OHBC_AlarmSet(e.railChanger_No, alarmCode, alarmDesc);
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                    Data: $"Track({e.railChanger_No}) alarm is happend, alarm Code:{alarmCode}, alarm Desc: {alarmDesc} ");
+                //Data: $"Find vehicle {vehicleCache.VEHICLE_ID}, vehicle address Id = {vehicleCache.CUR_ADR_ID}, = port address ID {portAddressID}");
+            }
+        }
+        #endregion
     }
 }

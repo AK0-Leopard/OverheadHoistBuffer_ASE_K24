@@ -222,7 +222,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
             SolidColorBrush Brush = new SolidColorBrush();
             //Brush.Color = Color.FromRgb(0xFF, 0x00, 0x00);
             //被disable的路要改畫灰色
-            Brush.Color = Color.FromRgb(0x29, 0x24, 0x21);
+            Brush.Color = Color.FromRgb(0xA6, 0xA6, 0xA6);
             var disable_segments = app.objCacheManager.getDisableSegment();
             foreach (var segment in disable_segments)
             {
@@ -281,7 +281,11 @@ namespace VehicleControl_Viewer.frm_Mainfrom
 
             var transfer_command_infos = app.objCacheManager.TransferCommandInfos.Select(tran => new Vo.ObjToShow.TransferCommandShow(tran));
             dgv_TransferCommand.ItemsSource = transfer_command_infos;
-            dgv_TaskCommand.ItemsSource = app.objCacheManager.TaskCommandInfos;
+            
+
+            var task_command_infos = app.objCacheManager.TaskCommandInfos.Select(task => new Vo.ObjToShow.TaskCommandShow(task));
+            dgv_TaskCommand.ItemsSource = task_command_infos;
+
             refreshCurrentAlarm();
         }
 

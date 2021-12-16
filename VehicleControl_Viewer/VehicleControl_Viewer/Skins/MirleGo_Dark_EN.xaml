@@ -922,6 +922,7 @@ b.其不设置的时候，默认所有TargetType使用此Style。  -->
     <s:String x:Key="VH_ID">Vehicle ID</s:String>
     <s:String x:Key="VH_STATE">State</s:String>
     <s:String x:Key="VH_MODE">Mode</s:String>
+    <s:String x:Key="VH_IS_INSTALL">IS_INSTALL</s:String>
     <s:String x:Key="VH_CST">CST ID</s:String>
     <s:String x:Key="VH_TRAN_ID">MCS CMD ID</s:String>
     <s:String x:Key="VH_CMD_ID">CMD ID</s:String>

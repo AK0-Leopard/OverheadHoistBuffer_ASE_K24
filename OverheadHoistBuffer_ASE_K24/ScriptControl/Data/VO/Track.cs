@@ -10,8 +10,8 @@ namespace com.mirle.ibg3k0.sc.Data.VO
 {
     public class Track : AUNIT
     {
-        public event EventHandler alarmCodeChange;
-        private class alarmCodeChangeArgs : EventArgs
+        public event EventHandler<alarmCodeChangeArgs> alarmCodeChange;
+        public class alarmCodeChangeArgs : EventArgs
         {
             public string railChanger_No;
             public List<TrackAlarm> alarmList_old;
@@ -77,9 +77,8 @@ namespace com.mirle.ibg3k0.sc.Data.VO
                     alarmList_new.Add(TrackAlarm.TrackAlarm_IPCAlive_Error);
                 #endregion
             }
-
         }
-        private enum TrackAlarm
+        public enum TrackAlarm
         {
             TrackAlarm_EMO_Error = 0,
             TrackAlarm_Servo_No_On = 1,
@@ -198,10 +197,17 @@ namespace com.mirle.ibg3k0.sc.Data.VO
         
         public void onAlarmCodeChange(int alarmCode_old, int alarmCode_new, string no)
         {
-            alarmCodeChangeArgs args = new alarmCodeChangeArgs(alarmCode_old, alarmCode_new);
-            args.railChanger_No = no;
+            try
+            {
+                alarmCodeChangeArgs args = new alarmCodeChangeArgs(alarmCode_old, alarmCode_new);
+                args.railChanger_No = no;
 
-            alarmCodeChange?.Invoke(this, args);
+                alarmCodeChange?.Invoke(this, args);
+            }
+            catch(Exception e)
+            {
+                logger.Error(e, "Exception");
+            }
         }
 
     }

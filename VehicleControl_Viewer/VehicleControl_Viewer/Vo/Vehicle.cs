@@ -134,7 +134,11 @@ namespace VehicleControl_Viewer.Vo
                 this.MODE_STATUS = aVEHICLE.MODESTATUS;
                 has_change = true;
             }
-
+            if(IS_INSTALLED != aVEHICLE.ISINSTALLED)
+            {
+                this.IS_INSTALLED = aVEHICLE.ISINSTALLED;
+                has_change = true;
+            }
             if (ACT_STATUS != aVEHICLE.ACTSTATUS)
             {
                 this.ACT_STATUS = aVEHICLE.ACTSTATUS;

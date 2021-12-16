@@ -1,0 +1,8 @@
+UNHANDLED EXCEPTIONS FROM PROCESS 24664:
+=====================
+2021/12/10 上午 10:09:51
+System.IO.IOException: 管道已中斷。
+   於 System.IO.Pipes.NamedPipeServerStream.CheckConnectOperationsServer()
+   於 System.IO.Pipes.NamedPipeServerStream.BeginWaitForConnection(AsyncCallback callback, Object state)
+   於 Microsoft.Build.BackEnd.NodeEndpointOutOfProcBase.PacketPumpProc()
+===================

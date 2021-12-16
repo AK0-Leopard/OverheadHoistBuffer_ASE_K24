@@ -178,7 +178,7 @@
             </Border>
 
             <!--OHB 儲位使用顯示-->
-            <Border Grid.Column="8" BorderBrush="#FF0000" BorderThickness="2">
+            <Border Grid.Column="8" BorderBrush="#FF0000" BorderThickness="1">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3"/>
@@ -234,23 +234,23 @@
                         </Border>
                     </Grid>
                     <Grid Grid.Column="2" Grid.Row="1">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone01_value" Text="100%" ></TextBlock>
+                        <Border BorderBrush="#000000"  BorderThickness="1">
+                            <TextBlock Name="OHB_Zone01_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="2" Grid.Row="2">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone02_value" Text="100%" ></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone02_value" Text="100%" HorizontalAlignment="Center" ></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="2" Grid.Row="3">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone03_value" Text="100%" ></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone03_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="2" Grid.Row="4">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone04_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone04_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     
@@ -275,23 +275,23 @@
                         </Border>
                     </Grid>
                     <Grid Grid.Column="5" Grid.Row="1">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone05_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone05_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="5" Grid.Row="2">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone06_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone06_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="5" Grid.Row="3">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone07_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone07_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="5" Grid.Row="4">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone08_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone08_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
 
@@ -316,23 +316,23 @@
                         </Border>
                     </Grid>
                     <Grid Grid.Column="8" Grid.Row="1">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone09_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone09_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="8" Grid.Row="2">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone10_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone10_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="8" Grid.Row="3">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone11_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone11_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="8" Grid.Row="4">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone12_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone12_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
 
@@ -357,23 +357,23 @@
                         </Border>
                     </Grid>
                     <Grid Grid.Column="11" Grid.Row="1">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone13_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone13_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="11" Grid.Row="2">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone14_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone14_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="11" Grid.Row="3">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone15_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone15_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="11" Grid.Row="4">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone16_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone16_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
 
@@ -398,23 +398,23 @@
                         </Border>
                     </Grid>
                     <Grid Grid.Column="14" Grid.Row="1">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone17_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone17_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="14" Grid.Row="2">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone18_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone18_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="14" Grid.Row="3">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone19_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone19_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="14" Grid.Row="4">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone20_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone20_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
 
@@ -439,23 +439,23 @@
                         </Border>
                     </Grid>
                     <Grid Grid.Column="17" Grid.Row="1">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone21_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone21_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="17" Grid.Row="2">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone22_value" Text="100%"></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone22_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="17" Grid.Row="3">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone23_value" Text="100%" ></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone23_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="17" Grid.Row="4">
-                        <Border BorderBrush="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone24_value" Text="100%" ></TextBlock>
+                        <Border BorderBrush="#000000" BorderThickness="1">
+                            <TextBlock Name="OHB_Zone24_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Grid>
                 </Grid>
