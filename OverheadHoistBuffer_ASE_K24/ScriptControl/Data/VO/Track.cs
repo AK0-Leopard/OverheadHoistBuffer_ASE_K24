@@ -15,85 +15,72 @@ namespace com.mirle.ibg3k0.sc.Data.VO
         public class alarmCodeChangeArgs : EventArgs
         {
             public string railChanger_No;
-            public List<TrackAlarm> alarmList_old;
-            public List<TrackAlarm> alarmList_new;
+            private List<TrackAlarm> alarmList_old = new List<TrackAlarm>();
+            private List<TrackAlarm> alarmList_new = new List<TrackAlarm>();
+            private List<TrackAlarm> removeAlarmList = new List<TrackAlarm>();
+            private List<TrackAlarm> addAlarmList = new List<TrackAlarm>();
+
+            public List<TrackAlarm> AlarmList_old { get { return alarmList_old; } }
+            public List<TrackAlarm> AlarmList_new { get { return alarmList_new; } }
+            public List<TrackAlarm> AddAlarmList { get { return addAlarmList; } }
+            public List<TrackAlarm> RemoveAlarmList { get { return removeAlarmList; } }
+
             public alarmCodeChangeArgs(int alarmCode_old, int alarmCode_new)
             {
-                char[] alarmString = Convert.ToString(alarmCode_old, 2).PadLeft(16, '0').ToCharArray();
-                #region alarmCode to alarmList (old)
-                if (alarmString[15] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_EMO_Error);
-                if (alarmString[14] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_Servo_No_On);
-                if (alarmString[13] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_Servo_NotGoHome);
-                if (alarmString[12] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_CarOut_Timeout);
-                if (alarmString[11] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_ServoOn_Timeout);
-                if (alarmString[10] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_ServoOff_Timeout);
-                if (alarmString[9] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_GoHome_TimeOut);
-                if (alarmString[8] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_Pos1Move_TimeOut);
-                if (alarmString[7] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_Pos2Move_TimeOut);
-                if (alarmString[6] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_PosLimit_Error);
-                if (alarmString[5] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_NegLimit_Error);
-                if (alarmString[4] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_Drive_Error);
-                if (alarmString[3] == '1')
-                    alarmList_old.Add(TrackAlarm.TrackAlarm_IPCAlive_Error);
-                #endregion
-                alarmString = Convert.ToString(alarmCode_new, 2).PadLeft(16, '0').ToCharArray();
-                #region alarmCode to alarmList (new)
-                if (alarmString[15] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_EMO_Error);
-                if (alarmString[14] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_Servo_No_On);
-                if (alarmString[13] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_Servo_NotGoHome);
-                if (alarmString[12] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_CarOut_Timeout);
-                if (alarmString[11] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_ServoOn_Timeout);
-                if (alarmString[10] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_ServoOff_Timeout);
-                if (alarmString[9] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_GoHome_TimeOut);
-                if (alarmString[8] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_Pos1Move_TimeOut);
-                if (alarmString[7] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_Pos2Move_TimeOut);
-                if (alarmString[6] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_PosLimit_Error);
-                if (alarmString[5] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_NegLimit_Error);
-                if (alarmString[4] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_Drive_Error);
-                if (alarmString[3] == '1')
-                    alarmList_new.Add(TrackAlarm.TrackAlarm_IPCAlive_Error);
-                #endregion
+                
+                //先把兩個alarmcode 給轉成陣列
+                char[] alarmString_old = Convert.ToString(alarmCode_old, 2).PadLeft(16, '0').ToCharArray();
+                char[] alarmString_new = Convert.ToString(alarmCode_new, 2).PadLeft(16, '0').ToCharArray();
+
+                for(int i=0; i<16; i++)
+                {
+                    if(alarmString_old[i] ==0 && alarmString_new[i] == 0)
+                    {
+                        //以前沒發生現在也沒發生，就沒事
+                    }
+                    else if (alarmString_old[i] == 0 && alarmString_new[i] == 1)
+                    {
+                        //以前沒發生現在發生，代表新增
+                        alarmList_new.Add((TrackAlarm)(16 - i));
+                        addAlarmList.Add((TrackAlarm)(16 - i));
+                        
+                    }
+                    else if (alarmString_old[i] == 1 && alarmString_new[i] == 0)
+                    {
+                        //以前有發生，但現在沒有，代表這個alarm已經被解除
+                        alarmList_old.Add((TrackAlarm)(16 - i));
+                        removeAlarmList.Add((TrackAlarm)(16 - i));
+                    }
+                    else if (alarmString_old[i] == 1 && alarmString_new[i] == 1)
+                    {
+                        //以前有發生，現在仍有，代表alarm持續
+                        alarmList_old.Add((TrackAlarm)(16 - i));
+                        alarmList_new.Add((TrackAlarm)(16 - i));
+                    }
+                }
+
+            }
+            private List<TrackAlarm> decodeAlarmList(int alarmCode)
+            {
+                List<TrackAlarm> result = new List<TrackAlarm>();
+                return result;
             }
         }
         public enum TrackAlarm
         {
-            TrackAlarm_EMO_Error = 0,
-            TrackAlarm_Servo_No_On = 1,
-            TrackAlarm_Servo_NotGoHome = 2,
-            TrackAlarm_CarOut_Timeout = 3,
-            TrackAlarm_ServoOn_Timeout = 4,
-            TrackAlarm_ServoOff_Timeout = 5,
-            TrackAlarm_GoHome_TimeOut = 6,
-            TrackAlarm_Pos1Move_TimeOut = 7,
-            TrackAlarm_Pos2Move_TimeOut = 8,
-            TrackAlarm_PosLimit_Error = 9,
-            TrackAlarm_NegLimit_Error = 10,
-            TrackAlarm_Drive_Error = 11,
-            TrackAlarm_IPCAlive_Error = 12,
+            TrackAlarm_EMO_Error = 1,
+            TrackAlarm_Servo_No_On = 2,
+            TrackAlarm_Servo_NotGoHome = 3,
+            TrackAlarm_CarOut_Timeout = 4,
+            TrackAlarm_ServoOn_Timeout = 5,
+            TrackAlarm_ServoOff_Timeout = 6,
+            TrackAlarm_GoHome_TimeOut = 7,
+            TrackAlarm_Pos1Move_TimeOut = 8,
+            TrackAlarm_Pos2Move_TimeOut = 9,
+            TrackAlarm_PosLimit_Error = 10,
+            TrackAlarm_NegLimit_Error = 11,
+            TrackAlarm_Drive_Error = 12,
+            TrackAlarm_IPCAlive_Error = 13,
         }
 
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -151,9 +138,9 @@ namespace com.mirle.ibg3k0.sc.Data.VO
             }
 
             TrackDir = trackDir;
-            //如果現在狀態與先前不同而且現在狀態為alarm代表alarm第一次發生
-            //if (TrackStatus != trackInfo.Status && trackInfo.Status == RailChangerProtocol.TrackStatus.Alarm)
-            //    this.onAlarmCodeChange(AlarmCode, trackInfo.AlarmCode, UNIT_ID);
+            //alarmCode有變就進行事件處理
+            if (AlarmCode != trackInfo.AlarmCode)
+                this.onAlarmCodeChange(AlarmCode, trackInfo.AlarmCode, UNIT_ID);
             TrackStatus = trackInfo.Status;
             AlarmCode = trackInfo.AlarmCode;
             TrackBlock = trackInfo.IsBlock;

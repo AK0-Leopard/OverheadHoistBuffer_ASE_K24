@@ -5293,8 +5293,8 @@ namespace com.mirle.ibg3k0.sc.Service
         private void trackAlarmHappend(object sender, Track.alarmCodeChangeArgs e)
         {
             //要再上報Alamr Rerport給MCS
-            scApp.TransferService.OHBC_AlarmSet(scApp.getEQObjCacheManager().getLine().LINE_ID, ((int)AlarmLst.OHT_CommandNotFinishedInTime).ToString());
-            foreach(Track.TrackAlarm alarm in e.alarmList_new)
+            //scApp.TransferService.OHBC_AlarmSet(scApp.getEQObjCacheManager().getLine().LINE_ID, ((int)AlarmLst.OHT_CommandNotFinishedInTime).ToString());
+            foreach(Track.TrackAlarm alarm in e.AddAlarmList)
             {
                 string alarmCode = ((int)alarm).ToString();
                 string alarmDesc = alarm.ToString();
@@ -5303,6 +5303,16 @@ namespace com.mirle.ibg3k0.sc.Service
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
                     Data: $"Track({e.railChanger_No}) alarm is happend, alarm Code:{alarmCode}, alarm Desc: {alarmDesc} ");
                 //Data: $"Find vehicle {vehicleCache.VEHICLE_ID}, vehicle address Id = {vehicleCache.CUR_ADR_ID}, = port address ID {portAddressID}");
+            }
+            //如果有已經移除的alarm要逐一清掉
+            foreach(Track.TrackAlarm alarm in e.RemoveAlarmList)
+            {
+                string alarmCode = ((int)alarm).ToString();
+                string alarmDesc = alarm.ToString();
+                //逐一清除
+                scApp.TransferService.OHBC_AlarmCleared(e.railChanger_No, alarmCode);
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                    Data: $"Track({e.railChanger_No}) alarm is cleared, alarm Code:{alarmCode}, alarm Desc: {alarmDesc} ");
             }
         }
         #endregion
