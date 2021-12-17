@@ -1,4 +1,4 @@
-﻿OBJECT_ID,ALARM_ID,ALARM_LVL,ALARM_DESC
+OBJECT_ID,ALARM_ID,ALARM_LVL,ALARM_DESC
 CRANE,14,2,Turning speed exceeded
 CRANE,15,2,Turn right speed exceeded
 CRANE,16,2,Turn left speed exceeded
@@ -6,8 +6,8 @@ CRANE,20,2,Overspeed protection stop at the end of high speed
 CRANE,87,2,The estimated distance is abnormal in the second repair of the arrival station
 CRANE,88,2,Wrong way protection stopped
 CRANE,89,2,Too big protection stops
-CRANE,98,1,Out-of-ctrl  monitor
-CRANE,99,2,OoC  HANG
+CRANE,98,1,Out-of-ctrl? monitor
+CRANE,99,2,OoC? HANG
 CRANE,101,2,Disk C will don't has enough space
 CRANE,102,2,Disk D will don't has enough space
 CRANE,103,2,Disk C hasn't enough space
@@ -107,7 +107,7 @@ CRANE,794,2,The upper anti-falling is not closed_the hoist wants to move abnorma
 CRANE,795,2,The upper anti-falling is not closed _ side shift wants to move abnormally
 CRANE,796,2,The upper anti-falling is not closed _ rotation wants to move abnormally
 CRANE,797,2,The upper anti-falling is not closed _ rotation and side shift want to move abnormally
-CRANE,799,2,The second repair is abnormal in the grouping area of ​​the cargo station
+CRANE,799,2,The second repair is abnormal in the grouping area of ??the cargo station
 CRANE,800,2,The times of secondary positioning of walking reaches the upper limit
 CRANE,801,2,Sideshift axis - abnormal operation position of moving to fixed point
 CRANE,802,2,Sideshift axis - abnormal move to walkable position
@@ -117,8 +117,8 @@ CRANE,805,2,Front tailgate - abnormal extension
 CRANE,806,2,Front tailgate - abnormal closing
 CRANE,807,2,Back tailgate - abnormal extension
 CRANE,808,2,Back tailgate - abnormal closing
-CRANE,811,2,Hoist axis - abnormal position before catching the objects 
-CRANE,812,2,Hoist axis - abnormal position after catching the objects 
+CRANE,811,2,Hoist axis - abnormal position before catching the objects?
+CRANE,812,2,Hoist axis - abnormal position after catching the objects?
 CRANE,813,2,Gripper - abnormal opening in unloading
 CRANE,814,2,Gripper - abnormal closing in unloading
 CRANE,815,2,Gripper - abnormal opening in loading
@@ -226,7 +226,7 @@ CRANE,949,1,PIO releases BUSY Hi before receiving EQ and sending ES abnormal Lo
 CRANE,950,2,In remote maintenance mode
 CRANE,951,2,Abnormal right orbit of starting station
 CRANE,952,2,Abnormal left sky orbit
-CRANE,953,2,Turn right and do n’t change hands
+CRANE,953,2,Turn right and do n��t change hands
 CRANE,954,2,Turn left and never change hands
 CRANE,955,2,Turn right forward start exclusive trigger exception
 CRANE,956,2,Turn left forward start exclusive trigger exception
@@ -285,3 +285,16 @@ CRANE,100016,1,OHT_QueueCmdTimeOut
 CRANE,100022,1,OHT_IDMismatchUNKU
 LINE,100015,1,OHT_IDLE_HasCMD_TimeOut
 LINE,100031,1,OHT_CommandNotFinishedInTime
+TRACK,1,2,TrackAlarm_EMO_Error
+TRACK,2,2,TrackAlarm_Servo_No_On
+TRACK,3,2,TrackAlarm_Servo_NotGoHome
+TRACK,4,2,TrackAlarm_CarOut_Timeout
+TRACK,5,2,TrackAlarm_ServoOn_Timeout
+TRACK,6,2,TrackAlarm_ServoOff_Timeout
+TRACK,7,2,TrackAlarm_GoHome_TimeOut
+TRACK,8,2,TrackAlarm_Pos1Move_TimeOut
+TRACK,9,2,TrackAlarm_Pos2Move_TimeOut
+TRACK,10,2,TrackAlarm_PosLimit_Error
+TRACK,11,2,TrackAlarm_NegLimit_Error
+TRACK,12,2,TrackAlarm_Drive_Error
+TRACK,13,2,TrackAlarm_IPCAlive_Error
