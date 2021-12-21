@@ -27,14 +27,14 @@ namespace com.mirle.ibg3k0.sc.Data.VO
 
             public alarmCodeChangeArgs(int alarmCode_old, int alarmCode_new)
             {
-                
+
                 //先把兩個alarmcode 給轉成陣列
                 char[] alarmString_old = Convert.ToString(alarmCode_old, 2).PadLeft(16, '0').ToCharArray();
                 char[] alarmString_new = Convert.ToString(alarmCode_new, 2).PadLeft(16, '0').ToCharArray();
 
-                for(int i=0; i<16; i++)
+                for (int i = 0; i < 16; i++)
                 {
-                    if(alarmString_old[i] =='0' && alarmString_new[i] == '0')
+                    if (alarmString_old[i] == '0' && alarmString_new[i] == '0')
                     {
                         //以前沒發生現在也沒發生，就沒事
                     }
@@ -43,7 +43,7 @@ namespace com.mirle.ibg3k0.sc.Data.VO
                         //以前沒發生現在發生，代表新增
                         alarmList_new.Add((TrackAlarm)(16 - i));
                         addAlarmList.Add((TrackAlarm)(16 - i));
-                        
+
                     }
                     else if (alarmString_old[i] == '1' && alarmString_new[i] == '0')
                     {
@@ -130,23 +130,30 @@ namespace com.mirle.ibg3k0.sc.Data.VO
         }
         public void setTrackInfo(RailChangerProtocol.TrackInfo trackInfo)
         {
-            ProtocolFormat.OHTMessage.TrackDir trackDir = convert(trackInfo.Dir);
-
-            if (hasDifferent(trackInfo))
+            try
             {
-                logger.Debug(trackInfo.ToString());
+                ProtocolFormat.OHTMessage.TrackDir trackDir = convert(trackInfo.Dir);
+
+                if (hasDifferent(trackInfo))
+                {
+                    logger.Debug(trackInfo.ToString());
+                }
+
+                TrackDir = trackDir;
+                //alarmCode有變就進行事件處理
+                if (AlarmCode != trackInfo.AlarmCode)
+                    this.onAlarmCodeChange(AlarmCode, trackInfo.AlarmCode, UNIT_ID);
+                AlarmCode = trackInfo.AlarmCode;
+                TrackStatus = trackInfo.Status;
+                TrackBlock = trackInfo.IsBlock;
+                IsAlive = trackInfo.Alive;
+
+                LastUpdataStopwatch.Restart();
             }
-
-            TrackDir = trackDir;
-            //alarmCode有變就進行事件處理
-            if (AlarmCode != trackInfo.AlarmCode)
-                this.onAlarmCodeChange(AlarmCode, trackInfo.AlarmCode, UNIT_ID);
-            AlarmCode = trackInfo.AlarmCode;
-            TrackStatus = trackInfo.Status;
-            TrackBlock = trackInfo.IsBlock;
-            IsAlive = trackInfo.Alive;
-
-            LastUpdataStopwatch.Restart();
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
         }
 
         private bool hasDifferent(RailChangerProtocol.TrackInfo trackInfo)
@@ -202,7 +209,7 @@ namespace com.mirle.ibg3k0.sc.Data.VO
 
                 alarmCodeChange?.Invoke(this, args);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.Error(e, "Exception");
             }
