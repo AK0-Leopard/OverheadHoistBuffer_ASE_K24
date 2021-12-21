@@ -73,6 +73,23 @@ namespace com.mirle.ibg3k0.sc
                 return COMMANDSTATE == COMMAND_STATUS_BIT_INDEX_UNLOADING;
             }
         }
+
+        public bool IsQueue
+        {
+            get
+            {
+                return TRANSFERSTATE == E_TRAN_STATUS.Queue;
+            }
+        }
+
+        public bool IsTransferring
+        {
+            get
+            {
+                return COMMANDSTATE >= COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE;
+            }
+        }
+
         public string getCSTType()
         {
             try
@@ -138,6 +155,7 @@ namespace com.mirle.ibg3k0.sc
                 return false;
             }
         }
+
 
 
         public string CARRIER_ID { get { return BOX_ID; } }

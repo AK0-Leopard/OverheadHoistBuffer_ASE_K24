@@ -7043,7 +7043,6 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 cmdBLL.updateCMD_MCS_TranStatus(cmdMCS.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                 reportBLL.ReportTransferCompleted(cmdMCS, cassetteData, result);
-
                 checkIsNeedNotifyReelNTBTransferFail(cassetteData, cmdMCS);
                 return "OK";
             }
@@ -10968,9 +10967,9 @@ namespace com.mirle.ibg3k0.sc.Service
         }
 
         #endregion disconnection alarm handler
-    }
+    } 
 
-    public partial class TransferService : IVehicleTransferHandler
+    public partial class TransferService : IVehicleTransferHandler , IManualPortTransferService
     {
         public void CommandCompleteByAbort(string vhID, string finishCommandID)
         {
@@ -11287,6 +11286,5 @@ namespace com.mirle.ibg3k0.sc.Service
 
             return (is_continue, rename_box);
         }
-
     }
 }

@@ -29,6 +29,7 @@ namespace com.mirle.ibg3k0.sc.Service
         private IManualPortDefBLL portDefBLL;
         private IManualPortShelfDefBLL shelfDefBLL;
         private IManualPortCassetteDataBLL cassetteDataBLL;
+        private IManualPortTransferService transferService;
 
         private const string LITE_CASSETTE = "LC";
         private const string FOUP = "BE";
@@ -416,6 +417,15 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (commandBLL.GetCommandByBoxId(duplicateCarrierData.BOXID, out var command))
             {
+                if (command.IsQueue)
+                {
+                    transferService.ForceFinishMCSCmd(command, duplicateCarrierData, nameof(WaitInDuplicateAtPortProcess), ACMD_MCS.ResultCode.OtherErrors);
+                }
+                else
+                {
+                    //todo
+                }
+
                 WriteEventLog($"{logTitle} Duplicate carrier has command [{command.CMD_ID}] now.");
 
                 var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
@@ -446,7 +456,6 @@ namespace com.mirle.ibg3k0.sc.Service
 
             ReportWaitIn(logTitle, cassetteData2);
         }
-
         private void WaitInDuplicateAtOhtProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData)
         {
             WriteEventLog($"{logTitle} Duplicate at OHT ({duplicateCarrierData.Carrier_LOC}).");
