@@ -2553,8 +2553,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean IsIgnoreNTBPortStatus = false;
         public static Boolean IsPaassErrorVhAndTrackStatus = false;
 
-        public static Boolean IsOnlyChangeGuideSectionManualCommand = true;
-        public static Boolean IsOpneChangeGuideSection = false;
+        public static Boolean IsOpneChangeGuideSection = true;
 
     }
 }

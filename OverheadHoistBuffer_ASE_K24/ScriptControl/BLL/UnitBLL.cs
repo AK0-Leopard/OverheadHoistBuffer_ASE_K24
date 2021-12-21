@@ -41,7 +41,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                 var tracks = cacheManager.getAllUnit().Where(u => u is Track).Select(u => u as Track).ToList();
                 return tracks;
             }
-
             public Track GetTrack(string id)
             {
                 var track = cacheManager.getAllUnit().Where(u => u is Track && SCUtility.isMatche(u.UNIT_ID, id))
@@ -55,6 +54,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                                                       .Select(u => u as Track)
                                                       .ToList();
                 return tracks;
+            }
+
+            public bool IsTrack(string unitID)
+            {
+                var track = cacheManager.getAllUnit().Where(u => u is Track && SCUtility.isMatche(u.UNIT_ID, unitID))
+                                                      .Select(u => u as Track)
+                                                      .FirstOrDefault();
+                return track != null;
             }
 
         }

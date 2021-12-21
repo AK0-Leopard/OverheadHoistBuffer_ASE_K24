@@ -34,24 +34,24 @@ namespace com.mirle.ibg3k0.sc.Data.VO
 
                 for(int i=0; i<16; i++)
                 {
-                    if(alarmString_old[i] ==0 && alarmString_new[i] == 0)
+                    if(alarmString_old[i] =='0' && alarmString_new[i] == '0')
                     {
                         //以前沒發生現在也沒發生，就沒事
                     }
-                    else if (alarmString_old[i] == 0 && alarmString_new[i] == 1)
+                    else if (alarmString_old[i] == '0' && alarmString_new[i] == '1')
                     {
                         //以前沒發生現在發生，代表新增
                         alarmList_new.Add((TrackAlarm)(16 - i));
                         addAlarmList.Add((TrackAlarm)(16 - i));
                         
                     }
-                    else if (alarmString_old[i] == 1 && alarmString_new[i] == 0)
+                    else if (alarmString_old[i] == '1' && alarmString_new[i] == '0')
                     {
                         //以前有發生，但現在沒有，代表這個alarm已經被解除
                         alarmList_old.Add((TrackAlarm)(16 - i));
                         removeAlarmList.Add((TrackAlarm)(16 - i));
                     }
-                    else if (alarmString_old[i] == 1 && alarmString_new[i] == 1)
+                    else if (alarmString_old[i] == '1' && alarmString_new[i] == '1')
                     {
                         //以前有發生，現在仍有，代表alarm持續
                         alarmList_old.Add((TrackAlarm)(16 - i));
@@ -141,8 +141,8 @@ namespace com.mirle.ibg3k0.sc.Data.VO
             //alarmCode有變就進行事件處理
             if (AlarmCode != trackInfo.AlarmCode)
                 this.onAlarmCodeChange(AlarmCode, trackInfo.AlarmCode, UNIT_ID);
-            TrackStatus = trackInfo.Status;
             AlarmCode = trackInfo.AlarmCode;
+            TrackStatus = trackInfo.Status;
             TrackBlock = trackInfo.IsBlock;
             IsAlive = trackInfo.Alive;
 

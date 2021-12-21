@@ -7729,6 +7729,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         public void OHBC_AlarmSetIng(string _eqName, bool ing)
         {
+            if (!portINIData.ContainsKey(_eqName)) return;
             portINIData[_eqName].alarmSetIng = ing;
             TransferServiceLogger.Info
             (
@@ -7829,7 +7830,8 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-                SpinWait.SpinUntil(() => portINIData[_craneName].alarmSetIng == false, 5000);
+                if (portINIData.ContainsKey(_craneName))
+                    SpinWait.SpinUntil(() => portINIData[_craneName].alarmSetIng == false, 5000);
 
                 string craneName = _craneName.Trim();
                 errCode = errCode.Trim();

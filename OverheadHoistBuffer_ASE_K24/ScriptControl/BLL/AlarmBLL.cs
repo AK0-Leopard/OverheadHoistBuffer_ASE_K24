@@ -175,6 +175,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     //不會上報Eq的alarm
                 }
+                else if(scApp.UnitBLL.cache.IsTrack(eq_id))
+                {
+                    alarmUnitType = "TRACK";
+                }
 
                 AlarmMap alarmMap = alarmMapDao.getAlarmMap(alarmUnitType, error_code);
                 string alam_desc = "";

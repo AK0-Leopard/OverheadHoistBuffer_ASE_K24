@@ -3450,25 +3450,6 @@ namespace com.mirle.ibg3k0.sc.Service
                 return false;
             }
 
-            if (DebugParameter.IsOnlyChangeGuideSectionManualCommand)
-            {
-                if (SCUtility.isEmpty(vh.MCS_CMD))
-                {
-                    return false;
-                }
-                else
-                {
-                    string mcs_cmd_id = SCUtility.Trim(vh.MCS_CMD, true);
-                    if (!mcs_cmd_id.StartsWith(TransferService.SYMBOL_MANUAL_COMMAND))
-                    {
-                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                           Data: $"Current is change manual command only.",
-                           VehicleID: vh.VEHICLE_ID,
-                           CarrierID: vh.CST_ID);
-                        return false;
-                    }
-                }
-            }
 
             ASECTION req_sec = scApp.SectionBLL.cache.GetSection(requsetSecID);
             if (req_sec == null) return false;

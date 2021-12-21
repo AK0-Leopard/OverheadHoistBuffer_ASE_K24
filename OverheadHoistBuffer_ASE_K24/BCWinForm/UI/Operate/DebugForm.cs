@@ -92,7 +92,6 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_autoUnloadOnVh.Checked = DebugParameter.IsAutoUnloadOnvh;
             cb_openSpecifyVh.Checked = DebugParameter.IsSpecifyVhTransfer;
             cb_openGuideSectionChange.Checked = DebugParameter.IsOpneChangeGuideSection;
-            cb_guideSectionChangeOnlyManualCmd.Checked = DebugParameter.IsOnlyChangeGuideSectionManualCommand;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -1516,9 +1515,5 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             DebugParameter.IsOpneChangeGuideSection = cb_openGuideSectionChange.Checked;
         }
 
-        private void cb_guideSectionChangeOnlyManualCmd_CheckedChanged(object sender, EventArgs e)
-        {
-            DebugParameter.IsOnlyChangeGuideSectionManualCommand = cb_guideSectionChangeOnlyManualCmd.Checked;
-        }
     }
 }
