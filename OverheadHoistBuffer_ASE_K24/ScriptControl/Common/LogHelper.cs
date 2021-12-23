@@ -3,6 +3,7 @@ using com.mirle.ibg3k0.sc.Data.VO;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
 using com.mirle.ibg3k0.stc.Data.SecsData;
 using Google.Protobuf;
+using Newtonsoft.Json.Linq;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -233,6 +234,27 @@ namespace com.mirle.ibg3k0.sc.Common
             var workItem = new com.mirle.ibg3k0.bcf.Data.BackgroundWorkItem(cmdBLL, vh, message, seqNum, Method);//A0.05
             scApp.BackgroundWorkProcRecordReportInfo.triggerBackgroundWork($"BlockQueue_{vh.VEHICLE_ID}", workItem);//A0.05
         }
+
+        public static void RecordReportInfoNew(sc.BLL.CMDBLL cmdBLL, AVEHICLE vh, IMessage message, int seqNum, [CallerMemberName] string Method = "")
+        {
+            dynamic logEntry = new JObject();
+            DateTime nowDt = DateTime.Now;
+            string vhID = vh.VEHICLE_ID;
+            string detail = PrintMessage(message);
+            string function = getIMessageName(message);
+            logEntry.dateTime = nowDt.ToString(SCAppConstants.DateTimeFormat_23);
+
+            logEntry.eq_id = vhID;
+            logEntry.name = function;
+            logEntry.seq_no = seqNum;
+            logEntry.type = "";
+
+            logEntry.detail = detail;
+
+            var json = logEntry.ToString(Newtonsoft.Json.Formatting.None);
+            LogManager.GetLogger("RecordReportInfo").Info(json);
+        }
+
 
         public static void RecordReportInfo(sc.BLL.CMDBLL cmdBLL, AVEHICLE vh, IMessage message, int seqNum, [CallerMemberName] string Method = "")
         {
@@ -542,11 +564,11 @@ namespace com.mirle.ibg3k0.sc.Common
 
         }
 
-        public static void RecordHostReportInfoAsk(IMessage message,  [CallerMemberName] string method = "", int seqNum = 0)
+        public static void RecordHostReportInfoAsk(IMessage message, [CallerMemberName] string method = "", int seqNum = 0)
         {
             RecordHostReportInfo(message, $"{method}Ask", seqNum);
         }
-        public static void RecordHostReportInfo(IMessage message,  [CallerMemberName] string method = "", int seqNum = 0)
+        public static void RecordHostReportInfo(IMessage message, [CallerMemberName] string method = "", int seqNum = 0)
         {
             recodeLog(message, "NTB", method, "", "", method.Contains("Ask"));
 

@@ -71,7 +71,8 @@ namespace com.mirle.ibg3k0.sc.Data
                 Google.Protobuf.IMessage recive_str = item.Param[2] as Google.Protobuf.IMessage;
                 int seq_num = (int)item.Param[3];
                 string Method = item.Param[4] as string;
-                LogHelper.RecordReportInfo(cmdBLL, vh, recive_str, seq_num, Method);
+                //LogHelper.RecordReportInfo(cmdBLL, vh, recive_str, seq_num, Method);
+                LogHelper.RecordReportInfoNew(cmdBLL, vh, recive_str, seq_num, Method);
             }
             catch (Exception ex)
             {
