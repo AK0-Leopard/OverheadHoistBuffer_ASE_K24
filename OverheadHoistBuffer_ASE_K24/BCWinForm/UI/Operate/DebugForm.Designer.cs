@@ -94,6 +94,8 @@
             this.btn_ForceReleaseBlock = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cb_guideSectionChangeOnlyManualCmd = new System.Windows.Forms.CheckBox();
+            this.cb_openGuideSectionChange = new System.Windows.Forms.CheckBox();
             this.cb_openSpecifyVh = new System.Windows.Forms.CheckBox();
             this.cb_autoUnloadOnVh = new System.Windows.Forms.CheckBox();
             this.ch_IsAutoDriveOut = new System.Windows.Forms.CheckBox();
@@ -393,8 +395,6 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.cb_guideSectionChangeOnlyManualCmd = new System.Windows.Forms.CheckBox();
-            this.cb_openGuideSectionChange = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1220,6 +1220,28 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // cb_guideSectionChangeOnlyManualCmd
+            // 
+            this.cb_guideSectionChangeOnlyManualCmd.AutoSize = true;
+            this.cb_guideSectionChangeOnlyManualCmd.Location = new System.Drawing.Point(1109, 587);
+            this.cb_guideSectionChangeOnlyManualCmd.Name = "cb_guideSectionChangeOnlyManualCmd";
+            this.cb_guideSectionChangeOnlyManualCmd.Size = new System.Drawing.Size(236, 26);
+            this.cb_guideSectionChangeOnlyManualCmd.TabIndex = 74;
+            this.cb_guideSectionChangeOnlyManualCmd.Text = "僅針對Mnaual命令改派";
+            this.cb_guideSectionChangeOnlyManualCmd.UseVisualStyleBackColor = true;
+            this.cb_guideSectionChangeOnlyManualCmd.CheckedChanged += new System.EventHandler(this.cb_guideSectionChangeOnlyManualCmd_CheckedChanged);
+            // 
+            // cb_openGuideSectionChange
+            // 
+            this.cb_openGuideSectionChange.AutoSize = true;
+            this.cb_openGuideSectionChange.Location = new System.Drawing.Point(1079, 555);
+            this.cb_openGuideSectionChange.Name = "cb_openGuideSectionChange";
+            this.cb_openGuideSectionChange.Size = new System.Drawing.Size(218, 26);
+            this.cb_openGuideSectionChange.TabIndex = 73;
+            this.cb_openGuideSectionChange.Text = "開啟自動改路徑功能";
+            this.cb_openGuideSectionChange.UseVisualStyleBackColor = true;
+            this.cb_openGuideSectionChange.CheckedChanged += new System.EventHandler(this.cb_openGuideSectionChange_CheckedChanged);
             // 
             // cb_openSpecifyVh
             // 
@@ -2586,7 +2608,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(174, 4);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(174, 9);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -4808,28 +4830,6 @@
             this.ck_Alive.Text = "Alive";
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
-            // 
-            // cb_guideSectionChangeOnlyManualCmd
-            // 
-            this.cb_guideSectionChangeOnlyManualCmd.AutoSize = true;
-            this.cb_guideSectionChangeOnlyManualCmd.Location = new System.Drawing.Point(1109, 587);
-            this.cb_guideSectionChangeOnlyManualCmd.Name = "cb_guideSectionChangeOnlyManualCmd";
-            this.cb_guideSectionChangeOnlyManualCmd.Size = new System.Drawing.Size(236, 26);
-            this.cb_guideSectionChangeOnlyManualCmd.TabIndex = 74;
-            this.cb_guideSectionChangeOnlyManualCmd.Text = "僅針對Mnaual命令改派";
-            this.cb_guideSectionChangeOnlyManualCmd.UseVisualStyleBackColor = true;
-            this.cb_guideSectionChangeOnlyManualCmd.CheckedChanged += new System.EventHandler(this.cb_guideSectionChangeOnlyManualCmd_CheckedChanged);
-            // 
-            // cb_openGuideSectionChange
-            // 
-            this.cb_openGuideSectionChange.AutoSize = true;
-            this.cb_openGuideSectionChange.Location = new System.Drawing.Point(1079, 555);
-            this.cb_openGuideSectionChange.Name = "cb_openGuideSectionChange";
-            this.cb_openGuideSectionChange.Size = new System.Drawing.Size(218, 26);
-            this.cb_openGuideSectionChange.TabIndex = 73;
-            this.cb_openGuideSectionChange.Text = "開啟自動改路徑功能";
-            this.cb_openGuideSectionChange.UseVisualStyleBackColor = true;
-            this.cb_openGuideSectionChange.CheckedChanged += new System.EventHandler(this.cb_openGuideSectionChange_CheckedChanged);
             // 
             // DebugForm
             // 

@@ -32,8 +32,9 @@ namespace UnitTestForMGVPort
             var cassetteDataBll = Substitute.For<IManualPortCassetteDataBLL>();
             var commandBll = Substitute.For<IManualPortCMDBLL>();
             var alarmBLL = Substitute.For<IManualPortAlarmBLL>();
+            var transferService = Substitute.For<IManualPortTransferService>();
 
-            return new NStubObject(stubManualPortValueDefMapAction, reportBll, portBll, shelfBll, cassetteDataBll, commandBll, alarmBLL);
+            return new NStubObject(stubManualPortValueDefMapAction, reportBll, portBll, shelfBll, cassetteDataBll, commandBll, alarmBLL, transferService);
         }
 
         private ManualPortPLCInfo GetInServiceInModePortInfo()
@@ -117,7 +118,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var info = GetInServiceInModePortInfo();
 
             stub.ManualPortValueDefMapAction.OnInServiceChanged += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
@@ -130,7 +131,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var info = GetInServiceOutModePortInfo();
 
             stub.ManualPortValueDefMapAction.OnInServiceChanged += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
@@ -147,7 +148,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var info = GetOutServiceInModePortInfo();
 
             stub.ManualPortValueDefMapAction.OnInServiceChanged += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
@@ -160,7 +161,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var info = GetOutServiceOutModePortInfo();
 
             stub.ManualPortValueDefMapAction.OnInServiceChanged += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));

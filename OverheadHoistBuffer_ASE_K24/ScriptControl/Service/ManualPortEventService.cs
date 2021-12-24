@@ -48,7 +48,8 @@ namespace com.mirle.ibg3k0.sc.Service
                           IManualPortShelfDefBLL shelfDefBLL,
                           IManualPortCassetteDataBLL cassetteDataBLL,
                           IManualPortCMDBLL commandBLL,
-                          IManualPortAlarmBLL alarmBLL)
+                          IManualPortAlarmBLL alarmBLL,
+                          IManualPortTransferService transferService)
         {
             this.reportBll = reportBll;
             this.portDefBLL = portDefBLL;
@@ -56,6 +57,7 @@ namespace com.mirle.ibg3k0.sc.Service
             this.cassetteDataBLL = cassetteDataBLL;
             this.commandBLL = commandBLL;
             this.alarmBLL = alarmBLL;
+            this.transferService = transferService;
 
             WriteLog($"ManualPortEventService Start");
 
@@ -417,27 +419,26 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (commandBLL.GetCommandByBoxId(duplicateCarrierData.BOXID, out var command))
             {
-                if (command.IsQueue)
+                bool is_excute_normal_duplocate = IsExcuteNormalDuplicateProcess(duplicateCarrierData, command);
+                if (is_excute_normal_duplocate)
                 {
-                    transferService.ForceFinishMCSCmd(command, duplicateCarrierData, nameof(WaitInDuplicateAtPortProcess), ACMD_MCS.ResultCode.OtherErrors);
+                    //not thing...
                 }
                 else
                 {
-                    //todo
+                    WriteEventLog($"{logTitle} Duplicate carrier has command [{command.CMD_ID}] now.");
+
+                    var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
+                    cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
+                    WriteEventLog($"{logTitle} Install cassette data [{unknownId}] Type[{info.CarrierType}] at this port.");
+
+                    cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
+
+                    ReportIDRead(logTitle, cassetteData, isDuplicate: true);
+                    ReportWaitIn(logTitle, cassetteData);
+                    return;
                 }
 
-                WriteEventLog($"{logTitle} Duplicate carrier has command [{command.CMD_ID}] now.");
-
-                var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
-                cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
-                WriteEventLog($"{logTitle} Install cassette data [{unknownId}] Type[{info.CarrierType}] at this port.");
-
-                cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
-
-                ReportIDRead(logTitle, cassetteData, isDuplicate: true);
-                ReportWaitIn(logTitle, cassetteData);
-
-                return;
             }
 
             cassetteDataBLL.Delete(duplicateCarrierData.BOXID);
@@ -456,6 +457,25 @@ namespace com.mirle.ibg3k0.sc.Service
 
             ReportWaitIn(logTitle, cassetteData2);
         }
+
+        private bool IsExcuteNormalDuplicateProcess(CassetteData duplicateCarrierData, ACMD_MCS command)
+        {
+            //bool is_excute_normal_dup = false;
+            //if (command.IsQueue)
+            //{
+            //    var result = transferService.ForceFinishMCSCmd(command, duplicateCarrierData, nameof(WaitInDuplicateAtPortProcess), ACMD_MCS.ResultCode.OtherErrors);
+            //    return sc.Common.SCUtility.isMatche(result , "OK");
+            //}
+            //else
+            //{
+            //    if (!command.IsLoadArriveBefore)
+            //    {
+            //        return false;
+            //    }
+            //}
+            return false;
+        }
+
         private void WaitInDuplicateAtOhtProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData)
         {
             WriteEventLog($"{logTitle} Duplicate at OHT ({duplicateCarrierData.Carrier_LOC}).");

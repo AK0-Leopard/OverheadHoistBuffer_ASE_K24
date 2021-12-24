@@ -89,6 +89,13 @@ namespace com.mirle.ibg3k0.sc
                 return COMMANDSTATE >= COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE;
             }
         }
+        public bool IsLoadArriveBefore
+        {
+            get
+            {
+                return COMMANDSTATE < COMMAND_STATUS_BIT_INDEX_LOAD_ARRIVE;
+            }
+        }
 
         public string getCSTType()
         {

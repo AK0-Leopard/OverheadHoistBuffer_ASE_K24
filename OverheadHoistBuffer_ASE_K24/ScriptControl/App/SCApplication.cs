@@ -1672,7 +1672,7 @@ namespace com.mirle.ibg3k0.sc.App
 
             var manual_port_map_action = PortStationBLL.OperateCatch.loadAllMgvPortStationMapAction();
             manualPortControlService.Start(manual_port_map_action);
-            manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL);
+            manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL, transferService);
             gRPC_With_VehicleControlFun.Start();
             gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
         }
