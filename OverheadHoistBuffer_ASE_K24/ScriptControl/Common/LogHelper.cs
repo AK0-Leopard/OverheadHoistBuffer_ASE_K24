@@ -204,11 +204,14 @@ namespace com.mirle.ibg3k0.sc.Common
         }
 
 
-        public static string PrintMessage(IMessage message)
+        public static string PrintMessage(IMessage message, string cmdID, string cmsMCSID)
         {
             var descriptor = message.Descriptor;
             var sb = new StringBuilder();
+            sb.AppendLine();
             sb.AppendLine($"Name:{descriptor.Name}");
+            sb.AppendLine($"CmdID:{cmdID}");
+            sb.AppendLine($"CmdMCSID:{cmsMCSID}");
             foreach (var field in descriptor.Fields.InDeclarationOrder())
             {
                 sb.AppendLine($"{field.Name} : {field.Accessor.GetValue(message)}");
@@ -231,8 +234,10 @@ namespace com.mirle.ibg3k0.sc.Common
         }
         public static void RecordReportInfoByQueue(sc.App.SCApplication scApp, sc.BLL.CMDBLL cmdBLL, AVEHICLE vh, IMessage message, int seqNum, [CallerMemberName] string Method = "")
         {
-            var workItem = new com.mirle.ibg3k0.bcf.Data.BackgroundWorkItem(cmdBLL, vh, message, seqNum, Method);//A0.05
-            scApp.BackgroundWorkProcRecordReportInfo.triggerBackgroundWork($"BlockQueue_{vh.VEHICLE_ID}", workItem);//A0.05
+            LogHelper.RecordReportInfoNew(cmdBLL, vh, message, seqNum, Method);
+
+            //var workItem = new com.mirle.ibg3k0.bcf.Data.BackgroundWorkItem(cmdBLL, vh, message, seqNum, Method);//A0.05
+            //scApp.BackgroundWorkProcRecordReportInfo.triggerBackgroundWork($"BlockQueue_{vh.VEHICLE_ID}", workItem);//A0.05
         }
 
         public static void RecordReportInfoNew(sc.BLL.CMDBLL cmdBLL, AVEHICLE vh, IMessage message, int seqNum, [CallerMemberName] string Method = "")
@@ -240,7 +245,9 @@ namespace com.mirle.ibg3k0.sc.Common
             dynamic logEntry = new JObject();
             DateTime nowDt = DateTime.Now;
             string vhID = vh.VEHICLE_ID;
-            string detail = PrintMessage(message);
+            string current_excute_cmd_id = SCUtility.Trim(vh.OHTC_CMD, true);
+            string current_excute_cmd_mcs_id = SCUtility.Trim(vh.MCS_CMD, true);
+            string detail = PrintMessage(message, current_excute_cmd_id, current_excute_cmd_mcs_id);
             string function = getIMessageName(message);
             logEntry.dateTime = nowDt.ToString(SCAppConstants.DateTimeFormat_23);
 
@@ -260,7 +267,7 @@ namespace com.mirle.ibg3k0.sc.Common
         {
             Logger logger = LogManager.GetLogger("RecordReportInfo");
             string vhID = vh.VEHICLE_ID;
-            string detail = PrintMessage(message);
+            string detail = PrintMessage(message, "", "");
             string function = getIMessageName(message);
             if (message is ID_31_TRANS_REQUEST)
             {
