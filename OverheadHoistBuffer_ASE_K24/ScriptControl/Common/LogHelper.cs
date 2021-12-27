@@ -209,7 +209,6 @@ namespace com.mirle.ibg3k0.sc.Common
             var descriptor = message.Descriptor;
             var sb = new StringBuilder();
             sb.AppendLine();
-            sb.AppendLine($"Name:{descriptor.Name}");
             sb.AppendLine($"CmdID:{cmdID}");
             sb.AppendLine($"CmdMCSID:{cmsMCSID}");
             foreach (var field in descriptor.Fields.InDeclarationOrder())
@@ -227,7 +226,7 @@ namespace com.mirle.ibg3k0.sc.Common
                 string[] name_temp = name.Split('_');
                 if (name_temp.Length >= 2)
                 {
-                    name = $"{name_temp[0]}_{name_temp[1]}";
+                    name = $"{name_temp[0]}_{name_temp[1].PadLeft(3, '0')}";
                 }
             }
             return name;
@@ -253,7 +252,7 @@ namespace com.mirle.ibg3k0.sc.Common
 
             logEntry.eq_id = vhID;
             logEntry.name = function;
-            logEntry.seq_no = seqNum;
+            logEntry.seq_no = seqNum.ToString("000");
             logEntry.type = "";
 
             logEntry.detail = detail;
