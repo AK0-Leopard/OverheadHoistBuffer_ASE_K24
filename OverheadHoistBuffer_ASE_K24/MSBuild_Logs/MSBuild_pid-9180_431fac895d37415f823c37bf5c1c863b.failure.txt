@@ -1,0 +1,8 @@
+UNHANDLED EXCEPTIONS FROM PROCESS 9180:
+=====================
+2021/12/28 上午 10:24:30
+System.IO.IOException: 管道已中斷。
+   於 System.IO.Pipes.NamedPipeServerStream.CheckConnectOperationsServer()
+   於 System.IO.Pipes.NamedPipeServerStream.BeginWaitForConnection(AsyncCallback callback, Object state)
+   於 Microsoft.Build.BackEnd.NodeEndpointOutOfProcBase.PacketPumpProc()
+===================

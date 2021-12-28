@@ -297,4 +297,23 @@ TRACK,9,2,TrackAlarm_Pos2Move_TimeOut
 TRACK,10,2,TrackAlarm_PosLimit_Error
 TRACK,11,2,TrackAlarm_NegLimit_Error
 TRACK,12,2,TrackAlarm_Drive_Error
-TRACK,13,2,TrackAlarm_IPCAlive_Error
+TRACK,13,2,TrackAlarm_PosSensorAllOn
+TRACK,14,2,TrackAlarm_CarInTrackCantAuto
+TRACK,15,2,TrackAlarm_TrackIsManual
+TRACK,16,2,TrackAlarm_BlockClosInManual
+ManualPort,1,2,EMO_Abnormal
+,41,,"Stage_PositionAbnormal(X0, X1, X2)"
+,,,Stage close door time out(X11)
+,,,Stage close door time out(X10)
+,,,Light gate is abnormal
+,,,Air sensor is abnormal
+,,,Door sensor is abnormal
+,,,PLC battery is abnormal
+,,,TP1 TR_Req on time out
+,,,TP2 Busy on time out
+,,,TP3 action time out
+,,,TP4 Busy off time out
+,,,TP5 VAL off time out
+,,,Out mode was over 10min but nobady take it out
+,,,RFID read is abnormal
+,,,RFID read time out
