@@ -80,7 +80,11 @@ namespace com.mirle.ibg3k0.sc.Data.VO
             TrackAlarm_PosLimit_Error = 10,
             TrackAlarm_NegLimit_Error = 11,
             TrackAlarm_Drive_Error = 12,
-            TrackAlarm_IPCAlive_Error = 13,
+            TrackAlarm_PosSensorAllOn = 13,
+            TrackAlarm_CarInTrackCantAuto = 14,
+            TrackAlarm_TrackIsManual = 15,
+            TrackAlarm_BlockClosInManual = 16
+
         }
 
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
