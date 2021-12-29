@@ -302,18 +302,18 @@ TRACK,14,2,TrackAlarm_CarInTrackCantAuto
 TRACK,15,2,TrackAlarm_TrackIsManual
 TRACK,16,2,TrackAlarm_BlockClosInManual
 ManualPort,1,2,EMO_Abnormal
-,41,,"Stage_PositionAbnormal(X0, X1, X2)"
-,,,Stage close door time out(X11)
-,,,Stage close door time out(X10)
-,,,Light gate is abnormal
-,,,Air sensor is abnormal
-,,,Door sensor is abnormal
-,,,PLC battery is abnormal
-,,,TP1 TR_Req on time out
-,,,TP2 Busy on time out
-,,,TP3 action time out
-,,,TP4 Busy off time out
-,,,TP5 VAL off time out
-,,,Out mode was over 10min but nobady take it out
-,,,RFID read is abnormal
-,,,RFID read time out
+ManualPort,41,2,"Stage_PositionAbnormal(X0, X1, X2)"
+ManualPort,42,2,Stage close door time out(X11)
+ManualPort,43,2,Stage close door time out(X10)
+ManualPort,44,2,Light gate is abnormal
+ManualPort,45,2,Air sensor is abnormal
+ManualPort,46,2,Door sensor is abnormal
+ManualPort,497,1,PLC battery is abnormal
+ManualPort,511,1,TP1 TR_Req on time out
+ManualPort,512,1,TP2 Busy on time out
+ManualPort,513,1,TP3 action time out
+ManualPort,514,1,TP4 Busy off time out
+ManualPort,515,1,TP5 VAL off time out
+ManualPort,521,1,Out mode was over 10min but nobady take it out
+ManualPort,522,1,RFID read is abnormal
+ManualPort,523,1,RFID read time out
