@@ -4574,6 +4574,8 @@ namespace com.mirle.ibg3k0.sc.Service
         [ClassAOPAspect]
         public void AlarmReport(BCFApplication bcfApp, AVEHICLE eqpt, ID_194_ALARM_REPORT recive_str, int seq_num)
         {
+            LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, eqpt, recive_str, seq_num);
+
             LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
               seq_num: seq_num, Data: recive_str,
               VehicleID: eqpt.VEHICLE_ID,
@@ -4621,7 +4623,8 @@ namespace com.mirle.ibg3k0.sc.Service
                    Data: $"do reply alarm report ,{resp_cmp}",
                    VehicleID: eqpt.VEHICLE_ID,
                    CarrierID: eqpt.CST_ID);
-                SCUtility.RecodeReportInfo(eqpt.VEHICLE_ID, seq_num, send_str, resp_cmp.ToString());
+
+                LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, eqpt, send_str, seq_num);
             }
             catch (Exception ex)
             {
