@@ -239,6 +239,9 @@ namespace com.mirle.ibg3k0.sc.Common
             //scApp.BackgroundWorkProcRecordReportInfo.triggerBackgroundWork($"BlockQueue_{vh.VEHICLE_ID}", workItem);//A0.05
         }
 
+        static Google.Protobuf.JsonFormatter jsonFormatter =
+                new JsonFormatter(new JsonFormatter.Settings(true).
+                WithFormatDefaultValues(true));
         public static void RecordReportInfoNew(sc.BLL.CMDBLL cmdBLL, AVEHICLE vh, IMessage message, int seqNum, [CallerMemberName] string Method = "")
         {
             dynamic logEntry = new JObject();
@@ -246,10 +249,16 @@ namespace com.mirle.ibg3k0.sc.Common
             string vhID = vh.VEHICLE_ID;
             string current_excute_cmd_id = SCUtility.Trim(vh.OHTC_CMD, true);
             string current_excute_cmd_mcs_id = SCUtility.Trim(vh.MCS_CMD, true);
-            string detail = PrintMessage(message, current_excute_cmd_id, current_excute_cmd_mcs_id);
+            string box_id = SCUtility.Trim(vh.BOX_ID, true);
+            //string detail = PrintMessage(message, current_excute_cmd_id, current_excute_cmd_mcs_id);
+            string detail = jsonFormatter.Format(message);
             string function = getIMessageName(message);
             logEntry.dateTime = nowDt.ToString(SCAppConstants.DateTimeFormat_23);
 
+            logEntry.eq_id = vhID;
+            logEntry.task_id = current_excute_cmd_id;
+            logEntry.transfer_id = current_excute_cmd_mcs_id;
+            logEntry.carrier_id = box_id;
             logEntry.eq_id = vhID;
             logEntry.name = function;
             logEntry.seq_no = seqNum.ToString("000");

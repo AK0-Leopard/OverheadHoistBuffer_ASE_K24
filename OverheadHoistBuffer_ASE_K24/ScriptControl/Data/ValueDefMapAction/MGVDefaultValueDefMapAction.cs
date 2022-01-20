@@ -787,6 +787,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             });
         }
 
+        int time_calibration_index = 7;
         public Task TimeCalibrationAsync()
         {
             return Task.Run(() =>
@@ -794,18 +795,32 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 var function = scApp.getFunBaseObj<ManualPortPLCControl_TimeCalibration>(port.PORT_ID) as ManualPortPLCControl_TimeCalibration;
                 try
                 {
+                    logger.Info($"start time calibartion:{port.PORT_ID}");
 
-                    function.TimeCalibrationBcdYearMonth = (UInt16)((DateTime.Now.Year.ToBCD() - 2000) * 256 + DateTime.Now.Month.ToBCD());
+                    function.TimeCalibrationBcdYearMonth = (UInt16)(((DateTime.Now.Year - 2000).ToBCD()) * 256 + DateTime.Now.Month.ToBCD());
+                    //12289 > 3001  
+                    //4629  > 1215 
+                    //14167 > 3757
                     function.TimeCalibrationBcdDayHour = (UInt16)(DateTime.Now.Day.ToBCD() * 256 + DateTime.Now.Hour.ToBCD());
                     function.TimeCalibrationBcdMinuteSecond = (UInt16)(DateTime.Now.Minute.ToBCD() * 256 + DateTime.Now.Second.ToBCD());
 
-                    if (function.TimeCalibrationIndex < 65535)
-                        function.TimeCalibrationIndex = (UInt16)(function.OhbcErrorIndex + 1);
+                    if (time_calibration_index < 65535)
+                    {
+                        time_calibration_index++;
+                        //function.TimeCalibrationIndex = (UInt16)(function.TimeCalibrationIndex + 1);
+                        function.TimeCalibrationIndex = (UInt16)time_calibration_index;
+                    }
+                    //function.TimeCalibrationIndex = (UInt16)(function.OhbcErrorIndex + 1);
                     else
-                        function.TimeCalibrationIndex = 1;
+                    {
+                        time_calibration_index = 1;
+                        //function.TimeCalibrationIndex = 1;
+                        function.TimeCalibrationIndex = (UInt16)time_calibration_index;
+                    }
 
                     function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
                     logger.Info(function.ToString());
+                    logger.Info($"end time calibartion:{port.PORT_ID}");
                 }
                 catch (Exception ex)
                 {

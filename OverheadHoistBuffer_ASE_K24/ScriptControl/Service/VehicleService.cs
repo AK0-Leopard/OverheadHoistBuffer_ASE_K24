@@ -118,7 +118,7 @@ namespace com.mirle.ibg3k0.sc.Service
             transferService = app.TransferService;
             //註冊trackAlarmHappend
             //var v = app.getEQObjCacheManager().getAllUnit().
-            foreach(Track t in scApp.UnitBLL.cache.GetALLTracks())
+            foreach (Track t in scApp.UnitBLL.cache.GetALLTracks())
             {
                 t.alarmCodeChange += trackAlarmHappend;
             }
@@ -413,8 +413,24 @@ namespace com.mirle.ibg3k0.sc.Service
         private void Vh_LocationChange(object sender, LocationChangeEventArgs e)
         {
             AVEHICLE vh = sender as AVEHICLE;
-            ASECTION leave_section = scApp.SectionBLL.cache.GetSection(e.LeaveSection);
             ASECTION entry_section = scApp.SectionBLL.cache.GetSection(e.EntrySection);
+            if (entry_section == null)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"vh:{vh.VEHICLE_ID} entry section is null,don't process location change .",
+                   VehicleID: vh.VEHICLE_ID);
+                return;
+            }
+
+            ASECTION leave_section = scApp.SectionBLL.cache.GetSection(e.LeaveSection);
+            if (leave_section == null)
+            {
+                string pre_section_id = vh.PRE_SEC_ID;
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"vh:{vh.VEHICLE_ID} leave section is null,try get pre section id:{pre_section_id}.",
+                   VehicleID: vh.VEHICLE_ID);
+                leave_section = scApp.SectionBLL.cache.GetSection(pre_section_id);
+            }
             leave_section?.Leave(vh.VEHICLE_ID);
             entry_section?.Entry(vh.VEHICLE_ID);
 
@@ -2407,7 +2423,6 @@ namespace com.mirle.ibg3k0.sc.Service
                     PositionReport_ArriveAndComplete(bcfApp, vh, seq_num, recive_str.EventType, recive_str.CurrentAdrID, recive_str.CurrentSecID, carrier_id, //B0.01
                                                      load_port_id, unload_port_id);                                                                             //B0.01
                     break;
-
                 case EventType.Vhloading:
                 case EventType.Vhunloading:
                     PositionReport_LoadingUnloading(bcfApp, vh, recive_str, seq_num, eventType);
@@ -5278,7 +5293,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             //要再上報Alamr Rerport給MCS
             //scApp.TransferService.OHBC_AlarmSet(scApp.getEQObjCacheManager().getLine().LINE_ID, ((int)AlarmLst.OHT_CommandNotFinishedInTime).ToString());
-            foreach(Track.TrackAlarm alarm in e.AddAlarmList)
+            foreach (Track.TrackAlarm alarm in e.AddAlarmList)
             {
                 string alarmCode = ((int)alarm).ToString();
                 string alarmDesc = alarm.ToString();
@@ -5289,7 +5304,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 //Data: $"Find vehicle {vehicleCache.VEHICLE_ID}, vehicle address Id = {vehicleCache.CUR_ADR_ID}, = port address ID {portAddressID}");
             }
             //如果有已經移除的alarm要逐一清掉
-            foreach(Track.TrackAlarm alarm in e.RemoveAlarmList)
+            foreach (Track.TrackAlarm alarm in e.RemoveAlarmList)
             {
                 string alarmCode = ((int)alarm).ToString();
                 string alarmDesc = alarm.ToString();

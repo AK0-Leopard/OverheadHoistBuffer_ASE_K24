@@ -29,9 +29,9 @@ namespace com.mirle.ibg3k0.sc.Service
             RegisterPort(ports);
 
             HeartBeatStopwatch.Start();
-            WriteLog($"HeartBeat Stopwatch Start");
-            TimeCalibrationStopwatch.Start();
-            WriteLog($"Calibration Stopwatch Start");
+            //WriteLog($"HeartBeat Stopwatch Start");
+            //TimeCalibrationStopwatch.Start();
+            //WriteLog($"Calibration Stopwatch Start");
         }
 
         private void RegisterPort(IEnumerable<IManualPortValueDefMapAction> ports)
@@ -110,19 +110,20 @@ namespace com.mirle.ibg3k0.sc.Service
         public void ReflashState()
         {
             HeartBeat();
+            tryExcuteTimeCalibration();
             var allCommands = ACMD_MCS.MCS_CMD_InfoList;
             ReflashPlcMonitor(allCommands);
             ReflashReadyToWaitOutCarrier();
             ReflashComingOutCarrier();
             CheckCommandingSignal(allCommands);
-            tryExcuteTimeCalibration();
         }
 
         private void tryExcuteTimeCalibration()
         {
             try
             {
-                if (TimeCalibrationStopwatch.ElapsedMilliseconds < TimeCalibrationMilliseconds)
+                if (TimeCalibrationStopwatch.IsRunning &&
+                    TimeCalibrationStopwatch.ElapsedMilliseconds < TimeCalibrationMilliseconds)
                     return;
 
                 foreach (var portItem in manualPorts)

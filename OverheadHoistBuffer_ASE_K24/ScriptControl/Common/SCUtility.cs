@@ -307,10 +307,6 @@ namespace com.mirle.ibg3k0.sc.Common
             scApp.getEQObjCacheManager().CommonInfo.SECS_Msg = msg;// sb.ToString();
             //            SECSMsgLogger.Info(sb.ToString());
             SECSMsgLogger.Info(msg);
-            Task.Run(() =>
-            {
-                setLogInfo_SECS(scApp, isReceive, sxfy, sDateTime);
-            });
         }
 
         public const String FUNCTION_TRANSDFERTYPE_SEND = "Send";

@@ -69,20 +69,20 @@ CRANE,528,2,Rear anti-falling axle reports abnormality
 CRANE,529,2,Gripper shaft reports abnormal
 CRANE,531,2,The forward anti-falling axle reports an exception
 CRANE,532,2,The anti-falling axle reports abnormally after loading
-CRANE,541,2,Sideshift axis,The origin is not triggered,Location is not safe before loading
-CRANE,542,2,Sideshift axis,The origin is not triggered,Location is not safe before unloading
-CRANE,543,2,Sideshift axis,The origin is not triggered,Location is not safe after loading
-CRANE,544,2,Sideshift axis,The origin is not triggered,Location is not safe after unloading
-CRANE,545,2,Sideshift axis,The origin is not triggered,Location is not safe before moveing
-CRANE,546,2,Sideshift axis,The origin is not triggered,Location is not safe during moveing
-CRANE,547,2,Sideshift axis,The origin is not triggered,Location is not safe after moveing
-CRANE,551,2,Rotation axis,The origin is not triggered,Location is not safe before loading
-CRANE,552,2,Rotation axis,The origin is not triggered,Location is not safe before unloading
-CRANE,553,2,Rotation axis,The origin is not triggered,Location is not safe after loading
-CRANE,554,2,Rotation axis,The origin is not triggered,Location is not safe after unloading
-CRANE,555,2,Rotation axis,The origin is not triggered,Location is not safe before moveing
-CRANE,556,2,Rotation axis,The origin is not triggered,Location is not safe during moveing
-CRANE,557,2,Rotation axis,The origin is not triggered,Location is not safe after moveing 
+CRANE,541,2,"Sideshift axis,The origin is not triggered,Location is not safe before loading"
+CRANE,542,2,"Sideshift axis,The origin is not triggered,Location is not safe before unloading"
+CRANE,543,2,"Sideshift axis,The origin is not triggered,Location is not safe after loading"
+CRANE,544,2,"Sideshift axis,The origin is not triggered,Location is not safe after unloading"
+CRANE,545,2,"Sideshift axis,The origin is not triggered,Location is not safe before moveing"
+CRANE,546,2,"Sideshift axis,The origin is not triggered,Location is not safe during moveing"
+CRANE,547,2,"Sideshift axis,The origin is not triggered,Location is not safe after moveing"
+CRANE,551,2,"Rotation axis,The origin is not triggered,Location is not safe before loading"
+CRANE,552,2,"Rotation axis,The origin is not triggered,Location is not safe before unloading"
+CRANE,553,2,"Rotation axis,The origin is not triggered,Location is not safe after loading"
+CRANE,554,2,"Rotation axis,The origin is not triggered,Location is not safe after unloading"
+CRANE,555,2,"Rotation axis,The origin is not triggered,Location is not safe before moveing"
+CRANE,556,2,"Rotation axis,The origin is not triggered,Location is not safe during moveing"
+CRANE,557,2,"Rotation axis,The origin is not triggered,Location is not safe after moveing"
 CRANE,601,2,Multi-meter _ current overrun abnormal
 CRANE,602,2,Multi-meter_Voltage over-limit abnormal
 CRANE,603,2,Multimeter _ power overrun abnormal
@@ -99,10 +99,10 @@ CRANE,705,2,Step forward to prevent falling_extension abnormal
 CRANE,706,2,Step forward to prevent falling _ abnormal folding
 CRANE,707,2,Anti-falling after going up_extension abnormal
 CRANE,708,2,Anti-falling after loading_abnormal folding
-CRANE,731,2,Before unloading,The gripper does not maintain abnormal closure
-CRANE,732,2,Before loading,The gripper does not maintain an abnormal opening
-CRANE,733,2,Unloading error,vehicle has no cst
-CRANE,734,2,Loading error,vehicle already has cst
+CRANE,731,2,"Before unloading,The gripper does not maintain abnormal closure"
+CRANE,732,2,"Before loading,The gripper does not maintain an abnormal opening"
+CRANE,733,2,"Unloading error,vehicle has no cst"
+CRANE,734,2,"Loading error,vehicle already has cst"
 CRANE,736,1,"Before PIO delivery, receive EQ and send HO_AVBL abnormal Lo"
 CRANE,737,1,"Before PIO is delivered, receive EQ and send ES exception"
 CRANE,738,1,"Before PIO release, receive EQ and send HO_AVBL abnormal Lo"
@@ -151,8 +151,8 @@ CRANE,823,2,Abnormal detection of falling objects
 CRANE,824,2,Upper anti-falling object detection abnormal
 CRANE,826,2,Before opening the claw_cargo inspection abnormal
 CRANE,827,2,Before fetching and closing the paw_cargo inspection abnormal
-CRANE,828,2,The hoist moves down,the gripper cst detection abnormality
-CRANE,829,2,The hoist moves up,the gripper cst detection abnormality
+CRANE,828,2,"The hoist moves down,the gripper cst detection abnormality"
+CRANE,829,2,"The hoist moves up,the gripper cst detection abnormality"
 CRANE,831,2,Before placing_the gripper cargo is detected abnormally
 CRANE,832,2,"After picking up the goods, the gripper cargo is detected abnormally"
 CRANE,833,2,Before discharging_the gripper has no cargo abnormality

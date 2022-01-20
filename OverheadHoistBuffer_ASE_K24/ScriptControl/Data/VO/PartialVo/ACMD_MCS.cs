@@ -45,6 +45,8 @@ namespace com.mirle.ibg3k0.sc
         public const int COMMAND_STATUS_BIT_INDEX_InterlockError = 1024;    //交握異常
         public const int COMMAND_STATUS_BIT_INDEX_VEHICLE_ABORT = 2048;     //車子異常結束
         public const int COMMAND_STATUS_BIT_INDEX_CST_TYPE_MISMATCH = 4096;     //CST Type Mismatch異常流程
+        public const int COMMAND_STATUS_BIT_INDEX_INTER_ERROR_WHEN_LOAD = 8192;     //CST Type Mismatch異常流程
+        public const int COMMAND_STATUS_BIT_INDEX_INTER_ERROR_WHEN_UNLOAD = 16384;     //CST Type Mismatch異常流程
 
         public const string Successful = "1";
 
