@@ -129,7 +129,12 @@ namespace com.mirle.ibg3k0.sc.BLL
         {
             vh.CUR_ADR_ID = adr_id;
             //if (vh.CUR_SEC_ID != sec_id)
-            if (!SCUtility.isMatche(vh.CUR_SEC_ID, sec_id))
+            //"SEC01" vs "" > pre:"SECS01"
+            //"" vs "SEC02" > pre:""
+            //"SEC02" vs "SEC03" > pre:"SEC02"
+
+            if (!SCUtility.isMatche(vh.CUR_SEC_ID, sec_id) &&
+                !SCUtility.isEmpty(vh.CUR_SEC_ID))
             {
                 vh.PRE_SEC_ID = vh.CUR_SEC_ID;
             }

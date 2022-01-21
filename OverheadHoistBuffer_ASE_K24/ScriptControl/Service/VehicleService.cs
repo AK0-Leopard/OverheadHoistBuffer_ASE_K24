@@ -3570,7 +3570,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 ASECTION vh_current_sec = scApp.SectionBLL.cache.GetSection(vh_current_section_id);
                 //確認是否有車子是在to Address的位置上
                 var on_to_adr_vh = scApp.VehicleBLL.cache.getVhByAddressID(vh_current_sec.TO_ADR_ID);
-                if (on_to_adr_vh != null)
+                if (on_to_adr_vh != null &&
+                    on_to_adr_vh != vh)
                 {
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
                        Data: $"Has vh:{on_to_adr_vh.VEHICLE_ID} on section:{vh_current_section_id} of to adr:{vh_current_sec.TO_ADR_ID}," +
@@ -3695,7 +3696,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                     scApp.CMDBLL.setWillPassSectionInfo(eqpt.VEHICLE_ID, eqpt.PredictSectionsToDesination);
                     scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(eqpt.VEHICLE_ID);
-                    scApp.ReserveBLL.TryAddReservedSection(eqpt.VEHICLE_ID, eqpt.CUR_SEC_ID);
+                    //scApp.ReserveBLL.TryAddReservedSection(eqpt.VEHICLE_ID, eqpt.CUR_SEC_ID);
                     break;
 
                 case EventType.UnloadArrivals:
@@ -3712,7 +3713,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         scApp.CMDBLL.updateCMD_MCS_CmdStatus2UnloadArrive(eqpt.MCS_CMD);
                     }
                     scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(eqpt.VEHICLE_ID);
-                    scApp.ReserveBLL.TryAddReservedSection(eqpt.VEHICLE_ID, eqpt.CUR_SEC_ID);
+                    //scApp.ReserveBLL.TryAddReservedSection(eqpt.VEHICLE_ID, eqpt.CUR_SEC_ID);
                     break;
 
                 case EventType.LoadComplete:
@@ -4254,7 +4255,7 @@ namespace com.mirle.ibg3k0.sc.Service
             replyCommandComplete(vh, seq_num, finish_ohxc_cmd, finish_mcs_cmd);
             scApp.CMDBLL.removeAllWillPassSection(vh.VEHICLE_ID);
             scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID);
-            scApp.ReserveBLL.TryAddReservedSection(vh.VEHICLE_ID, vh.CUR_SEC_ID);
+            //scApp.ReserveBLL.TryAddReservedSection(vh.VEHICLE_ID, vh.CUR_SEC_ID);
 
             if (DebugParameter.IsDebugMode && DebugParameter.IsCycleRun)
             {
