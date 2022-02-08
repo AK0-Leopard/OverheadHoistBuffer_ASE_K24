@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Protos";
+
+package greet;
+
+// The greeting service definition.
+service shelfGreeter {
+	// Sends a greeting
+	rpc getAllShelfInfo(Empty) returns (replyAllShelfInfo);
+	rpc getShelfInfo(shelf_id) returns (shelf);
+	rpc getNeedChangeShelf(lastUpdateTime) returns (replyAllShelfInfo);
+}
+
+//Start MapData
+message Empty {} //這邊的ID沒有意義
+message shelf_id { string ID = 1;}
+message lastUpdateTime{int64 datetime=1;}//grpc不支援dateTime的資料格式，所以將dateTime轉成數字後再做傳輸
+message shelf { string shelf_id=1; string zone_id=2; string box_id=3; bool enable=4;}
+message replyAllShelfInfo { repeated shelf shelf_info = 1; }
