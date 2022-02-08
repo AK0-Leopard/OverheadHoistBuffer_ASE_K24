@@ -3,7 +3,9 @@
     public enum CstType
     {
         PortHasNoCarrierNow = 0,
+        //Light CST
         B = 1,
+        //Foup
         A = 2,
         Undefined = 3,
         ReelCST = 4,

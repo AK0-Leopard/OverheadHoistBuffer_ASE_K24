@@ -289,6 +289,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             string cycle_run_vh = DebugParameter.cycleRunVh;
             AVEHICLE vh = scApp.VehicleBLL.cache.getVhByID(cycle_run_vh);
             if (vh == null) return;
+            if (!vh.isTcpIpConnect) return;
             if (vh.ACT_STATUS == ProtocolFormat.OHTMessage.VHActionStatus.Commanding)
             {
                 return;
@@ -328,28 +329,29 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             List<CassetteData> cassetteDatas = scApp.CassetteDataBLL.loadCassetteData();
             if (shelfDefs == null || shelfDefs.Count == 0)
             {
-                refreshCurrentCycleRunBay(cassetteDatas);
+                refreshCurrentCycleRunBay(cassetteDatas, mcs_cmds);
             }
             else
             {
                 var current_cycle_run_bay = shelfDefs.FirstOrDefault().BayID;
                 if (!SCUtility.isMatche(current_cycle_run_bay, DebugParameter.cycleRunBay))
                 {
-                    refreshCurrentCycleRunBay(cassetteDatas);
+                    refreshCurrentCycleRunBay(cassetteDatas, mcs_cmds);
                 }
             }
 
-            var process_csts = cassetteDatas.Where(cst => SCUtility.isMatche(cst.CurrentBayID(scApp), DebugParameter.cycleRunBay)).ToList();
-            if (process_csts == null) return;
-            CassetteData process_cst = null;
-            foreach (var cst in process_csts)
-            {
-                if (scApp.ShelfDefBLL.isEnable(cst.Carrier_LOC))
-                {
-                    process_cst = cst;
-                    break;
-                }
-            }
+            //var process_csts = cassetteDatas.Where(cst => SCUtility.isMatche(cst.CurrentBayID(scApp), DebugParameter.cycleRunBay)).ToList();
+            //if (process_csts == null) return;
+            //CassetteData process_cst = null;
+            //foreach (var cst in process_csts)
+            //{
+            //    if (scApp.ShelfDefBLL.isEnable(cst.Carrier_LOC))
+            //    {
+            //        process_cst = cst;
+            //        break;
+            //    }
+            //}
+            CassetteData process_cst = tryGetCycleRunCST(vh, mcs_cmds);
             if (process_cst == null)
                 return;
 
@@ -451,6 +453,69 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             //        }
             //    }
             //}
+        }
+
+        private CassetteData tryGetCycleRunCST(AVEHICLE vh, List<ACMD_MCS> cmds_mcs)
+        {
+            string cycle_run_box = DebugParameter.cycleRunCSTs;
+            if (SCUtility.isEmpty(cycle_run_box)) return null;
+            CassetteData cst = scApp.CassetteDataBLL.loadCassetteDataByBoxID(cycle_run_box);
+            if (cst == null) return null;
+            //1.確認搬送的Type是否一樣
+            E_VH_TYPE carrier_vh_type = getCSTCarrierVhType(cst);
+            if (vh.VEHICLE_TYPE != carrier_vh_type) return null;
+            //2.確認是否該CST已經在搬送中
+            if (cmds_mcs != null && cmds_mcs.Count > 0)
+            {
+                bool has_cmd_excute = cmds_mcs.Where(cmd => SCUtility.isMatche(cmd.BOX_ID, cycle_run_box)).Count() > 0;
+                if (has_cmd_excute)
+                    return null;
+            }
+            //3.確認該儲位是否為disable
+            if (!scApp.ShelfDefBLL.isEnable(cst.Carrier_LOC))
+            {
+                return null;
+            }
+            return cst;
+        }
+
+        private E_VH_TYPE getCSTCarrierVhType(CassetteData cassetteData)
+        {
+            if (cassetteData == null)
+            {
+                return E_VH_TYPE.None;
+            }
+
+            var check_is_unknow = cassetteData.IsUnknowBox();
+            if (check_is_unknow.isUnknow)
+            {
+                return E_VH_TYPE.None;
+
+                //switch (check_is_unknow.cstType)
+                //{
+                //    case Data.PLC_Functions.MGV.Enums.CstType.A:
+                //        return E_VH_TYPE.Foup;
+                //    case Data.PLC_Functions.MGV.Enums.CstType.B:
+                //        return E_VH_TYPE.Light;
+                //    default:
+                //        return E_VH_TYPE.None;
+                //}
+            }
+            else
+            {
+                if (cassetteData.IsLightCST)
+                {
+                    return E_VH_TYPE.Light;
+                }
+                else if (cassetteData.IsFoupCST)
+                {
+                    return E_VH_TYPE.Foup;
+                }
+                else
+                {
+                    return E_VH_TYPE.None;
+                }
+            }
         }
 
         private void DemoRun()

@@ -250,15 +250,18 @@ namespace UnitTestForMGVPort
         [Test]
         public void 有殘帳時轉成OutMode__上報MCS轉成OutMode()
         {
+            //
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
             manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
             var info = GetOutModePortInfo();
             var residueCarrierID = "B";
-            stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.B);
 
+            //
+            stub.CassetteDataBLL.Install(_portName, residueCarrierID, CstType.B);
             stub.ManualPortValueDefMapAction.OnDirectionChanged += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
 
+            //
             stub.ReportBLL.Received().ReportPortDirectionChanged(_portName, newDirectionIsInMode: false);
         }
 

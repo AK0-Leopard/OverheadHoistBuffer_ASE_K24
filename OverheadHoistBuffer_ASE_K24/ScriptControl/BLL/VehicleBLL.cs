@@ -132,7 +132,8 @@ namespace com.mirle.ibg3k0.sc.BLL
             //"SEC01" vs "" > pre:"SECS01"
             //"" vs "SEC02" > pre:""
             //"SEC02" vs "SEC03" > pre:"SEC02"
-
+            //2 > 3 
+            //3 > ""
             if (!SCUtility.isMatche(vh.CUR_SEC_ID, sec_id) &&
                 !SCUtility.isEmpty(vh.CUR_SEC_ID))
             {

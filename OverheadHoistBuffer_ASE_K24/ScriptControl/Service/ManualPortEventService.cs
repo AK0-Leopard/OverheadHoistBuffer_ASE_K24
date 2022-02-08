@@ -203,7 +203,6 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         WriteEventLog($"{logTitle} Cannot find [IManualPortValueDefMapAction]. Cannot execute Move Back.");
                     }
-
                     return;
                 }
 
