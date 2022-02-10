@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Protos2";
+option csharp_namespace = "CommonMessage.ProtocolFormat.ManualPortFun";
 
 package greet;
 
@@ -11,8 +11,7 @@ service manualPortGreeter {
 	rpc getAllManualPortInfo(Empty) returns (replyAllManualPortInfo);
 }
 
-
-message Empty { string ID = 1;}
+message Empty { }
 message manualPort { 
 	string manualPort_id=1; 
 	bool IsRun=2; 
