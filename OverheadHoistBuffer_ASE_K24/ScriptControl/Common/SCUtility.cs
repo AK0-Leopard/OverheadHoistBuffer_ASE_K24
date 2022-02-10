@@ -807,6 +807,7 @@ namespace com.mirle.ibg3k0.sc.Common
         string vh_status, string msg_body,
         string result)
         {
+
             //dynamic logEntry = new JObject();
             //DateTime nowDt = DateTime.Now;
             ////logEntry.RPT_TIME = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz", CultureInfo.InvariantCulture);

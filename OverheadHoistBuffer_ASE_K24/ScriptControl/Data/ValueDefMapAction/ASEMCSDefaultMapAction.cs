@@ -4459,6 +4459,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 SCUtility.RecodeReportInfo(queue.VEHICLE_ID, queue.MCS_CMD_ID, s6f11, s6f11.CEID);
                 SCUtility.secsActionRecordMsg(scApp, false, s6f11);
 
+                LogHelper.RecordReportInfoNew(
+                    scApp.CMDBLL,
+                    scApp.VehicleBLL.getVehicleByID(queue.VEHICLE_ID), 
+                    s6f11, 0);
                 #region LogSave
 
                 log = "";
@@ -4495,7 +4499,10 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 //   Data: s6f12,
                 //   VehicleID: queue.VEHICLE_ID,
                 //   XID: queue.MCS_CMD_ID);
-
+                LogHelper.RecordReportInfoNew(
+                    scApp.CMDBLL,
+                    scApp.VehicleBLL.getVehicleByID(queue.VEHICLE_ID),
+                    s6f11, 0);
                 if (rtnCode != TrxSECS.ReturnCode.Normal)
                 {
                     logger_MapActionLog.Warn("Send Transfer Initiated[S6F11] Error![rtnCode={0}]", rtnCode);
