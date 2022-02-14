@@ -71,7 +71,7 @@ namespace com.mirle.ibg3k0.sc.WebAPI.Grpc
                 {
                     shelf temp = new shelf();
                     temp.BoxId = shelfData.CSTID;
-                    temp.Enable = (shelfData.Enable == "Enable") ? true : false;
+                    temp.Enable = (shelfData.Enable == "Y") ? true : false;
                     temp.ShelfId = shelfData.ShelfID;
                     temp.ZoneId = shelfData.ZoneID;
                     temp.AdrId = shelfData.ADR_ID;
