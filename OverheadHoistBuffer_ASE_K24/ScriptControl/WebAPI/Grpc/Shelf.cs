@@ -20,11 +20,11 @@ namespace com.mirle.ibg3k0.sc.WebAPI.Grpc
             replyAllShelfInfo result = new replyAllShelfInfo();
             //var allShelfData = app.ShelfDefDao.LoadShelfDef(DBConnection_EF.GetUContext());
             var allShelfData = app.ShelfDefBLL.LoadShelf();
-            foreach(var shelfData in allShelfData)
+            foreach (var shelfData in allShelfData)
             {
                 shelf temp = new shelf();
                 temp.BoxId = shelfData.CSTID;
-                temp.Enable = (shelfData.Enable=="Enable") ? true : false;
+                temp.Enable = (shelfData.Enable == "Enable") ? true : false;
                 temp.ShelfId = shelfData.ShelfID;
                 temp.ZoneId = shelfData.ZoneID;
                 temp.AdrId = shelfData.ADR_ID;
@@ -44,7 +44,7 @@ namespace com.mirle.ibg3k0.sc.WebAPI.Grpc
                 result.ShelfId = shelfDef.ShelfID;
                 result.ZoneId = shelfDef.ZoneID;
                 result.AdrId = shelfDef.ADR_ID;
-                
+
             }
             catch (Exception ex)
             {
@@ -67,7 +67,8 @@ namespace com.mirle.ibg3k0.sc.WebAPI.Grpc
             foreach (var shelfData in allShelfData)
             {
                 dataLastUpdateTime = DateTime.FromBinary(Convert.ToInt64(shelfData.TrnDT));
-                if(userLastUpdateTime > dataLastUpdateTime)
+                //if(userLastUpdateTime > dataLastUpdateTime)
+                if (true)
                 {
                     shelf temp = new shelf();
                     temp.BoxId = shelfData.CSTID;
