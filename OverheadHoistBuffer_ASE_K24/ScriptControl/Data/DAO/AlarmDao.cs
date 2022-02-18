@@ -320,5 +320,56 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
 
             return compareTime > endTime;
         }
+
+        //取得所有被解除的alarm
+        public List<ALARM> getAllRstAlarm(DBConnection_EF conn)
+        {
+            var alarmList = from a in conn.ALARM
+                            where a.ALAM_STAT == ProtocolFormat.OHTMessage.ErrorStatus.ErrReset
+                            select a;
+            return alarmList.ToList();
+        }
+        //將ALARM TO HALARM
+        public List<HALARM> alarmToHalarm(List<ALARM> alarmList)
+        {
+            List<HALARM> result = new List<HALARM>();
+            foreach (var alarm in alarmList)
+            {
+                HALARM halarm = new HALARM();
+                halarm.ALAM_CODE = alarm.ALAM_CODE;
+                halarm.ALAM_DESC = alarm.ALAM_DESC;
+                halarm.ALAM_LVL = alarm.ALAM_LVL;
+                halarm.ALAM_STAT = alarm.ALAM_STAT;
+                halarm.CMD_ID = alarm.CMD_ID;
+                halarm.END_TIME = DateTime.ParseExact(alarm.END_TIME, "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture);
+                halarm.EQPT_ID = alarm.EQPT_ID;
+                halarm.ERROR_ID = alarm.ERROR_ID;
+                halarm.RecoveryOption = alarm.RecoveryOption;
+                halarm.RPT_DATE_TIME = DateTime.ParseExact(alarm.RPT_DATE_TIME, "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture);
+                halarm.UnitID = alarm.UnitID;
+                halarm.UnitState = alarm.UnitState;
+                halarm.UNIT_NUM = alarm.UNIT_NUM;
+                result.Add(halarm);
+            }
+            return result;
+        }
+        //將傳入的alarmList從ALARM TABLE中刪除
+        public bool removeAlarm(DBConnection_EF conn, List<ALARM> alarmList)
+        {
+            bool result = true;
+            string removeAlarm = "delete from ALARM where ALAM_STAT=0;";
+            conn.Database.ExecuteSqlCommand(removeAlarm);
+            return result;
+        }
+        public bool insertHALARM(DBConnection_EF conn, List<HALARM> halarmList)
+        {
+            bool result = true;
+            foreach (var halarm in halarmList)
+            {
+                conn.HALARM.Add(halarm);
+            }
+            conn.SaveChanges();
+            return result;
+        }
     }
 }

@@ -540,6 +540,17 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return isSuccess;
         }
+        public void moveAlarmToHAlarm()
+        {
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                var alarmList = alarmDao.getAllRstAlarm(con);
+                var halarmList = alarmDao.alarmToHalarm(alarmList);
+                alarmDao.removeAlarm(con, alarmList);
+                alarmDao.insertHALARM(con, halarmList);
+            }
+                
+        }
     }
 
     public partial class AlarmBLL : IManualPortAlarmBLL
@@ -586,4 +597,5 @@ namespace com.mirle.ibg3k0.sc.BLL
             return true;
         }
     }
+    
 }
