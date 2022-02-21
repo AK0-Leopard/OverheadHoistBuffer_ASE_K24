@@ -478,6 +478,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO.EntityFramework
             {
                 var port = from a in conn.ACMD_MCS
                            where a.TRANSFERSTATE != E_TRAN_STATUS.TransferCompleted &&
+                                 a.COMMANDSTATE < 64 &&
                                  a.HOSTDESTINATION.Trim() == destination.Trim()
                            select a;
                 return port.Count();

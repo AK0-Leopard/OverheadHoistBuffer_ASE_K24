@@ -10991,6 +10991,12 @@ namespace com.mirle.ibg3k0.sc.Service
                 cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                 scApp.ReportBLL.ReportTransferAbortCompleted(cmd.CMD_ID);
             }
+            else if (cmd.TRANSFERSTATE == E_TRAN_STATUS.Canceling)
+            {
+                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command cancel流程, id:{mcs_cmd_id}");
+                cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                reportBLL.ReportTransferCancelCompleted(cmd.CMD_ID);
+            }
             else
             {
                 //如果狀態不是aborting，就進入abort complete
@@ -11057,6 +11063,12 @@ namespace com.mirle.ibg3k0.sc.Service
                 TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command cancel流程, id:{mcs_cmd_id}");
                 cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
                 reportBLL.ReportTransferCancelCompleted(cmd.CMD_ID);
+            }
+            else if (cmd.TRANSFERSTATE == E_TRAN_STATUS.Aborting)
+            {
+                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command abort流程, id:{mcs_cmd_id}");
+                cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                scApp.ReportBLL.ReportTransferAbortCompleted(cmd.CMD_ID);
             }
             else
             {

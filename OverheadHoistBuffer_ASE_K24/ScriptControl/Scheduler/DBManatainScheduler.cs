@@ -59,11 +59,11 @@ namespace com.mirle.ibg3k0.sc.Scheduler
                     {
                         DeleteHCMD_OHTC();
                     }
-                    SpinWait.SpinUntil(() => false, 5000);
-                    using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                    {
-                        MoveHALARM_ALARMToHALARM();
-                    }
+                    //SpinWait.SpinUntil(() => false, 5000);
+                    //using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                    //{
+                    //    MoveHALARM_ALARMToHALARM();
+                    //}
                 }
                 catch (Exception ex)
                 {

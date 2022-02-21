@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 02/18/2022 10:27:18
--- Generated from EDMX file: C:\Users\uenlin\source\repos\AK0-Leopard\OverheadHoistBuffer_ASE_K24\OverheadHoistBuffer_ASE_K24\ScriptControl\OHTCContext.edmx
+-- Date Created: 02/18/2022 17:16:50
+-- Generated from EDMX file: C:\Git\AK0-Leopard\OverheadHoistBuffer_ASE_K24\OverheadHoistBuffer_ASE_K24\ScriptControl\OHTCContext.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;

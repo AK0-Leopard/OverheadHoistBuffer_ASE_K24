@@ -30,23 +30,6 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             return query.SingleOrDefault();
         }
 
-        public List<VACMD_MCS> getCMD_OHTCByConditionss(DBConnection_EF conn, DateTime startDatetime, DateTime endDatetime,
-                                                                                                string CSTID = null, string CmdID = null)
-        {
-            var query = conn.VACMD_MCS.Where(x => x.CMD_INSER_TIME > startDatetime
-                && x.CMD_INSER_TIME < endDatetime
-                && x.TRANSFERSTATE != E_TRAN_STATUS.Queue
-                && x.TRANSFERSTATE != E_TRAN_STATUS.Transferring);
-
-            if (!string.IsNullOrEmpty(CSTID))
-            {
-                query = query.Where(x => x.CARRIER_ID == CSTID);
-            }
-            if (!string.IsNullOrEmpty(CmdID))
-            {
-                query = query.Where(x => x.CMD_ID == CmdID);
-            }
-            return query.ToList();
-        }
+       
     }
 }

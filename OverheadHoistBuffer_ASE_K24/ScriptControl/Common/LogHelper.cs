@@ -244,29 +244,29 @@ namespace com.mirle.ibg3k0.sc.Common
                 WithFormatDefaultValues(true));
         public static void RecordReportInfoNew(sc.BLL.CMDBLL cmdBLL, AVEHICLE vh, SXFY SXFYMessage, int seqNum, [CallerMemberName] string Method = "")
         {
-            dynamic logEntry = new JObject();
-            DateTime nowDt = DateTime.Now;
+            //dynamic logEntry = new JObject();
+            //DateTime nowDt = DateTime.Now;
 
-            string function = SXFYMessage.StreamFunction;
-            string detail = SXFYMessage.toSECSString();
-            string vhID = (vh is null) ? "" : vh.VEHICLE_ID;
-            string current_excute_cmd_id = (vh is null) ? "" : SCUtility.Trim(vh.OHTC_CMD, true);
-            string current_excute_cmd_mcs_id = (vh is null) ? "" : SCUtility.Trim(vh.MCS_CMD, true);
-            string box_id = (vh is null) ? "" : SCUtility.Trim(vh.BOX_ID, true);
+            //string function = SXFYMessage.StreamFunction;
+            //string detail = SXFYMessage.toSECSString();
+            //string vhID = (vh is null) ? "" : vh.VEHICLE_ID;
+            //string current_excute_cmd_id = (vh is null) ? "" : SCUtility.Trim(vh.OHTC_CMD, true);
+            //string current_excute_cmd_mcs_id = (vh is null) ? "" : SCUtility.Trim(vh.MCS_CMD, true);
+            //string box_id = (vh is null) ? "" : SCUtility.Trim(vh.BOX_ID, true);
 
-            logEntry.dateTime = nowDt.ToString(SCAppConstants.DateTimeFormat_23);
-            logEntry.eq_id = vhID;
-            logEntry.task_id = current_excute_cmd_id;
-            logEntry.transfer_id = current_excute_cmd_mcs_id;
-            logEntry.carrier_id = box_id;
-            logEntry.eq_id = vhID;
-            logEntry.name = function;
-            logEntry.type = "SxFyTrx";
-            logEntry.seq_no = seqNum.ToString("000");
-            logEntry.detail = detail;
-            var json = logEntry.ToString(Newtonsoft.Json.Formatting.None);
-            json = json.Replace("dateTime", "@t");
-            LogManager.GetLogger("RecordReportInfo").Info(json);
+            //logEntry.dateTime = nowDt.ToString(SCAppConstants.DateTimeFormat_23);
+            //logEntry.eq_id = vhID;
+            //logEntry.task_id = current_excute_cmd_id;
+            //logEntry.transfer_id = current_excute_cmd_mcs_id;
+            //logEntry.carrier_id = box_id;
+            //logEntry.eq_id = vhID;
+            //logEntry.name = function;
+            //logEntry.type = "SxFyTrx";
+            //logEntry.seq_no = seqNum.ToString("000");
+            //logEntry.detail = detail;
+            //var json = logEntry.ToString(Newtonsoft.Json.Formatting.None);
+            //json = json.Replace("dateTime", "@t");
+            //LogManager.GetLogger("RecordReportInfo").Info(json);
         }
 
         public static void RecordReportInfoNew(sc.BLL.CMDBLL cmdBLL, AVEHICLE vh, IMessage message, int seqNum, [CallerMemberName] string Method = "")
@@ -290,9 +290,9 @@ namespace com.mirle.ibg3k0.sc.Common
             logEntry.name = function;
             logEntry.seq_no = seqNum.ToString("000");
             logEntry.type = "TcpIpTrx";
-
+            //// \\\"  >  \"
+            //detail = detail.Replace("\\\"", "\"");
             logEntry.detail = detail;
-            detail = detail.Replace("\\\"", "\"");
 
             var json = logEntry.ToString(Newtonsoft.Json.Formatting.None);
             json = json.Replace("dateTime", "@t");

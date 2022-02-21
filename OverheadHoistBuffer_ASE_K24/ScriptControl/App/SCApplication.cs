@@ -1604,17 +1604,17 @@ namespace com.mirle.ibg3k0.sc.App
                 Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7001, Grpc.Core.ServerCredentials.Insecure) },
             };
 
-            gRPC_With_Shelf = new Grpc.Core.Server()
-            {
-                Services = {CommonMessage.ProtocolFormat.ShelfFun.shelfGreeter.BindService(new com.mirle.ibg3k0.sc.WebAPI.Grpc.Shelf(this)) },
-                Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7002, Grpc.Core.ServerCredentials.Insecure) },
-            };
+            //gRPC_With_Shelf = new Grpc.Core.Server()
+            //{
+            //    Services = {CommonMessage.ProtocolFormat.ShelfFun.shelfGreeter.BindService(new com.mirle.ibg3k0.sc.WebAPI.Grpc.Shelf(this)) },
+            //    Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7002, Grpc.Core.ServerCredentials.Insecure) },
+            //};
 
-            gRPC_With_ManualPort = new Grpc.Core.Server()
-            {
-                Services = { CommonMessage.ProtocolFormat.ManualPortFun.manualPortGreeter.BindService(new com.mirle.ibg3k0.sc.WebAPI.Grpc.ManualPort(this)) },
-                Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7003, Grpc.Core.ServerCredentials.Insecure) },
-            };
+            //gRPC_With_ManualPort = new Grpc.Core.Server()
+            //{
+            //    Services = { CommonMessage.ProtocolFormat.ManualPortFun.manualPortGreeter.BindService(new com.mirle.ibg3k0.sc.WebAPI.Grpc.ManualPort(this)) },
+            //    Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7003, Grpc.Core.ServerCredentials.Insecure) },
+            //};
 
             TrackInfoClient = new WebAPI.TrackInfoClient(this);
 
