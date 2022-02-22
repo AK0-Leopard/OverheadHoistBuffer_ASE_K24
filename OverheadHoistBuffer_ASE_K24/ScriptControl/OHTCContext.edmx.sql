@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 02/18/2022 17:16:50
+-- Date Created: 02/21/2022 11:38:32
 -- Generated from EDMX file: C:\Git\AK0-Leopard\OverheadHoistBuffer_ASE_K24\OverheadHoistBuffer_ASE_K24\ScriptControl\OHTCContext.edmx
 -- --------------------------------------------------
 
@@ -199,6 +199,9 @@ GO
 IF OBJECT_ID(N'[dbo].[CONTROL_DATA]', 'U') IS NOT NULL
     DROP TABLE [dbo].[CONTROL_DATA];
 GO
+IF OBJECT_ID(N'[dbo].[HALARM]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[HALARM];
+GO
 IF OBJECT_ID(N'[dbo].[HASHEET]', 'U') IS NOT NULL
     DROP TABLE [dbo].[HASHEET];
 GO
@@ -264,8 +267,8 @@ GO
 
 -- Creating table 'ABLOCKZONEDETAIL'
 CREATE TABLE [dbo].[ABLOCKZONEDETAIL] (
-    [ENTRY_SEC_ID] nchar(6)  NOT NULL,
-    [SEC_ID] nchar(5)  NOT NULL
+    [ENTRY_SEC_ID] char(6)  NOT NULL,
+    [SEC_ID] char(5)  NOT NULL
 );
 GO
 
@@ -1370,7 +1373,10 @@ CREATE TABLE [dbo].[HCMD_MCS] (
     [LOT_ID] varchar(64)  NOT NULL,
     [CARRIER_ID_ON_CRANE] varchar(64)  NULL,
     [CMDTYPE] varchar(64)  NULL,
-    [CRANE] varchar(64)  NOT NULL
+    [CRANE] varchar(64)  NOT NULL,
+    [REQ_EQ] varchar(64)  NULL,
+    [REQ_EQ_NUM] varchar(64)  NULL,
+    [REQ_PORT] varchar(64)  NULL
 );
 GO
 
@@ -1397,6 +1403,24 @@ CREATE TABLE [dbo].[HCMD_OHTC] (
     [DESTINATION_ADR] char(64)  NULL,
     [BOX_ID] char(64)  NULL,
     [LOT_ID] char(64)  NULL
+);
+GO
+
+-- Creating table 'HALARM'
+CREATE TABLE [dbo].[HALARM] (
+    [EQPT_ID] varchar(20)  NOT NULL,
+    [UNIT_NUM] int  NOT NULL,
+    [RPT_DATE_TIME] datetime  NOT NULL,
+    [END_TIME] datetime  NULL,
+    [ALAM_CODE] char(10)  NOT NULL,
+    [ALAM_LVL] int  NOT NULL,
+    [ALAM_STAT] int  NOT NULL,
+    [ALAM_DESC] char(128)  NULL,
+    [ERROR_ID] char(64)  NULL,
+    [UnitID] varchar(20)  NULL,
+    [UnitState] varchar(2)  NULL,
+    [RecoveryOption] varchar(20)  NULL,
+    [CMD_ID] varchar(64)  NULL
 );
 GO
 
@@ -1908,6 +1932,12 @@ GO
 ALTER TABLE [dbo].[HCMD_OHTC]
 ADD CONSTRAINT [PK_HCMD_OHTC]
     PRIMARY KEY CLUSTERED ([CMD_ID], [CMD_INSER_TIME] ASC);
+GO
+
+-- Creating primary key on [EQPT_ID], [UNIT_NUM], [RPT_DATE_TIME] in table 'HALARM'
+ALTER TABLE [dbo].[HALARM]
+ADD CONSTRAINT [PK_HALARM]
+    PRIMARY KEY CLUSTERED ([EQPT_ID], [UNIT_NUM], [RPT_DATE_TIME] ASC);
 GO
 
 -- Creating primary key on [CMD_ID], [TRANSFERSTATE], [COMMANDSTATE], [HOSTDESTINATION], [PRIORITY_SUM], [PRIORITY], [CHECKCODE], [PAUSEFLAG], [CMD_INSER_TIME], [TIME_PRIORITY], [PORT_PRIORITY], [REPLACE] in table 'VACMD_MCS'
