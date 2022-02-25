@@ -216,8 +216,13 @@
     <Compile Include="Common\RedisCacheManager.cs" />
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Data\Interface\IVehicleCommand.cs" />
+    <Compile Include="Data\TrackService.cs" />
     <Compile Include="Data\VehicleControlService.cs" />
+    <Compile Include="Protots\TrackGreeter.cs" />
     <Compile Include="Protots\VEHICLEINFO.cs" />
+    <Compile Include="UI\Components\TrackInfo.xaml.cs">
+      <DependentUpon>TrackInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Components\VehicleInfo_Big.xaml.cs">
       <DependentUpon>VehicleInfo_Big.xaml</DependentUpon>
     </Compile>
@@ -241,10 +246,12 @@
     </Compile>
     <Compile Include="Vo\Address.cs" />
     <Compile Include="Vo\Alarm.cs" />
+    <Compile Include="Vo\ObjToShow\alarmShow.cs" />
     <Compile Include="Vo\ObjToShow\TaskCommandShow.cs" />
     <Compile Include="Vo\ObjToShow\TransferCommandShow.cs" />
     <Compile Include="Vo\OHB_Zone.cs" />
     <Compile Include="Vo\Section.cs" />
+    <Compile Include="Vo\Track.cs" />
     <Compile Include="Vo\ValueObjToShow\VehicleShow.cs" />
     <Compile Include="Vo\Vehicle.cs" />
     <Page Include="MainWindow.xaml">
@@ -290,6 +297,10 @@
     <Page Include="Skins\MirleGo_Light_TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Components\TrackInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Components\VehicleInfo_Big.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -342,6 +353,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Config\MapInfo\ASECTION.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\MapInfo\TRACK.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

@@ -17,6 +17,8 @@ namespace VehicleControl_Viewer.UI.Components
         public event EventHandler TrackStatusChanged;
         public Dictionary<string, Vehicle> VehiclesInfo { get; } = new Dictionary<string, Vehicle>();
         public Dictionary<string, PortInfo> PortsInfo { get; } = new Dictionary<string, PortInfo>();
+
+        public Dictionary<string, TrackInfo> TrackInfo { get; } = new Dictionary<string, TrackInfo>();
         public List<SegmentInfo> Segments { get; private set; }
         public List<TransferCommand> TransferCommandInfos { get; private set; } = new List<TransferCommand>();
         public List<TaskCommand> TaskCommandInfos { get; private set; } = new List<TaskCommand>();
@@ -24,14 +26,17 @@ namespace VehicleControl_Viewer.UI.Components
         public List<string>TrackStatusChangeLines = new List<string>();
         public List<Alarm>alarmList = new List<Alarm>();
         public LineInfo LineInfo { get; private set; } = new LineInfo();
+        TrackService trackService;
         
         public ObjCacheManager(WindownApplication app)
         {
             vehicleControlService = app.VehicleControlService;
-
+            
             initialVhObject();
             initialRailObjectInfo();
             initialPortObject();
+            initialTrackObject();
+            trackService = new TrackService(app);
         }
 
         private void initialPortObject()
@@ -129,6 +134,14 @@ namespace VehicleControl_Viewer.UI.Components
                     var vh = new Vehicle(i, vh_id);
                     VehiclesInfo.Add(vh_id, vh);
                 }
+            }
+        }
+        private void initialTrackObject()
+        {
+            for(int i=1; i<=72; i++)
+            {
+                TrackInfo trackinfo = new TrackInfo();
+                TrackInfo.Add("R"+i.ToString(), trackinfo);
             }
         }
     }

@@ -1,0 +1,19 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VehicleControl_Viewer.UI.Components"
+             xmlns:materialDesignMahApps="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="VehicleControl_Viewer.UI.Components.TrackInfo"
+             mc:Ignorable="d" 
+             d:DesignHeight="1000" d:DesignWidth="1000">
+    <Canvas Height="1000" Width="1000">
+        <Grid Height="1000" Width="1000" MouseEnter="ShowPopup_MouseEnter" MouseLeave="ShowPopup_MouseLeave">
+            <Polygon x:Name="ShowSignal" Points="100,800 500,250 900,800" Stroke="Black" Fill="Red" />
+            <TextBlock x:Name="ShowName"  VerticalAlignment="Top" Text="R72" FontSize="280" Margin="275,500,0,0" Width="450" Height="300" TextAlignment="Center"/>
+            <Popup x:Name="ShowPopup" HorizontalOffset="500">
+                <TextBlock x:Name="ShowInfo" Text="Null" Background="#EE82EE" Foreground="#00008B" FontSize="280"/>
+            </Popup>
+        </Grid>
+    </Canvas>
+</UserControl>
