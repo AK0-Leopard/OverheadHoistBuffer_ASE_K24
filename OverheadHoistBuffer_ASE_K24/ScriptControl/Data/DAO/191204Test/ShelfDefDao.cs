@@ -240,7 +240,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             {
                 var result = conn.ShelfDef
                     .Where(x => x.TrnDT != "1" &&
-                                x.TrnDT.CompareTo(afterDateTime) > 1)
+                                x.TrnDT.CompareTo(afterDateTime) >= 0)
                     .ToList();
                 return result;
             }
