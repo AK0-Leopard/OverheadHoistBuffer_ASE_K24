@@ -450,12 +450,12 @@
                     </Grid>
                     <Grid Grid.Column="17" Grid.Row="3">
                         <Border BorderBrush="#000000" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone23_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Name="OHB_Zone23_value" Text="100%" HorizontalAlignment="Center"/>
                         </Border>
                     </Grid>
                     <Grid Grid.Column="17" Grid.Row="4">
                         <Border BorderBrush="#000000" BorderThickness="1">
-                            <TextBlock Name="OHB_Zone24_value" Text="100%" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Name="OHB_Zone24_value" Text="100%" HorizontalAlignment="Center"/>
                         </Border>
                     </Grid>
                 </Grid>

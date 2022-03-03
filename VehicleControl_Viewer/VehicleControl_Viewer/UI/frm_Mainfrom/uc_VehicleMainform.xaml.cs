@@ -18,6 +18,7 @@ using VehicleControl_Viewer.frm_Help;
 using VehicleControl_Viewer.UI.Components;
 using VehicleControl_Viewer.Vo;
 using VehicleControl_Viewer.Vo.ValueObjToShow;
+using Grpc.Core;
 
 namespace VehicleControl_Viewer.frm_Mainfrom
 {
@@ -34,6 +35,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         List<Section> sections;
         List<VehicleInfo> vehicleInfos;
         List<VehicleShow> vehicleShows;
+        List<Track> tracks;
         ShapeCollection RailsCollection = null;
         ShapeCollection DisableRailsCollection = null;
         ShapeCollection TestGuideRailsCollection = null;
@@ -64,6 +66,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
             initConfig();
             initialObj();
             initialPath();
+            initialTrack();
             initialDisablePath();
             initialVhNew();
             initialDataGrid_VehicleStatus();
@@ -154,7 +157,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
                 isSourceSelected = false;
             }
         }
-        private async void RailsCollection_SectionSelected(object sender, EventArgs e)
+        private void RailsCollection_SectionSelected(object sender, EventArgs e)
         {
             //Section Mouse Right Click
             var line = sender as Line;
@@ -170,7 +173,7 @@ namespace VehicleControl_Viewer.frm_Mainfrom
                     break;
                 }
             }
-            if (section == null) { }
+            if (section == null) { new frm_TipMessage_OK("Error").ShowDialog(); }
             else
             {
                 frm_TipMessage_YesNo frm = new frm_TipMessage_YesNo("Are You Sure to Disable Seg : " + section.ID.Substring(0, 3) + "?\r\n" + "It will be disable all section like " + section.ID.Substring(0, 3) + "xx");
@@ -271,13 +274,17 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         }
         public void timeCycle(object sender, EventArgs e)
         {
-
             vehicleInfos.ForEach(vh =>
             {
                 vh.resreshPosition();
                 vh.resreshStatus();
             });
             vehicleShows.ForEach(vh => vh.resresh());
+
+            foreach(var t in app.objCacheManager.TrackInfo.Values)
+            {
+                t.refreshTrack();
+            }
 
             var transfer_command_infos = app.objCacheManager.TransferCommandInfos.Select(tran => new Vo.ObjToShow.TransferCommandShow(tran));
             dgv_TransferCommand.ItemsSource = transfer_command_infos;
@@ -286,13 +293,16 @@ namespace VehicleControl_Viewer.frm_Mainfrom
             var task_command_infos = app.objCacheManager.TaskCommandInfos.Select(task => new Vo.ObjToShow.TaskCommandShow(task));
             dgv_TaskCommand.ItemsSource = task_command_infos;
 
-            refreshCurrentAlarm();
+            var alarm_infos = app.objCacheManager.alarmList.Select(alarm => new Vo.ObjToShow.alarmShow(alarm));
+            dgv_CurrentAlarm.ItemsSource = alarm_infos;
+            //refreshCurrentAlarm();
         }
 
         private void initialObj()
         {
             addresses = loadAddresss();
             sections = loadASection();
+            tracks = loadTrack();
         }
         private void initialVhNew()
         {
@@ -314,7 +324,13 @@ namespace VehicleControl_Viewer.frm_Mainfrom
                 Canvas.SetZIndex(vh_info.vhPresenter, int.MaxValue);
             }
         }
-
+        private void initialTrack()
+        {
+            foreach(var trackinfo in app.objCacheManager.TrackInfo.Values)
+            { 
+                VehicleTrack.Children.Add(trackinfo);
+            }
+        }
         private void VhPresenter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var content = sender as ContentControl;
@@ -387,11 +403,36 @@ namespace VehicleControl_Viewer.frm_Mainfrom
                 throw;
             }
         }
+        public List<Track> loadTrack()
+        {
+            List<Track> result;
+            try
+            {
+                DataTable dt = OHxCConfig.Tables["TRACK"];
+                var query = from c in dt.AsEnumerable()
+                            select new Track(c.Field<string>("Id"), c.Field<string>("PositionX"), c.Field<string>("PositionY"));
+                result =  query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            foreach(Track track in result)
+            {
+                //TrackInfo info;
+                app.objCacheManager.TrackInfo.TryGetValue(track.id, out var info);
+                info.setTrack(track);
+            }
+
+            return result;
+        }
         private void initConfig()
         {
             ohxcConfig = new DataSet();
             loadCSVToDataset(ohxcConfig, "AADDRESS");
             loadCSVToDataset(ohxcConfig, "ASECTION");
+            loadCSVToDataset(ohxcConfig, "TRACK");
         }
         private void loadCSVToDataset(DataSet ds, string tableName)
         {
@@ -486,7 +527,6 @@ namespace VehicleControl_Viewer.frm_Mainfrom
                 }
             }
         }
-
 
         public void Start()
         {
@@ -662,26 +702,6 @@ namespace VehicleControl_Viewer.frm_Mainfrom
                 MessageBox.setMessage($"Send command to vh Fail,{Environment.NewLine}Reson:{result.Reason}");
             }
             MessageBox.ShowDialog();
-            //測試畫弧線的工具
-            /*System.Windows.Shapes.Path path = new System.Windows.Shapes.Path();
-            path.Stroke = Brushes.Red;
-            path.StrokeThickness =200;
-            var aaa = new PathSegmentCollection();
-            //aaa.Add(new LineSegment(new Point(5000, 5000), true));
-            aaa.Add(new ArcSegment(new Point(649, 3302), new Size(40, 40), 90, true, SweepDirection.Counterclockwise, true));
-            path.Data = new PathGeometry()
-            {
-                Figures = new PathFigureCollection()
-                    {
-                        new PathFigure()
-                        {
-                            IsClosed = true,
-                            StartPoint = new Point(1409,2092),
-                            Segments = aaa
-                        }
-                    }
-            };
-            VehicleTrack.Children.Add(path);*/
         }
 
         private VehicleCommandInfo getVehicleTranCommandInfo()
@@ -728,21 +748,6 @@ namespace VehicleControl_Viewer.frm_Mainfrom
         private void rdo_transferByPort_Checked(object sender, RoutedEventArgs e)
         {
             transferByPort();
-        }
-    
-        private void refreshCurrentAlarm()
-        {
-            //var dgv = dgv_CurrentAlarm;
-            ////先清除所有alarm
-            //dgv.Items.Clear();
-            ////取得alarmList
-            //var alarmList = app.objCacheManager.alarmList;
-            ////把alarm丟上去
-            //foreach(var alarm in alarmList)
-            //{
-            //    dgv.Items.Add(new string[] { alarm.EQ_ID, alarm.Unit_ID, alarm.RPT_dateTime, alarm.Code, alarm.level,
-            //    alarm.alarmStatus, alarm.alarmAffectCount, alarm.Description});
-            //}
         }
     }
 }

@@ -9,6 +9,7 @@ service manualPortGreeter {
 	// Sends a greeting
 	
 	rpc getAllManualPortInfo(Empty) returns (replyAllManualPortInfo);
+	rpc getAllEQPortInfo(Empty) returns (replyAllEQPortInfo);
 }
 
 message Empty { }
@@ -40,5 +41,12 @@ message manualPort {
 	string CarrierIdOfStage1=25;
 	string CarrierIdReadResult=26;
 	int32 CstTypes=27;
+	string AddressID=28;
 }
 message replyAllManualPortInfo { repeated manualPort manualPort_info = 1; }
+
+message EQPort{
+	string EQPortID=1;
+	string EQPortAddress=2;
+}
+message replyAllEQPortInfo{ repeated EQPort EQPort_info=1; }

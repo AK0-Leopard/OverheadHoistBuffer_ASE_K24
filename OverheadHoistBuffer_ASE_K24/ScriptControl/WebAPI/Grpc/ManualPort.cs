@@ -39,7 +39,7 @@ namespace com.mirle.ibg3k0.sc.WebAPI.Grpc
                 {
                     continue;
                 }
-
+                
                 var manual_port = port as MANUAL_PORTSTATION;
                 var temp = manual_port.getManualPortPLCInfo();
                 if (temp is null) continue;
@@ -73,9 +73,25 @@ namespace com.mirle.ibg3k0.sc.WebAPI.Grpc
                 data.LoadPosition5 = temp.LoadPosition5;
                 data.ManualPortId = port.PORT_ID;
                 data.RunEnable = temp.RunEnable;
+                data.AddressID = port.ADR_ID;
                 #endregion
 
                 result.ManualPortInfo.Add(data);
+            }
+            return Task.FromResult(result);
+        }
+        public override Task<replyAllEQPortInfo> getAllEQPortInfo(Empty empty, ServerCallContext context)
+        {
+            replyAllEQPortInfo result = new replyAllEQPortInfo();
+            foreach (var port in app.PortStationBLL.OperateCatch.loadPortStations())
+            {
+                if(port.IsEqPort(app.EquipmentBLL))
+                {
+                    EQPort eqPort = new EQPort();
+                    eqPort.EQPortAddress = port.ADR_ID;
+                    eqPort.EQPortID = port.PORT_ID;
+                    result.EQPortInfo.Add(eqPort);
+                }
             }
             return Task.FromResult(result);
         }

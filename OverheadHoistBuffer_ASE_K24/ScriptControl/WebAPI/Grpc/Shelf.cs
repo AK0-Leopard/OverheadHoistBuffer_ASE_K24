@@ -28,6 +28,28 @@ namespace com.mirle.ibg3k0.sc.WebAPI.Grpc
                 temp.ShelfId = shelfData.ShelfID;
                 temp.ZoneId = shelfData.ZoneID;
                 temp.AdrId = shelfData.ADR_ID;
+                #region shelf status
+                switch(shelfData.ShelfState)
+                {
+                    case "E":
+                        temp.ShelfStatus = shelfStatus.Empty;
+                        break;
+                    case "S":
+                        temp.ShelfStatus = shelfStatus.Store;
+                        break;
+                    case "I":
+                        temp.ShelfStatus = shelfStatus.PreIn;
+                        break;
+                    case "O":
+                        temp.ShelfStatus = shelfStatus.PreOut;
+                        break;
+                    case "A":
+                        temp.ShelfStatus = shelfStatus.Alternate;
+                        break;
+                    default:
+                        break;
+                }
+                #endregion
                 result.ShelfInfo.Add(temp);
             }
             return Task.FromResult(result);
@@ -44,7 +66,28 @@ namespace com.mirle.ibg3k0.sc.WebAPI.Grpc
                 result.ShelfId = shelfDef.ShelfID;
                 result.ZoneId = shelfDef.ZoneID;
                 result.AdrId = shelfDef.ADR_ID;
-
+                #region shelf status
+                switch (shelfDef.ShelfState)
+                {
+                    case "E":
+                        result.ShelfStatus = shelfStatus.Empty;
+                        break;
+                    case "S":
+                        result.ShelfStatus = shelfStatus.Store;
+                        break;
+                    case "I":
+                        result.ShelfStatus = shelfStatus.PreIn;
+                        break;
+                    case "O":
+                        result.ShelfStatus = shelfStatus.PreOut;
+                        break;
+                    case "A":
+                        result.ShelfStatus = shelfStatus.Alternate;
+                        break;
+                    default:
+                        break;
+                }
+                #endregion
             }
             catch (Exception ex)
             {
@@ -61,20 +104,45 @@ namespace com.mirle.ibg3k0.sc.WebAPI.Grpc
         {
             replyAllShelfInfo result = new replyAllShelfInfo();
             //var allShelfData = app.ShelfDefDao.LoadShelfDef(DBConnection_EF.GetUContext());
+            var allShelfData = app.ShelfDefBLL.LoadShelf();
             DateTime userLastUpdateTime = DateTime.FromBinary(dataTime.Datetime);//這邊是client告訴我們他最後更新的時間
-            string s_user_last_update_time = userLastUpdateTime.ToString(sc.App.SCAppConstants.TimestampFormat_19);
-            var allShelfData = app.ShelfDefBLL.loadHasChangeShelfDefByAfterDateTime(s_user_last_update_time);
-            if (allShelfData == null || allShelfData.Count == 0)
-                return Task.FromResult(result);
+            DateTime dataLastUpdateTime;
             foreach (var shelfData in allShelfData)
             {
-                shelf temp = new shelf();
-                temp.BoxId = shelfData.CSTID;
-                temp.Enable = (shelfData.Enable == "Y") ? true : false;
-                temp.ShelfId = shelfData.ShelfID;
-                temp.ZoneId = shelfData.ZoneID;
-                temp.AdrId = shelfData.ADR_ID;
-                result.ShelfInfo.Add(temp);
+                dataLastUpdateTime = DateTime.FromBinary(Convert.ToInt64(shelfData.TrnDT));
+                //if(userLastUpdateTime > dataLastUpdateTime)
+                if (true)
+                {
+                    shelf temp = new shelf();
+                    temp.BoxId = shelfData.CSTID;
+                    temp.Enable = (shelfData.Enable == "Y") ? true : false;
+                    temp.ShelfId = shelfData.ShelfID;
+                    temp.ZoneId = shelfData.ZoneID;
+                    temp.AdrId = shelfData.ADR_ID;
+                    #region shelf status
+                    switch (shelfData.ShelfState)
+                    {
+                        case "E":
+                            temp.ShelfStatus = shelfStatus.Empty;
+                            break;
+                        case "S":
+                            temp.ShelfStatus = shelfStatus.Store;
+                            break;
+                        case "I":
+                            temp.ShelfStatus = shelfStatus.PreIn;
+                            break;
+                        case "O":
+                            temp.ShelfStatus = shelfStatus.PreOut;
+                            break;
+                        case "A":
+                            temp.ShelfStatus = shelfStatus.Alternate;
+                            break;
+                        default:
+                            break;
+                    }
+                    #endregion
+                    result.ShelfInfo.Add(temp);
+                }
             }
             return Task.FromResult(result);
         }
