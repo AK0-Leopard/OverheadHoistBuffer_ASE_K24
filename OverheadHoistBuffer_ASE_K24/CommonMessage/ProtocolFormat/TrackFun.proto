@@ -47,7 +47,7 @@ enum TrackBlock
     TrackBlock_NonBlock=2;
 }
 message ReplyTracksInfo { repeated TrackInfo tracks_info = 1; }
-message TrackInfo { string track_id = 1; TrackDir dir = 2; TrackStatus status = 3; int32 alarmCode=4; bool Alive=5; TrackBlock isBlock=6;}
+message TrackInfo { string track_id = 1; TrackDir dir = 2; TrackStatus status = 3; int32 alarmCode=4; bool Alive=5; TrackBlock isBlock=6; bool autoChangeTrack=7; TrackDir autoChangeTrackDir=8;}
 
 // The request message containing the user's name.
 message HelloRequest {string name = 1;}
