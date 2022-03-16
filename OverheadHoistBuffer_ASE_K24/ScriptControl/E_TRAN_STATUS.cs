@@ -15,9 +15,9 @@ namespace com.mirle.ibg3k0.sc
     {
         Queue = 1,
         Transferring = 2,
-        Aborting = 5,
-        Canceling = 4,
         Paused = 3,
+        Canceling = 4,
+        Aborting = 5,
         TransferCompleted = 6
     }
 }

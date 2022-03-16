@@ -34,6 +34,10 @@ namespace com.mirle.ibg3k0.sc.BLL._191204Test.Extensions
         {
             return type == UnitType.SHELF;
         }
+        public static bool IsEQPort(this UnitType type)
+        {
+            return type == UnitType.EQ;
+        }
 
     }
 }

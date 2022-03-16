@@ -6486,14 +6486,14 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
             }
         }
-        public void ForcedEndCmd(ACMD_MCS cmdData)
+        private void ForcedEndCmd(ACMD_MCS cmdData)
         {
             scApp.CMDBLL.updateCMD_MCS_TranStatus(cmdData.CMD_ID, E_TRAN_STATUS.TransferCompleted);
             scApp.ReportBLL.ReportTransferAbortInitiated(cmdData.CMD_ID);
             scApp.ReportBLL.ReportTransferAbortCompleted(cmdData.CMD_ID);
 
         }
-        public void ForcedEndCmdByCancelingOrAborting(ACMD_MCS cmdData)
+        private void ForcedEndCmdByCancelingOrAborting(ACMD_MCS cmdData)
         {
             AVEHICLE vehicle = scApp.VehicleService.GetVehicleDataByVehicleID(cmdData.CRANE.Trim());
 
@@ -10967,9 +10967,9 @@ namespace com.mirle.ibg3k0.sc.Service
         }
 
         #endregion disconnection alarm handler
-    } 
+    }
 
-    public partial class TransferService : IVehicleTransferHandler , IManualPortTransferService
+    public partial class TransferService : IVehicleTransferHandler, IManualPortTransferService
     {
         public void CommandCompleteByAbort(string vhID, string finishCommandID)
         {
@@ -11285,6 +11285,22 @@ namespace com.mirle.ibg3k0.sc.Service
             }
 
             return (is_continue, rename_box);
+        }
+
+        public bool tryCancelMCSCmd(ACMD_MCS cmdMCS)
+        {
+            try
+            {
+                bool is_success = false;
+                reportBLL.ReportOperatorInitiatedAction(cmdMCS.CMD_ID, reportMCSCommandType.Cancel.ToString());
+                is_success = scApp.VehicleService.doCancelOrAbortCommandByMCSCmdID(cmdMCS.CMD_ID, CMDCancelType.CmdCancel);
+                return is_success;
+            }
+            catch(Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "tryCancelMCSCmd");
+                return false;
+            }
         }
     }
 }
