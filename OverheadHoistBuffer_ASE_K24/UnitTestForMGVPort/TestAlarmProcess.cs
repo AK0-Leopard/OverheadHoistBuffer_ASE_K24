@@ -35,8 +35,9 @@ namespace UnitTestForMGVPort
             var cassetteDataBll = Substitute.For<IManualPortCassetteDataBLL>();
             var commandBll = Substitute.For<IManualPortCMDBLL>();
             var alarmBLL = Substitute.For<IManualPortAlarmBLL>();
+            var tranService = Substitute.For<IManualPortTransferService>();
 
-            return new NStubObject(stubManualPortValueDefMapAction, reportBll, portBll, shelfBll, cassetteDataBll, commandBll, alarmBLL);
+            return new NStubObject(stubManualPortValueDefMapAction, reportBll, portBll, shelfBll, cassetteDataBll, commandBll, alarmBLL, tranService);
         }
 
         private ManualPortPLCInfo GetNormalInModePortInfo(string carrierId)
@@ -208,7 +209,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL,stub.TransferService);
             var portInfo = GetAlarmInModePortInfo(_alarmCode, carrierId: "");
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
             var alarmInfo = GetAlarmSetInfo(E_ALARM_LVL.Error, _alarmCode, commandId: "");
@@ -225,7 +226,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var carrierId = "A";
             var portInfo = GetAlarmInModePortInfo(_alarmCode, carrierId);
             var carrierOnPort = GetCarrierOnThisManualPort(carrierId);
@@ -245,7 +246,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var portInfo = GetAlarmOutModePortInfo(_alarmCode, carrierId: "");
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
             var alarmInfo = GetAlarmSetInfo(E_ALARM_LVL.Error, _alarmCode, commandId: "");
@@ -262,7 +263,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var carrierId = "A";
             var portInfo = GetAlarmOutModePortInfo(_alarmCode, carrierId);
             var carrierOnPort = GetCarrierOnThisManualPort(carrierId);
@@ -287,7 +288,7 @@ namespace UnitTestForMGVPort
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
             var alarmBLL = new StubAlarmBLL();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, alarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, alarmBLL, stub.TransferService);
             var portInfo = GetNormalInModePortInfo(carrierId: "");
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
             var alarmInfo = GetAlarmClearInfo(E_ALARM_LVL.Error, _alarmCode, commandId: "");
@@ -305,7 +306,7 @@ namespace UnitTestForMGVPort
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
             var alarmBLL = new StubAlarmBLL();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, alarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, alarmBLL, stub.TransferService);
             var portInfo = GetNormalOutModePortInfo(carrierId: "");
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
             var alarmInfo = GetAlarmClearInfo(E_ALARM_LVL.Error, _alarmCode, commandId: "");
@@ -326,7 +327,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var portInfo = GetWarningInModePortInfo(_alarmCode, carrierId: "");
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
             var alarmInfo = GetAlarmSetInfo(E_ALARM_LVL.Warn, _alarmCode, commandId: "");
@@ -343,7 +344,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var portInfo = GetWarningOutModePortInfo(_alarmCode, carrierId: "");
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
             var alarmInfo = GetAlarmSetInfo(E_ALARM_LVL.Warn, _alarmCode, commandId: "");
@@ -365,7 +366,7 @@ namespace UnitTestForMGVPort
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
             var alarmBLL = new StubAlarmBLL();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, alarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, alarmBLL, stub.TransferService);
             var portInfo = GetNormalInModePortInfo(carrierId: "");
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
             var alarmInfo = GetAlarmClearInfo(E_ALARM_LVL.Warn, _alarmCode, commandId: "");
@@ -383,7 +384,7 @@ namespace UnitTestForMGVPort
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
             var alarmBLL = new StubAlarmBLL();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, alarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, alarmBLL, stub.TransferService);
             var portInfo = GetNormalOutModePortInfo(carrierId: "");
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out var _).Returns(false);
             var alarmInfo = GetAlarmClearInfo(E_ALARM_LVL.Warn, _alarmCode, commandId: "");

@@ -1093,6 +1093,7 @@
     <Compile Include="Service\BlockControlService.cs" />
     <Compile Include="Service\EmptyBoxHandlerService.cs" />
     <Compile Include="Service\FailOverService.cs" />
+    <Compile Include="Service\Interface\IManualPortTransferService.cs" />
     <Compile Include="Service\Interface\IManualPortControlService.cs" />
     <Compile Include="Service\Interface\IManualPortEventService.cs" />
     <Compile Include="Service\Interface\IVehicleTransferHandler.cs" />

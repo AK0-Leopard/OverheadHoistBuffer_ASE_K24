@@ -11,6 +11,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using static com.mirle.ibg3k0.sc.ACMD_MCS;
 
 namespace com.mirle.ibg3k0.sc.Service
@@ -29,6 +30,7 @@ namespace com.mirle.ibg3k0.sc.Service
         private IManualPortDefBLL portDefBLL;
         private IManualPortShelfDefBLL shelfDefBLL;
         private IManualPortCassetteDataBLL cassetteDataBLL;
+        private IManualPortTransferService transferService;
 
         private const string LITE_CASSETTE = "LC";
         private const string FOUP = "BE";
@@ -47,7 +49,8 @@ namespace com.mirle.ibg3k0.sc.Service
                           IManualPortShelfDefBLL shelfDefBLL,
                           IManualPortCassetteDataBLL cassetteDataBLL,
                           IManualPortCMDBLL commandBLL,
-                          IManualPortAlarmBLL alarmBLL)
+                          IManualPortAlarmBLL alarmBLL,
+                          IManualPortTransferService transferService)
         {
             this.reportBll = reportBll;
             this.portDefBLL = portDefBLL;
@@ -55,6 +58,7 @@ namespace com.mirle.ibg3k0.sc.Service
             this.cassetteDataBLL = cassetteDataBLL;
             this.commandBLL = commandBLL;
             this.alarmBLL = alarmBLL;
+            this.transferService = transferService;
 
             WriteLog($"ManualPortEventService Start");
 
@@ -415,18 +419,27 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (commandBLL.GetCommandByBoxId(duplicateCarrierData.BOXID, out var command))
             {
-                WriteEventLog($"{logTitle} Duplicate carrier has command [{command.CMD_ID}] now.");
+                bool is_excute_normal_duplocate = duplicatePort.ToUnitType().IsEQPort() &&
+                                                  IsExcuteNormalDuplicateProcess(logTitle, duplicateCarrierData, command);
+                if (is_excute_normal_duplocate)
+                {
+                    //not thing...
+                }
+                else
+                {
+                    WriteEventLog($"{logTitle} Duplicate carrier has command [{command.CMD_ID}] now.");
 
-                var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
-                cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
-                WriteEventLog($"{logTitle} Install cassette data [{unknownId}] Type[{info.CarrierType}] at this port.");
+                    var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
+                    cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
+                    WriteEventLog($"{logTitle} Install cassette data [{unknownId}] Type[{info.CarrierType}] at this port.");
 
-                cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
+                    cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
 
-                ReportIDRead(logTitle, cassetteData, isDuplicate: true);
-                ReportWaitIn(logTitle, cassetteData);
+                    ReportIDRead(logTitle, cassetteData, isDuplicate: true);
+                    ReportWaitIn(logTitle, cassetteData);
+                    return;
+                }
 
-                return;
             }
 
             cassetteDataBLL.Delete(duplicateCarrierData.BOXID);
@@ -444,6 +457,75 @@ namespace com.mirle.ibg3k0.sc.Service
             ReportForcedCarrierRemove(logTitle, duplicateCarrierData);
 
             ReportWaitIn(logTitle, cassetteData2);
+        }
+
+        const int MAX_WAITTING_CANCEL_TIME_WHEN_DUPLICATE_HAPPEND_MS = 30_000;
+        private bool IsExcuteNormalDuplicateProcess(string logTitle, CassetteData duplicateCarrierData, ACMD_MCS command)
+        {
+            WriteEventLog($"{logTitle} cst: [{duplicateCarrierData.BOXID}] is duplicate .");
+
+            if (command.IsQueue)
+            {
+                WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)} in queue, direct force finish it.");
+
+                var result = transferService.ForceFinishMCSCmd
+                    (command, duplicateCarrierData, nameof(IsExcuteNormalDuplicateProcess), ACMD_MCS.ResultCode.OtherErrors);
+                return sc.Common.SCUtility.isMatche(result, "OK");
+            }
+            else
+            {
+                if (!command.IsLoadArriveBefore)
+                {
+                    WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, 但狀態已經在load arrive 之後,不進行處理");
+                    return false;
+                }
+                WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,準備將其結束命令...");
+
+                bool is_sned_cancel_success = transferService.tryCancelMCSCmd(command);
+                if (is_sned_cancel_success)
+                {
+                    //開始等待命令結束...
+                    bool is_cmd_cancel_complete = SpinWait.SpinUntil(() => isCancelSuccess(command.CMD_ID),
+                                                                           MAX_WAITTING_CANCEL_TIME_WHEN_DUPLICATE_HAPPEND_MS);
+                    if (is_cmd_cancel_complete)
+                    {
+                        WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,等待結束命令完成。");
+                        return true;
+                    }
+                    else
+                    {
+                        WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,等待結束命令超時。");
+                        return false;
+                    }
+                }
+                else
+                {
+                    WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,結束命令失敗");
+                    return false;
+                }
+            }
+        }
+        private bool isCancelSuccess(string cmdMCSID)
+        {
+            string cmd_mcs_id = sc.Common.SCUtility.Trim(cmdMCSID, true);
+            bool try_get_success = ACMD_MCS.MCS_CMD_InfoList.TryGetValue(cmd_mcs_id, out var waittingCancelCmd);
+            if (try_get_success)
+            {
+                if (waittingCancelCmd.TRANSFERSTATE == E_TRAN_STATUS.TransferCompleted)
+                {
+                    return true;
+                }
+                else
+                {
+                    SpinWait.SpinUntil(() => false, 1_000);
+                    return false;
+                }
+            }
+            else
+            {
+                //代表命令已經結束
+                return true;
+            }
         }
 
         private void WaitInDuplicateAtOhtProcess(string logTitle, string portName, ManualPortPLCInfo info, CassetteData duplicateCarrierData)

@@ -32,8 +32,9 @@ namespace UnitTestForMGVPort
             var cassetteDataBll = Substitute.For<IManualPortCassetteDataBLL>();
             var commandBll = Substitute.For<IManualPortCMDBLL>();
             var alarmBLL = Substitute.For<IManualPortAlarmBLL>();
+            var transferService = Substitute.For<IManualPortTransferService>();
 
-            return new NStubObject(stubManualPortValueDefMapAction, reportBll, portBll, shelfBll, cassetteDataBll, commandBll, alarmBLL);
+            return new NStubObject(stubManualPortValueDefMapAction, reportBll, portBll, shelfBll, cassetteDataBll, commandBll, alarmBLL, transferService);
         }
 
         private ManualPortPLCInfo GetInModePortHasNoCarrierInfo()
@@ -127,7 +128,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var carrierId = "A";
             var info = GetInModePortHasCarrierInfo(carrierId);
 
@@ -144,7 +145,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var carrierId = "A";
             var info = GetOutModePortHasCarrierInfo(carrierId);
 
@@ -161,7 +162,7 @@ namespace UnitTestForMGVPort
         {
             var stub = GetStubObject();
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var carrierId = "A";
             var carrierDataOnPort = GetCarrierOnThisManualPort(carrierId);
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out Arg.Any<CassetteData>()).Returns(c => { c[2] = carrierDataOnPort; return true; });
@@ -182,7 +183,7 @@ namespace UnitTestForMGVPort
             var stub = GetStubObject();
 
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var info = GetInModePortHasNoCarrierInfo();
 
             stub.ManualPortValueDefMapAction.OnLoadPresenceChanged += Raise.Event<ManualPortEventHandler>(this, new ManualPortEventArgs(info));
@@ -199,7 +200,7 @@ namespace UnitTestForMGVPort
             var stub = GetStubObject();
 
             IManualPortEventService manualPortService = new ManualPortEventService();
-            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL);
+            manualPortService.Start(stub.ManualPortValueDefMapActions, stub.ReportBLL, stub.PortDefBLL, stub.ShelfDefBLL, stub.CassetteDataBLL, stub.CommandBLL, stub.AlarmBLL, stub.TransferService);
             var carrierId = "A";
             var carrierDataOnPort = GetCarrierOnThisManualPort(carrierId);
             stub.CassetteDataBLL.GetCarrierByPortName(_portName, stage: 1, out Arg.Any<CassetteData>()).Returns(c => { c[2] = carrierDataOnPort; return true; });
