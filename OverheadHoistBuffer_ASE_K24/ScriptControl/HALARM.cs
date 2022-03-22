@@ -19,8 +19,8 @@ namespace com.mirle.ibg3k0.sc
         public System.DateTime RPT_DATE_TIME { get; set; }
         public Nullable<System.DateTime> END_TIME { get; set; }
         public string ALAM_CODE { get; set; }
-        public E_ALARM_LVL ALAM_LVL { get; set; }
-        public com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.ErrorStatus ALAM_STAT { get; set; }
+        public int ALAM_LVL { get; set; }
+        public int ALAM_STAT { get; set; }
         public string ALAM_DESC { get; set; }
         public string ERROR_ID { get; set; }
         public string UnitID { get; set; }

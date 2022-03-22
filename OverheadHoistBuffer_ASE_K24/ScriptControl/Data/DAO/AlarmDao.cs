@@ -338,8 +338,8 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 HALARM halarm = new HALARM();
                 halarm.ALAM_CODE = alarm.ALAM_CODE;
                 halarm.ALAM_DESC = alarm.ALAM_DESC;
-                halarm.ALAM_LVL = alarm.ALAM_LVL;
-                halarm.ALAM_STAT = alarm.ALAM_STAT;
+                halarm.ALAM_LVL = Convert.ToInt32(alarm.ALAM_LVL);
+                halarm.ALAM_STAT = Convert.ToInt32(alarm.ALAM_STAT);
                 halarm.CMD_ID = alarm.CMD_ID;
                 halarm.END_TIME = alarm.END_TIME;
                 halarm.EQPT_ID = alarm.EQPT_ID;
