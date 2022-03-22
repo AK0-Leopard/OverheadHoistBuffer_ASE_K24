@@ -159,7 +159,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     var publish_alarm = new AK0.ProtocolFormat.VehicleControlPublishMessage.alarm();
                     publish_alarm.EQID = alarm.EQPT_ID;
                     publish_alarm.UnitID = alarm.UnitID;
-                    publish_alarm.RPTDateTime = alarm.RPT_DATE_TIME;
+                    publish_alarm.RPTDateTime = alarm.RPT_DATE_TIME.ToString("yyyyMMddHHmmssfffff");
                     publish_alarm.Code = alarm.ALAM_CODE;
                     publish_alarm.Level = alarm.ALAM_LVL.ToString();
                     //publish_alarm.AlarmStatus = alarm.ALAM_STAT;

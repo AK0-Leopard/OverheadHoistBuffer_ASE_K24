@@ -170,7 +170,7 @@ namespace UnitTestForMGVPort
             alarm.CMD_ID = commandId;
             alarm.ALAM_LVL = level;
             alarm.ALAM_STAT = ErrorStatus.ErrSet;
-            alarm.END_TIME = "";
+            alarm.END_TIME = null;
 
             return alarm;
         }
@@ -185,7 +185,7 @@ namespace UnitTestForMGVPort
             alarm.CMD_ID = commandId;
             alarm.ALAM_LVL = level;
             alarm.ALAM_STAT = ErrorStatus.ErrReset;
-            alarm.END_TIME = DateTime.Now.ToString();
+            alarm.END_TIME = DateTime.Now;
 
             return alarm;
         }

@@ -1132,6 +1132,9 @@
     </Compile>
     <Compile Include="ValueHandler\ProcessDataValueHandler.cs" />
     <Compile Include="ValueHandler\ValueHandlerBase.cs" />
+    <Compile Include="VHCMD_OHTC_MCS.cs">
+      <DependentUpon>OHTCContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="VSECTION_100.cs">
       <DependentUpon>OHTCContext.tt</DependentUpon>
     </Compile>
@@ -1281,6 +1284,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docs\" />
+    <Folder Include="SQLFile\" />
     <Folder Include="ValueHandler\Vo\" />
   </ItemGroup>
   <ItemGroup>
