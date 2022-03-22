@@ -341,11 +341,11 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 halarm.ALAM_LVL = alarm.ALAM_LVL;
                 halarm.ALAM_STAT = alarm.ALAM_STAT;
                 halarm.CMD_ID = alarm.CMD_ID;
-                halarm.END_TIME = DateTime.ParseExact(alarm.END_TIME, "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture);
+                halarm.END_TIME = alarm.END_TIME;
                 halarm.EQPT_ID = alarm.EQPT_ID;
                 halarm.ERROR_ID = alarm.ERROR_ID;
                 halarm.RecoveryOption = alarm.RecoveryOption;
-                halarm.RPT_DATE_TIME = DateTime.ParseExact(alarm.RPT_DATE_TIME, "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture);
+                halarm.RPT_DATE_TIME = alarm.RPT_DATE_TIME;
                 halarm.UnitID = alarm.UnitID;
                 halarm.UnitState = alarm.UnitState;
                 halarm.UNIT_NUM = alarm.UNIT_NUM;

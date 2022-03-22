@@ -80,6 +80,7 @@
         <EntityTypeShape EntityType="OHTC_DevModel.HALARM" Width="1.5" PointX="13.375" PointY="29.75" />
         <EntityTypeShape EntityType="OHTC_DevModel.VACMD_MCS" Width="1.5" PointX="27.375" PointY="21.75" />
         <EntityTypeShape EntityType="OHTC_DevModel.VSECTION_100" Width="1.5" PointX="27.375" PointY="27.75" />
+        <EntityTypeShape EntityType="OHTC_DevModel.VHCMD_OHTC_MCS" Width="1.5" PointX="15.375" PointY="29.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

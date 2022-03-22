@@ -100,5 +100,6 @@ namespace com.mirle.ibg3k0.sc
         public virtual DbSet<HALARM> HALARM { get; set; }
         public virtual DbSet<VACMD_MCS> VACMD_MCS { get; set; }
         public virtual DbSet<VSECTION_100> VSECTION_100 { get; set; }
+        public virtual DbSet<VHCMD_OHTC_MCS> VHCMD_OHTC_MCS { get; set; }
     }
 }
