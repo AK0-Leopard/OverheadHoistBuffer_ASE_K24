@@ -419,28 +419,19 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (commandBLL.GetCommandByBoxId(duplicateCarrierData.BOXID, out var command))
             {
-                bool is_excute_normal_duplocate = duplicatePort.ToUnitType().IsEQPort() &&
-                                                  IsExcuteNormalDuplicateProcess(logTitle, duplicateCarrierData, command);
-                if (is_excute_normal_duplocate)
-                {
-                    //not thing...
-                }
-                else
-                {
-                    WriteEventLog($"{logTitle} Duplicate carrier has command [{command.CMD_ID}] now.");
+                WriteEventLog($"{logTitle} Duplicate carrier has command [{command.CMD_ID}] now.");
 
-                    var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
-                    cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
-                    WriteEventLog($"{logTitle} Install cassette data [{unknownId}] Type[{info.CarrierType}] at this port.");
+                var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
+                cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
+                WriteEventLog($"{logTitle} Install cassette data [{unknownId}] Type[{info.CarrierType}] at this port.");
 
-                    cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
+                cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
 
-                    ReportIDRead(logTitle, cassetteData, isDuplicate: true);
-                    ReportWaitIn(logTitle, cassetteData);
-                    return;
-                }
-
+                ReportIDRead(logTitle, cassetteData, isDuplicate: true);
+                ReportWaitIn(logTitle, cassetteData);
+                return;
             }
+
 
             cassetteDataBLL.Delete(duplicateCarrierData.BOXID);
             WriteEventLog($"{logTitle} Delete duplicate cassette data [{duplicateCarrierData.BOXID}].");
