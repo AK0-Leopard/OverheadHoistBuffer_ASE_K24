@@ -1264,6 +1264,8 @@
       <LastGenOutput>OHTCContext.cs</LastGenOutput>
       <DependentUpon>OHTCContext.edmx</DependentUpon>
     </Content>
+    <Content Include="SQLFile\[2022_04_01] K24 View調整.sql" />
+    <Content Include="SQLFile\[2022_03_22] K24 View Create.sql" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -1284,7 +1286,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docs\" />
-    <Folder Include="SQLFile\" />
     <Folder Include="ValueHandler\Vo\" />
   </ItemGroup>
   <ItemGroup>
