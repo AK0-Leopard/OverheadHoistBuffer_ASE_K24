@@ -311,16 +311,11 @@
           <Property Name="STATUS" Type="int" Nullable="false" />
           <Property Name="IS_PASUE" Type="bit" Nullable="false" />
         </EntityType>
-        <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'OHBC_ASE_K24_v1.dbo.ALARM' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="ALARM">
           <Key>
             <PropertyRef Name="EQPT_ID" />
             <PropertyRef Name="UNIT_NUM" />
             <PropertyRef Name="RPT_DATE_TIME" />
-            
-            
-            
           </Key>
           <Property Name="EQPT_ID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="UNIT_NUM" Type="int" Nullable="false" />
@@ -1395,6 +1390,7 @@
           <EntitySet Name="AHIDZONEDETAIL" EntityType="Self.AHIDZONEDETAIL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AHIDZONEMASTER" EntityType="Self.AHIDZONEMASTER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AHIDZONEQUEUE" EntityType="Self.AHIDZONEQUEUE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ALARM" EntityType="Self.ALARM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ALARMRPTCOND" EntityType="Self.ALARMRPTCOND" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ALINE" EntityType="Self.ALINE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ALOT" EntityType="Self.ALOT" Schema="dbo" store:Type="Tables" />
@@ -1443,23 +1439,6 @@
           <EntitySet Name="UASUSR" EntityType="Self.UASUSR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UASUSRGRP" EntityType="Self.UASUSRGRP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ZoneDef" EntityType="Self.ZoneDef" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ALARM" EntityType="Self.ALARM" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ALARM].[EQPT_ID] AS [EQPT_ID], 
-    [ALARM].[UNIT_NUM] AS [UNIT_NUM], 
-    [ALARM].[RPT_DATE_TIME] AS [RPT_DATE_TIME], 
-    [ALARM].[END_TIME] AS [END_TIME], 
-    [ALARM].[ALAM_CODE] AS [ALAM_CODE], 
-    [ALARM].[ALAM_LVL] AS [ALAM_LVL], 
-    [ALARM].[ALAM_STAT] AS [ALAM_STAT], 
-    [ALARM].[ALAM_DESC] AS [ALAM_DESC], 
-    [ALARM].[ERROR_ID] AS [ERROR_ID], 
-    [ALARM].[UnitID] AS [UnitID], 
-    [ALARM].[UnitState] AS [UnitState], 
-    [ALARM].[RecoveryOption] AS [RecoveryOption], 
-    [ALARM].[CMD_ID] AS [CMD_ID]
-    FROM [dbo].[ALARM] AS [ALARM]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="ALARMMAP" EntityType="Self.ALARMMAP" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ALARMMAP].[EQPT_ID] AS [EQPT_ID], 
@@ -1636,9 +1615,9 @@
           <EntitySet Name="HCMD_MCS" EntityType="OHTC_DevModel.HCMD_MCS" />
           <EntitySet Name="HCMD_OHTC" EntityType="OHTC_DevModel.HCMD_OHTC" />
           <EntitySet Name="VSECTION_100" EntityType="OHTC_DevModel.VSECTION_100" />
-          <EntitySet Name="HALARM" EntityType="OHTC_DevModel.HALARM" />
           <EntitySet Name="VACMD_MCS" EntityType="OHTC_DevModel.VACMD_MCS" />
           <EntitySet Name="VHCMD_OHTC_MCS" EntityType="OHTC_DevModel.VHCMD_OHTC_MCS" />
+          <EntitySet Name="HALARM" EntityType="OHTC_DevModel.HALARM" />
         </EntityContainer>
         <EntityType Name="ABASEDATA_VER">
           <Key>
@@ -3046,26 +3025,6 @@
           <Property Name="AREA_SECSOR" Type="Int32" />
           <Property Name="LAST_TECH_TIME" Type="DateTime" Precision="7" />
         </EntityType>
-        <EntityType Name="HALARM">
-          <Key>
-            <PropertyRef Name="EQPT_ID" />
-            <PropertyRef Name="UNIT_NUM" />
-            <PropertyRef Name="RPT_DATE_TIME" />
-          </Key>
-          <Property Name="EQPT_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="UNIT_NUM" Type="Int32" Nullable="false" />
-          <Property Name="RPT_DATE_TIME" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="END_TIME" Type="DateTime" Precision="7" />
-          <Property Name="ALAM_CODE" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
-          <Property Name="ALAM_LVL" Type="Int32" Nullable="false" />
-          <Property Name="ALAM_STAT" Type="Int32" Nullable="false" />
-          <Property Name="ALAM_DESC" Type="String" MaxLength="128" FixedLength="true" Unicode="false" />
-          <Property Name="ERROR_ID" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
-          <Property Name="UnitID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="UnitState" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="RecoveryOption" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="CMD_ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="VACMD_MCS">
           <Key>
             <PropertyRef Name="CMD_ID" />
@@ -3123,6 +3082,26 @@
           <Property Name="OHTC_CMD_TYPE" Type="Int32" Nullable="false" />
           <Property Name="OHTC_CMD_START_TIME" Type="DateTime" Precision="7" />
           <Property Name="OHTC_CMD_END_TIME" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="HALARM">
+          <Key>
+            <PropertyRef Name="EQPT_ID" />
+            <PropertyRef Name="UNIT_NUM" />
+            <PropertyRef Name="RPT_DATE_TIME" />
+          </Key>
+          <Property Name="EQPT_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UNIT_NUM" Type="Int32" Nullable="false" />
+          <Property Name="RPT_DATE_TIME" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="END_TIME" Type="DateTime" Precision="7" />
+          <Property Name="ALAM_CODE" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="ALAM_LVL" Type="Int32" Nullable="false" />
+          <Property Name="ALAM_STAT" Type="Int32" Nullable="false" />
+          <Property Name="ALAM_DESC" Type="String" MaxLength="128" FixedLength="true" Unicode="false" />
+          <Property Name="ERROR_ID" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
+          <Property Name="UnitID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UnitState" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="RecoveryOption" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CMD_ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -4408,25 +4387,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="HALARM">
-            <EntityTypeMapping TypeName="OHTC_DevModel.HALARM">
-              <MappingFragment StoreEntitySet="HALARM">
-                <ScalarProperty Name="CMD_ID" ColumnName="CMD_ID" />
-                <ScalarProperty Name="RecoveryOption" ColumnName="RecoveryOption" />
-                <ScalarProperty Name="UnitState" ColumnName="UnitState" />
-                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
-                <ScalarProperty Name="ERROR_ID" ColumnName="ERROR_ID" />
-                <ScalarProperty Name="ALAM_DESC" ColumnName="ALAM_DESC" />
-                <ScalarProperty Name="ALAM_STAT" ColumnName="ALAM_STAT" />
-                <ScalarProperty Name="ALAM_LVL" ColumnName="ALAM_LVL" />
-                <ScalarProperty Name="ALAM_CODE" ColumnName="ALAM_CODE" />
-                <ScalarProperty Name="END_TIME" ColumnName="END_TIME" />
-                <ScalarProperty Name="RPT_DATE_TIME" ColumnName="RPT_DATE_TIME" />
-                <ScalarProperty Name="UNIT_NUM" ColumnName="UNIT_NUM" />
-                <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="VACMD_MCS">
             <EntityTypeMapping TypeName="OHTC_DevModel.VACMD_MCS">
               <MappingFragment StoreEntitySet="VACMD_MCS">
@@ -4467,6 +4427,25 @@
                 <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
                 <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />
                 <ScalarProperty Name="CMD_ID_MCS" ColumnName="CMD_ID_MCS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HALARM">
+            <EntityTypeMapping TypeName="OHTC_DevModel.HALARM">
+              <MappingFragment StoreEntitySet="HALARM">
+                <ScalarProperty Name="CMD_ID" ColumnName="CMD_ID" />
+                <ScalarProperty Name="RecoveryOption" ColumnName="RecoveryOption" />
+                <ScalarProperty Name="UnitState" ColumnName="UnitState" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="ERROR_ID" ColumnName="ERROR_ID" />
+                <ScalarProperty Name="ALAM_DESC" ColumnName="ALAM_DESC" />
+                <ScalarProperty Name="ALAM_STAT" ColumnName="ALAM_STAT" />
+                <ScalarProperty Name="ALAM_LVL" ColumnName="ALAM_LVL" />
+                <ScalarProperty Name="ALAM_CODE" ColumnName="ALAM_CODE" />
+                <ScalarProperty Name="END_TIME" ColumnName="END_TIME" />
+                <ScalarProperty Name="RPT_DATE_TIME" ColumnName="RPT_DATE_TIME" />
+                <ScalarProperty Name="UNIT_NUM" ColumnName="UNIT_NUM" />
+                <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
