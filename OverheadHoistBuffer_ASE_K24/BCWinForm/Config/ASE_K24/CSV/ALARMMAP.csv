@@ -323,6 +323,7 @@ CRANE,100016,1,OHT_QueueCmdTimeOut
 CRANE,100022,1,OHT_IDMismatchUNKU
 LINE,100015,1,OHT_IDLE_HasCMD_TimeOut
 LINE,100031,1,OHT_CommandNotFinishedInTime
+LINE,100016,1,Queue command time out
 TRACK,1,2,TrackAlarm_EMO_Error
 TRACK,2,2,TrackAlarm_Servo_No_On
 TRACK,3,2,TrackAlarm_Servo_NotGoHome
