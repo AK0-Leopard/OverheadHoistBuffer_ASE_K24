@@ -3,6 +3,9 @@ CRANE,14,2,Turning speed exceeded
 CRANE,15,2,Turn right speed exceeded
 CRANE,16,2,Turn left speed exceeded
 CRANE,20,2,Overspeed protection stop at the end of high speed
+CRANE,21,2,when move back but speed over -350mm/s so protect and stop
+CRANE,22,2,when move back but distance over -150mm so protect and stop
+CRANE,23,2,when speed command different from speed feedback over 550mm/s so protect and stop
 CRANE,87,2,The estimated distance is abnormal in the second repair of the arrival station
 CRANE,88,2,Wrong way protection stopped
 CRANE,89,2,Too big protection stops
@@ -119,8 +122,6 @@ CRANE,736,1,"Before PIO delivery, receive EQ and send HO_AVBL abnormal Lo"
 CRANE,737,1,"Before PIO is delivered, receive EQ and send ES exception"
 CRANE,738,1,"Before PIO release, receive EQ and send HO_AVBL abnormal Lo"
 CRANE,739,1,"Before PIO release, receive EQ and send ES exception"
-CRANE,741,2,Hoisting shaft_ The position of the object moved forward to the reading position is abnormal
-CRANE,742,2,Reading position before loading_the gripper has no cargo difference
 CRANE,743,2,Hoisting shaft_ Move to the reading position abnormally after picking up the object
 CRANE,744,2,Read the code position after picking up_the gripper has no cargo abnormality
 CRANE,745,2,Winch shaft_down to CST gear lever unlock position is abnormal
@@ -165,7 +166,7 @@ CRANE,826,2,Before opening the claw_cargo inspection abnormal
 CRANE,827,2,Before fetching and closing the paw_cargo inspection abnormal
 CRANE,828,2,"The hoist moves down,the gripper cst detection abnormality"
 CRANE,829,2,"The hoist moves up,the gripper cst detection abnormality"
-CRANE,831,2,"Before placing_the gripper cargo is detected abnormally"
+CRANE,831,2,Before placing_the gripper cargo is detected abnormally
 CRANE,832,2,"After picking up the goods, the gripper cargo is detected abnormally"
 CRANE,833,2,Before discharging_the gripper has no cargo abnormality
 CRANE,834,2,Before loading _ there is an abnormality in the gripper
@@ -188,6 +189,8 @@ CRANE,853,1,"when loading, type sensor and command's type is exception on left O
 CRANE,854,1,"when loading, type sensor and command's type is exception on right OHB"
 CRANE,855,2,"when loading, type sensor and command's type is persistent exception on left OHB"
 CRANE,856,2,"when loading, type sensor and command's type is persistent exception on right OHB"
+CRANE,857,2,when enter right cruve trigger sensor abnormal
+CRANE,858,2,when enter left cruve trigger sensor abnormal
 CRANE,861,2,_FOUP loading cover is abnormally falling off before loading
 CRANE,862,2,Before unloading _FOUP loading cover is abnormally falling off
 CRANE,863,2,"After loading, the FOUP loading cover is abnormally off"
@@ -323,6 +326,7 @@ CRANE,100016,1,OHT_QueueCmdTimeOut
 CRANE,100022,1,OHT_IDMismatchUNKU
 LINE,100015,1,OHT_IDLE_HasCMD_TimeOut
 LINE,100031,1,OHT_CommandNotFinishedInTime
+LINE,100016,1,Queue command time out
 TRACK,1,2,TrackAlarm_EMO_Error
 TRACK,2,2,TrackAlarm_Servo_No_On
 TRACK,3,2,TrackAlarm_Servo_NotGoHome
