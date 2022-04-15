@@ -167,6 +167,7 @@
           <Property Name="DESTINATION_ADR" Type="char" MaxLength="64" />
           <Property Name="BOX_ID" Type="char" MaxLength="64" />
           <Property Name="LOT_ID" Type="char" MaxLength="64" />
+          <Property Name="COMPLETE_STATUS" Type="int" />
         </EntityType>
         <EntityType Name="ACMD_OHTC_DETAIL">
           <Key>
@@ -1072,6 +1073,7 @@
           <Property Name="DESTINATION_ADR" Type="char" MaxLength="64" />
           <Property Name="BOX_ID" Type="char" MaxLength="64" />
           <Property Name="LOT_ID" Type="char" MaxLength="64" />
+          <Property Name="COMPLETE_STATUS" Type="int" />
         </EntityType>
         <EntityType Name="HOPERATION">
           <Key>
@@ -1916,6 +1918,7 @@
           <Property Name="BOX_ID" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Name="LOT_ID" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Name="CMD_INSER_TIME" Type="DateTime" Precision="7" />
+          <Property Name="COMPLETE_STATUS" Type="OHTC_DevModel.CompleteStatus" />
         </EntityType>
         <EntityType Name="ACEID">
           <Key>
@@ -2941,6 +2944,7 @@
           <Property Name="DESTINATION_ADR" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Name="BOX_ID" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Name="LOT_ID" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
+          <Property Name="COMPLETE_STATUS" Type="OHTC_DevModel.CompleteStatus" />
         </EntityType>
         <EntityType Name="VSECTION_100">
           <Key>
@@ -3103,6 +3107,7 @@
           <Property Name="RecoveryOption" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="CMD_ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EnumType Name="CompleteStatus" a:ExternalTypeName="com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.CompleteStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3313,6 +3318,7 @@
           <EntitySetMapping Name="ACMD_OHTC">
             <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ACMD_OHTC)">
               <MappingFragment StoreEntitySet="ACMD_OHTC">
+                <ScalarProperty Name="COMPLETE_STATUS" ColumnName="COMPLETE_STATUS" />
                 <ScalarProperty Name="CMD_ID" ColumnName="CMD_ID" />
                 <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />
                 <ScalarProperty Name="CMD_ID_MCS" ColumnName="CMD_ID_MCS" />
@@ -4311,6 +4317,7 @@
           <EntitySetMapping Name="HCMD_OHTC">
             <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.HCMD_OHTC)">
               <MappingFragment StoreEntitySet="HCMD_OHTC">
+                <ScalarProperty Name="COMPLETE_STATUS" ColumnName="COMPLETE_STATUS" />
                 <ScalarProperty Name="CMD_ID" ColumnName="CMD_ID" />
                 <ScalarProperty Name="CMD_INSER_TIME" ColumnName="CMD_INSER_TIME" />
                 <ScalarProperty Name="VH_ID" ColumnName="VH_ID" />

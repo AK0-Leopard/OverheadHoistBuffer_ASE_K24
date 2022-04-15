@@ -1320,7 +1320,8 @@ namespace com.mirle.ibg3k0.sc.Service
                         CassetteData cmdOHT_CSTdata = scApp.CassetteDataBLL.loadCassetteDataByBoxID(cmd.BOX_ID);
                         scApp.TransferService.ForceFinishMCSCmd(cmd_mcs, cmdOHT_CSTdata, "doSendOHxCCmdToVh");
                     }
-                    scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHT);
+                    //scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHT);
+                    scApp.CMDBLL.updateOHTCCommandToFinishByCmdID(cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHT, CompleteStatus.CmpStatusCommandInitailFail);
                 }
             }
             else
@@ -1335,7 +1336,8 @@ namespace com.mirle.ibg3k0.sc.Service
                     scApp.CMDBLL.updateCMD_MCS_CRANE(cmd.CMD_ID_MCS, "");
                     scApp.CMDBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID_MCS, E_TRAN_STATUS.Queue);
                 }
-                scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHTC);
+                //scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHTC);
+                scApp.CMDBLL.updateOHTCCommandToFinishByCmdID(cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHTC, CompleteStatus.CmpStatusCommandInitailFail);
             }
             return isSuccess;
         }
@@ -1793,6 +1795,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else
                 {
+
                 }
             }
             else
@@ -2760,7 +2763,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
                     isSuccess &= scApp.VehicleBLL.doTransferCommandFinish(eqpt.VEHICLE_ID, cmd_id, completeStatus);
-                    isSuccess &= scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd_id, ohtc_cmd_status);
+                    //isSuccess &= scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(cmd_id, ohtc_cmd_status);
+                    isSuccess &= scApp.CMDBLL.updateOHTCCommandToFinishByCmdID(cmd_id, ohtc_cmd_status, completeStatus);
                     isSuccess &= scApp.VIDBLL.initialVIDCommandInfo(eqpt.VEHICLE_ID);
 
                     if (completeStatus == CompleteStatus.CmpStatusVehicleAbort)
@@ -2772,7 +2776,8 @@ namespace com.mirle.ibg3k0.sc.Service
                             TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} 有預下cmd_ohtc_id:{SCUtility.Trim(check_result.cmd_ohtc.CMD_ID, true)}、cmd_mcs_id:{SCUtility.Trim(check_result.cmd_ohtc.CMD_ID_MCS, true)}，" +
                                                        $"開始進行命令結束...");
                             ACMD_OHTC queue_cmd = check_result.cmd_ohtc;
-                            scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(queue_cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHTC);
+                            //scApp.CMDBLL.updateCommand_OHTC_StatusByCmdID(queue_cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHTC);
+                            scApp.CMDBLL.updateOHTCCommandToFinishByCmdID(queue_cmd.CMD_ID, E_CMD_STATUS.AbnormalEndByOHTC, CompleteStatus.CmpStatusCommandInitailFail);
                             if (!SCUtility.isEmpty(queue_cmd.CMD_ID_MCS))
                             {
                                 ACMD_MCS pre_initial_cmd_mcs = scApp.CMDBLL.getCMD_MCSByID(queue_cmd.CMD_ID_MCS);
@@ -3853,7 +3858,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 Data: $"Process report {eventType}",
                 VehicleID: eqpt.VEHICLE_ID,
                 CarrierID: eqpt.CST_ID);
-
+                scApp.CMDBLL.updateCMD_OHTC_CompleteStatus(eqpt.OHTC_CMD, CompleteStatus.CmpStatusIddoubleStorage);
                 if (!SCUtility.isEmpty(eqpt.MCS_CMD))
                 {
                     bool retryOrAbort = true;
@@ -3887,6 +3892,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 VehicleID: eqpt.VEHICLE_ID,
                 CarrierID: eqpt.CST_ID);
 
+                scApp.CMDBLL.updateCMD_OHTC_CompleteStatus(eqpt.OHTC_CMD, CompleteStatus.CmpStatusIdemptyRetrival);
                 if (!SCUtility.isEmpty(eqpt.MCS_CMD))
                 {
                     bool retryOrAbort = true;
