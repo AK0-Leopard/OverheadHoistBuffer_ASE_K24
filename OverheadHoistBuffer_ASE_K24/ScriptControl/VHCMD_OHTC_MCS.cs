@@ -27,5 +27,6 @@ namespace com.mirle.ibg3k0.sc
         public int OHTC_CMD_TYPE { get; set; }
         public Nullable<System.DateTime> OHTC_CMD_START_TIME { get; set; }
         public Nullable<System.DateTime> OHTC_CMD_END_TIME { get; set; }
+        public Nullable<com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage.CompleteStatus> OHTC_COMPLETE_STATUS { get; set; }
     }
 }

@@ -1266,6 +1266,7 @@
     </Content>
     <Content Include="SQLFile\[2022_04_01] K24 View調整.sql" />
     <Content Include="SQLFile\[2022_03_22] K24 View Create.sql" />
+    <Content Include="SQLFile\[2022_04_15] View加入 CompleteStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
