@@ -66,6 +66,7 @@ namespace com.mirle.ibg3k0.sc
         /// </summary>
         public static UInt16 MAX_ALLOW_ACTION_TIME_SECOND { get; private set; } = 600;
         public static UInt16 MAX_ALLOW_BLOCKING_TIME_SECOND { get; private set; } = 30;
+        public static UInt16 MAX_ALLOW_OBSTACLING_TIME_SECOND { get; private set; } = 120;
 
         public event EventHandler<LocationChangeEventArgs> LocationChange;
         public event EventHandler<SegmentChangeEventArgs> SegmentChange;
@@ -75,12 +76,14 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler LongTimeNoCommuncation;
         public event EventHandler<string> LongTimeInaction;
         public event EventHandler LongTimeBlocking;
+        public event EventHandler LongTimeObstacling;
         public event EventHandler<VhStopSingle> ErrorStatusChange;
 
 
         VehicleTimerAction vehicleTimer = null;
         private Stopwatch CurrentCommandExcuteTime;
         public Stopwatch CurrentBlockingTime;
+        public Stopwatch CurrentObstaclingTime;
 
         public void onCommandComplete(CompleteStatus cmpStatus)
         {
@@ -106,6 +109,10 @@ namespace com.mirle.ibg3k0.sc
         {
             LongTimeBlocking?.Invoke(this, EventArgs.Empty);
         }
+        public void onLongTimeObstacling()
+        {
+            LongTimeObstacling?.Invoke(this, EventArgs.Empty);
+        }
         public void onErrorStatusChange(VhStopSingle vhStopSingle)
         {
             ErrorStatusChange?.Invoke(this, vhStopSingle);
@@ -127,7 +134,7 @@ namespace com.mirle.ibg3k0.sc
 
             CurrentCommandExcuteTime = new Stopwatch();
             CurrentBlockingTime = new Stopwatch();
-
+            CurrentObstaclingTime = new Stopwatch();
         }
 
         public void TimerActionStart()
@@ -169,6 +176,7 @@ namespace com.mirle.ibg3k0.sc
         private int assigncommandfailtimes = 0;
         public virtual bool isLongTimeInaction { get; private set; }
         public virtual bool isLongTimeBlocking { get; private set; }
+        public virtual bool isLongTimeObstacling { get; private set; }
         public virtual string isLongTimeInactionCMDID { get; private set; }
         public virtual int AssignCommandFailTimes
         {
@@ -1458,23 +1466,8 @@ namespace com.mirle.ibg3k0.sc
                             }
                             vh.isLongTimeInaction = false;
                         }
-                        double blocking_time = vh.CurrentBlockingTime.Elapsed.TotalSeconds;
-                        if (blocking_time > AVEHICLE.MAX_ALLOW_BLOCKING_TIME_SECOND)
-                        {
-                            if (!vh.isLongTimeBlocking)
-                            {
-                                vh.isLongTimeBlocking = true;
-                                vh.onLongTimeBlocking();
-                            }
-                            else
-                            {
-                                //do nothing
-                            }
-                        }
-                        else
-                        {
-                            vh.isLongTimeBlocking = false;
-                        }
+                        LongTimeBlockingCheck();
+                        LongTimeObstaclingCheck();
                     }
                     catch (Exception ex)
                     {
@@ -1491,6 +1484,46 @@ namespace com.mirle.ibg3k0.sc
                 }
             }
 
+            private void LongTimeBlockingCheck()
+            {
+                double blocking_time = vh.CurrentBlockingTime.Elapsed.TotalSeconds;
+                if (blocking_time > AVEHICLE.MAX_ALLOW_BLOCKING_TIME_SECOND)
+                {
+                    if (!vh.isLongTimeBlocking)
+                    {
+                        vh.isLongTimeBlocking = true;
+                        vh.onLongTimeBlocking();
+                    }
+                    else
+                    {
+                        //do nothing
+                    }
+                }
+                else
+                {
+                    vh.isLongTimeBlocking = false;
+                }
+            }
+            private void LongTimeObstaclingCheck()
+            {
+                double obstacling_time = vh.CurrentObstaclingTime.Elapsed.TotalSeconds;
+                if (obstacling_time > AVEHICLE.MAX_ALLOW_OBSTACLING_TIME_SECOND)
+                {
+                    if (!vh.isLongTimeObstacling)
+                    {
+                        vh.isLongTimeObstacling = true;
+                        vh.onLongTimeObstacling();
+                    }
+                    else
+                    {
+                        //do nothing
+                    }
+                }
+                else
+                {
+                    vh.isLongTimeObstacling = false;
+                }
+            }
         }
 
     }

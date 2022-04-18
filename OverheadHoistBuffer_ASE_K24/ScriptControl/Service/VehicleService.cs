@@ -111,6 +111,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.LongTimeNoCommuncation += Vh_LongTimeNoCommuncation;
                 vh.LongTimeInaction += Vh_LongTimeInaction;
                 vh.LongTimeBlocking += Vh_LongTimeBlocking;
+                vh.LongTimeObstacling += Vh_LongTimeObstacling;
                 vh.ErrorStatusChange += (s1, e1) => Vh_ErrorStatusChange(s1, e1);
                 vh.TimerActionStart();
             }
@@ -121,6 +122,27 @@ namespace com.mirle.ibg3k0.sc.Service
             foreach (Track t in scApp.UnitBLL.cache.GetALLTracks())
             {
                 t.alarmCodeChange += trackAlarmHappend;
+            }
+        }
+
+        private void Vh_LongTimeObstacling(object sender, EventArgs e)
+        {
+            AVEHICLE vh = sender as AVEHICLE;
+            if (vh == null) return;
+            try
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Process vehicle long time obstacling",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+                Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: ex,
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
             }
         }
 
@@ -1039,6 +1061,8 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                     //VhGuideStatus leftGuideStat = recive_str.LeftGuideLockStatus;
                     //VhGuideStatus rightGuideStat = recive_str.RightGuideLockStatus;
+                    checkObstacleState(vh, obstacleStat);
+
 
                     if (errorStat != vh.ERROR)
                     {
@@ -3977,6 +4001,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 eqpt.BOX_ID = recive_str.CarBoxID;
             }
 
+            checkObstacleState(eqpt, obstacleStat);
+
             //VhGuideStatus leftGuideStat = recive_str.LeftGuideLockStatus;
             //VhGuideStatus rightGuideStat = recive_str.RightGuideLockStatus;
             // 0317 Jason 此部分之loadBOXStatus 原為loadCSTStatus ，現在之狀況為暫時解法
@@ -4080,6 +4106,31 @@ namespace com.mirle.ibg3k0.sc.Service
             //    }
             //}
             //}
+        }
+
+        private void checkObstacleState(AVEHICLE eqpt, VhStopSingle obstacleStat)
+        {
+            try
+            {
+
+                if (obstacleStat == VhStopSingle.StopSingleOn)
+                {
+
+                    if (!eqpt.CurrentObstaclingTime.IsRunning)
+                    {
+                        eqpt.CurrentObstaclingTime.Restart();
+                    }
+                }
+                else
+                {
+                    eqpt.CurrentObstaclingTime.Reset();
+                    eqpt.CurrentObstaclingTime.Stop();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
         }
 
         private VHModeStatus DecideVhModeStatus(string vh_id, string current_adr, VHModeStatus vh_current_mode_status)
