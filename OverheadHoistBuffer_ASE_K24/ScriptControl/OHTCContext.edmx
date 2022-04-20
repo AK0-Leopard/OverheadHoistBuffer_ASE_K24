@@ -1263,11 +1263,11 @@
           <Key>
             <PropertyRef Name="CMD_ID_MCS" />
             <PropertyRef Name="VH_ID" />
+            <PropertyRef Name="OHTC_CMD_STATUS" />
+            <PropertyRef Name="OHTC_CMD_TYPE" />
             <PropertyRef Name="HOSTDESTINATION" />
             <PropertyRef Name="MCS_CMD_INSER_TIME" />
             <PropertyRef Name="MCS_COMMANDSTATE" />
-            <PropertyRef Name="OHTC_CMD_STATUS" />
-            <PropertyRef Name="OHTC_CMD_TYPE" />
           </Key>
           <Property Name="CMD_ID_MCS" Type="char" MaxLength="64" Nullable="false" />
           <Property Name="VH_ID" Type="char" MaxLength="32" Nullable="false" />
@@ -1282,6 +1282,7 @@
           <Property Name="OHTC_CMD_TYPE" Type="int" Nullable="false" />
           <Property Name="OHTC_CMD_START_TIME" Type="datetime2" Precision="7" />
           <Property Name="OHTC_CMD_END_TIME" Type="datetime2" Precision="7" />
+          <Property Name="OHTC_COMPLETE_STATUS" Type="int" />
         </EntityType>
         <!--產生期間發現錯誤:
 警告 6002: 資料表/檢視 'OHBC_ASE_K24_v1.dbo.VSECTION_100' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
@@ -1485,7 +1486,8 @@
     [VHCMD_OHTC_MCS].[OHTC_CMD_STATUS] AS [OHTC_CMD_STATUS], 
     [VHCMD_OHTC_MCS].[OHTC_CMD_TYPE] AS [OHTC_CMD_TYPE], 
     [VHCMD_OHTC_MCS].[OHTC_CMD_START_TIME] AS [OHTC_CMD_START_TIME], 
-    [VHCMD_OHTC_MCS].[OHTC_CMD_END_TIME] AS [OHTC_CMD_END_TIME]
+    [VHCMD_OHTC_MCS].[OHTC_CMD_END_TIME] AS [OHTC_CMD_END_TIME], 
+    [VHCMD_OHTC_MCS].[OHTC_COMPLETE_STATUS] AS [OHTC_COMPLETE_STATUS]
     FROM [dbo].[VHCMD_OHTC_MCS] AS [VHCMD_OHTC_MCS]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VSECTION_100" EntityType="Self.VSECTION_100" store:Type="Views" store:Schema="dbo">
@@ -3086,6 +3088,7 @@
           <Property Name="OHTC_CMD_TYPE" Type="Int32" Nullable="false" />
           <Property Name="OHTC_CMD_START_TIME" Type="DateTime" Precision="7" />
           <Property Name="OHTC_CMD_END_TIME" Type="DateTime" Precision="7" />
+          <Property Name="OHTC_COMPLETE_STATUS" Type="OHTC_DevModel.CompleteStatus" />
         </EntityType>
         <EntityType Name="HALARM">
           <Key>
@@ -4421,6 +4424,7 @@
           <EntitySetMapping Name="VHCMD_OHTC_MCS">
             <EntityTypeMapping TypeName="OHTC_DevModel.VHCMD_OHTC_MCS">
               <MappingFragment StoreEntitySet="VHCMD_OHTC_MCS">
+                <ScalarProperty Name="OHTC_COMPLETE_STATUS" ColumnName="OHTC_COMPLETE_STATUS" />
                 <ScalarProperty Name="OHTC_CMD_END_TIME" ColumnName="OHTC_CMD_END_TIME" />
                 <ScalarProperty Name="OHTC_CMD_START_TIME" ColumnName="OHTC_CMD_START_TIME" />
                 <ScalarProperty Name="OHTC_CMD_TYPE" ColumnName="OHTC_CMD_TYPE" />
