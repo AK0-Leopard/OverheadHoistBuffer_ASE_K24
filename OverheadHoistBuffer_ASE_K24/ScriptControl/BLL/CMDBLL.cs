@@ -844,7 +844,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-        public bool creatCommand_MCS(ACMD_MCS cmd_mcs)
+        public bool creatCommand_MCS(ACMD_MCS cmd_mcs, bool isRetry = false)
         {
             bool isSuccess = true;
             try
@@ -871,6 +871,41 @@ namespace com.mirle.ibg3k0.sc.BLL
                     scApp.TransferService.TransferRun();
                 });
             }
+            catch (System.Data.Entity.Core.EntityException ex)
+            {
+                TransferServiceLogger.Error(ex, "creatCommand_MCS");
+                logger.Error(ex, "Exception");
+
+                if (IsExistCMD_MCS(cmd_mcs.CMD_ID))
+                {
+                    return true;
+                }
+                if (isRetry)
+                {
+                    TransferServiceLogger.Warn($"cmd id:{cmd_mcs.CMD_ID}，重新creat失敗");
+                    return false;
+                }
+                TransferServiceLogger.Warn($"cmd id:{cmd_mcs.CMD_ID}，開始進行重新creat");
+                return creatCommand_MCS(cmd_mcs, true);
+            }
+            catch (System.Data.Entity.Core.UpdateException ex)
+            {
+                TransferServiceLogger.Error(ex, "creatCommand_MCS");
+                logger.Error(ex, "Exception");
+
+                if (IsExistCMD_MCS(cmd_mcs.CMD_ID))
+                {
+                    return true;
+                }
+                if (isRetry)
+                {
+                    TransferServiceLogger.Warn($"cmd id:{cmd_mcs.CMD_ID}，重新creat失敗");
+                    return false;
+                }
+                TransferServiceLogger.Warn($"cmd id:{cmd_mcs.CMD_ID}，開始進行重新creat");
+                return creatCommand_MCS(cmd_mcs, true);
+
+            }
             catch (Exception ex)
             {
                 TransferServiceLogger.Error(ex, "creatCommand_MCS");
@@ -880,6 +915,25 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             return isSuccess;
         }
+        private bool IsExistCMD_MCS(string cmdID)
+        {
+            try
+            {
+                int count = 0;
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    count = cmd_mcsDao.getCMD_MCSIsUnfinishedCount(con, cmdID);
+                }
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
+        }
+
+
 
         //*************************************************
         //A20.05.15 此目的為得出一個以source到各shelf的距離大小的升冪list，讓原邏輯可以直接接續使用。

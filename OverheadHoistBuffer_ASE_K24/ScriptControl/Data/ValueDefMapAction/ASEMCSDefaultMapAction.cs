@@ -481,21 +481,28 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
                                 if (isCreatScuess)
                                 {
-                                    //回復MCS檢查結果
-                                    TrxSECS.ReturnCode rtnCode = ISECSControl.replySECS(bcfApp, s2f50);
-                                    SCUtility.secsActionRecordMsg(scApp, false, s2f50);
-                                    SCUtility.RecodeReportInfo(s2f50, cmdID);
-                                    if (rtnCode != TrxSECS.ReturnCode.Normal)
-                                    {
-                                        logger_MapActionLog.Warn("Reply EQPT S2F50) Error:{0}", rtnCode);
-                                        TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: Reply EQPT S2F50) Error:{0}", rtnCode);
-                                        isCreatScuess = false;
-                                    }
-                                    else
-                                    {
-                                        TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50   HCACK:" + s2f50.HCACK);
-                                    }
+                                    //not thing...
                                 }
+                                else
+                                {
+                                    s2f50.HCACK = SECSConst.HCACK_Not_Able_Execute;
+                                }
+
+                                //回復MCS檢查結果
+                                TrxSECS.ReturnCode rtnCode = ISECSControl.replySECS(bcfApp, s2f50);
+                                SCUtility.secsActionRecordMsg(scApp, false, s2f50);
+                                SCUtility.RecodeReportInfo(s2f50, cmdID);
+                                if (rtnCode != TrxSECS.ReturnCode.Normal)
+                                {
+                                    logger_MapActionLog.Warn("Reply EQPT S2F50) Error:{0}", rtnCode);
+                                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: Reply EQPT S2F50) Error:{0}", rtnCode);
+                                    isCreatScuess = false;
+                                }
+                                else
+                                {
+                                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50   HCACK:" + s2f50.HCACK);
+                                }
+
                                 //DB新增交易完成
                                 if (isCreatScuess)
                                 {
@@ -503,6 +510,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                                 }
                                 else
                                 {
+                                    BCFApplication.onWarningMsg($"cmd id:{cmdID} 新增至db失敗");
                                     return;
                                 }
                             }

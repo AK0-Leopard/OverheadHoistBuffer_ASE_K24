@@ -13,12 +13,15 @@ namespace com.mirle.ibg3k0.sc.Common
     public class NatsManager
     {
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-        StanConnectionFactory StanConnectionFactory = null;
+        StanConnectionFactory StanConnectionFactory = new StanConnectionFactory();
         SCApplication scApp = null;
         //ConcurrentDictionary<string, IStanConnection> dicConnection = new ConcurrentDictionary<string, IStanConnection>();
+        object connCreatLock = new object();
         IStanConnection conn = null;
         ConcurrentDictionary<string, IStanSubscription> dicSubscription = new ConcurrentDictionary<string, IStanSubscription>();
         StanOptions cOpts = StanOptions.GetDefaultOptions();
+        Options natsOptions = null;
+
         readonly string DefaultNatsURL = "nats://192.168.39.222:4222";
         readonly string[] servers_port = new string[] { "4222", "4223", "4224" };
 
@@ -47,10 +50,54 @@ namespace com.mirle.ibg3k0.sc.Common
                 {
                     srevers_url[i] = $"nats://{nats_server_ip}:{servers_port[i]}";
                 }
-                Options natsOptions = null;
 #if DEBUG
                 cOpts.NatsURL = DefaultNatsURL;
                 clusterID = "test-cluster";
+
+                natsOptions = ConnectionFactory.GetDefaultOptions();
+                natsOptions.MaxReconnect = Options.ReconnectForever;
+                natsOptions.ReconnectWait = 1000;
+                natsOptions.NoRandomize = true;
+                natsOptions.AllowReconnect = true;
+                natsOptions.Timeout = 5000;
+                natsOptions.PingInterval = 5000;
+                natsOptions.AsyncErrorEventHandler += (sender, args) =>
+                {
+                    logger.Error($"Server:{args.Conn.ConnectedUrl}{Environment.NewLine},Message:{args.Error}{Environment.NewLine},Subject:{args.Subscription.Subject}");
+                };
+
+                natsOptions.ServerDiscoveredEventHandler += (sender, args) =>
+                {
+                    logger.Info($"A new server has joined the cluster:{String.Join(", ", args.Conn.DiscoveredServers)}");
+                };
+
+                natsOptions.ClosedEventHandler += (sender, args) =>
+                {
+                    logger.Info($"Connection Closed:{Environment.NewLine}Server:{args.Conn.ConnectedUrl}");
+                };
+
+                natsOptions.DisconnectedEventHandler += (sender, args) =>
+                {
+                    logger.Warn($"Connection Disconnected:{Environment.NewLine}Server:{args.Conn.ConnectedUrl}");
+                };
+                natsOptions.ReconnectedEventHandler += (sender, args) =>
+                {
+                    logger.Warn($"Connection Reconnected:{Environment.NewLine}Server:{args.Conn.ConnectedUrl}");
+                    lock (connCreatLock)
+                    {
+                        if (conn != null)
+                        {
+                            conn.NATSConnection.Close();
+                            conn.Close();
+                            conn.Dispose();
+                        }
+                        conn = getConnection();
+                    }
+
+                };
+                //IConnection natsConn = null;
+                //natsConn = new ConnectionFactory().CreateConnection(natsOptions);
+                //cOpts.NatsConn = natsConn;
 #else
                 natsOptions = ConnectionFactory.GetDefaultOptions();
                 natsOptions.MaxReconnect = Options.ReconnectForever;
@@ -104,7 +151,7 @@ namespace com.mirle.ibg3k0.sc.Common
 #endif
 
 
-                StanConnectionFactory = new StanConnectionFactory();
+                //StanConnectionFactory = new StanConnectionFactory();
 
                 // cOpts.NatsURL = DefaultNatsURL;
                 conn = getConnection();
@@ -138,6 +185,9 @@ namespace com.mirle.ibg3k0.sc.Common
             IStanConnection conn = null;
             try
             {
+                IConnection natsConn = null;
+                natsConn = new ConnectionFactory().CreateConnection(natsOptions);
+                cOpts.NatsConn = natsConn;
                 conn = StanConnectionFactory.CreateConnection(clusterID, clientID, cOpts);
             }
             catch (Exception ex)
@@ -168,12 +218,19 @@ namespace com.mirle.ibg3k0.sc.Common
         }
         public void PublishAsync(string subject, byte[] data)
         {
-            if (conn != null &&
+            try
+            {
+                if (conn != null &&
                 conn.NATSConnection.State == ConnState.CONNECTED &&
                 scApp.getEQObjCacheManager().getLine().ServiceMode == SCAppConstants.AppServiceMode.Active)
+                {
+                    subject = $"{producID}_{subject}";
+                    conn.PublishAsync(subject, data);
+                }
+            }
+            catch (Exception ex)
             {
-                subject = $"{producID}_{subject}";
-                conn.PublishAsync(subject, data);
+                logger.Error(ex, "Exception");
             }
         }
 
