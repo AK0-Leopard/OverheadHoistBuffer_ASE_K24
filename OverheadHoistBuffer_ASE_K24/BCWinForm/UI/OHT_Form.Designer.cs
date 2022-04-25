@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnl_Map = new System.Windows.Forms.Panel();
@@ -128,6 +128,8 @@
             this.utilityLog_SECS = new com.mirle.ibg3k0.bc.winform.UI.Components.UtilityLog();
             this.timer_TimedUpdates = new System.Windows.Forms.Timer(this.components);
             this.vehicleObjToShowBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.lb_natsConn = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -219,6 +221,8 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.lb_natsConn);
+            this.panel1.Controls.Add(this.label13);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.lbl_HoseMode);
             this.panel1.Controls.Add(this.label11);
@@ -399,9 +403,9 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.groupBox1.Location = new System.Drawing.Point(15, 174);
+            this.groupBox1.Location = new System.Drawing.Point(15, 203);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(329, 685);
+            this.groupBox1.Size = new System.Drawing.Size(329, 739);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Specify Path";
@@ -700,14 +704,14 @@
             this.dgv_vhStatus.AllowUserToDeleteRows = false;
             this.dgv_vhStatus.AutoGenerateColumns = false;
             this.dgv_vhStatus.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_vhStatus.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_vhStatus.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgv_vhStatus.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_vhStatus.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.vEHICLEIDDataGridViewTextBoxColumn,
@@ -1198,6 +1202,26 @@
             // 
             this.vehicleObjToShowBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ObjectRelay.VehicleObjToShow);
             // 
+            // lb_natsConn
+            // 
+            this.lb_natsConn.AutoSize = true;
+            this.lb_natsConn.BackColor = System.Drawing.Color.Gray;
+            this.lb_natsConn.Location = new System.Drawing.Point(11, 181);
+            this.lb_natsConn.Name = "lb_natsConn";
+            this.lb_natsConn.Size = new System.Drawing.Size(54, 19);
+            this.lb_natsConn.TabIndex = 15;
+            this.lb_natsConn.Text = "     ";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.ForeColor = System.Drawing.Color.White;
+            this.label13.Location = new System.Drawing.Point(71, 181);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(99, 19);
+            this.label13.TabIndex = 16;
+            this.label13.Text = ":Nats Conn";
+            // 
             // OHT_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
@@ -1347,5 +1371,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn aCCSECDIST2ShowDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn VH_TYPE;
         private System.Windows.Forms.DataGridViewTextBoxColumn uPDTIMEDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Label lb_natsConn;
+        private System.Windows.Forms.Label label13;
     }
 }
