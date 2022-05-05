@@ -29,6 +29,8 @@ namespace com.mirle.ibg3k0.sc.Common
         string clusterID = null;
         string clientID = null;
 
+        public bool IsConnection { get; private set; }
+
 
         public NatsManager(SCApplication _scApp, string product_id, string cluster_id, string client_id)
         {
@@ -61,6 +63,8 @@ namespace com.mirle.ibg3k0.sc.Common
                 natsOptions.AllowReconnect = true;
                 natsOptions.Timeout = 5000;
                 natsOptions.PingInterval = 5000;
+                natsOptions.Url = DefaultNatsURL;
+
                 natsOptions.AsyncErrorEventHandler += (sender, args) =>
                 {
                     logger.Error($"Server:{args.Conn.ConnectedUrl}{Environment.NewLine},Message:{args.Error}{Environment.NewLine},Subject:{args.Subscription.Subject}");
@@ -226,11 +230,17 @@ namespace com.mirle.ibg3k0.sc.Common
                 {
                     subject = $"{producID}_{subject}";
                     conn.PublishAsync(subject, data);
+                    IsConnection = true;
+                }
+                else
+                {
+                    IsConnection = false;
                 }
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception");
+                IsConnection = false;
             }
         }
 

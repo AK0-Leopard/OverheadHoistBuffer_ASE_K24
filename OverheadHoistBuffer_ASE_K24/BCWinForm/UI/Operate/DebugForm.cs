@@ -1511,5 +1511,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             DebugParameter.IsOpneChangeGuideSection = cb_openGuideSectionChange.Checked;
         }
 
+        private void btn_manualPortDuplicatTest_Click(object sender, EventArgs e)
+        {
+            Task.Run(() => bcApp.SCApplication.ManualPortEventService.WaitInTest());
+        }
     }
 }

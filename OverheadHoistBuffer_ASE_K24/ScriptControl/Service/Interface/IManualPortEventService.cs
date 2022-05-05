@@ -6,6 +6,7 @@ namespace com.mirle.ibg3k0.sc.Service.Interface
 {
     public interface IManualPortEventService
     {
+        void WaitInTest();
         void Start(IEnumerable<IManualPortValueDefMapAction> ports, IManualPortReportBLL reportBll, IManualPortDefBLL portDefBLL, IManualPortShelfDefBLL shelfDefBLL, IManualPortCassetteDataBLL cassetteDataBLL, IManualPortCMDBLL commandBLL, IManualPortAlarmBLL alarmBLL, IManualPortTransferService transferService);
     }
 }

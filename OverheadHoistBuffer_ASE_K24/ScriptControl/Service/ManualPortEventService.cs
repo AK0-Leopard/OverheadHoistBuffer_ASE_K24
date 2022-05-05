@@ -182,7 +182,11 @@ namespace com.mirle.ibg3k0.sc.Service
         #endregion LoadPresenceChanged
 
         #region Wait In
-
+        public void WaitInTest()
+        {
+            ManualPortEventArgs args = new ManualPortEventArgs(new ManualPortPLCInfo() { CarrierIdOfStage1 = "12BEAC", EQ_ID = "B6_OHB01_M06" });
+            Port_OnWaitIn(null, args);
+        }
         private void Port_OnWaitIn(object sender, ManualPortEventArgs args)
         {
             try
@@ -419,17 +423,26 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (commandBLL.GetCommandByBoxId(duplicateCarrierData.BOXID, out var command))
             {
-                WriteEventLog($"{logTitle} Duplicate carrier has command [{command.CMD_ID}] now.");
+                bool is_excute_normal_duplocate = duplicatePort.ToUnitType().IsEQPort() &&
+                                                  IsExcuteNormalDuplicateProcess(logTitle, duplicateCarrierData, command);
+                if (is_excute_normal_duplocate)
+                {
+                    //not thing...
+                }
+                else
+                {
+                    WriteEventLog($"{logTitle} Duplicate carrier has command [{command.CMD_ID}] now.");
 
-                var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
-                cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
-                WriteEventLog($"{logTitle} Install cassette data [{unknownId}] Type[{info.CarrierType}] at this port.");
+                    var unknownId = GetDuplicateUnknownId(duplicateCarrierData.BOXID);
+                    cassetteDataBLL.Install(portName, unknownId, info.CarrierType);
+                    WriteEventLog($"{logTitle} Install cassette data [{unknownId}] Type[{info.CarrierType}] at this port.");
 
-                cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
+                    cassetteDataBLL.GetCarrierByPortName(portName, 1, out var cassetteData);
 
-                ReportIDRead(logTitle, cassetteData, isDuplicate: true);
-                ReportWaitIn(logTitle, cassetteData);
-                return;
+                    ReportIDRead(logTitle, cassetteData, isDuplicate: true);
+                    ReportWaitIn(logTitle, cassetteData);
+                    return;
+                }
             }
 
 
@@ -460,7 +473,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)} in queue, direct force finish it.");
 
                 var result = transferService.ForceFinishMCSCmd
-                    (command, duplicateCarrierData, nameof(IsExcuteNormalDuplicateProcess), ACMD_MCS.ResultCode.OtherErrors);
+                    (command, duplicateCarrierData, nameof(IsExcuteNormalDuplicateProcess), ACMD_MCS.ResultCode.InterlockError);
                 return sc.Common.SCUtility.isMatche(result, "OK");
             }
             else

@@ -1458,15 +1458,22 @@ namespace com.mirle.ibg3k0.sc.Service
                         scApp.ReportBLL.newReportTransferCancelFailed(cancel_abort_mcs_cmd_id, null);
                         return false;
                     }
-                    is_success = scApp.VehicleService.cancleOrAbortCommandByMCSCmdID(cancel_abort_mcs_cmd_id, ProtocolFormat.OHTMessage.CMDCancelType.CmdCancel);
-
-                    if (is_success)
+                    using (var tx = SCUtility.getTransactionScope())
                     {
-                        scApp.CMDBLL.updateCMD_MCS_TranStatus(cancel_abort_mcs_cmd_id, E_TRAN_STATUS.Canceling);
-                    }
-                    else
-                    {
-                        scApp.ReportBLL.newReportTransferCancelFailed(cancel_abort_mcs_cmd_id, null);
+                        using (var con = DBConnection_EF.GetUContext())
+                        {
+                            is_success = scApp.CMDBLL.updateCMD_MCS_TranStatus(cancel_abort_mcs_cmd_id, E_TRAN_STATUS.Canceling);
+                            is_success = scApp.VehicleService.cancleOrAbortCommandByMCSCmdID(cancel_abort_mcs_cmd_id, ProtocolFormat.OHTMessage.CMDCancelType.CmdCancel);
+                            if (is_success)
+                            {
+                                //scApp.CMDBLL.updateCMD_MCS_TranStatus(cancel_abort_mcs_cmd_id, E_TRAN_STATUS.Canceling);
+                                tx.Complete();
+                            }
+                            else
+                            {
+                                scApp.ReportBLL.newReportTransferCancelFailed(cancel_abort_mcs_cmd_id, null);
+                            }
+                        }
                     }
 
                     //if (mcs_cmd.TRANSFERSTATE >= E_TRAN_STATUS.Transferring)
@@ -1518,14 +1525,22 @@ namespace com.mirle.ibg3k0.sc.Service
                         scApp.ReportBLL.newReportTransferAbortFailed(cancel_abort_mcs_cmd_id, null);
                         return false;
                     }
-                    is_success = scApp.VehicleService.cancleOrAbortCommandByMCSCmdID(cancel_abort_mcs_cmd_id, ProtocolFormat.OHTMessage.CMDCancelType.CmdAbort);
-                    if (is_success)
+                    using (var tx = SCUtility.getTransactionScope())
                     {
-                        scApp.CMDBLL.updateCMD_MCS_TranStatus(cancel_abort_mcs_cmd_id, E_TRAN_STATUS.Aborting);
-                    }
-                    else
-                    {
-                        scApp.ReportBLL.newReportTransferAbortFailed(cancel_abort_mcs_cmd_id, null);
+                        using (var con = DBConnection_EF.GetUContext())
+                        {
+                            scApp.CMDBLL.updateCMD_MCS_TranStatus(cancel_abort_mcs_cmd_id, E_TRAN_STATUS.Aborting);
+                            is_success = scApp.VehicleService.cancleOrAbortCommandByMCSCmdID(cancel_abort_mcs_cmd_id, ProtocolFormat.OHTMessage.CMDCancelType.CmdAbort);
+                            if (is_success)
+                            {
+                                //scApp.CMDBLL.updateCMD_MCS_TranStatus(cancel_abort_mcs_cmd_id, E_TRAN_STATUS.Aborting);
+                                tx.Complete();
+                            }
+                            else
+                            {
+                                scApp.ReportBLL.newReportTransferAbortFailed(cancel_abort_mcs_cmd_id, null);
+                            }
+                        }
                     }
 
 

@@ -191,6 +191,7 @@
             this.cb_Cache_data_Name = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btn_manualPortDuplicatTest = new System.Windows.Forms.Button();
             this.cb_unloadArrivePassReply11 = new System.Windows.Forms.CheckBox();
             this.cb_unloadArrivePassReply10 = new System.Windows.Forms.CheckBox();
             this.cb_unloadArrivePassReply09 = new System.Windows.Forms.CheckBox();
@@ -2499,6 +2500,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.btn_manualPortDuplicatTest);
             this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply11);
             this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply10);
             this.tabPage3.Controls.Add(this.cb_unloadArrivePassReply09);
@@ -2527,6 +2529,16 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btn_manualPortDuplicatTest
+            // 
+            this.btn_manualPortDuplicatTest.Location = new System.Drawing.Point(971, 273);
+            this.btn_manualPortDuplicatTest.Name = "btn_manualPortDuplicatTest";
+            this.btn_manualPortDuplicatTest.Size = new System.Drawing.Size(353, 30);
+            this.btn_manualPortDuplicatTest.TabIndex = 69;
+            this.btn_manualPortDuplicatTest.Text = "ManualPort-重複帳測試";
+            this.btn_manualPortDuplicatTest.UseVisualStyleBackColor = true;
+            this.btn_manualPortDuplicatTest.Click += new System.EventHandler(this.btn_manualPortDuplicatTest_Click);
             // 
             // cb_unloadArrivePassReply11
             // 
@@ -5267,5 +5279,6 @@
         private System.Windows.Forms.Label label98;
         private System.Windows.Forms.ComboBox cmbVhType;
         private System.Windows.Forms.CheckBox cb_openGuideSectionChange;
+        private System.Windows.Forms.Button btn_manualPortDuplicatTest;
     }
 }
