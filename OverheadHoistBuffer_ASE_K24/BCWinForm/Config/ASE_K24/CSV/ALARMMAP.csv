@@ -2,6 +2,9 @@ OBJECT_ID,ALARM_ID,ALARM_LVL,ALARM_DESC
 CRANE,14,2,Turning speed exceeded
 CRANE,15,2,Turn right speed exceeded
 CRANE,16,2,Turn left speed exceeded
+CRANE,17,2,match speed abnormal in curve
+CRANE,18,2,match speed abnormal in moving
+CRANE,19,2,change position abnormal in moving
 CRANE,20,2,Overspeed protection stop at the end of high speed
 CRANE,21,2,when move back but speed over -350mm/s so protect and stop
 CRANE,22,2,when move back but distance over -150mm so protect and stop
