@@ -184,8 +184,8 @@ namespace com.mirle.ibg3k0.sc.Service
         #region Wait In
         public void WaitInTest()
         {
-            ManualPortEventArgs args = new ManualPortEventArgs(new ManualPortPLCInfo() { CarrierIdOfStage1 = "12BEAC", EQ_ID = "B6_OHB01_M06" });
-            Port_OnWaitIn(null, args);
+            //ManualPortEventArgs args = new ManualPortEventArgs(new ManualPortPLCInfo() { CarrierIdOfStage1 = "12BEAA", EQ_ID = "B6_OHB01_M06" });
+            //Port_OnWaitIn(null, args);
         }
         private void Port_OnWaitIn(object sender, ManualPortEventArgs args)
         {
@@ -446,8 +446,8 @@ namespace com.mirle.ibg3k0.sc.Service
             }
 
 
-            cassetteDataBLL.Delete(duplicateCarrierData.BOXID);
-            WriteEventLog($"{logTitle} Delete duplicate cassette data [{duplicateCarrierData.BOXID}].");
+            bool is_delete_success = cassetteDataBLL.Delete(duplicateCarrierData.BOXID);
+            WriteEventLog($"{logTitle} Delete duplicate cassette data [{duplicateCarrierData.BOXID}],result:{is_delete_success}.");
 
             var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
 
@@ -458,7 +458,8 @@ namespace com.mirle.ibg3k0.sc.Service
 
             ReportIDRead(logTitle, cassetteData2, isDuplicate: true);
 
-            ReportForcedCarrierRemove(logTitle, duplicateCarrierData);
+            if (is_delete_success)
+                ReportForcedCarrierRemove(logTitle, duplicateCarrierData);
 
             ReportWaitIn(logTitle, cassetteData2);
         }
@@ -473,7 +474,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)} in queue, direct force finish it.");
 
                 var result = transferService.ForceFinishMCSCmd
-                    (command, duplicateCarrierData, nameof(IsExcuteNormalDuplicateProcess), ACMD_MCS.ResultCode.InterlockError);
+                    (command, duplicateCarrierData, nameof(IsExcuteNormalDuplicateProcess), ACMD_MCS.ResultCode.OtherErrors);
                 return sc.Common.SCUtility.isMatche(result, "OK");
             }
             else

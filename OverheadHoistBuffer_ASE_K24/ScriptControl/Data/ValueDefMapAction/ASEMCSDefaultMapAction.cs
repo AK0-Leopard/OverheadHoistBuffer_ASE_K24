@@ -2825,6 +2825,42 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 return false;
             }
         }
+        public override bool S6F11SendTransferCancelCompleted(string cmd_id, CassetteData cassette, List<AMCSREPORTQUEUE> reportQueues = null)
+        {
+            try
+            {
+                VIDCollection Vids = new VIDCollection();
+                ACMD_MCS cmd = scApp.CMDBLL.getCMD_MCSByID(cmd_id);
+
+                string cstID = cassette?.CSTID ?? "";
+                string boxID = cassette?.BOXID ?? "";
+                string loc = cassette?.Carrier_LOC ?? "";
+                string zonename = scApp.CassetteDataBLL.GetZoneName(loc);
+
+                Vids.VIDITEM_58_DVVAL_CommandID.COMMAND_ID = cmd.CMD_ID;
+                Vids.VIDITEM_54_DVVAL_CarrierID.CARRIER_ID = cstID;
+                Vids.VIDITEM_56_DVVAL_CarrierLoc.CARRIER_LOC = loc;
+                Vids.VIDITEM_370_DVVAL_CarrierZoneName.CARRIER_ZONE_NAME = zonename;
+                Vids.VIDITEM_179_DVVAL_BOXID.BOX_ID = boxID;
+
+                AMCSREPORTQUEUE mcs_queue = S6F11BulibMessage(SECSConst.CEID_Transfer_Cancel_Completed, Vids);
+                if (reportQueues == null)
+                {
+                    S6F11SendMessage(mcs_queue);
+                }
+                else
+                {
+                    reportQueues.Add(mcs_queue);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(ASEMCSDefaultMapAction), Device: DEVICE_NAME_MCS,
+                   Data: ex);
+                return false;
+            }
+        }
 
         public override bool S6F11SendTransferCancelFailed(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null)
         {

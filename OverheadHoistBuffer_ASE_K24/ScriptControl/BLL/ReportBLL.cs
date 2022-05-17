@@ -395,6 +395,12 @@ namespace com.mirle.ibg3k0.sc.BLL
             isSuccsess = isSuccsess && iBSEMDriver.S6F11SendTransferCancelCompleted(cmd_id, reportQueues);
             return isSuccsess;
         }
+        public bool ReportTransferCancelCompleted(string cmd_id, CassetteData cassetteData, List<AMCSREPORTQUEUE> reportQueues = null)
+        {
+            bool isSuccsess = true;
+            isSuccsess = isSuccsess && iBSEMDriver.S6F11SendTransferCancelCompleted(cmd_id, cassetteData, reportQueues);
+            return isSuccsess;
+        }
 
         public bool ReportTransferCancelFailed(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null)
         {

@@ -19,6 +19,7 @@ namespace com.mirle.ibg3k0.sc.Data.SECSDriver
         public abstract bool S6F11SendTransferAbortFailed(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendTransferAbortInitiated(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendTransferCancelCompleted(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
+        public abstract bool S6F11SendTransferCancelCompleted(string cmd_id,CassetteData cassetteData, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendTransferCancelFailed(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendTransferCancelInitial(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null);
         public abstract bool S6F11SendTransferCompleted(ACMD_MCS cmd, CassetteData cassette, string result_code, List<AMCSREPORTQUEUE> reportQueues = null);
@@ -396,6 +397,10 @@ namespace com.mirle.ibg3k0.sc.Data.SECSDriver
             return true;
         }
         public override bool S6F11SendTransferCancelCompleted(string cmd_id, List<AMCSREPORTQUEUE> reportQueues = null)
+        {
+            return true;
+        }
+        public override bool S6F11SendTransferCancelCompleted(string cmd_id, CassetteData cassetteData, List<AMCSREPORTQUEUE> reportQueues = null)
         {
             return true;
         }

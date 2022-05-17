@@ -28,7 +28,7 @@ namespace UnitTestForMGVPort.StubObjects
             _datasKeyCarrierIdValueCstType = new Dictionary<string, CstType>();
         }
 
-        public void Delete(string carrierId)
+        public bool Delete(string carrierId)
         {
             CarrierIdByDelete = carrierId;
 
@@ -38,6 +38,7 @@ namespace UnitTestForMGVPort.StubObjects
                 _datasKeyCarrierIdValueLocation.Remove(carrierId);
                 _datasKeyCarrierIdValueCstType.Remove(carrierId);
             }
+            return true;
         }
 
         public void Install(string carrierLocation, string carrierId, CstType type)

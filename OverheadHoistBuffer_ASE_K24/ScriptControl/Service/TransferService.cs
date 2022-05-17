@@ -11060,8 +11060,20 @@ namespace com.mirle.ibg3k0.sc.Service
             if (cmd.TRANSFERSTATE == E_TRAN_STATUS.Canceling)
             {
                 TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 進行MCS command cancel流程, id:{mcs_cmd_id}");
-                cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
-                reportBLL.ReportTransferCancelCompleted(cmd.CMD_ID);
+
+                var check_result = IsCancelCompleteLocationAtEqPort(cmd);
+                if (check_result.IsEQPort)
+                {
+                    TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"OHT >> OHB| 由於Cancel命令的貨物，是在EQ Port:{check_result.cstData.Carrier_LOC}上，因此進行刪帳 BOX ID:{check_result.cstData.BOXID}");
+                    reportBLL.ReportCarrierRemovedCompleted(check_result.cstData.CSTID, check_result.cstData.BOXID);
+                    cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                    reportBLL.ReportTransferCancelCompleted(cmd.CMD_ID, check_result.cstData);
+                }
+                else
+                {
+                    cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                    reportBLL.ReportTransferCancelCompleted(cmd.CMD_ID);
+                }
             }
             else if (cmd.TRANSFERSTATE == E_TRAN_STATUS.Aborting)
             {
@@ -11095,7 +11107,27 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
             }
         }
+        private (bool IsEQPort, CassetteData cstData) IsCancelCompleteLocationAtEqPort(ACMD_MCS cmdMCS)
+        {
 
+            //if (isUnitType(sc.Common.SCUtility.Trim(cmd.HOSTSOURCE, true), UnitType.EQ))
+            //{
+            //    bool is_exist = cassette_dataBLL.GetCarrierByBoxId(cmd.BOX_ID, out CassetteData cassette_data);
+            //    if (is_exist && SCUtility.isMatche(cmd.HOSTSOURCE, cassette_data.Carrier_LOC))
+            //    {
+            //        reportBLL.ReportCarrierRemovedCompleted(cassette_data.CSTID, cassette_data.BOXID);
+            //    }
+            //}
+
+            if (!isUnitType(sc.Common.SCUtility.Trim(cmdMCS.HOSTSOURCE, true), UnitType.EQ))
+                return (false, null);
+            bool is_exist = cassette_dataBLL.GetCarrierByBoxId(cmdMCS.BOX_ID, out CassetteData cassette_data);
+            if (!is_exist)
+                return (false, null);
+            if (!SCUtility.isMatche(cmdMCS.HOSTSOURCE, cassette_data.Carrier_LOC))
+                return (false, null);
+            return (true, cassette_data);
+        }
         public bool CommandCompleteByIDMismatch(string vhID, string finishCommandID)
         {
             try
@@ -11310,7 +11342,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 is_success = scApp.VehicleService.doCancelOrAbortCommandByMCSCmdID(cmdMCS.CMD_ID, CMDCancelType.CmdCancel);
                 return is_success;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TransferServiceLogger.Error(ex, "tryCancelMCSCmd");
                 return false;

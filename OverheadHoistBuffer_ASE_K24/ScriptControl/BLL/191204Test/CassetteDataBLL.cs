@@ -631,20 +631,28 @@ namespace com.mirle.ibg3k0.sc.BLL
 
     public partial class CassetteDataBLL : IManualPortCassetteDataBLL
     {
-        public void Delete(string carrierId)
+        public bool Delete(string carrierId)
         {
+            bool is_success = true;
             try
             {
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
                     var cassette = cassettedataDao.LoadCassetteDataByBoxID(con, carrierId);
-                    cassettedataDao.DeleteCassetteData(con, cassette);
+                    if (cassette != null)
+                        cassettedataDao.DeleteCassetteData(con, cassette);
+                    else
+                    {
+                        is_success = false;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception");
+                is_success = false;
             }
+            return is_success;
         }
 
         public bool GetCarrierByBoxId(string carrierId, out CassetteData cassetteData)
