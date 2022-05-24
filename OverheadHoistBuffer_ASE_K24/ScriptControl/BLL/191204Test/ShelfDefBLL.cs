@@ -259,7 +259,38 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return true;
         }
-
+        public bool updateShelfEnableByZoneID(string zoneID)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    shelfdefDao.UpdateShelfEnableByZone(con, zoneID);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
+            return true;
+        }
+        public bool updateShelfDisableByZoneID(string zoneID)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    shelfdefDao.UpdateShelfDisableByZone(con, zoneID);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
+            return true;
+        }
         public UInt16 getCurrentShelfEnableCount()
         {
             using (DBConnection_EF con = DBConnection_EF.GetUContext())

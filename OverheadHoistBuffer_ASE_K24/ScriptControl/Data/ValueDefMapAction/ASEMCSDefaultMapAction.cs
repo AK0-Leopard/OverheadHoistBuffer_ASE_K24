@@ -3381,6 +3381,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             try
             {
+
                 //if (!isSend()) return true;
                 VIDCollection Vids = new VIDCollection();
                 //List<ZoneDef> zones = scApp.ZoneDefBLL.loadZoneData();
@@ -3405,17 +3406,17 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     Vids.VIDITEM_172_SV_ZoneData.DISABLE_LOCATIONS_OBJ.DISABLE_LOC_OBJ[i].CARRIER_LOC_OBJ.CARRIER_LOC = disShelf[i].ShelfID;
                     Vids.VIDITEM_172_SV_ZoneData.DISABLE_LOCATIONS_OBJ.DISABLE_LOC_OBJ[i].CARRIER_ID_OBJ.CARRIER_ID = cstid;
                 }
-
+                bool is_success = true;
                 AMCSREPORTQUEUE mcs_queue = S6F11BulibMessage(SECSConst.CEID_Shelf_Status_Change, Vids);
                 if (reportQueues == null)
                 {
-                    S6F11SendMessage(mcs_queue);
+                    is_success = S6F11SendMessage(mcs_queue);
                 }
                 else
                 {
                     reportQueues.Add(mcs_queue);
                 }
-                return true;
+                return is_success;
             }
             catch (Exception ex)
             {

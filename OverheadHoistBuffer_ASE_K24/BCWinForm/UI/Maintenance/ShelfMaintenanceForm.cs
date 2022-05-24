@@ -1,4 +1,5 @@
-﻿using System;
+﻿using com.mirle.ibg3k0.bc.winform.App;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -221,6 +222,86 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void ShelfMaintenanceForm_Load(object sender, EventArgs e)
         {
             timer1.Start();
+        }
+
+        private async void btn_EnableAll_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                tableLayoutPanel1.Enabled = false;
+                string zone_id = sc.Common.SCUtility.Trim(cmb_zoneID.Text, true);
+                if (sc.Common.SCUtility.isEmpty(zone_id))
+                {
+                    MessageBox.Show("請選擇要開啟的Zone ID.");
+                    return;
+                }
+
+                string message = $"確認是否要開啟 [{zone_id}] 所有的儲位?";
+                DialogResult confirmResult = MessageBox.Show(this, message,
+                    BCApplication.getMessageString("CONFIRM"), MessageBoxButtons.YesNo);
+                if (confirmResult != DialogResult.Yes)
+                {
+                    return;
+                }
+                string result = await Task.Run(() => doBatchEnableDisableShelf(zone_id, true));
+                UpdateShelfData();
+                MessageBox.Show($"開啟 [{zone_id}] 所有的儲位,結果:{result}");
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                tableLayoutPanel1.Enabled = true;
+            }
+        }
+
+        private string doBatchEnableDisableShelf(string zoneID, bool isEnable)
+        {
+            try
+            {
+                bool is_success = BCApp.SCApplication.TransferService.Manual_ShelfEnableByZone(zoneID, isEnable, "UI");
+
+                return is_success ? "成功" : "失敗";
+            }
+            catch (Exception ex)
+            {
+                return $"例外發生";
+            }
+        }
+
+        private async void btn_DisableAll_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                tableLayoutPanel1.Enabled = false;
+                string zone_id = sc.Common.SCUtility.Trim(cmb_zoneID.Text, true);
+                if (sc.Common.SCUtility.isEmpty(zone_id))
+                {
+                    MessageBox.Show("請選擇要關閉的Zone ID.");
+                    return;
+                }
+
+                string message = $"確認是否要關閉 [{zone_id}] 所有的儲位?";
+                DialogResult confirmResult = MessageBox.Show(this, message,
+                    BCApplication.getMessageString("CONFIRM"), MessageBoxButtons.YesNo);
+                if (confirmResult != DialogResult.Yes)
+                {
+                    return;
+                }
+                string result = await Task.Run(() => doBatchEnableDisableShelf(zone_id, false));
+                UpdateShelfData();
+                MessageBox.Show($"關閉 [{zone_id}] 所有的儲位,結果:{result}");
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                tableLayoutPanel1.Enabled = true;
+            }
         }
     }
 }

@@ -8674,6 +8674,47 @@ namespace com.mirle.ibg3k0.sc.Service
         #endregion Port 狀態設置
 
         #region 儲位操作
+        public bool Manual_ShelfEnableByZone(string zoneID, bool enable,string sourceAPI)
+        {
+            try
+            {
+                TransferServiceLogger.Info
+                (
+                    DateTime.Now.ToString("HH:mm:ss.fff ") +
+                    $"OHB >> OHB|Manual_ShelfEnableByZone 誰呼叫:{sourceAPI} ,進行開/關儲位By Zone,zone id:{zoneID},is enable:{enable}"
+                );
+
+                bool is_success = true;
+                using (TransactionScope tx = SCUtility.getTransactionScope())
+                {
+                    using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                    {
+                        if (enable)
+                            is_success = is_success && shelfDefBLL.updateShelfEnableByZoneID(zoneID);
+                        else
+                            is_success = is_success && shelfDefBLL.updateShelfDisableByZoneID(zoneID);
+
+                        ZoneDef zone = zoneBLL.loadZoneDataByID(zoneID);
+                        is_success = is_success && reportBLL.ReportShelfStatusChange(zone);
+                        if (is_success)
+                        {
+                            tx.Complete();
+                        }
+                    }
+                }
+                TransferServiceLogger.Info
+                (
+                    DateTime.Now.ToString("HH:mm:ss.fff ") +
+                    $"OHB >> OHB|Manual_ShelfEnableByZone 誰呼叫:{sourceAPI} ,進行開/關儲位By Zone,zone id:{zoneID},is enable:{enable},結果:{is_success}"
+                );
+                return is_success;
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, $"進行開/關儲位By Zone時，發生例外。Zone ID:{zoneID},is enable:{enable}");
+                return false;
+            }
+        }
 
         public string Manual_ShelfEnable(string shelfID, bool enable)
         {

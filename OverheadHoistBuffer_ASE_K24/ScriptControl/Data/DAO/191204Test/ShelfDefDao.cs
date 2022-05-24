@@ -52,6 +52,19 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                 throw;
             }
         }
+        public void UpdateShelfEnableByZone(DBConnection_EF con, string zoneID)
+        {
+            string trn_dt= DateTime.Now.ToString(sc.App.SCAppConstants.TimestampFormat_19);
+            string sql = "Update [ShelfDef] SET [Enable] = 'Y' ,[TrnDT] = {0} WHERE [ZoneID] = {1} AND [ADR_ID] <> '99999'";
+            con.Database.ExecuteSqlCommand(sql, trn_dt, zoneID);
+        }
+        public void UpdateShelfDisableByZone(DBConnection_EF con, string zoneID)
+        {
+            string trn_dt= DateTime.Now.ToString(sc.App.SCAppConstants.TimestampFormat_19);
+            string sql = "Update [ShelfDef] SET [Enable] = 'N' ,[TrnDT] = {0} WHERE [ZoneID] = {1} AND [ADR_ID] <> '99999'";
+            con.Database.ExecuteSqlCommand(sql, trn_dt, zoneID);
+        }
+
 
         public List<ShelfDef> LoadShelfDef(DBConnection_EF conn)
         {
