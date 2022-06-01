@@ -331,6 +331,8 @@
           <Property Name="UnitState" Type="varchar" MaxLength="2" />
           <Property Name="RecoveryOption" Type="varchar" MaxLength="20" />
           <Property Name="CMD_ID" Type="varchar" MaxLength="64" />
+          <Property Name="REMARK" Type="nvarchar(max)" />
+          <Property Name="CLASS" Type="int" />
         </EntityType>
         <!--產生期間發現錯誤:
 警告 6002: 資料表/檢視 'OHBC_ASE_K24_v1.dbo.ALARMMAP' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
@@ -1263,11 +1265,11 @@
           <Key>
             <PropertyRef Name="CMD_ID_MCS" />
             <PropertyRef Name="VH_ID" />
-            <PropertyRef Name="OHTC_CMD_STATUS" />
-            <PropertyRef Name="OHTC_CMD_TYPE" />
             <PropertyRef Name="HOSTDESTINATION" />
             <PropertyRef Name="MCS_CMD_INSER_TIME" />
             <PropertyRef Name="MCS_COMMANDSTATE" />
+            <PropertyRef Name="OHTC_CMD_STATUS" />
+            <PropertyRef Name="OHTC_CMD_TYPE" />
           </Key>
           <Property Name="CMD_ID_MCS" Type="char" MaxLength="64" Nullable="false" />
           <Property Name="VH_ID" Type="char" MaxLength="32" Nullable="false" />
@@ -2722,6 +2724,8 @@
           <Property Name="RecoveryOption" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="CMD_ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="END_TIME" Type="DateTime" Nullable="true" Precision="7" />
+          <Property Name="REMARK" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CLASS" Type="Int32" />
         </EntityType>
         <EnumType Name="E_ALARM_LVL">
           <Member Name="Warn" Value="1" />
@@ -4124,6 +4128,8 @@
           <EntitySetMapping Name="ALARM">
             <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALARM)">
               <MappingFragment StoreEntitySet="ALARM">
+                <ScalarProperty Name="CLASS" ColumnName="CLASS" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
                 <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
                 <ScalarProperty Name="UNIT_NUM" ColumnName="UNIT_NUM" />
                 <ScalarProperty Name="RPT_DATE_TIME" ColumnName="RPT_DATE_TIME" />
