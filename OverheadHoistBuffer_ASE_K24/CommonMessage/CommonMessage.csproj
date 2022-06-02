@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ProtocolFormat\AlarmFun.proto" />
     <None Remove="ProtocolFormat\ManualPortFun.proto" />
     <None Remove="ProtocolFormat\OhbcNtbcGrpcSpec.proto" />
     <None Remove="ProtocolFormat\ShelfFun.proto" />
@@ -26,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="ProtocolFormat\AlarmFun.proto" GrpcServices="Server" />
     <Protobuf Include="ProtocolFormat\OhbcNtbcGrpcSpec.proto" />
     <Protobuf Include="ProtocolFormat\ManualPortFun.proto" />
     <Protobuf Include="ProtocolFormat\ShelfFun.proto" />

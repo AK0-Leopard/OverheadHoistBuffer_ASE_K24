@@ -704,6 +704,7 @@ namespace com.mirle.ibg3k0.sc.App
         private Grpc.Core.Server gRPC_With_ReelNTBCDefaultMapActionReceive;
         private Grpc.Core.Server gRPC_With_Shelf;
         private Grpc.Core.Server gRPC_With_ManualPort;
+        private Grpc.Core.Server gRPC_With_AlarmFun;
 
         public WebAPI.TrackInfoClient TrackInfoClient { get; private set; }
 
@@ -1615,6 +1616,11 @@ namespace com.mirle.ibg3k0.sc.App
                 Services = { CommonMessage.ProtocolFormat.ManualPortFun.manualPortGreeter.BindService(new com.mirle.ibg3k0.sc.WebAPI.Grpc.ManualPort(this)) },
                 Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7003, Grpc.Core.ServerCredentials.Insecure) },
             };
+            gRPC_With_AlarmFun = new Grpc.Core.Server()
+            {
+                Services = { CommonMessage.ProtocolFormat.AlarmFun.alarmGreeter.BindService(new com.mirle.ibg3k0.sc.WebAPI.Grpc.AlarmFun(this)) },
+                Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7005, Grpc.Core.ServerCredentials.Insecure) },
+            };
 
             TrackInfoClient = new WebAPI.TrackInfoClient(this);
 
@@ -1691,6 +1697,7 @@ namespace com.mirle.ibg3k0.sc.App
             gRPC_With_VehicleControlFun.Start();
             gRPC_With_Shelf.Start();
             gRPC_With_ManualPort.Start();
+            gRPC_With_AlarmFun.Start();
             //gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
         }
 

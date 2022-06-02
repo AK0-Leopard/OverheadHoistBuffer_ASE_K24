@@ -117,6 +117,16 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
 
             return alarm.FirstOrDefault();
         }
+        public ALARM getAlarm(DBConnection_EF conn, string eqID, string code, DateTime rptDateTime)
+        {
+            var alarm = from b in conn.ALARM
+                        where b.ALAM_CODE.Trim() == code.Trim() &&
+                              b.EQPT_ID.Trim() == eqID.Trim() &&
+                              b.RPT_DATE_TIME == rptDateTime
+                        select b;
+
+            return alarm.FirstOrDefault();
+        }
 
         public ALARM getAlarm(DBConnection_EF conn, string eq_id, string cmd_id, string code)
         {

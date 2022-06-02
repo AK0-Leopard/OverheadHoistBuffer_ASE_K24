@@ -527,6 +527,7 @@
     <Compile Include="BLL\GuideBLL.cs" />
     <Compile Include="BLL\HIDBLL.cs" />
     <Compile Include="BLL\EventBLL.cs" />
+    <Compile Include="BLL\Interface\IAlarmRemarkFun.cs" />
     <Compile Include="BLL\Interface\IManualPortAlarmBLL.cs" />
     <Compile Include="BLL\Interface\IManualPortCassetteDataBLL.cs" />
     <Compile Include="BLL\Interface\IManualPortCMDBLL.cs" />
@@ -1139,6 +1140,7 @@
       <DependentUpon>OHTCContext.tt</DependentUpon>
     </Compile>
     <Compile Include="WebAPI\CSTBoxControl.cs" />
+    <Compile Include="WebAPI\Grpc\AlarmFun.cs" />
     <Compile Include="WebAPI\Grpc\ManualPort.cs" />
     <Compile Include="WebAPI\Grpc\Shelf.cs" />
     <Compile Include="WebAPI\MTSMTLInfo.cs" />

@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "CommonMessage.ProtocolFormat.AlarmFun";
+
+package greet;
+
+// The greeting service definition.
+service alarmGreeter {
+	// Sends a greeting
+	//↓
+	rpc alarmControl(ControlRequest) returns (ControlReply);
+}
+
+message ControlRequest {string EQPT_ID=1; int64 RPT_DATE_TIME=2; string ALARM_CODE=3; string USER_ID=4; int32 ALARM_CLASSIFICATION=5; string ALARM_REMARK=6;}
+message ControlReply{ string result=1;}

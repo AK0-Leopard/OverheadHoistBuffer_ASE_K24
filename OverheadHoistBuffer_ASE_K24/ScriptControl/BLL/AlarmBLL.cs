@@ -175,7 +175,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     //不會上報Eq的alarm
                 }
-                else if(scApp.UnitBLL.cache.IsTrack(eq_id))
+                else if (scApp.UnitBLL.cache.IsTrack(eq_id))
                 {
                     alarmUnitType = "TRACK";
                 }
@@ -549,7 +549,33 @@ namespace com.mirle.ibg3k0.sc.BLL
                 alarmDao.removeAlarm(con, alarmList);
                 alarmDao.insertHALARM(con, halarmList);
             }
-                
+        }
+
+    }
+    public partial class AlarmBLL : IAlarmRemarkFun
+    {
+        public bool setAlarmRemarkInfo(string eqID, DateTime dateTime, string errorCode, string updateUser, int updateClassification, string remark)
+        {
+            try
+            {
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    var alarm = alarmDao.getAlarm(con, eqID, errorCode, dateTime);
+
+                    if (alarm != null)
+                    {
+                        alarm.CLASS = updateClassification;
+                        alarm.REMARK = remark;
+                        alarmDao.updateAlarm(con, alarm);
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+                return false;
+            }
         }
     }
 
@@ -597,5 +623,5 @@ namespace com.mirle.ibg3k0.sc.BLL
             return true;
         }
     }
-    
+
 }
