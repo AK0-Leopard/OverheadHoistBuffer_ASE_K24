@@ -28,6 +28,6 @@ namespace com.mirle.ibg3k0.sc
         public string CMD_ID { get; set; }
         public Nullable<System.DateTime> END_TIME { get; set; }
         public string REMARK { get; set; }
-        public Nullable<int> CLASS { get; set; }
+        public Nullable<CommonMessage.ProtocolFormat.AlarmFun.alarmClassification> CLASS { get; set; }
     }
 }

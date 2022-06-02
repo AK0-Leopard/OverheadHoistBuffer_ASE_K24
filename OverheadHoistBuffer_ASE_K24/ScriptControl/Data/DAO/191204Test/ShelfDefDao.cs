@@ -54,15 +54,16 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
         }
         public void UpdateShelfEnableByZone(DBConnection_EF con, string zoneID)
         {
-            string trn_dt= DateTime.Now.ToString(sc.App.SCAppConstants.TimestampFormat_19);
-            string sql = "Update [ShelfDef] SET [Enable] = 'Y' ,[TrnDT] = {0} WHERE [ZoneID] = {1} AND [ADR_ID] <> '99999'";
-            con.Database.ExecuteSqlCommand(sql, trn_dt, zoneID);
+            string trn_dt = DateTime.Now.ToString(sc.App.SCAppConstants.TimestampFormat_19);
+            string sql = "Update [ShelfDef] SET [Enable] = 'Y' ,[TrnDT] = {0} ,[Remark] = {1} ,[DISABLE_TIME] = {2} WHERE [ZoneID] = {3} AND [ADR_ID] <> '99999'";
+            con.Database.ExecuteSqlCommand(sql, trn_dt, "", null, zoneID);
         }
-        public void UpdateShelfDisableByZone(DBConnection_EF con, string zoneID)
+        public void UpdateShelfDisableByZone(DBConnection_EF con, string zoneID, string remark)
         {
-            string trn_dt= DateTime.Now.ToString(sc.App.SCAppConstants.TimestampFormat_19);
-            string sql = "Update [ShelfDef] SET [Enable] = 'N' ,[TrnDT] = {0} WHERE [ZoneID] = {1} AND [ADR_ID] <> '99999'";
-            con.Database.ExecuteSqlCommand(sql, trn_dt, zoneID);
+            string trn_dt = DateTime.Now.ToString(sc.App.SCAppConstants.TimestampFormat_19);
+            string disable_dt = DateTime.Now.ToString(sc.App.SCAppConstants.DateTimeFormat_22);
+            string sql = "Update [ShelfDef] SET [Enable] = 'N' ,[TrnDT] = {0} ,[Remark] = {1} ,[DISABLE_TIME] = {2} WHERE [ZoneID] = {3} AND [ADR_ID] <> '99999'";
+            con.Database.ExecuteSqlCommand(sql, trn_dt, remark, disable_dt, zoneID);
         }
 
 

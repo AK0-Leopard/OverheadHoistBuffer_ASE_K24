@@ -11,5 +11,15 @@ service alarmGreeter {
 	rpc alarmControl(ControlRequest) returns (ControlReply);
 }
 
-message ControlRequest {string EQPT_ID=1; int64 RPT_DATE_TIME=2; string ALARM_CODE=3; string USER_ID=4; int32 ALARM_CLASSIFICATION=5; string ALARM_REMARK=6;}
+message ControlRequest {string EQPT_ID=1; int64 RPT_DATE_TIME=2; string ALARM_CODE=3; string USER_ID=4; alarmClassification ALARM_CLASSIFICATION=5; string ALARM_REMARK=6;}
 message ControlReply{ string result=1;}
+
+
+enum alarmClassification
+{
+	NOT_DEFINE = 0;
+	MAINTENANCE = 1;
+    ABNORMAL = 2;
+    ABNORMAL_WHIT_OP = 3;
+    ABNORMAL_WHIT_EQ = 4;
+}

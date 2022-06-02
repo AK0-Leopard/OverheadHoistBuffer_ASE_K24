@@ -9,13 +9,14 @@
 // Date          Author         Request No.    Tag     Description
 // ------------- -------------  -------------  ------  -----------------------------
 //**********************************************************************************
+using CommonMessage.ProtocolFormat.AlarmFun;
 using System;
 
 namespace com.mirle.ibg3k0.sc.BLL.Interface
 {
     public interface IAlarmRemarkFun
     {
-        bool setAlarmRemarkInfo(string eqID, DateTime dateTime, string errorCode, string updateUser,int updateClassification,string remark);
+        bool setAlarmRemarkInfo(string eqID, DateTime dateTime, string errorCode, string updateUser, alarmClassification updateClassification,string remark);
 
     }
 }

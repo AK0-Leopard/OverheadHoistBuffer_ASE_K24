@@ -3381,6 +3381,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             try
             {
+                if (!isHostReady()) return true;
 
                 //if (!isSend()) return true;
                 VIDCollection Vids = new VIDCollection();

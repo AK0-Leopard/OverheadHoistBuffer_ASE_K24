@@ -27,7 +27,7 @@ namespace com.mirle.ibg3k0.sc.WebAPI.Grpc
             DateTime userLastUpdateTime = DateTime.FromBinary(request.RPTDATETIME);//這邊是client告訴我們他最後更新的時間
             string error_code = "";
             string update_user = request.USERID;
-            int update_classification = request.ALARMCLASSIFICATION;
+            var  update_classification = request.ALARMCLASSIFICATION;
             string remark = request.ALARMREMARK;
 
             bool is_success = alarmRemarkFun.setAlarmRemarkInfo(eq_id, userLastUpdateTime, error_code, update_user, update_classification, remark);

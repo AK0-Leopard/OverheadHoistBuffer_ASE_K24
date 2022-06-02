@@ -96,7 +96,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-        public bool UpdateEnableByID(string shelfid, bool enable)
+        public bool UpdateEnableByID(string shelfid, bool enable, string remark)
         {
             bool isSuccsess = true;
             try
@@ -105,6 +105,15 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     ShelfDef shelf = shelfdefDao.GetShelfByID(con, shelfid);
                     shelf.Enable = enable == true ? "Y" : "N";
+                    shelf.Remark = remark;
+                    if (enable)
+                    {
+                        shelf.DISABLE_TIME = null;
+                    }
+                    else
+                    {
+                        shelf.DISABLE_TIME = DateTime.Now;
+                    }
 
                     shelfdefDao.UpdateShelfDef(con, shelf);
                 }
@@ -275,13 +284,13 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
             return true;
         }
-        public bool updateShelfDisableByZoneID(string zoneID)
+        public bool updateShelfDisableByZoneID(string zoneID, string remark)
         {
             try
             {
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
-                    shelfdefDao.UpdateShelfDisableByZone(con, zoneID);
+                    shelfdefDao.UpdateShelfDisableByZone(con, zoneID, remark);
                 }
             }
             catch (Exception ex)

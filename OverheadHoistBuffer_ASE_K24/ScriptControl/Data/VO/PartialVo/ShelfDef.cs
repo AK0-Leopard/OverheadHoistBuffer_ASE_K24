@@ -58,6 +58,8 @@ namespace com.mirle.ibg3k0.sc
         public void put(ShelfDef ortherValue)
         {
             this.Enable = ortherValue.Enable;
+            this.DISABLE_TIME = ortherValue.DISABLE_TIME;
+            this.Remark = ortherValue.Remark;
         }
 
 
@@ -120,5 +122,15 @@ namespace com.mirle.ibg3k0.sc
                 }
             }
         }
+        public string sDISABLE_TIME
+        {
+            get 
+            {
+                if (!DISABLE_TIME.HasValue)
+                    return "";
+                return DISABLE_TIME.Value.ToString(sc.App.SCAppConstants.DateTimeFormat_19);
+            }
+        }
+
     }
 }

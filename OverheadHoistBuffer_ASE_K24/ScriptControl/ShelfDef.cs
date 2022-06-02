@@ -36,5 +36,6 @@ namespace com.mirle.ibg3k0.sc
         public string TrnDT { get; set; }
         public Nullable<decimal> HandoffDirection { get; set; }
         public string ADR_ID { get; set; }
+        public Nullable<System.DateTime> DISABLE_TIME { get; set; }
     }
 }

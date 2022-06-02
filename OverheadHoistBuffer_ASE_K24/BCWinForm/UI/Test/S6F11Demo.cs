@@ -355,12 +355,12 @@ namespace com.mirle.ibg3k0.bc.winform
 
         private void button20_Click(object sender, EventArgs e)
         {
-            BCApp.SCApplication.TransferService.Manual_ShelfEnable(comboBox9.Text, true);
+            //BCApp.SCApplication.TransferService.Manual_ShelfEnable(comboBox9.Text, true);
         }
 
         private void button21_Click(object sender, EventArgs e)
         {
-            BCApp.SCApplication.TransferService.Manual_ShelfEnable(comboBox9.Text, false);
+            //BCApp.SCApplication.TransferService.Manual_ShelfEnable(comboBox9.Text, false);
         }
 
         private void button22_Click(object sender, EventArgs e)

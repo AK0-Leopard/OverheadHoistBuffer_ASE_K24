@@ -28,111 +28,111 @@ namespace com.mirle.ibg3k0.sc.WebAPI
 
         public void RegisterShelfManagementEvent()
         {
-            Post["ShelfDef/{Action}/{UserID}"] = (p) =>
-            {
-                var scApp = SCApplication.getInstance();
-                bool isSuccess = true;
-                bool allSuccess = true;
-                string result = string.Empty;
-                string action = p.Action.Value;
-                string userid = p.UserID.Value;
-                string resultJson = string.Empty;
-                using (Stream stream = Request.Body)
-                {
-                    using (StreamReader reader = new StreamReader(stream, Encoding.GetEncoding("UTF-8")))
-                    {
-                        resultJson = reader.ReadToEnd();
-                    }
-                }
-                dynamic d = JsonConvert.DeserializeObject(resultJson);
-                string shelf_id = d.shelf_id?.Value;
-                UserOperationLog userOperationLog = new UserOperationLog()
-                {
-                    Action = action,
-                    UserID = userid,
-                    ActionTime = DateTime.Now,
-                };
-                try
-                {
-                    switch (action)
-                    {
-                        case "EnableUpdate":
-                            bool enable = d.enable?.Value;
-                            string s = scApp.TransferService.Manual_ShelfEnable(shelf_id, enable);
-                            isSuccess = s == "OK" ? true : false;
-                            result = isSuccess ? "OK" : "Update Shlef Enable failed.";
-                            break;
+            //Post["ShelfDef/{Action}/{UserID}"] = (p) =>
+            //{
+            //    var scApp = SCApplication.getInstance();
+            //    bool isSuccess = true;
+            //    bool allSuccess = true;
+            //    string result = string.Empty;
+            //    string action = p.Action.Value;
+            //    string userid = p.UserID.Value;
+            //    string resultJson = string.Empty;
+            //    using (Stream stream = Request.Body)
+            //    {
+            //        using (StreamReader reader = new StreamReader(stream, Encoding.GetEncoding("UTF-8")))
+            //        {
+            //            resultJson = reader.ReadToEnd();
+            //        }
+            //    }
+            //    dynamic d = JsonConvert.DeserializeObject(resultJson);
+            //    string shelf_id = d.shelf_id?.Value;
+            //    UserOperationLog userOperationLog = new UserOperationLog()
+            //    {
+            //        Action = action,
+            //        UserID = userid,
+            //        ActionTime = DateTime.Now,
+            //    };
+            //    try
+            //    {
+            //        switch (action)
+            //        {
+            //            case "EnableUpdate":
+            //                bool enable = d.enable?.Value;
+            //                string s = scApp.TransferService.Manual_ShelfEnable(shelf_id, enable);
+            //                isSuccess = s == "OK" ? true : false;
+            //                result = isSuccess ? "OK" : "Update Shlef Enable failed.";
+            //                break;
 
-                        case "PriorityUpdate":
-                            int priority = (int)d.priority?.Value;
-                            isSuccess = scApp.ShelfService.doUpdatePriority(shelf_id, priority);
-                            result = isSuccess ? "OK" : "Update Shlef Priority failed.";
-                            break;
+            //            case "PriorityUpdate":
+            //                int priority = (int)d.priority?.Value;
+            //                isSuccess = scApp.ShelfService.doUpdatePriority(shelf_id, priority);
+            //                result = isSuccess ? "OK" : "Update Shlef Priority failed.";
+            //                break;
 
-                        case "MultiEnableUpdate":
-                            var enableJson = JsonConvert.DeserializeObject<List<ShelfDef>>(resultJson);
-                            result = "Update these Shlef Enable failed.\n";
-                            enableJson.ForEach(x =>
-                            {
-                                string enableStr = scApp.TransferService.Manual_ShelfEnable(x.ShelfID, true);
-                                isSuccess = enableStr == "OK" ? true : false;
+            //            case "MultiEnableUpdate":
+            //                var enableJson = JsonConvert.DeserializeObject<List<ShelfDef>>(resultJson);
+            //                result = "Update these Shlef Enable failed.\n";
+            //                enableJson.ForEach(x =>
+            //                {
+            //                    string enableStr = scApp.TransferService.Manual_ShelfEnable(x.ShelfID, true);
+            //                    isSuccess = enableStr == "OK" ? true : false;
 
-                                if (!isSuccess)
-                                {
-                                    result += $"{x.ShelfID}   ";
-                                    allSuccess = false;
-                                }
-                            });
-                            if (allSuccess == true)
-                            {
-                                result = "OK";
-                            }
-                            break;
+            //                    if (!isSuccess)
+            //                    {
+            //                        result += $"{x.ShelfID}   ";
+            //                        allSuccess = false;
+            //                    }
+            //                });
+            //                if (allSuccess == true)
+            //                {
+            //                    result = "OK";
+            //                }
+            //                break;
 
-                        case "MultiDisableUpdate":
-                            var disableJson = JsonConvert.DeserializeObject<List<ShelfDef>>(resultJson);
-                            result = "Update these Shlef Disable failed.\n";
-                            disableJson.ForEach(x =>
-                            {
-                                string ss = scApp.TransferService.Manual_ShelfEnable(x.ShelfID, false);
-                                isSuccess = ss == "OK" ? true : false;
+            //            case "MultiDisableUpdate":
+            //                var disableJson = JsonConvert.DeserializeObject<List<ShelfDef>>(resultJson);
+            //                result = "Update these Shlef Disable failed.\n";
+            //                disableJson.ForEach(x =>
+            //                {
+            //                    string ss = scApp.TransferService.Manual_ShelfEnable(x.ShelfID, false);
+            //                    isSuccess = ss == "OK" ? true : false;
 
-                                if (!isSuccess)
-                                {
-                                    result += $"{x.ShelfID}   ";
-                                    allSuccess = false;
-                                }
-                            });
-                            if (allSuccess == true)
-                            {
-                                result = "OK";
-                            }
-                            break;
+            //                    if (!isSuccess)
+            //                    {
+            //                        result += $"{x.ShelfID}   ";
+            //                        allSuccess = false;
+            //                    }
+            //                });
+            //                if (allSuccess == true)
+            //                {
+            //                    result = "OK";
+            //                }
+            //                break;
 
-                        case "StateUpdate":
-                            string state = d.state?.Value;
-                            isSuccess = scApp.ShelfService.doUpdateState(shelf_id, state);
-                            result = isSuccess ? "OK" : "Update Shlef State failed.";
-                            break;
+            //            case "StateUpdate":
+            //                string state = d.state?.Value;
+            //                isSuccess = scApp.ShelfService.doUpdateState(shelf_id, state);
+            //                result = isSuccess ? "OK" : "Update Shlef State failed.";
+            //                break;
 
-                        case "RemarkUpdate":
-                            string remark = d.remark?.Value;
-                            isSuccess = scApp.ShelfService.doUpdateRemark(shelf_id, remark);
-                            result = isSuccess ? "OK" : "Update Shlef Remark failed.";
-                            break;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    isSuccess = false;
-                    result = "Execption happend!";
-                    logger.Error(ex, "Execption:");
-                }
-                SCUtility.UserOperationLog(userOperationLog);
-                var response = (Response)result;
-                response.ContentType = restfulContentType;
-                return response;
-            };
+            //            case "RemarkUpdate":
+            //                string remark = d.remark?.Value;
+            //                isSuccess = scApp.ShelfService.doUpdateRemark(shelf_id, remark);
+            //                result = isSuccess ? "OK" : "Update Shlef Remark failed.";
+            //                break;
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        isSuccess = false;
+            //        result = "Execption happend!";
+            //        logger.Error(ex, "Execption:");
+            //    }
+            //    SCUtility.UserOperationLog(userOperationLog);
+            //    var response = (Response)result;
+            //    response.ContentType = restfulContentType;
+            //    return response;
+            //};
         }
 
         private void RegisterCassetteEvent()

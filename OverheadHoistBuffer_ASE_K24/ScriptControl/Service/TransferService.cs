@@ -8674,7 +8674,7 @@ namespace com.mirle.ibg3k0.sc.Service
         #endregion Port 狀態設置
 
         #region 儲位操作
-        public bool Manual_ShelfEnableByZone(string zoneID, bool enable,string sourceAPI)
+        public bool Manual_ShelfEnableByZone(string zoneID, bool enable, string remark, string sourceAPI)
         {
             try
             {
@@ -8692,7 +8692,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         if (enable)
                             is_success = is_success && shelfDefBLL.updateShelfEnableByZoneID(zoneID);
                         else
-                            is_success = is_success && shelfDefBLL.updateShelfDisableByZoneID(zoneID);
+                            is_success = is_success && shelfDefBLL.updateShelfDisableByZoneID(zoneID, remark);
 
                         ZoneDef zone = zoneBLL.loadZoneDataByID(zoneID);
                         is_success = is_success && reportBLL.ReportShelfStatusChange(zone);
@@ -8716,12 +8716,12 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        public string Manual_ShelfEnable(string shelfID, bool enable)
+        public string Manual_ShelfEnable(string shelfID, bool enable, string remark)
         {
             try
             {
                 ShelfDef shelf = shelfDefBLL.GetShelfDataByID(shelfID);
-                shelfDefBLL.UpdateEnableByID(shelfID, enable);
+                shelfDefBLL.UpdateEnableByID(shelfID, enable, remark);
                 ZoneDef zone = zoneBLL.loadZoneDataByID(shelf.ZoneID);
                 reportBLL.ReportShelfStatusChange(zone);
                 return "OK";

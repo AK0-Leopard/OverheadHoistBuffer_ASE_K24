@@ -29,6 +29,7 @@ using com.mirle.ibg3k0.sc.Data.DAO.EntityFramework;
 using com.mirle.ibg3k0.sc.BLL.Interface;
 using com.mirle.ibg3k0.sc.Data.Enum;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
+using CommonMessage.ProtocolFormat.AlarmFun;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
@@ -554,7 +555,7 @@ namespace com.mirle.ibg3k0.sc.BLL
     }
     public partial class AlarmBLL : IAlarmRemarkFun
     {
-        public bool setAlarmRemarkInfo(string eqID, DateTime dateTime, string errorCode, string updateUser, int updateClassification, string remark)
+        public bool setAlarmRemarkInfo(string eqID, DateTime dateTime, string errorCode, string updateUser, alarmClassification updateClassification, string remark)
         {
             try
             {

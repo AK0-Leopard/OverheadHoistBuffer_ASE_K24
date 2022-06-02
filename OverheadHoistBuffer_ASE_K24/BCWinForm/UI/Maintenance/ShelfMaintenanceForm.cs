@@ -90,7 +90,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             }
             var first_selected_row = selected_rows[0];
             string shelf_id = first_selected_row.Cells[CELL_INDEX_SHELFID].Value.ToString();
-            string result = await Task.Run(() => BCApp.SCApplication.TransferService.Manual_ShelfEnable(shelf_id, true));
+            string result = await Task.Run(() => BCApp.SCApplication.TransferService.Manual_ShelfEnable(shelf_id, true, ""));
             UpdateShelfData();
             MessageBox.Show($"Shelf:{shelf_id} enable {result}");
         }
@@ -103,9 +103,16 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 MessageBox.Show("Please select want to enable shelf.");
                 return;
             }
+            string reason = txt_reason.Text;
+            if (sc.Common.SCUtility.isEmpty(reason))
+            {
+                MessageBox.Show("Please enter the reason for disable shelf.");
+                return;
+            }
+
             var first_selected_row = selected_rows[0];
             string shelf_id = first_selected_row.Cells[CELL_INDEX_SHELFID].Value.ToString();
-            string result = await Task.Run(() => BCApp.SCApplication.TransferService.Manual_ShelfEnable(shelf_id, false));
+            string result = await Task.Run(() => BCApp.SCApplication.TransferService.Manual_ShelfEnable(shelf_id, false, reason));
             UpdateShelfData();
             MessageBox.Show($"Shelf:{shelf_id} disable {result}");
 
@@ -243,7 +250,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 {
                     return;
                 }
-                string result = await Task.Run(() => doBatchEnableDisableShelf(zone_id, true));
+                string result = await Task.Run(() => doBatchEnableDisableShelf(zone_id, true, ""));
                 UpdateShelfData();
                 MessageBox.Show($"開啟 [{zone_id}] 所有的儲位,結果:{result}");
             }
@@ -257,11 +264,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             }
         }
 
-        private string doBatchEnableDisableShelf(string zoneID, bool isEnable)
+        private string doBatchEnableDisableShelf(string zoneID, bool isEnable, string remark)
         {
             try
             {
-                bool is_success = BCApp.SCApplication.TransferService.Manual_ShelfEnableByZone(zoneID, isEnable, "UI");
+                bool is_success = BCApp.SCApplication.TransferService.Manual_ShelfEnableByZone(zoneID, isEnable, remark, "UI");
 
                 return is_success ? "成功" : "失敗";
             }
@@ -290,7 +297,15 @@ namespace com.mirle.ibg3k0.bc.winform.UI
                 {
                     return;
                 }
-                string result = await Task.Run(() => doBatchEnableDisableShelf(zone_id, false));
+
+                string reason = txt_reason.Text;
+                if (sc.Common.SCUtility.isEmpty(reason))
+                {
+                    MessageBox.Show("Please enter the reason for disable shelf.");
+                    return;
+                }
+
+                string result = await Task.Run(() => doBatchEnableDisableShelf(zone_id, false, reason));
                 UpdateShelfData();
                 MessageBox.Show($"關閉 [{zone_id}] 所有的儲位,結果:{result}");
             }
