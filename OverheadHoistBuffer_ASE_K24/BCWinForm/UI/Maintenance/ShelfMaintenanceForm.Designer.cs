@@ -30,6 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             this.dgv_shelfData = new System.Windows.Forms.DataGridView();
+            this.ShelfID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CSTID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Enable = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ZoneID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ADR_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grb_Shelpanel = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_bay_id = new System.Windows.Forms.Label();
@@ -39,28 +46,21 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txt_shelfID = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txt_reason = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btn_enable = new System.Windows.Forms.Button();
             this.btn_disable = new System.Windows.Forms.Button();
             this.btn_EnableAll = new System.Windows.Forms.Button();
             this.btn_DisableAll = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txt_reason = new System.Windows.Forms.TextBox();
-            this.ShelfID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CSTID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Enable = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ZoneID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ADR_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_shelfData)).BeginInit();
             this.grb_Shelpanel.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgv_shelfData
@@ -85,6 +85,60 @@
             this.dgv_shelfData.Size = new System.Drawing.Size(1196, 661);
             this.dgv_shelfData.TabIndex = 0;
             this.dgv_shelfData.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgv_shelfData_RowPrePaint);
+            // 
+            // ShelfID
+            // 
+            this.ShelfID.DataPropertyName = "ShelfID";
+            this.ShelfID.HeaderText = "ShelfID";
+            this.ShelfID.Name = "ShelfID";
+            this.ShelfID.ReadOnly = true;
+            // 
+            // CSTID
+            // 
+            this.CSTID.DataPropertyName = "CSTID";
+            this.CSTID.HeaderText = "CST ID";
+            this.CSTID.Name = "CSTID";
+            this.CSTID.ReadOnly = true;
+            this.CSTID.Width = 150;
+            // 
+            // Enable
+            // 
+            this.Enable.DataPropertyName = "Enable";
+            this.Enable.HeaderText = "Enable";
+            this.Enable.Name = "Enable";
+            this.Enable.ReadOnly = true;
+            // 
+            // ZoneID
+            // 
+            this.ZoneID.DataPropertyName = "ZoneID";
+            this.ZoneID.HeaderText = "Zone ID";
+            this.ZoneID.Name = "ZoneID";
+            this.ZoneID.ReadOnly = true;
+            this.ZoneID.Width = 200;
+            // 
+            // ADR_ID
+            // 
+            this.ADR_ID.DataPropertyName = "ADR_ID";
+            this.ADR_ID.HeaderText = "ADR ID";
+            this.ADR_ID.Name = "ADR_ID";
+            this.ADR_ID.ReadOnly = true;
+            // 
+            // Time
+            // 
+            this.Time.DataPropertyName = "sDISABLE_TIME";
+            this.Time.HeaderText = "Time";
+            this.Time.Name = "Time";
+            this.Time.ReadOnly = true;
+            this.Time.Width = 210;
+            // 
+            // Remark
+            // 
+            this.Remark.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Remark.DataPropertyName = "Remark";
+            this.Remark.HeaderText = "Remark";
+            this.Remark.Name = "Remark";
+            this.Remark.ReadOnly = true;
+            this.Remark.Width = 95;
             // 
             // grb_Shelpanel
             // 
@@ -201,6 +255,41 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1214, 825);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 2;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.label5, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.txt_reason, 1, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 739);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(1214, 36);
+            this.tableLayoutPanel5.TabIndex = 3;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(117, 7);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(80, 22);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Reason:";
+            // 
+            // txt_reason
+            // 
+            this.txt_reason.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txt_reason.Location = new System.Drawing.Point(203, 3);
+            this.txt_reason.MaxLength = 80;
+            this.txt_reason.Name = "txt_reason";
+            this.txt_reason.Size = new System.Drawing.Size(1008, 30);
+            this.txt_reason.TabIndex = 1;
+            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 5;
@@ -269,95 +358,6 @@
             this.timer1.Interval = 5000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 2;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.25387F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 83.74613F));
-            this.tableLayoutPanel5.Controls.Add(this.label5, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.txt_reason, 1, 0);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 739);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(1214, 36);
-            this.tableLayoutPanel5.TabIndex = 3;
-            // 
-            // label5
-            // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(114, 7);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(80, 22);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Reason:";
-            // 
-            // txt_reason
-            // 
-            this.txt_reason.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txt_reason.Location = new System.Drawing.Point(200, 3);
-            this.txt_reason.MaxLength = 80;
-            this.txt_reason.Name = "txt_reason";
-            this.txt_reason.Size = new System.Drawing.Size(1011, 30);
-            this.txt_reason.TabIndex = 1;
-            // 
-            // ShelfID
-            // 
-            this.ShelfID.DataPropertyName = "ShelfID";
-            this.ShelfID.HeaderText = "ShelfID";
-            this.ShelfID.Name = "ShelfID";
-            this.ShelfID.ReadOnly = true;
-            // 
-            // CSTID
-            // 
-            this.CSTID.DataPropertyName = "CSTID";
-            this.CSTID.HeaderText = "CST ID";
-            this.CSTID.Name = "CSTID";
-            this.CSTID.ReadOnly = true;
-            this.CSTID.Width = 150;
-            // 
-            // Enable
-            // 
-            this.Enable.DataPropertyName = "Enable";
-            this.Enable.HeaderText = "Enable";
-            this.Enable.Name = "Enable";
-            this.Enable.ReadOnly = true;
-            // 
-            // ZoneID
-            // 
-            this.ZoneID.DataPropertyName = "ZoneID";
-            this.ZoneID.HeaderText = "Zone ID";
-            this.ZoneID.Name = "ZoneID";
-            this.ZoneID.ReadOnly = true;
-            this.ZoneID.Width = 200;
-            // 
-            // ADR_ID
-            // 
-            this.ADR_ID.DataPropertyName = "ADR_ID";
-            this.ADR_ID.HeaderText = "ADR ID";
-            this.ADR_ID.Name = "ADR_ID";
-            this.ADR_ID.ReadOnly = true;
-            // 
-            // Time
-            // 
-            this.Time.DataPropertyName = "sDISABLE_TIME";
-            this.Time.HeaderText = "Time";
-            this.Time.Name = "Time";
-            this.Time.ReadOnly = true;
-            this.Time.Width = 210;
-            // 
-            // Remark
-            // 
-            this.Remark.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Remark.DataPropertyName = "Remark";
-            this.Remark.HeaderText = "Remark";
-            this.Remark.Name = "Remark";
-            this.Remark.ReadOnly = true;
-            this.Remark.Width = 95;
-            // 
             // ShelfMaintenanceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -375,9 +375,9 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
