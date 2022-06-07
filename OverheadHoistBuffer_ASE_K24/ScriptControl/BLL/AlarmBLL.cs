@@ -129,6 +129,9 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 string alarmEq = eq_id;
 
+                string adr_id = "";
+                string port_id = "";
+
                 if (IsAlarmExist(alarmEq, error_code))
                     return null;
 
@@ -141,6 +144,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 else if (scApp.TransferService.isUnitType(eq_id, UnitType.CRANE))
                 {
                     alarmUnitType = "CRANE";
+                    (adr_id, port_id) = trySetVehicleinfoWhenAlarmHappend(eq_id, mcsCmdData);
                 }
                 else if (scApp.TransferService.isUnitType(eq_id, UnitType.NTB))
                 {
@@ -221,11 +225,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                     UnitState = "3",
                     RecoveryOption = "",
                     CMD_ID = "",
+                    ADDRESS_ID = adr_id,
+                    PORT_ID = port_id,
                 };
 
                 if (mcsCmdData != null)
                 {
-                    alarm.CMD_ID = mcsCmdData.CMD_ID.Trim();
+                    alarm.CMD_ID = SCUtility.Trim(mcsCmdData.CMD_ID, true);
+                    alarm.CARRIER_ID = SCUtility.Trim(mcsCmdData.CARRIER_ID, true);
                 }
 
                 if (scApp.TransferService.isUnitType(eq_id, UnitType.CRANE))
@@ -254,6 +261,49 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
 
                 return alarm;
+            }
+        }
+
+        private (string adr_id, string port_id) trySetVehicleinfoWhenAlarmHappend(string eq_id, ACMD_MCS cmdMCS)
+        {
+            try
+            {
+                var vh = scApp.VehicleBLL.cache.getVhByID(eq_id);
+                if (vh == null)
+                    return ("", "");
+                string current_adr_id = SCUtility.Trim(vh.CUR_ADR_ID);
+                string current_port_id = "";
+                if (cmdMCS == null)
+                {
+                    current_port_id = "";
+                }
+                else
+                {
+                    var port_stations = scApp.PortStationBLL.OperateCatch.loadPortStationsByAdrID(current_adr_id);
+                    var port_stations_id = port_stations.Select(p => p.PORT_ID).ToList();
+                    if (port_stations_id.Contains(cmdMCS.HOSTSOURCE))
+                    {
+                        current_port_id = cmdMCS.HOSTSOURCE;
+                    }
+                    else if (port_stations_id.Contains(cmdMCS.HOSTDESTINATION))
+                    {
+                        current_port_id = cmdMCS.HOSTDESTINATION;
+                    }
+                    else if (port_stations_id.Contains(cmdMCS.RelayStation))
+                    {
+                        current_port_id = cmdMCS.RelayStation;
+                    }
+                    else
+                    {
+                        current_port_id = "";
+                    }
+                }
+                return (current_adr_id, current_port_id);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+                return ("", "");
             }
         }
 

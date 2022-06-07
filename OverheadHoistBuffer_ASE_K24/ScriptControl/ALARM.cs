@@ -29,5 +29,8 @@ namespace com.mirle.ibg3k0.sc
         public Nullable<System.DateTime> END_TIME { get; set; }
         public string REMARK { get; set; }
         public Nullable<CommonMessage.ProtocolFormat.AlarmFun.alarmClassification> CLASS { get; set; }
+        public string ADDRESS_ID { get; set; }
+        public string PORT_ID { get; set; }
+        public string CARRIER_ID { get; set; }
     }
 }

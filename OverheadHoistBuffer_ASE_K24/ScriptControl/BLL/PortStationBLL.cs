@@ -204,12 +204,20 @@ namespace com.mirle.ibg3k0.sc.BLL
                 APORTSTATION portTemp = CacheManager.getPortStation(port_id);
                 return portTemp;
             }
-            public APORTSTATION getPortStationByID(string adr_id)
+            public APORTSTATION getPortStationByID(string portID)
             {
                 APORTSTATION portTemp = CacheManager.getALLPortStation().
-                                                     Where(p => SCUtility.isMatche(p.PORT_ID, adr_id)).
+                                                     Where(p => SCUtility.isMatche(p.PORT_ID, portID)).
                                                      SingleOrDefault();
                 return portTemp;
+            }
+
+            public List<APORTSTATION> loadPortStationsByAdrID(string adrID)
+            {
+                var portsTemp = CacheManager.getALLPortStation().
+                                             Where(p => SCUtility.isMatche(p.ADR_ID, adrID)).
+                                             ToList();
+                return portsTemp;
             }
 
             public bool updateServiceStatus(string portID, int status)

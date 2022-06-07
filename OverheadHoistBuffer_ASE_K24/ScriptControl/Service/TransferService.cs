@@ -837,7 +837,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     var cmdDatas = cmdBLL.LoadCmdData();
                     refreshACMD_MCSInfoList(cmdDatas);
 
-                    //if (ohtIdle != 0)    //有閒置的車輛在開始派命令
+                    //if (ohtIdle != 0)    //有閒置的車輛在開始派命令 小寶很可愛
                     {
                         if (cmdDatas.Count != 0)
                         {
@@ -1006,32 +1006,32 @@ namespace com.mirle.ibg3k0.sc.Service
                                 TransferCommandHandler(v);
                             }
 
-                            if (cmdFail)
-                            {
-                                cmdFail = false;
+                            //if (cmdFail)
+                            //{
+                            //    cmdFail = false;
 
-                                TimeSpan timeSpan = DateTime.Now - cmdTimeOut;
+                            //    TimeSpan timeSpan = DateTime.Now - cmdTimeOut;
 
-                                if (timeSpan.TotalSeconds >= cmdIdleTimeOut)
-                                {
-                                    cmdTimeOut = DateTime.Now;
+                            //    if (timeSpan.TotalSeconds >= cmdIdleTimeOut)
+                            //    {
+                            //        cmdTimeOut = DateTime.Now;
 
-                                    TransferServiceLogger.Info
-                                    (
-                                        DateTime.Now.ToString("HH:mm:ss.fff ")
-                                        + "OHB >> OHB| 車子閒置、有命令，超時 " + cmdIdleTimeOut + " 秒鐘，報異常"
-                                    );
+                            //        TransferServiceLogger.Info
+                            //        (
+                            //            DateTime.Now.ToString("HH:mm:ss.fff ")
+                            //            + "OHB >> OHB| 車子閒置、有命令，超時 " + cmdIdleTimeOut + " 秒鐘，報異常"
+                            //        );
 
-                                    OHBC_AlarmSet(line.LINE_ID, ((int)AlarmLst.OHT_IDLE_HasCMD_TimeOut).ToString());
-                                    cmdFailAlarmSet = true;
-                                }
-                            }
-                            else
-                            {
-                                cmdTimeOut = DateTime.Now;
+                            //        OHBC_AlarmSet(line.LINE_ID, ((int)AlarmLst.OHT_IDLE_HasCMD_TimeOut).ToString());
+                            //        cmdFailAlarmSet = true;
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    cmdTimeOut = DateTime.Now;
 
-                                OHBC_OHT_IDLE_HasCMD_TimeOutCleared();
-                            }
+                            //    OHBC_OHT_IDLE_HasCMD_TimeOutCleared();
+                            //}
                         }
                         else
                         {
