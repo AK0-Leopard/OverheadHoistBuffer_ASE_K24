@@ -30,13 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.dgv_shelfData = new System.Windows.Forms.DataGridView();
-            this.ShelfID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CSTID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Enable = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ZoneID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ADR_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grb_Shelpanel = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_bay_id = new System.Windows.Forms.Label();
@@ -55,6 +48,13 @@
             this.btn_EnableAll = new System.Windows.Forms.Button();
             this.btn_DisableAll = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.ShelfID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CSTID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Enable = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ZoneID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ADR_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_shelfData)).BeginInit();
             this.grb_Shelpanel.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -85,60 +85,6 @@
             this.dgv_shelfData.Size = new System.Drawing.Size(1196, 661);
             this.dgv_shelfData.TabIndex = 0;
             this.dgv_shelfData.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgv_shelfData_RowPrePaint);
-            // 
-            // ShelfID
-            // 
-            this.ShelfID.DataPropertyName = "ShelfID";
-            this.ShelfID.HeaderText = "ShelfID";
-            this.ShelfID.Name = "ShelfID";
-            this.ShelfID.ReadOnly = true;
-            // 
-            // CSTID
-            // 
-            this.CSTID.DataPropertyName = "CSTID";
-            this.CSTID.HeaderText = "CST ID";
-            this.CSTID.Name = "CSTID";
-            this.CSTID.ReadOnly = true;
-            this.CSTID.Width = 150;
-            // 
-            // Enable
-            // 
-            this.Enable.DataPropertyName = "Enable";
-            this.Enable.HeaderText = "Enable";
-            this.Enable.Name = "Enable";
-            this.Enable.ReadOnly = true;
-            // 
-            // ZoneID
-            // 
-            this.ZoneID.DataPropertyName = "ZoneID";
-            this.ZoneID.HeaderText = "Zone ID";
-            this.ZoneID.Name = "ZoneID";
-            this.ZoneID.ReadOnly = true;
-            this.ZoneID.Width = 200;
-            // 
-            // ADR_ID
-            // 
-            this.ADR_ID.DataPropertyName = "ADR_ID";
-            this.ADR_ID.HeaderText = "ADR ID";
-            this.ADR_ID.Name = "ADR_ID";
-            this.ADR_ID.ReadOnly = true;
-            // 
-            // Time
-            // 
-            this.Time.DataPropertyName = "sDISABLE_TIME";
-            this.Time.HeaderText = "Time";
-            this.Time.Name = "Time";
-            this.Time.ReadOnly = true;
-            this.Time.Width = 210;
-            // 
-            // Remark
-            // 
-            this.Remark.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Remark.DataPropertyName = "Remark";
-            this.Remark.HeaderText = "Remark";
-            this.Remark.Name = "Remark";
-            this.Remark.ReadOnly = true;
-            this.Remark.Width = 95;
             // 
             // grb_Shelpanel
             // 
@@ -357,6 +303,61 @@
             // 
             this.timer1.Interval = 5000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // ShelfID
+            // 
+            this.ShelfID.DataPropertyName = "ShelfID";
+            this.ShelfID.HeaderText = "ShelfID";
+            this.ShelfID.Name = "ShelfID";
+            this.ShelfID.ReadOnly = true;
+            // 
+            // CSTID
+            // 
+            this.CSTID.DataPropertyName = "CSTID";
+            this.CSTID.HeaderText = "CST ID";
+            this.CSTID.Name = "CSTID";
+            this.CSTID.ReadOnly = true;
+            this.CSTID.Width = 150;
+            // 
+            // Enable
+            // 
+            this.Enable.DataPropertyName = "Enable";
+            this.Enable.HeaderText = "Enable";
+            this.Enable.Name = "Enable";
+            this.Enable.ReadOnly = true;
+            // 
+            // ZoneID
+            // 
+            this.ZoneID.DataPropertyName = "ZoneID";
+            this.ZoneID.HeaderText = "Zone ID";
+            this.ZoneID.Name = "ZoneID";
+            this.ZoneID.ReadOnly = true;
+            this.ZoneID.Width = 200;
+            // 
+            // ADR_ID
+            // 
+            this.ADR_ID.DataPropertyName = "ADR_ID";
+            this.ADR_ID.HeaderText = "ADR ID";
+            this.ADR_ID.Name = "ADR_ID";
+            this.ADR_ID.ReadOnly = true;
+            // 
+            // Time
+            // 
+            this.Time.DataPropertyName = "sDISABLE_TIME";
+            this.Time.HeaderText = "Time";
+            this.Time.Name = "Time";
+            this.Time.ReadOnly = true;
+            this.Time.Width = 210;
+            // 
+            // Remark
+            // 
+            this.Remark.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Remark.DataPropertyName = "Remark";
+            this.Remark.HeaderText = "Remark";
+            this.Remark.MinimumWidth = 500;
+            this.Remark.Name = "Remark";
+            this.Remark.ReadOnly = true;
+            this.Remark.Width = 500;
             // 
             // ShelfMaintenanceForm
             // 

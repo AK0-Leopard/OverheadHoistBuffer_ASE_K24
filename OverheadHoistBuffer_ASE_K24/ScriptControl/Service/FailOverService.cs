@@ -37,9 +37,9 @@ namespace com.mirle.ibg3k0.sc.Service
             ALINE line = scApp.getEQObjCacheManager().getLine();
             try
             {
-#if DEBUG
-                //return true;
-#endif
+//#if DEBUG
+//                //return true;
+//#endif
                 //1.確認Current host是不是自己
                 //  a.是:將自己的直在Set一次並回傳true
                 string current_ohxc_id = redisCacheManager.StringGet(REDIS_KEY_WORD_CURRENT_MASTER);

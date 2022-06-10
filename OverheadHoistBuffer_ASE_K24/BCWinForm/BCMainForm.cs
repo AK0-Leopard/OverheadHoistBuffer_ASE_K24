@@ -244,7 +244,7 @@ namespace com.mirle.ibg3k0.bc.winform
                 {
                     progress.ShowDialog();
                 }
-#if DEBUG
+//#if DEBUG
                 //openForm(typeof(OHT_Form).Name);
                 if (SCUtility.isMatche(BCApp.SCApplication.BC_ID, "ASE_LOOP"))
                 {
@@ -254,7 +254,7 @@ namespace com.mirle.ibg3k0.bc.winform
                 {
                     openForm(typeof(OHT_Form).Name);
                 }
-#endif
+//#endif
             }
             catch (Exception ex)
             {
