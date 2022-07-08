@@ -1002,26 +1002,33 @@ namespace com.mirle.ibg3k0.sc.Service
         /// <param name="vh_id"></param>
         public void VehicleInfoSynchronize(string vh_id)
         {
-            /*與Vehicle進行狀態同步*/
-            bool ask_status_success = VehicleStatusRequest(vh_id, true);
-            /*要求Vehicle進行Alarm的Reset，如果成功後會將OHxC上針對該Vh的Alarm清除*/
-            if (AlarmResetRequest(vh_id))
+            try
             {
-            }
-            AVEHICLE vh = scApp.getEQObjCacheManager().getVehicletByVHID(vh_id);
-            //if (vh.MODE_STATUS == VHModeStatus.Manual &&
-            //    !SCUtility.isEmpty(vh.CUR_ADR_ID) &&
-            //    !SCUtility.isMatche(vh.CUR_ADR_ID, MTLService.MTL_ADDRESS))
-            var check_is_in_maintain_device = scApp.EquipmentBLL.cache.IsInMaintainDevice(vh.CUR_ADR_ID);
-            if (vh.MODE_STATUS == VHModeStatus.Manual &&
-                !check_is_in_maintain_device.isIn)
-            {
-                ModeChangeRequest(vh_id, OperatingVHMode.OperatingAuto);
-                if (SpinWait.SpinUntil(() => vh.MODE_STATUS == VHModeStatus.AutoRemote, 5000))
+                /*與Vehicle進行狀態同步*/
+                bool ask_status_success = VehicleStatusRequest(vh_id, true);
+                /*要求Vehicle進行Alarm的Reset，如果成功後會將OHxC上針對該Vh的Alarm清除*/
+                if (AlarmResetRequest(vh_id))
                 {
-                    ASEGMENT vh_current_seg_obj = scApp.SegmentBLL.cache.GetSegment(vh.CUR_SEG_ID);
-                    vh_current_seg_obj?.Entry(vh, scApp.SectionBLL, true);
                 }
+                AVEHICLE vh = scApp.getEQObjCacheManager().getVehicletByVHID(vh_id);
+                //if (vh.MODE_STATUS == VHModeStatus.Manual &&
+                //    !SCUtility.isEmpty(vh.CUR_ADR_ID) &&
+                //    !SCUtility.isMatche(vh.CUR_ADR_ID, MTLService.MTL_ADDRESS))
+                var check_is_in_maintain_device = scApp.EquipmentBLL.cache.IsInMaintainDevice(vh.CUR_ADR_ID);
+                if (vh.MODE_STATUS == VHModeStatus.Manual &&
+                    !check_is_in_maintain_device.isIn)
+                {
+                    ModeChangeRequest(vh_id, OperatingVHMode.OperatingAuto);
+                    if (SpinWait.SpinUntil(() => vh.MODE_STATUS == VHModeStatus.AutoRemote, 5000))
+                    {
+                        ASEGMENT vh_current_seg_obj = scApp.SegmentBLL.cache.GetSegment(vh.CUR_SEG_ID);
+                        vh_current_seg_obj?.Entry(vh, scApp.SectionBLL, true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
             }
         }
 
@@ -2515,6 +2522,18 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 case EventType.Initial:
                     TransferReportInitial(bcfApp, vh, seq_num, eventType, carrier_id);
+                    if (!DebugParameter.IsSyncWhenConnectionEvent)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: "Initial finish! Begin synchronize with vehicle...",
+                           VehicleID: vh.VEHICLE_ID,
+                           CarrierID: vh.CST_ID);
+                        VehicleInfoSynchronize(vh.VEHICLE_ID);
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: "Initial finish! End synchronize with vehicle.",
+                           VehicleID: vh.VEHICLE_ID,
+                           CarrierID: vh.CST_ID);
+                    }
                     break;
             }
         }
@@ -4257,9 +4276,16 @@ namespace com.mirle.ibg3k0.sc.Service
             ACMD_MCS cmd_mcs = scApp.CMDBLL.getCMD_MCSByID(finish_mcs_cmd);
             if (cmd_mcs != null)
             {
-                if (cmd_mcs.isLoading || cmd_mcs.isUnloading)
+                if (cmd_mcs.IsScanCommand)
                 {
-                    is_direct_finish = false;
+                    is_direct_finish = true;
+                }
+                else
+                {
+                    if (cmd_mcs.isLoading || cmd_mcs.isUnloading)
+                    {
+                        is_direct_finish = false;
+                    }
                 }
             }
             if (scApp.CMDBLL.isCMCD_OHTCFinish(cmd_id))
@@ -4878,15 +4904,22 @@ namespace com.mirle.ibg3k0.sc.Service
                     vh.isTcpIpConnect = true;
                     vh.StatusRequestFailTimes = 0;
 
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                       Data: "Connection ! Begin synchronize with vehicle...",
-                       VehicleID: vh.VEHICLE_ID,
-                       CarrierID: vh.CST_ID);
-                    VehicleInfoSynchronize(vh.VEHICLE_ID);
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                       Data: "Connection ! End synchronize with vehicle.",
-                       VehicleID: vh.VEHICLE_ID,
-                       CarrierID: vh.CST_ID);
+                    if (DebugParameter.IsSyncWhenConnectionEvent)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: "Connection ! Begin synchronize with vehicle...",
+                           VehicleID: vh.VEHICLE_ID,
+                           CarrierID: vh.CST_ID);
+                        VehicleInfoSynchronize(vh.VEHICLE_ID);
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: "Connection ! End synchronize with vehicle.",
+                           VehicleID: vh.VEHICLE_ID,
+                           CarrierID: vh.CST_ID);
+                    }
+                    else
+                    {
+                        bool ask_status_success = VehicleStatusRequest(vh.VEHICLE_ID, true);
+                    }
                     SCUtility.RecodeConnectionInfo
                         (vh.VEHICLE_ID,
                         SCAppConstants.RecodeConnectionInfo_Type.Connection.ToString(),

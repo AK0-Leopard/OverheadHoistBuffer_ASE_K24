@@ -870,6 +870,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     scApp.TransferService.TransferRun();
                 });
+                ACMD_MCS.tryAddCMD_MCS_ToList(cmd_mcs);
             }
             catch (System.Data.Entity.Core.EntityException ex)
             {

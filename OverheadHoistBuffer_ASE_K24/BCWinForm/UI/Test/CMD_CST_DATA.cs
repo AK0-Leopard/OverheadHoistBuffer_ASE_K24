@@ -189,10 +189,25 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Test
             label5.Text = BCApp.SCApplication.TransferService.Manual_InsertCmd(comboBox1.Text, comboBox2.Text);
             UpDate_CmdData();
         }
-        private void button9_Click(object sender, EventArgs e)
+        private async void button9_Click(object sender, EventArgs e)
         {
-            BCApp.SCApplication.TransferService.SetScanCmd(textBox2.Text, comboBox3.Text);
-            UpDate_CmdData();
+            try
+            {
+                button9.Enabled = false;
+                string box_is = textBox2.Text;
+                string loc = comboBox3.Text;
+                string result = await Task.Run(() => BCApp.SCApplication.TransferService.SetScanCmd(box_is, loc));
+                MessageBox.Show($"Creat scna command result:{result}.", "Scan command.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                UpDate_CmdData();
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception:");
+            }
+            finally
+            {
+                button9.Enabled = true;
+            }
         }
 
         #endregion

@@ -6345,11 +6345,16 @@ namespace com.mirle.ibg3k0.sc.Service
         #region 命令處理
 
         #region Scan 命令
-
+        public const string SYMBOL_SCAN = "SCAN-";
         public string SetScanCmd(string boxid, string loc)
         {
             try
             {
+                var check_scan_command_exist = IsScanCommandAlready(loc);
+                if (check_scan_command_exist.IsExist)
+                {
+                    return $"儲位[{loc}]，已存在scan command:{SCUtility.Trim(check_scan_command_exist.cmdMCS.CMD_ID, true)}";
+                }
                 if (isUnitType(loc, UnitType.SHELF) == false)
                 {
                     return "不是 SHELF";
@@ -6360,7 +6365,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 int cmdNo = 1;
                 string cmdID = "";
 
-                cmdID = "SCAN-" + GetStDate();
+                //cmdID = "SCAN-" + GetStDate();
+                cmdID = SYMBOL_SCAN + GetStDate();
                 datainfo.BOX_ID = boxid;
                 datainfo.HOSTSOURCE = loc;
                 datainfo.HOSTDESTINATION = loc;
@@ -6406,6 +6412,15 @@ namespace com.mirle.ibg3k0.sc.Service
                 TransferServiceLogger.Error(ex, "SetScanCmd");
                 return "失敗";
             }
+        }
+
+        private (bool IsExist, ACMD_MCS cmdMCS) IsScanCommandAlready(string loc)
+        {
+            var cmd_mcs_lsit = ACMD_MCS.tryGetMCSCommandList();
+            var scan_cmd_mcs = cmd_mcs_lsit
+                               .Where(cmd => cmd.CMD_ID.StartsWith(SYMBOL_SCAN) && SCUtility.isMatche(cmd.HOSTDESTINATION, loc))
+                               .FirstOrDefault();
+            return (scan_cmd_mcs != null, scan_cmd_mcs);
         }
 
         public void ScanALL()   //SCAN 全部

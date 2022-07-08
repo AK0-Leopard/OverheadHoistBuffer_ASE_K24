@@ -1607,7 +1607,7 @@ namespace com.mirle.ibg3k0.sc.App
 
             gRPC_With_Shelf = new Grpc.Core.Server()
             {
-                Services = {CommonMessage.ProtocolFormat.ShelfFun.shelfGreeter.BindService(new com.mirle.ibg3k0.sc.WebAPI.Grpc.Shelf(this)) },
+                Services = { CommonMessage.ProtocolFormat.ShelfFun.shelfGreeter.BindService(new com.mirle.ibg3k0.sc.WebAPI.Grpc.Shelf(this)) },
                 Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7002, Grpc.Core.ServerCredentials.Insecure) },
             };
 
@@ -2578,6 +2578,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean IsPaassErrorVhAndTrackStatus = false;
 
         public static Boolean IsOpneChangeGuideSection = true;
+        public static Boolean IsSyncWhenConnectionEvent = false;
 
     }
 }

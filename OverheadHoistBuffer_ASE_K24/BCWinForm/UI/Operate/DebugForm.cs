@@ -88,6 +88,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_autoUnloadOnVh.Checked = DebugParameter.IsAutoUnloadOnvh;
             cb_openSpecifyVh.Checked = DebugParameter.IsSpecifyVhTransfer;
             cb_openGuideSectionChange.Checked = DebugParameter.IsOpneChangeGuideSection;
+            cb_SyncWithOHTWhenConnection.Checked = DebugParameter.IsSyncWhenConnectionEvent;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -1514,6 +1515,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void btn_manualPortDuplicatTest_Click(object sender, EventArgs e)
         {
             Task.Run(() => bcApp.SCApplication.ManualPortEventService.WaitInTest());
+        }
+
+        private void cb_SyncWithOHTWhenConnection_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsSyncWhenConnectionEvent = cb_SyncWithOHTWhenConnection.Checked;
         }
     }
 }

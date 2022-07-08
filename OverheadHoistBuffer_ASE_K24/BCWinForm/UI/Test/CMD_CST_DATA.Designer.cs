@@ -489,6 +489,7 @@
             0,
             0,
             0});
+            this.numericUpDown1.Visible = false;
             // 
             // button30
             // 
@@ -499,6 +500,7 @@
             this.button30.TabIndex = 32;
             this.button30.Text = "請求補空BOX";
             this.button30.UseVisualStyleBackColor = true;
+            this.button30.Visible = false;
             this.button30.Click += new System.EventHandler(this.button30_Click);
             // 
             // comboBox4
@@ -509,6 +511,7 @@
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(230, 24);
             this.comboBox4.TabIndex = 30;
+            this.comboBox4.Visible = false;
             // 
             // button18
             // 
@@ -519,6 +522,7 @@
             this.button18.TabIndex = 32;
             this.button18.Text = "請退空BOX";
             this.button18.UseVisualStyleBackColor = true;
+            this.button18.Visible = false;
             this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // button19
@@ -541,6 +545,7 @@
             this.button21.TabIndex = 32;
             this.button21.Text = "開啟水位空盒請求";
             this.button21.UseVisualStyleBackColor = true;
+            this.button21.Visible = false;
             this.button21.Click += new System.EventHandler(this.button21_Click);
             // 
             // button22
@@ -552,6 +557,7 @@
             this.button22.TabIndex = 32;
             this.button22.Text = "關閉水位空盒請求";
             this.button22.UseVisualStyleBackColor = true;
+            this.button22.Visible = false;
             this.button22.Click += new System.EventHandler(this.button22_Click);
             // 
             // button23
@@ -563,6 +569,7 @@
             this.button23.TabIndex = 2;
             this.button23.Text = "開啟 Redis ";
             this.button23.UseVisualStyleBackColor = true;
+            this.button23.Visible = false;
             this.button23.Click += new System.EventHandler(this.button23_Click);
             // 
             // button24
@@ -574,6 +581,7 @@
             this.button24.TabIndex = 2;
             this.button24.Text = "關閉 Redis ";
             this.button24.UseVisualStyleBackColor = true;
+            this.button24.Visible = false;
             this.button24.Click += new System.EventHandler(this.button24_Click);
             // 
             // button4

@@ -17,6 +17,17 @@ namespace com.mirle.ibg3k0.sc
     public partial class ACMD_MCS
     {
         public static ConcurrentDictionary<string, ACMD_MCS> MCS_CMD_InfoList { get; private set; } = new ConcurrentDictionary<string, ACMD_MCS>();
+        public static void tryAddCMD_MCS_ToList(ACMD_MCS cmdMCS)
+        {
+            string cmd_id = sc.Common.SCUtility.Trim(cmdMCS.CMD_ID, true);
+            MCS_CMD_InfoList.TryAdd(cmd_id, cmdMCS);
+        }
+        public static List<ACMD_MCS> tryGetMCSCommandList()
+        {
+            var cmd_mcs_Key_value_array = MCS_CMD_InfoList.ToArray();
+            var cmd_mcs_list = cmd_mcs_Key_value_array.Select(kv => kv.Value).ToList();
+            return cmd_mcs_list;
+        }
 
         //**********************************************************************************
         //A20.05.22 給定一個私有變數去儲存2點間距離
@@ -96,6 +107,13 @@ namespace com.mirle.ibg3k0.sc
             get
             {
                 return COMMANDSTATE < COMMAND_STATUS_BIT_INDEX_LOAD_ARRIVE;
+            }
+        }
+        public bool IsScanCommand
+        {
+            get
+            {
+                return CMD_ID.StartsWith(Service.TransferService.SYMBOL_SCAN);
             }
         }
 

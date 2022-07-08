@@ -22,4 +22,7 @@ enum alarmClassification
     ABNORMAL = 2;
     ABNORMAL_WHIT_OP = 3;
     ABNORMAL_WHIT_EQ = 4;
+	OTHER = 5;
+	ABNORMAL_BY_HARDWARE = 6;
+	ABNORMAL_BY_SOFTWARE = 7;
 }

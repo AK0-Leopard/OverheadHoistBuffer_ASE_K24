@@ -395,6 +395,7 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
+            this.cb_SyncWithOHTWhenConnection = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1195,6 +1196,7 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.cb_SyncWithOHTWhenConnection);
             this.tabPage1.Controls.Add(this.cb_openGuideSectionChange);
             this.tabPage1.Controls.Add(this.cb_openSpecifyVh);
             this.tabPage1.Controls.Add(this.cb_autoUnloadOnVh);
@@ -2596,7 +2598,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(174, 9);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(174, 4);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -4831,6 +4833,17 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
+            // cb_SyncWithOHTWhenConnection
+            // 
+            this.cb_SyncWithOHTWhenConnection.AutoSize = true;
+            this.cb_SyncWithOHTWhenConnection.Location = new System.Drawing.Point(1079, 587);
+            this.cb_SyncWithOHTWhenConnection.Name = "cb_SyncWithOHTWhenConnection";
+            this.cb_SyncWithOHTWhenConnection.Size = new System.Drawing.Size(269, 26);
+            this.cb_SyncWithOHTWhenConnection.TabIndex = 74;
+            this.cb_SyncWithOHTWhenConnection.Text = "與OHT同步功能改回連線時";
+            this.cb_SyncWithOHTWhenConnection.UseVisualStyleBackColor = true;
+            this.cb_SyncWithOHTWhenConnection.CheckedChanged += new System.EventHandler(this.cb_SyncWithOHTWhenConnection_CheckedChanged);
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -5281,5 +5294,6 @@
         private System.Windows.Forms.ComboBox cmbVhType;
         private System.Windows.Forms.CheckBox cb_openGuideSectionChange;
         private System.Windows.Forms.Button btn_manualPortDuplicatTest;
+        private System.Windows.Forms.CheckBox cb_SyncWithOHTWhenConnection;
     }
 }
