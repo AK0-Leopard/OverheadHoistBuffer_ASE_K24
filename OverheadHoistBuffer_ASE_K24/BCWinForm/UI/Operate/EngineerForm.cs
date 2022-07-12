@@ -124,12 +124,13 @@ namespace com.mirle.ibg3k0.bc.winform.UI
 
         private void btn_StartSec_Click(object sender, EventArgs e)
         {
+            string startSection = "";
             string startAdr = cmb_startAdr.Text;
             string fromAdr = cmb_fromAdr.Text;
             string toAdr = cmb_toAdr.Text;
 
             var test = bcApp.SCApplication.GuideBLL.getGuideInfo(fromAdr, toAdr);
-            var guide_info = bcApp.SCApplication.CMDBLL.FindGuideInfo(startAdr, fromAdr, toAdr, sc.ProtocolFormat.OHTMessage.ActiveType.Loadunload);
+            var guide_info = bcApp.SCApplication.CMDBLL.FindGuideInfo(startSection, startAdr, fromAdr, toAdr, sc.ProtocolFormat.OHTMessage.ActiveType.Loadunload);
             if (test.isSuccess)
             {
                 mainForm.setSpecifyRail(test.guideSectionIds.ToArray());

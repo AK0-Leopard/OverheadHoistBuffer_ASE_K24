@@ -4793,12 +4793,13 @@ namespace com.mirle.ibg3k0.sc.BLL
 
                 string cmd_id = acmd_ohtc.CMD_ID;
                 string vh_current_adr = vehicle.CUR_ADR_ID;
+                string vh_current_sec = SCUtility.Trim(vehicle.CUR_SEC_ID, true);
                 string source_adr = acmd_ohtc.SOURCE_ADR;
                 string dest_adr = acmd_ohtc.DESTINATION_ADR;
                 ActiveType activeType = ActiveType.Move;
                 activeType = convert_E_CMD_TYPE2ActiveType(acmd_ohtc);
 
-                var guide_info = FindGuideInfo(vh_current_adr, source_adr, dest_adr, activeType);
+                var guide_info = FindGuideInfo(vh_current_sec, vh_current_adr, source_adr, dest_adr, activeType);
                 if (guide_info.isSuccess)
                 {
                     if (guide_info.guide_start_to_from_section_ids != null)
@@ -5351,7 +5352,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             List<string> guide_start_to_from_address_ids,
              List<string> guide_to_dest_section_ids,
              List<string> guide_to_dest_address_ids)
-            FindGuideInfo(string vh_current_address, string source_adr, string dest_adr, ActiveType active_type, bool has_carray = false)
+            FindGuideInfo(string vhCurrentSec, string vh_current_address, string source_adr, string dest_adr, ActiveType active_type, bool has_carray = false)
         {
             //bool isSuccess = true;
             bool isSuccess = false;
@@ -5385,7 +5386,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                             }
                             else
                             {
-                                isSuccess = true;//如果相同 代表是在同一個點上
+                                //isSuccess = true;//如果相同 代表是在同一個點上
+                                //如果相同且是在同一個點上的話，需要再確認Section ID是否為空的(OnAdr = True)
+                                //是的話，則不能直接拿他的Current Adr來作為起始而是要用Current Section的ToAdr作為起始點
+                                (isSuccess, guide_start_to_from_segment_ids, guide_start_to_from_section_ids, guide_start_to_from_address_ids, total_cost)
+                                = tryGetGuideInfoWhenVhAdrIsMatchTarget(vhCurrentSec, source_adr);
                             }
 
                             if (isSuccess && !SCUtility.isMatche(source_adr, dest_adr))
@@ -5405,7 +5410,9 @@ namespace com.mirle.ibg3k0.sc.BLL
                         }
                         else
                         {
-                            isSuccess = true; //如果相同 代表是在同一個點上
+                            //isSuccess = true; //如果相同 代表是在同一個點上
+                            (isSuccess, guide_start_to_from_segment_ids, guide_start_to_from_section_ids, guide_start_to_from_address_ids, total_cost)
+                            = tryGetGuideInfoWhenVhAdrIsMatchTarget(vhCurrentSec, source_adr);
                         }
                         break;
 
@@ -5417,7 +5424,9 @@ namespace com.mirle.ibg3k0.sc.BLL
                         }
                         else
                         {
-                            isSuccess = true; //如果相同 代表是在同一個點上
+                            //isSuccess = true; //如果相同 代表是在同一個點上
+                            (isSuccess, guide_start_to_from_segment_ids, guide_start_to_from_section_ids, guide_start_to_from_address_ids, total_cost)
+                            = tryGetGuideInfoWhenVhAdrIsMatchTarget(vhCurrentSec, source_adr);
                         }
                         break;
 
@@ -5429,7 +5438,9 @@ namespace com.mirle.ibg3k0.sc.BLL
                         }
                         else
                         {
-                            isSuccess = true;//如果相同 代表是在同一個點上
+                            //isSuccess = true; //如果相同 代表是在同一個點上
+                            (isSuccess, guide_to_dest_segment_ids, guide_to_dest_section_ids, guide_to_dest_address_ids, total_cost)
+                            = tryGetGuideInfoWhenVhAdrIsMatchTarget(vhCurrentSec, source_adr);
                         }
                         break;
 
@@ -5465,6 +5476,32 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 logger.Error(ex, "Exception");
                 return (isSuccess, total_cost, guide_start_to_from_section_ids, guide_start_to_from_address_ids, guide_to_dest_section_ids, guide_to_dest_address_ids);
+            }
+        }
+
+        private (bool isSuccess, List<string> startToFromSegIDs, List<string> startToFromSecIDs, List<string> startToFromAdrID, int total_cost)
+            tryGetGuideInfoWhenVhAdrIsMatchTarget(string currentSecID, string targetAdr)
+        {
+            bool vh_is_on_adr = SCUtility.isEmpty(currentSecID);
+            if (vh_is_on_adr)
+            {
+                //由於剛好是在點上，所以就不用計算guide info，可進行原地Load/Unload
+                return (true, new List<string>(), new List<string>(), new List<string>(), 0);
+            }
+            else
+            {
+                ASECTION current_sec = scApp.SectionBLL.cache.GetSection(currentSecID);
+                if (current_sec == null)
+                {
+                    logger.Warn($" current section:{currentSecID} 並不存在，無法計算該次guide info, Source address:{targetAdr}");
+                    return (false, new List<string>(), new List<string>(), new List<string>(), 0);
+                }
+                else
+                {
+                    string start_adr = current_sec.TO_ADR_ID;
+                    var guide_result = scApp.GuideBLL.getGuideInfo(start_adr, targetAdr);
+                    return (guide_result);
+                }
             }
         }
 
