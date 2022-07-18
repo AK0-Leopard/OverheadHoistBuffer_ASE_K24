@@ -336,6 +336,8 @@
           <Property Name="ADDRESS_ID" Type="varchar" MaxLength="64" />
           <Property Name="PORT_ID" Type="varchar" MaxLength="64" />
           <Property Name="CARRIER_ID" Type="varchar" MaxLength="64" />
+          <Property Name="ALARM_MODULE" Type="int" />
+          <Property Name="IMPORTANCE_LVL" Type="int" />
         </EntityType>
         <!--產生期間發現錯誤:
 警告 6002: 資料表/檢視 'OHBC_ASE_K24_v1.dbo.ALARMMAP' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
@@ -2733,6 +2735,8 @@
           <Property Name="ADDRESS_ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="PORT_ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="CARRIER_ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="ALARM_MODULE" Type="Int32" />
+          <Property Name="IMPORTANCE_LVL" Type="Int32" />
         </EntityType>
         <EnumType Name="E_ALARM_LVL">
           <Member Name="Warn" Value="1" />
@@ -4137,6 +4141,8 @@
           <EntitySetMapping Name="ALARM">
             <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALARM)">
               <MappingFragment StoreEntitySet="ALARM">
+                <ScalarProperty Name="IMPORTANCE_LVL" ColumnName="IMPORTANCE_LVL" />
+                <ScalarProperty Name="ALARM_MODULE" ColumnName="ALARM_MODULE" />
                 <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
                 <ScalarProperty Name="PORT_ID" ColumnName="PORT_ID" />
                 <ScalarProperty Name="ADDRESS_ID" ColumnName="ADDRESS_ID" />

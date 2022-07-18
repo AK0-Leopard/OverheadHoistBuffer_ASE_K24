@@ -2578,7 +2578,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean IsPaassErrorVhAndTrackStatus = false;
 
         public static Boolean IsOpneChangeGuideSection = true;
-        public static Boolean IsSyncWhenConnectionEvent = false;
+        public static Boolean IsSyncWhenConnectionEvent = true;
 
     }
 }

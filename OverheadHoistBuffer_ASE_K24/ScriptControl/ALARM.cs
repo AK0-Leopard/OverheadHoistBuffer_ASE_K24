@@ -32,5 +32,7 @@ namespace com.mirle.ibg3k0.sc
         public string ADDRESS_ID { get; set; }
         public string PORT_ID { get; set; }
         public string CARRIER_ID { get; set; }
+        public Nullable<int> ALARM_MODULE { get; set; }
+        public Nullable<int> IMPORTANCE_LVL { get; set; }
     }
 }
