@@ -5390,7 +5390,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                                 //如果相同且是在同一個點上的話，需要再確認Section ID是否為空的(OnAdr = True)
                                 //是的話，則不能直接拿他的Current Adr來作為起始而是要用Current Section的ToAdr作為起始點
                                 (isSuccess, guide_start_to_from_segment_ids, guide_start_to_from_section_ids, guide_start_to_from_address_ids, total_cost)
-                                = tryGetGuideInfoWhenVhAdrIsMatchTarget(vhCurrentSec, source_adr);
+                                = tryGetGuideInfoWhenVhAdrIsMatchTarget(vh_current_address, vhCurrentSec, source_adr);
                             }
 
                             if (isSuccess && !SCUtility.isMatche(source_adr, dest_adr))
@@ -5412,7 +5412,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         {
                             //isSuccess = true; //如果相同 代表是在同一個點上
                             (isSuccess, guide_start_to_from_segment_ids, guide_start_to_from_section_ids, guide_start_to_from_address_ids, total_cost)
-                            = tryGetGuideInfoWhenVhAdrIsMatchTarget(vhCurrentSec, source_adr);
+                            = tryGetGuideInfoWhenVhAdrIsMatchTarget(vh_current_address, vhCurrentSec, source_adr);
                         }
                         break;
 
@@ -5426,7 +5426,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         {
                             //isSuccess = true; //如果相同 代表是在同一個點上
                             (isSuccess, guide_start_to_from_segment_ids, guide_start_to_from_section_ids, guide_start_to_from_address_ids, total_cost)
-                            = tryGetGuideInfoWhenVhAdrIsMatchTarget(vhCurrentSec, source_adr);
+                            = tryGetGuideInfoWhenVhAdrIsMatchTarget(vh_current_address, vhCurrentSec, source_adr);
                         }
                         break;
 
@@ -5440,7 +5440,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         {
                             //isSuccess = true; //如果相同 代表是在同一個點上
                             (isSuccess, guide_to_dest_segment_ids, guide_to_dest_section_ids, guide_to_dest_address_ids, total_cost)
-                            = tryGetGuideInfoWhenVhAdrIsMatchTarget(vhCurrentSec, source_adr);
+                            = tryGetGuideInfoWhenVhAdrIsMatchTarget(vh_current_address, vhCurrentSec, source_adr);
                         }
                         break;
 
@@ -5480,8 +5480,11 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
 
         private (bool isSuccess, List<string> startToFromSegIDs, List<string> startToFromSecIDs, List<string> startToFromAdrID, int total_cost)
-            tryGetGuideInfoWhenVhAdrIsMatchTarget(string currentSecID, string targetAdr)
+            tryGetGuideInfoWhenVhAdrIsMatchTarget(string currentAdrID, string currentSecID, string targetAdr)
         {
+            if (DebugParameter.IsCloseCorrectGuideInfoWhenSameLoadAdr)
+                return (true, new List<string>(), new List<string>(), new List<string>(), 0);
+
             bool vh_is_on_adr = SCUtility.isEmpty(currentSecID);
             if (vh_is_on_adr)
             {
@@ -5500,8 +5503,28 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     string start_adr = current_sec.TO_ADR_ID;
                     var guide_result = scApp.GuideBLL.getGuideInfo(start_adr, targetAdr);
+                    if (guide_result.isSuccess)
+                        tryInserAddressToFirst(currentAdrID, current_sec, guide_result.guideAddressIds);
                     return (guide_result);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 當OHT因不在站點上無法進行Load/Unload命令時，
+        /// 但卻又想讓該vh來進行該站的Load/Unlaod，
+        /// 在下達讓一圈命令時，要額外補上OHT目前的位置
+        /// </summary>
+        /// <param name="currentAdrID"></param>
+        /// <param name="current_sec"></param>
+        /// <param name="guideAddressIds"></param>
+        private void tryInserAddressToFirst(string currentAdrID, ASECTION current_sec, List<string> guideAddressIds)
+        {
+            string sec_from_adr = current_sec.FROM_ADR_ID;
+            if (guideAddressIds.Count > 0 &&
+                SCUtility.isMatche(sec_from_adr, currentAdrID))
+            {
+                guideAddressIds.Insert(0, currentAdrID);
             }
         }
 

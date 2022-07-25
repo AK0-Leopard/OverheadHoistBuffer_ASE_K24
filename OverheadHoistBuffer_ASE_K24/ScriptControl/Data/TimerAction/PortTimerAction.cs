@@ -26,7 +26,8 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
         {
             try
             {
-                //Task.Run(() => scApp.ReelNTBEventService.RefreshReelNTBPortSignal());
+                if (SystemParameter.IsOpenReelNTBPortStatusAsk)
+                    Task.Run(() => scApp.ReelNTBEventService.RefreshReelNTBPortSignal());
                 scApp.ManualPortControlService?.ReflashState();
             }
             catch (Exception ex)

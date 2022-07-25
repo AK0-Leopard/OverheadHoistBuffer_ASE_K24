@@ -1602,24 +1602,25 @@ namespace com.mirle.ibg3k0.sc.App
             gRPC_With_VehicleControlFun = new Grpc.Core.Server()
             {
                 Services = { com.mirle.AK0.ProtocolFormat.VehicleControlFun.BindService(new WebAPI.VehicleControlFun()) },
-                Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7001, Grpc.Core.ServerCredentials.Insecure) },
+                //Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7001, Grpc.Core.ServerCredentials.Insecure) },
+                Ports = { new Grpc.Core.ServerPort(System.Net.IPAddress.Any.ToString(), 7001, Grpc.Core.ServerCredentials.Insecure) },
             };
 
             gRPC_With_Shelf = new Grpc.Core.Server()
             {
                 Services = { CommonMessage.ProtocolFormat.ShelfFun.shelfGreeter.BindService(new com.mirle.ibg3k0.sc.WebAPI.Grpc.Shelf(this)) },
-                Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7002, Grpc.Core.ServerCredentials.Insecure) },
+                Ports = { new Grpc.Core.ServerPort(System.Net.IPAddress.Any.ToString(), 7002, Grpc.Core.ServerCredentials.Insecure) },
             };
 
             gRPC_With_ManualPort = new Grpc.Core.Server()
             {
                 Services = { CommonMessage.ProtocolFormat.ManualPortFun.manualPortGreeter.BindService(new com.mirle.ibg3k0.sc.WebAPI.Grpc.ManualPort(this)) },
-                Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7003, Grpc.Core.ServerCredentials.Insecure) },
+                Ports = { new Grpc.Core.ServerPort(System.Net.IPAddress.Any.ToString(), 7003, Grpc.Core.ServerCredentials.Insecure) },
             };
             gRPC_With_AlarmFun = new Grpc.Core.Server()
             {
                 Services = { CommonMessage.ProtocolFormat.AlarmFun.alarmGreeter.BindService(new com.mirle.ibg3k0.sc.WebAPI.Grpc.AlarmFun(this)) },
-                Ports = { new Grpc.Core.ServerPort("127.0.0.1", 7005, Grpc.Core.ServerCredentials.Insecure) },
+                Ports = { new Grpc.Core.ServerPort(System.Net.IPAddress.Any.ToString(), 7005, Grpc.Core.ServerCredentials.Insecure) },
             };
 
             TrackInfoClient = new WebAPI.TrackInfoClient(this);
@@ -2379,6 +2380,8 @@ namespace com.mirle.ibg3k0.sc.App
 
         public static int cmdPriorityAdd = 1;
         public static int cmdTimeOutToAlternate = 30;
+        public static bool IsOpenContinueNotifyWhenVehicleTimeout { get; private set; } = true;
+        public static bool IsOpenReelNTBPortStatusAsk{ get; private set; } = false;
 
         /// <summary>
         /// Sets the secs conversaction timeout.
@@ -2437,6 +2440,14 @@ namespace com.mirle.ibg3k0.sc.App
         public static void setPreStageWatingTime_ms(int _preStageWatingTime_ms)
         {
             PreStageWatingTime_ms = _preStageWatingTime_ms;
+        }
+        public static void setIsOpenContinueNotifyWhenVehicleTimeout(bool isOpenContinueNotifyWhenVehicleTimeout)
+        {
+            IsOpenContinueNotifyWhenVehicleTimeout = isOpenContinueNotifyWhenVehicleTimeout;
+        }
+        public static void setIsOpenReelNTBPortStatusAsk(bool isOpenReelNTBPortStatusAsk)
+        {
+            IsOpenReelNTBPortStatusAsk = isOpenReelNTBPortStatusAsk;
         }
     }
 
@@ -2579,6 +2590,7 @@ namespace com.mirle.ibg3k0.sc.App
 
         public static Boolean IsOpneChangeGuideSection = true;
         public static Boolean IsSyncWhenConnectionEvent = true;
+        public static Boolean IsCloseCorrectGuideInfoWhenSameLoadAdr = false;
 
     }
 }

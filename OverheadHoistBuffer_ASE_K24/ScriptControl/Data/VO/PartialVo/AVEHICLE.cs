@@ -65,7 +65,7 @@ namespace com.mirle.ibg3k0.sc
         /// 單筆命令，最大允許的搬送時間
         /// </summary>
         public static UInt16 MAX_ALLOW_ACTION_TIME_SECOND { get; private set; } = 600;
-        public static UInt16 MAX_ALLOW_BLOCKING_TIME_SECOND { get; private set; } = 30;
+        public static UInt16 MAX_ALLOW_BLOCKING_TIME_SECOND { get; private set; } = 60;
         public static UInt16 MAX_ALLOW_OBSTACLING_TIME_SECOND { get; private set; } = 120;
 
         public event EventHandler<LocationChangeEventArgs> LocationChange;
@@ -76,7 +76,11 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler LongTimeNoCommuncation;
         public event EventHandler<string> LongTimeInaction;
         public event EventHandler LongTimeBlocking;
+        public event EventHandler LongTimeBlockingKeepHappening;
+        public event EventHandler LongTimeBlockFinish;
         public event EventHandler LongTimeObstacling;
+        public event EventHandler LongTimeObstaclingKeepHappening;
+        public event EventHandler LongTimeObstacleFinish;
         public event EventHandler<VhStopSingle> ErrorStatusChange;
 
 
@@ -109,9 +113,25 @@ namespace com.mirle.ibg3k0.sc
         {
             LongTimeBlocking?.Invoke(this, EventArgs.Empty);
         }
+        public void onLongTimeBlockingKeepHappening()
+        {
+            LongTimeBlockingKeepHappening?.Invoke(this, EventArgs.Empty);
+        }
+        public void onLongTimeBlockFinish()
+        {
+            LongTimeBlockFinish?.Invoke(this, EventArgs.Empty);
+        }
         public void onLongTimeObstacling()
         {
             LongTimeObstacling?.Invoke(this, EventArgs.Empty);
+        }
+        public void onLongTimeObstaclingKeepHappening()
+        {
+            LongTimeObstaclingKeepHappening?.Invoke(this, EventArgs.Empty);
+        }
+        public void onLongTimeObstacleFinish()
+        {
+            LongTimeObstacleFinish?.Invoke(this, EventArgs.Empty);
         }
         public void onErrorStatusChange(VhStopSingle vhStopSingle)
         {
@@ -1483,7 +1503,8 @@ namespace com.mirle.ibg3k0.sc
 
                 }
             }
-
+            Stopwatch lastBlockingNotifyIntervalTime = new Stopwatch();
+            public static UInt16 NOTIFY_BLOCKING_INTERVAL_TIME_SECOND { get; private set; } = 10;
             private void LongTimeBlockingCheck()
             {
                 double blocking_time = vh.CurrentBlockingTime.Elapsed.TotalSeconds;
@@ -1493,17 +1514,31 @@ namespace com.mirle.ibg3k0.sc
                     {
                         vh.isLongTimeBlocking = true;
                         vh.onLongTimeBlocking();
+                        lastBlockingNotifyIntervalTime.Restart();
                     }
                     else
                     {
-                        //do nothing
+                        if (lastBlockingNotifyIntervalTime.Elapsed.TotalSeconds > NOTIFY_BLOCKING_INTERVAL_TIME_SECOND)
+                        {
+                            lastBlockingNotifyIntervalTime.Restart();
+                            vh.onLongTimeBlockingKeepHappening();
+                        }
                     }
                 }
                 else
                 {
-                    vh.isLongTimeBlocking = false;
+                    if (vh.isLongTimeBlocking)
+                    {
+                        vh.isLongTimeBlocking = false;
+                        lastBlockingNotifyIntervalTime.Stop();
+                        lastBlockingNotifyIntervalTime.Reset();
+                        vh.onLongTimeBlockFinish();
+                    }
                 }
             }
+
+            Stopwatch lastObstaclingNotifyIntervalTime = new Stopwatch();
+            public static UInt16 NOTIFY_OBSTACLING_INTERVAL_TIME_SECOND { get; private set; } = 10;
             private void LongTimeObstaclingCheck()
             {
                 double obstacling_time = vh.CurrentObstaclingTime.Elapsed.TotalSeconds;
@@ -1513,15 +1548,26 @@ namespace com.mirle.ibg3k0.sc
                     {
                         vh.isLongTimeObstacling = true;
                         vh.onLongTimeObstacling();
+                        lastObstaclingNotifyIntervalTime.Restart();
                     }
                     else
                     {
-                        //do nothing
+                        if (lastObstaclingNotifyIntervalTime.Elapsed.TotalSeconds > NOTIFY_OBSTACLING_INTERVAL_TIME_SECOND)
+                        {
+                            lastObstaclingNotifyIntervalTime.Restart();
+                            vh.onLongTimeObstaclingKeepHappening();
+                        }
                     }
                 }
                 else
                 {
-                    vh.isLongTimeObstacling = false;
+                    if (vh.isLongTimeObstacling)
+                    {
+                        vh.isLongTimeObstacling = false;
+                        lastObstaclingNotifyIntervalTime.Stop();
+                        lastObstaclingNotifyIntervalTime.Reset();
+                        vh.onLongTimeObstacleFinish();
+                    }
                 }
             }
         }

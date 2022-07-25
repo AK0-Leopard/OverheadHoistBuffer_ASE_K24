@@ -77,6 +77,8 @@ namespace com.mirle.ibg3k0.sc.Service
         PORT_BP5_WaitOutTimeOut = 100029,
         PORT_LP_WaitOutTimeOut = 100030,
         OHT_CommandNotFinishedInTime = 100031,
+        OHT_BlockingTimeOut = 100032,
+        OHT_ObstaclingTimeOut = 100033,
     }
 
     public class VehicleService : IDynamicMetaObjectProvider
@@ -110,8 +112,15 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.StatusRequestFailOverTimes += Vh_StatusRequestFailOverTimes;
                 vh.LongTimeNoCommuncation += Vh_LongTimeNoCommuncation;
                 vh.LongTimeInaction += Vh_LongTimeInaction;
+                //Blocking event
                 vh.LongTimeBlocking += Vh_LongTimeBlocking;
+                vh.LongTimeBlockingKeepHappening += Vh_LongTimeBlockingKeepHappening;
+                vh.LongTimeBlockFinish += Vh_LongTimeBlockFinish;
+                //Obstacling event
                 vh.LongTimeObstacling += Vh_LongTimeObstacling;
+                vh.LongTimeObstaclingKeepHappening += Vh_LongTimeObstaclingKeepHappening;
+                vh.LongTimeObstacleFinish += Vh_LongTimeObstacleFinish;
+
                 vh.ErrorStatusChange += (s1, e1) => Vh_ErrorStatusChange(s1, e1);
                 vh.TimerActionStart();
             }
@@ -136,6 +145,49 @@ namespace com.mirle.ibg3k0.sc.Service
                    VehicleID: vh.VEHICLE_ID,
                    CarrierID: vh.CST_ID);
                 Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
+                scApp.TransferService.OHBC_AlarmSet(vh.VEHICLE_ID, ((int)AlarmLst.OHT_ObstaclingTimeOut).ToString());
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: ex,
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+            }
+        }
+        private void Vh_LongTimeObstaclingKeepHappening(object sender, EventArgs e)
+        {
+            AVEHICLE vh = sender as AVEHICLE;
+            if (vh == null) return;
+            try
+            {
+                if (!SystemParameter.IsOpenContinueNotifyWhenVehicleTimeout)
+                    return;
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Process vehicle long time obstacling (Keep Happening)",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+                Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: ex,
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+            }
+        }
+        private void Vh_LongTimeObstacleFinish(object sender, EventArgs e)
+        {
+            AVEHICLE vh = sender as AVEHICLE;
+            if (vh == null) return;
+            try
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Process vehicle long time obstacle finish",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+                scApp.TransferService.OHBC_AlarmCleared(vh.VEHICLE_ID, ((int)AlarmLst.OHT_ObstaclingTimeOut).ToString());
             }
             catch (Exception ex)
             {
@@ -250,6 +302,49 @@ namespace com.mirle.ibg3k0.sc.Service
                    VehicleID: vh.VEHICLE_ID,
                    CarrierID: vh.CST_ID);
                 Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
+                scApp.TransferService.OHBC_AlarmSet(vh.VEHICLE_ID, ((int)AlarmLst.OHT_BlockingTimeOut).ToString());
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: ex,
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+            }
+        }
+        private void Vh_LongTimeBlockingKeepHappening(object sender, EventArgs e)
+        {
+            AVEHICLE vh = sender as AVEHICLE;
+            if (vh == null) return;
+            try
+            {
+                if (!SystemParameter.IsOpenContinueNotifyWhenVehicleTimeout)
+                    return;
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Process vehicle long time block (Keep Happening)",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+                Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: ex,
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+            }
+        }
+        private void Vh_LongTimeBlockFinish(object sender, EventArgs e)
+        {
+            AVEHICLE vh = sender as AVEHICLE;
+            if (vh == null) return;
+            try
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"Process vehicle long time block finish",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
+                scApp.TransferService.OHBC_AlarmCleared(vh.VEHICLE_ID, ((int)AlarmLst.OHT_BlockingTimeOut).ToString());
             }
             catch (Exception ex)
             {
