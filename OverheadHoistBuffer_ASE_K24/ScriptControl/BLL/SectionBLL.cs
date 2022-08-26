@@ -42,6 +42,26 @@ namespace com.mirle.ibg3k0.sc.BLL
                 }
                 return sections;
             }
+            public void updataAllSectionDistanceByXYAxis()
+            {
+                var scApp = SCApplication.getInstance();
+                List<ASECTION> sections = null;
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    sections = SectionDao.loadAll(con);
+                }
+                using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                {
+                    foreach (var sec in sections)
+                    {
+                        var s = SectionDao.getByID(con, sec.SEC_ID);
+                        double d = s.getSectionDistanceByAdr(scApp.ReserveBLL);
+                        s.SEC_DIS = (int)d;
+                        SectionDao.update(con, s);
+                    }
+                }
+
+            }
         }
         public class Cache
         {

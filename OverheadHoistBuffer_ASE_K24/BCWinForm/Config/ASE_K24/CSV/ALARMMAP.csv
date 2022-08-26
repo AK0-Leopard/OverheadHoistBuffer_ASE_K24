@@ -117,6 +117,10 @@ CRANE,705,2,Step forward to prevent falling_extension abnormal
 CRANE,706,2,Step forward to prevent falling _ abnormal folding
 CRANE,707,2,Anti-falling after going up_extension abnormal
 CRANE,708,2,Anti-falling after loading_abnormal folding
+CRANE,727,2,gripper not close abnormal after unload double storege
+CRANE,728,2,gripper not open abnormal after loading null
+CRANE,729,2,gripper not still open abnormal after unloaded
+CRANE,730,2,gripper not still close abnormal after loaded
 CRANE,731,2,"Before unloading,The gripper does not maintain abnormal closure"
 CRANE,732,2,"Before loading,The gripper does not maintain an abnormal opening"
 CRANE,733,2,"Unloading error,vehicle has no cst"
@@ -318,7 +322,7 @@ CRANE,999,2,System internal exception
 CRANE,70001,2,Master PLC network request timed out
 CRANE,89000,2,Double Storage
 CRANE,89001,2,Empty Retrieval
-CRANE,99999,2,OHT is offline
+CRANE,99999,1,OHT is offline
 CRANE,99990,2,OHT rejects command repeatedly
 CRANE,100010,1,OHT_INTERLOCK_ERROR
 CRANE,100011,1,OHT_VEHICLE_ABORT
@@ -335,7 +339,7 @@ LINE,100016,1,Queue command time out
 TRACK,1,2,TrackAlarm_EMO_Error
 TRACK,2,2,TrackAlarm_Servo_No_On
 TRACK,3,2,TrackAlarm_Servo_NotGoHome
-TRACK,4,2,TrackAlarm_CarOut_Timeout
+TRACK,4,1,TrackAlarm_CarOut_Timeout
 TRACK,5,2,TrackAlarm_ServoOn_Timeout
 TRACK,6,2,TrackAlarm_ServoOff_Timeout
 TRACK,7,2,TrackAlarm_GoHome_TimeOut
@@ -346,21 +350,21 @@ TRACK,11,2,TrackAlarm_NegLimit_Error
 TRACK,12,2,TrackAlarm_Drive_Error
 TRACK,13,2,TrackAlarm_PosSensorAllOn
 TRACK,14,2,TrackAlarm_CarInTrackCantAuto
-TRACK,15,2,TrackAlarm_TrackIsManual
-TRACK,16,2,TrackAlarm_BlockClosInManual
-ManualPort,1,2,EMO_Abnormal
-ManualPort,41,2,"Stage_PositionAbnormal(X0, X1, X2)"
-ManualPort,42,2,Stage close door time out(X11)
-ManualPort,43,2,Stage close door time out(X10)
-ManualPort,44,2,Light gate is abnormal
-ManualPort,45,2,Air sensor is abnormal
-ManualPort,46,2,Door sensor is abnormal
-ManualPort,497,1,PLC battery is abnormal
-ManualPort,511,1,TP1 TR_Req on time out
-ManualPort,512,1,TP2 Busy on time out
-ManualPort,513,1,TP3 action time out
-ManualPort,514,1,TP4 Busy off time out
-ManualPort,515,1,TP5 VAL off time out
-ManualPort,521,1,Out mode was over 10min but nobady take it out
-ManualPort,522,1,RFID read is abnormal
-ManualPort,523,1,RFID read time out
+TRACK,15,1,TrackAlarm_TrackIsManual
+TRACK,16,1,TrackAlarm_BlockClosInManual
+MANUALPORT,1,2,EMO_Abnormal
+MANUALPORT,41,2,"Stage_PositionAbnormal(X0, X1, X2)"
+MANUALPORT,42,2,Stage close door time out(X11)
+MANUALPORT,43,2,Stage close door time out(X10)
+MANUALPORT,44,2,Light gate is abnormal
+MANUALPORT,45,2,Air sensor is abnormal
+MANUALPORT,46,2,Door sensor is abnormal
+MANUALPORT,497,1,PLC battery is abnormal
+MANUALPORT,511,1,TP1 TR_Req on time out
+MANUALPORT,512,1,TP2 Busy on time out
+MANUALPORT,513,1,TP3 action time out
+MANUALPORT,514,1,TP4 Busy off time out
+MANUALPORT,515,1,TP5 VAL off time out
+MANUALPORT,521,1,Out mode was over 10min but nobady take it out
+MANUALPORT,522,1,RFID read is abnormal
+MANUALPORT,523,1,RFID read time out
