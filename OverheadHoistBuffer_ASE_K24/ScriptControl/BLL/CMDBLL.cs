@@ -5440,7 +5440,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                         {
                             //isSuccess = true; //如果相同 代表是在同一個點上
                             (isSuccess, guide_to_dest_segment_ids, guide_to_dest_section_ids, guide_to_dest_address_ids, total_cost)
-                            = tryGetGuideInfoWhenVhAdrIsMatchTarget(vh_current_address, vhCurrentSec, source_adr);
+                            = tryGetGuideInfoWhenVhAdrIsMatchTarget(vh_current_address, vhCurrentSec, dest_adr);
+                            //= tryGetGuideInfoWhenVhAdrIsMatchTarget(vh_current_address, vhCurrentSec, source_adr);
                         }
                         break;
 

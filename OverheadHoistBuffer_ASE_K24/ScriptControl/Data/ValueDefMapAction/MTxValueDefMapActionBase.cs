@@ -844,9 +844,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 }
                 send_function.Index = ++aliveIndex;
                 //2.紀錄發送資料的Log
-                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(MTxValueDefMapActionBase), Device: SCAppConstants.DeviceName.DEVICE_NAME_MTx,
-                         Data: send_function.ToString(),
-                         XID: eqpt.EQPT_ID);
+                //LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(MTxValueDefMapActionBase), Device: SCAppConstants.DeviceName.DEVICE_NAME_MTx,
+                //         Data: send_function.ToString(),
+                //         XID: eqpt.EQPT_ID);
                 //3.發送訊息
                 send_function.Write(bcfApp, eqpt.EqptObjectCate, eqpt.EQPT_ID);
             }

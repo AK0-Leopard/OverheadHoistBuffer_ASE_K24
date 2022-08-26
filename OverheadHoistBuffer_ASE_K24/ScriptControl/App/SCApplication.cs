@@ -1699,7 +1699,7 @@ namespace com.mirle.ibg3k0.sc.App
             gRPC_With_Shelf.Start();
             gRPC_With_ManualPort.Start();
             gRPC_With_AlarmFun.Start();
-            //gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
+            gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
         }
 
         /// <summary>
