@@ -373,11 +373,11 @@ Id,PositionX,PositionY,IsWorkStation,CanLeftLoad,CanLeftUnload,CanRightLoad,CanR
 10809,26000,3893,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
 10810,26000,0,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
 10811,24039,0,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
-10812,24039,480,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
-11813,24039,2280,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
-11814,24039,4080,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
-11815,24039,5880,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
-10816,24039,7920,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
+10812,24039,2510,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
+11813,24039,4310,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
+11814,24039,6110,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
+11815,24039,7910,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
+10816,24039,9950,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
 10817,24039,14000,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
 10818,24039,16000,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
 11819,24039,18000,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
