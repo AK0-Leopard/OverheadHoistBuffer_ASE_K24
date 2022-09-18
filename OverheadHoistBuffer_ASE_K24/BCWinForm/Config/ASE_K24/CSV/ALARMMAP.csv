@@ -1,4 +1,5 @@
 OBJECT_ID,ALARM_ID,ALARM_LVL,ALARM_DESC
+CRANE,13,2,Continued abnormality of incapacitation triggered by corner entry
 CRANE,14,2,Turning speed exceeded
 CRANE,15,2,Turn right speed exceeded
 CRANE,16,2,Turn left speed exceeded
@@ -83,6 +84,9 @@ CRANE,544,2,"Sideshift axis,The origin is not triggered,Location is not safe aft
 CRANE,545,2,"Sideshift axis,The origin is not triggered,Location is not safe before moveing"
 CRANE,546,2,"Sideshift axis,The origin is not triggered,Location is not safe during moveing"
 CRANE,547,2,"Sideshift axis,The origin is not triggered,Location is not safe after moveing"
+CRANE,548,2,Before loading _ side shift needs to recalibrate the origin position is abnormal
+CRANE,549,2,Before unloading _ side shift needs to be recalibrated the origin position is abnormal
+CRANE,550,2,Before running _ side shift needs to be re-calibrated the origin position is abnormal
 CRANE,551,2,"Rotation axis,The origin is not triggered,Location is not safe before loading"
 CRANE,552,2,"Rotation axis,The origin is not triggered,Location is not safe before unloading"
 CRANE,553,2,"Rotation axis,The origin is not triggered,Location is not safe after loading"
@@ -117,14 +121,13 @@ CRANE,705,2,Step forward to prevent falling_extension abnormal
 CRANE,706,2,Step forward to prevent falling _ abnormal folding
 CRANE,707,2,Anti-falling after going up_extension abnormal
 CRANE,708,2,Anti-falling after loading_abnormal folding
-CRANE,727,2,gripper not close abnormal after unload double storege
-CRANE,728,2,gripper not open abnormal after loading null
-CRANE,729,2,gripper not still open abnormal after unloaded
-CRANE,730,2,gripper not still close abnormal after loaded
+CRANE,710,2,The time-out of moving off the ground on the hoist is abnormal
+CRANE,711,2,The hoist is placed on the _ the ground movement timed out abnormally
 CRANE,731,2,"Before unloading,The gripper does not maintain abnormal closure"
 CRANE,732,2,"Before loading,The gripper does not maintain an abnormal opening"
 CRANE,733,2,"Unloading error,vehicle has no cst"
 CRANE,734,2,"Loading error,vehicle already has cst"
+CRANE,735,1,EQ side PIO pre-handshake abnormal warning
 CRANE,736,1,"Before PIO delivery, receive EQ and send HO_AVBL abnormal Lo"
 CRANE,737,1,"Before PIO is delivered, receive EQ and send ES exception"
 CRANE,738,1,"Before PIO release, receive EQ and send HO_AVBL abnormal Lo"
@@ -169,6 +172,7 @@ CRANE,821,2,Before loading - gripper has tray in abnormal
 CRANE,822,2,After unloading - gripper without tray in abnormal
 CRANE,823,2,Abnormal detection of falling objects
 CRANE,824,2,Upper anti-falling object detection abnormal
+CRANE,825,2,Running_Gripper cargo detection abnormality
 CRANE,826,2,Before opening the claw_cargo inspection abnormal
 CRANE,827,2,Before fetching and closing the paw_cargo inspection abnormal
 CRANE,828,2,"The hoist moves down,the gripper cst detection abnormality"
@@ -319,10 +323,42 @@ CRANE,996,2,Anti-falling not folded_rotation to move abnormally
 CRANE,997,2,Fall prevention not closed _ rotation side shift to move abnormally
 CRANE,998,1,Vehicle stop at place too long
 CRANE,999,2,System internal exception
+CRANE,24,2,Running and following the position difference is too large to protect and stop
+CRANE,78,2,Wrong way protection recovery warning
+CRANE,479,2,Serial port HMI screen device fails
+CRANE,537,2,Unverified abnormality after the change of the calibration value of the cargo station
+CRANE,538,2,Before loading _ the hoist needs to be recalibrated the origin position is abnormal
+CRANE,539,2,Before unloading _ the hoist needs to be re-calibrated the origin position is abnormal
+CRANE,540,2,Before running _ The hoist needs to be recalibrated and the origin position is abnormal
+CRANE,558,2,Before loading _ rotation needs to be recalibrated the origin position is abnormal
+CRANE,559,2,Before unloading _ the rotation needs to be recalibrated The origin position is abnormal
+CRANE,560,2,Before walking_Rotation needs to be recalibrated The origin position is abnormal
+CRANE,720,1,Important device pending PM warning
+CRANE,721,2,Important devices must have PM exceptions
+CRANE,722,1,General device pending PM warning
+CRANE,723,2,General devices must have PM abnormality
+CRANE,727,2,After unloading the double grid _ the gripper is not closed abnormally
+CRANE,728,2,After loading and emptying _ the gripper is not opened abnormally
+CRANE,729,2,After the goods have been placed _ the gripper does not remain open abnormally
+CRANE,730,2,After the goods have been loaded _ the gripper does not remain closed abnormally
+CRANE,741,2,The hoisting shaft_the object is moved forward to the reading position abnormally
+CRANE,742,2,Code reading position before placing objects_No goods abnormality in the gripper
+CRANE,760,2,Before the upper cargo stop lever is locked _The cargo in the CST protrudes abnormally
+CRANE,761,2,In the process of loading_The goods in the CST are protruding abnormally
+CRANE,762,2,The goods in the CST are abnormally protruding before placing the goods
+CRANE,763,2,"After the goods are loaded, the goods in the CST are abnormally protruding"
+CRANE,764,2,Unloading_The goods in the CST are protruding abnormally
+CRANE,765,2,Before running _CST abnormally protruding goods
+CRANE,766,2,During running_The goods in the CST are protruding abnormally
+CRANE,767,2,After walking _CST abnormally protruding goods
+CRANE,783,2,Rotation axis-hardware positive limit trigger exception
+CRANE,784,2,Rotary axis - hardware negative limit trigger exception
+CRANE,880,1,PIO receives EQ and sends abnormal READY before TR_REQ_Hi
+CRANE,881,1,Receive EQ and send READY abnormal Hi before PIO orders TR_REQ_Hi
 CRANE,70001,2,Master PLC network request timed out
 CRANE,89000,2,Double Storage
 CRANE,89001,2,Empty Retrieval
-CRANE,99999,1,OHT is offline
+CRANE,99999,2,OHT is offline
 CRANE,99990,2,OHT rejects command repeatedly
 CRANE,100010,1,OHT_INTERLOCK_ERROR
 CRANE,100011,1,OHT_VEHICLE_ABORT
@@ -331,8 +367,6 @@ CRANE,100013,1,PORT_BOXID_READ_FAIL
 CRANE,100014,1,PORT_CSTID_READ_FAIL
 CRANE,100016,1,OHT_QueueCmdTimeOut
 CRANE,100022,1,OHT_IDMismatchUNKU
-CRANE,100032,2,The OHT can't move when blocked
-CRANE,100033,2,The OHT can't move when Obstacle
 LINE,100015,1,OHT_IDLE_HasCMD_TimeOut
 LINE,100031,1,OHT_CommandNotFinishedInTime
 LINE,100016,1,Queue command time out
