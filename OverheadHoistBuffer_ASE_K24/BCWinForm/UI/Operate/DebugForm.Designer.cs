@@ -94,6 +94,9 @@
             this.btn_ForceReleaseBlock = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cb_isOpenReelNTBPortStatusAsk = new System.Windows.Forms.CheckBox();
+            this.cb_openContinueNotifyFun = new System.Windows.Forms.CheckBox();
+            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr = new System.Windows.Forms.CheckBox();
             this.cb_SyncWithOHTWhenConnection = new System.Windows.Forms.CheckBox();
             this.cb_openGuideSectionChange = new System.Windows.Forms.CheckBox();
             this.cb_openSpecifyVh = new System.Windows.Forms.CheckBox();
@@ -396,9 +399,8 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr = new System.Windows.Forms.CheckBox();
-            this.cb_openContinueNotifyFun = new System.Windows.Forms.CheckBox();
-            this.cb_isOpenReelNTBPortStatusAsk = new System.Windows.Forms.CheckBox();
+            this.cb_openTrackResetByVhBlockRelease = new System.Windows.Forms.CheckBox();
+            this.cb_checkTrackAlive = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1193,12 +1195,14 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1459, 884);
+            this.tabControl1.Size = new System.Drawing.Size(1459, 971);
             this.tabControl1.TabIndex = 23;
             // 
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.cb_checkTrackAlive);
+            this.tabPage1.Controls.Add(this.cb_openTrackResetByVhBlockRelease);
             this.tabPage1.Controls.Add(this.cb_isOpenReelNTBPortStatusAsk);
             this.tabPage1.Controls.Add(this.cb_openContinueNotifyFun);
             this.tabPage1.Controls.Add(this.cb_cloesCorrectGuideInfoWhenSameLoadAdr);
@@ -1223,10 +1227,43 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 31);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1451, 849);
+            this.tabPage1.Size = new System.Drawing.Size(1451, 936);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // cb_isOpenReelNTBPortStatusAsk
+            // 
+            this.cb_isOpenReelNTBPortStatusAsk.AutoSize = true;
+            this.cb_isOpenReelNTBPortStatusAsk.Location = new System.Drawing.Point(1082, 652);
+            this.cb_isOpenReelNTBPortStatusAsk.Name = "cb_isOpenReelNTBPortStatusAsk";
+            this.cb_isOpenReelNTBPortStatusAsk.Size = new System.Drawing.Size(327, 26);
+            this.cb_isOpenReelNTBPortStatusAsk.TabIndex = 77;
+            this.cb_isOpenReelNTBPortStatusAsk.Text = "開啟Reel NTB Port狀態詢問功能";
+            this.cb_isOpenReelNTBPortStatusAsk.UseVisualStyleBackColor = true;
+            this.cb_isOpenReelNTBPortStatusAsk.CheckedChanged += new System.EventHandler(this.cb_isOpenReelNTBPortStatusAsk_CheckedChanged);
+            // 
+            // cb_openContinueNotifyFun
+            // 
+            this.cb_openContinueNotifyFun.AutoSize = true;
+            this.cb_openContinueNotifyFun.Location = new System.Drawing.Point(1082, 625);
+            this.cb_openContinueNotifyFun.Name = "cb_openContinueNotifyFun";
+            this.cb_openContinueNotifyFun.Size = new System.Drawing.Size(350, 26);
+            this.cb_openContinueNotifyFun.TabIndex = 76;
+            this.cb_openContinueNotifyFun.Text = "開啟OHBC連續通知(OHT無法移動時)";
+            this.cb_openContinueNotifyFun.UseVisualStyleBackColor = true;
+            this.cb_openContinueNotifyFun.CheckedChanged += new System.EventHandler(this.cb_openContinueNotifyFun_CheckedChanged);
+            // 
+            // cb_cloesCorrectGuideInfoWhenSameLoadAdr
+            // 
+            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.AutoSize = true;
+            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Location = new System.Drawing.Point(1082, 595);
+            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Name = "cb_cloesCorrectGuideInfoWhenSameLoadAdr";
+            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Size = new System.Drawing.Size(239, 26);
+            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.TabIndex = 75;
+            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Text = "關閉同站上貨修改功能";
+            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.UseVisualStyleBackColor = true;
+            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.CheckedChanged += new System.EventHandler(this.cb_cloesCorrectGuideInfoWhenSameLoadAdr_CheckedChanged);
             // 
             // cb_SyncWithOHTWhenConnection
             // 
@@ -1297,7 +1334,7 @@
             // cb_paassErrorVhAndTrackStatus
             // 
             this.cb_paassErrorVhAndTrackStatus.AutoSize = true;
-            this.cb_paassErrorVhAndTrackStatus.Location = new System.Drawing.Point(1053, 786);
+            this.cb_paassErrorVhAndTrackStatus.Location = new System.Drawing.Point(1053, 856);
             this.cb_paassErrorVhAndTrackStatus.Name = "cb_paassErrorVhAndTrackStatus";
             this.cb_paassErrorVhAndTrackStatus.Size = new System.Drawing.Size(344, 26);
             this.cb_paassErrorVhAndTrackStatus.TabIndex = 68;
@@ -1308,7 +1345,7 @@
             // cb_ignoreNTBPort
             // 
             this.cb_ignoreNTBPort.AutoSize = true;
-            this.cb_ignoreNTBPort.Location = new System.Drawing.Point(1053, 756);
+            this.cb_ignoreNTBPort.Location = new System.Drawing.Point(1053, 826);
             this.cb_ignoreNTBPort.Name = "cb_ignoreNTBPort";
             this.cb_ignoreNTBPort.Size = new System.Drawing.Size(249, 26);
             this.cb_ignoreNTBPort.TabIndex = 67;
@@ -1318,7 +1355,7 @@
             // 
             // btn_reloadParkingAdr
             // 
-            this.btn_reloadParkingAdr.Location = new System.Drawing.Point(1052, 809);
+            this.btn_reloadParkingAdr.Location = new System.Drawing.Point(1052, 879);
             this.btn_reloadParkingAdr.Name = "btn_reloadParkingAdr";
             this.btn_reloadParkingAdr.Size = new System.Drawing.Size(203, 33);
             this.btn_reloadParkingAdr.TabIndex = 66;
@@ -1406,7 +1443,7 @@
             // cb_passDriveOutByAreaSensor
             // 
             this.cb_passDriveOutByAreaSensor.AutoSize = true;
-            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1053, 730);
+            this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1053, 800);
             this.cb_passDriveOutByAreaSensor.Name = "cb_passDriveOutByAreaSensor";
             this.cb_passDriveOutByAreaSensor.Size = new System.Drawing.Size(319, 26);
             this.cb_passDriveOutByAreaSensor.TabIndex = 60;
@@ -1417,7 +1454,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(1043, 678);
+            this.label12.Location = new System.Drawing.Point(1043, 748);
             this.label12.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(230, 22);
@@ -1426,7 +1463,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(1053, 701);
+            this.numericUpDown1.Location = new System.Drawing.Point(1053, 771);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -2615,7 +2652,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(174, 9);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(174, 4);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -4850,44 +4887,33 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // cb_cloesCorrectGuideInfoWhenSameLoadAdr
+            // cb_openResetBlockByVhRelease
             // 
-            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.AutoSize = true;
-            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Location = new System.Drawing.Point(1082, 595);
-            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Name = "cb_cloesCorrectGuideInfoWhenSameLoadAdr";
-            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Size = new System.Drawing.Size(239, 26);
-            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.TabIndex = 75;
-            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Text = "關閉同站上貨修改功能";
-            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.UseVisualStyleBackColor = true;
-            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.CheckedChanged += new System.EventHandler(this.cb_cloesCorrectGuideInfoWhenSameLoadAdr_CheckedChanged);
+            this.cb_openTrackResetByVhBlockRelease.AutoSize = true;
+            this.cb_openTrackResetByVhBlockRelease.Location = new System.Drawing.Point(1082, 681);
+            this.cb_openTrackResetByVhBlockRelease.Name = "cb_openResetBlockByVhRelease";
+            this.cb_openTrackResetByVhBlockRelease.Size = new System.Drawing.Size(357, 26);
+            this.cb_openTrackResetByVhBlockRelease.TabIndex = 78;
+            this.cb_openTrackResetByVhBlockRelease.Text = "開啟Vh Block Release去重置換軌器";
+            this.cb_openTrackResetByVhBlockRelease.UseVisualStyleBackColor = true;
+            this.cb_openTrackResetByVhBlockRelease.CheckedChanged += new System.EventHandler(this.cb_openTrackResetByVhBlockRelease_CheckedChanged);
             // 
-            // cb_openContinueNotifyFun
+            // cb_checkTrackAlive
             // 
-            this.cb_openContinueNotifyFun.AutoSize = true;
-            this.cb_openContinueNotifyFun.Location = new System.Drawing.Point(1082, 625);
-            this.cb_openContinueNotifyFun.Name = "cb_openContinueNotifyFun";
-            this.cb_openContinueNotifyFun.Size = new System.Drawing.Size(350, 26);
-            this.cb_openContinueNotifyFun.TabIndex = 76;
-            this.cb_openContinueNotifyFun.Text = "開啟OHBC連續通知(OHT無法移動時)";
-            this.cb_openContinueNotifyFun.UseVisualStyleBackColor = true;
-            this.cb_openContinueNotifyFun.CheckedChanged += new System.EventHandler(this.cb_openContinueNotifyFun_CheckedChanged);
-            // 
-            // cb_isOpenReelNTBPortStatusAsk
-            // 
-            this.cb_isOpenReelNTBPortStatusAsk.AutoSize = true;
-            this.cb_isOpenReelNTBPortStatusAsk.Location = new System.Drawing.Point(1082, 652);
-            this.cb_isOpenReelNTBPortStatusAsk.Name = "cb_isOpenReelNTBPortStatusAsk";
-            this.cb_isOpenReelNTBPortStatusAsk.Size = new System.Drawing.Size(327, 26);
-            this.cb_isOpenReelNTBPortStatusAsk.TabIndex = 77;
-            this.cb_isOpenReelNTBPortStatusAsk.Text = "開啟Reel NTB Port狀態詢問功能";
-            this.cb_isOpenReelNTBPortStatusAsk.UseVisualStyleBackColor = true;
-            this.cb_isOpenReelNTBPortStatusAsk.CheckedChanged += new System.EventHandler(this.cb_isOpenReelNTBPortStatusAsk_CheckedChanged);
+            this.cb_checkTrackAlive.AutoSize = true;
+            this.cb_checkTrackAlive.Location = new System.Drawing.Point(1081, 713);
+            this.cb_checkTrackAlive.Name = "cb_checkTrackAlive";
+            this.cb_checkTrackAlive.Size = new System.Drawing.Size(226, 26);
+            this.cb_checkTrackAlive.TabIndex = 79;
+            this.cb_checkTrackAlive.Text = "開啟確認換軌器Alive";
+            this.cb_checkTrackAlive.UseVisualStyleBackColor = true;
+            this.cb_checkTrackAlive.CheckedChanged += new System.EventHandler(this.cb_checkTrackAlive_CheckedChanged);
             // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1459, 884);
+            this.ClientSize = new System.Drawing.Size(1459, 971);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -5337,5 +5363,7 @@
         private System.Windows.Forms.CheckBox cb_cloesCorrectGuideInfoWhenSameLoadAdr;
         private System.Windows.Forms.CheckBox cb_openContinueNotifyFun;
         private System.Windows.Forms.CheckBox cb_isOpenReelNTBPortStatusAsk;
+        private System.Windows.Forms.CheckBox cb_openTrackResetByVhBlockRelease;
+        private System.Windows.Forms.CheckBox cb_checkTrackAlive;
     }
 }

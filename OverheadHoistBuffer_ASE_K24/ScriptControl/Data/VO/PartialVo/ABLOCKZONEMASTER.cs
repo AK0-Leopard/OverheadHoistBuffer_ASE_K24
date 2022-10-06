@@ -116,7 +116,8 @@ namespace com.mirle.ibg3k0.sc
             SyncTimeOut,
             NotAuto,
             Blocking,
-            NotInPlace
+            NotInPlace,
+            NoAlive
         }
 
 
@@ -156,6 +157,15 @@ namespace com.mirle.ibg3k0.sc
                     //return false;
                     return (BlockTracksStatus.SyncTimeOut, related_track);
                 }
+
+                if (DebugParameter.IsOpenCheckTrackAlive && !related_track.IsAlive)
+                {
+                    LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",
+                       Data: $"Block:{ENTRY_SEC_ID} of related track:{related_track.UNIT_ID} current alive:{related_track.IsAlive}, return block not ready");
+                    //return false;
+                    return (BlockTracksStatus.NoAlive, related_track);
+                }
+
                 //if (!related_track.IsAlive)
                 //{
                 //    LogHelper.Log(logger: logger, LogLevel: NLog.LogLevel.Debug, Class: nameof(ABLOCKZONEMASTER), Device: "OHx",

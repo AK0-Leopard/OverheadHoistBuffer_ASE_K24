@@ -2591,6 +2591,8 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean IsOpneChangeGuideSection = true;
         public static Boolean IsSyncWhenConnectionEvent = true;
         public static Boolean IsCloseCorrectGuideInfoWhenSameLoadAdr = false;
+        public static Boolean IsOpenTrackResetByVhBlockRelease = false;
+        public static Boolean IsOpenCheckTrackAlive = true;
 
     }
 }

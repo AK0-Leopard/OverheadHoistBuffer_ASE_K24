@@ -231,8 +231,15 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public void RemoveAllReservedSectionsByVehicleID(string vhID)
         {
-            mapAPI.RemoveAllReservedSectionsByVehicleID(vhID);
-            onReserveStatusChange();
+            try
+            {
+                mapAPI.RemoveAllReservedSectionsByVehicleID(vhID);
+                onReserveStatusChange();
+            }
+            catch(Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
         }
         public void RemoveAllReservedSections()
         {

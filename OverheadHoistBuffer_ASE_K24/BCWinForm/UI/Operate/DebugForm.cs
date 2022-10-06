@@ -92,6 +92,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_cloesCorrectGuideInfoWhenSameLoadAdr.Checked = DebugParameter.IsCloseCorrectGuideInfoWhenSameLoadAdr;
             cb_openContinueNotifyFun.Checked = sc.App.SystemParameter.IsOpenContinueNotifyWhenVehicleTimeout;
             cb_isOpenReelNTBPortStatusAsk.Checked = sc.App.SystemParameter.IsOpenReelNTBPortStatusAsk;
+            cb_openTrackResetByVhBlockRelease.Checked = DebugParameter.IsOpenTrackResetByVhBlockRelease;
+            cb_checkTrackAlive.Checked = DebugParameter.IsOpenCheckTrackAlive;
+
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
             cb_PwrMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingPowerMode));
@@ -1537,6 +1540,16 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_isOpenReelNTBPortStatusAsk_CheckedChanged(object sender, EventArgs e)
         {
             sc.App.SystemParameter.setIsOpenReelNTBPortStatusAsk(cb_isOpenReelNTBPortStatusAsk.Checked);
+        }
+
+        private void cb_openTrackResetByVhBlockRelease_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsOpenTrackResetByVhBlockRelease = cb_openTrackResetByVhBlockRelease.Checked;
+        }
+
+        private void cb_checkTrackAlive_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsOpenCheckTrackAlive = cb_checkTrackAlive.Checked;
         }
     }
 }

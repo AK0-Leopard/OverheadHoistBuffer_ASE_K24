@@ -538,8 +538,9 @@ namespace com.mirle.ibg3k0.sc.Service
                    VehicleID: vh.VEHICLE_ID);
                 return;
             }
-
-            ASECTION leave_section = scApp.SectionBLL.cache.GetSection(e.LeaveSection);
+            string leave_section_id = e.LeaveSection;
+            //ASECTION leave_section = scApp.SectionBLL.cache.GetSection(e.LeaveSection);
+            ASECTION leave_section = scApp.SectionBLL.cache.GetSection(leave_section_id);
             if (leave_section == null)
             {
                 string pre_section_id = vh.PRE_SEC_ID;
@@ -547,6 +548,7 @@ namespace com.mirle.ibg3k0.sc.Service
                    Data: $"vh:{vh.VEHICLE_ID} leave section is null,try get pre section id:{pre_section_id}.",
                    VehicleID: vh.VEHICLE_ID);
                 leave_section = scApp.SectionBLL.cache.GetSection(pre_section_id);
+                leave_section_id = pre_section_id;
             }
             leave_section?.Leave(vh.VEHICLE_ID);
             entry_section?.Entry(vh.VEHICLE_ID);
@@ -569,7 +571,8 @@ namespace com.mirle.ibg3k0.sc.Service
             }
 
             var entry_sec_related_blocks = scApp.BlockControlBLL.cache.loadBlockZoneMasterBySectionID(e.EntrySection);
-            var leave_sec_related_blocks = scApp.BlockControlBLL.cache.loadBlockZoneMasterBySectionID(e.LeaveSection);
+            //var leave_sec_related_blocks = scApp.BlockControlBLL.cache.loadBlockZoneMasterBySectionID(e.LeaveSection);
+            var leave_sec_related_blocks = scApp.BlockControlBLL.cache.loadBlockZoneMasterBySectionID(leave_section_id);
             var entry_blocks = entry_sec_related_blocks.Except(leave_sec_related_blocks);
             foreach (var entry_block in entry_blocks)
             {
@@ -2678,7 +2681,8 @@ namespace com.mirle.ibg3k0.sc.Service
                     scApp.ReserveBLL.RemoveManyReservedSectionsByVIDSID(vh_id, detail_sec);
                     hasRelease = true;
                 }
-                Task.Run(() => tryResetTrackBlock(vh_vo, block_master));
+                if (DebugParameter.IsOpenTrackResetByVhBlockRelease)
+                    Task.Run(() => tryResetTrackBlock(vh_vo, block_master));
             }
             return hasRelease;
         }
@@ -2687,14 +2691,14 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             try
             {
-                LogHelper.Log(logger: logger, LogLevel: LogLevel.Trace, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
                    Data: $"start try to reset track block:{block_master.ENTRY_SEC_ID}...",
                    VehicleID: eqpt.VEHICLE_ID,
                    CarrierID: eqpt.CST_ID);
                 var related_tracks = block_master.RelatedTracks;
                 if (related_tracks == null || related_tracks.Count == 0)
                 {
-                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Trace, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
                        Data: $"start try to reset track block:{block_master.ENTRY_SEC_ID}, but not related track.",
                        VehicleID: eqpt.VEHICLE_ID,
                        CarrierID: eqpt.CST_ID);
@@ -2727,6 +2731,7 @@ namespace com.mirle.ibg3k0.sc.Service
             try
             {
                 TransferServiceLogger.Info($"vh id:{eqpt.VEHICLE_ID} current cst ID:{cstID}, 開始 initial 流程...");
+                scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(eqpt.OHTC_CMD);
 
                 bool is_cmd_excute = !SCUtility.isEmpty(eqpt.OHTC_CMD);
                 bool has_cst_on_vh = !SCUtility.isEmpty(cstID);
@@ -4452,12 +4457,14 @@ namespace com.mirle.ibg3k0.sc.Service
             else
             {
                 isSuccess = finishOHTCCmd(vh, cmd_id, finish_mcs_cmd, completeStatus);
+
+                scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID);
             }
 
 
             replyCommandComplete(vh, seq_num, finish_ohxc_cmd, finish_mcs_cmd);
             scApp.CMDBLL.removeAllWillPassSection(vh.VEHICLE_ID);
-            scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID);
+            //scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID); 20221004 若是Vehicle abort就不直接將路權移除
             //scApp.ReserveBLL.TryAddReservedSection(vh.VEHICLE_ID, vh.CUR_SEC_ID);
 
             if (DebugParameter.IsDebugMode && DebugParameter.IsCycleRun)
@@ -5094,10 +5101,13 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         vh_vo.CUR_SEC_ID = "";
                         vh_vo.CUR_ADR_ID = "";
+                        //如果車子沒有連線的時候，進行Remove才進行路權等資料的釋放
+                        scApp.ReserveBLL.RemoveVehicle(vhID);
+                        scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vhID);
                     }
                     vh_vo.VechileRemove();
-                    scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vhID);
-                    scApp.ReserveBLL.RemoveVehicle(vhID);
+                    //scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vhID);
+                    //scApp.ReserveBLL.RemoveVehicle(vhID);
                 }
                 List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
                 is_success = is_success && scApp.ReportBLL.newReportVehicleRemoved(vhID, reportqueues);

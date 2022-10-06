@@ -52,10 +52,10 @@ namespace com.mirle.ibg3k0.sc.WebAPI
                 {
                     RailChangerNumber = num
                 };
-                LogHelper.Log(logger: logger, LogLevel: LogLevel.Trace, Class: nameof(TrackInfoClient), Device: "OHx",
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(TrackInfoClient), Device: "OHx",
                    Data: $"Notify track:{trackID} num:{num} block reset...");
                 var ask = await client.blockRstAsync(block_reset_req);
-                LogHelper.Log(logger: logger, LogLevel: LogLevel.Trace, Class: nameof(TrackInfoClient), Device: "OHx",
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(TrackInfoClient), Device: "OHx",
                    Data: $"Notify track:{trackID} num:{num} block reset finish,result:{ask}");
                 return true;
 
