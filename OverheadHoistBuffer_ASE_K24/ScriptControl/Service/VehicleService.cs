@@ -548,7 +548,7 @@ namespace com.mirle.ibg3k0.sc.Service
                    Data: $"vh:{vh.VEHICLE_ID} leave section is null,try get pre section id:{pre_section_id}.",
                    VehicleID: vh.VEHICLE_ID);
                 leave_section = scApp.SectionBLL.cache.GetSection(pre_section_id);
-                leave_section_id = pre_section_id;
+                leave_section_id = SCUtility.Trim(pre_section_id, true);
             }
             leave_section?.Leave(vh.VEHICLE_ID);
             entry_section?.Entry(vh.VEHICLE_ID);
@@ -582,6 +582,9 @@ namespace com.mirle.ibg3k0.sc.Service
             foreach (var leave_block in leave_blocks)
             {
                 leave_block.Leave(vh.VEHICLE_ID);
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"vh:{vh.VEHICLE_ID} leave block {leave_block.ENTRY_SEC_ID},remove reserved.",
+                   VehicleID: vh.VEHICLE_ID);
             }
 
             //if (vh.WillPassSectionID != null && leave_section != null)
