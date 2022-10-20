@@ -144,25 +144,25 @@ namespace com.mirle.ibg3k0.sc.Common
 
                 LogHelper.logger.Log(LogLevel, logObj.ToString());
 
-                SYSTEMPROCESS_INFO systemProc = new SYSTEMPROCESS_INFO();
-                systemProc.TIME = DateTime.Now.ToString(SCAppConstants.DateTimeFormat_23);
-                systemProc.SEQ = logObj.Sequence;
-                systemProc.LOGLEVEL = LogLevel.Name == null ? string.Empty : LogLevel.Name;
-                systemProc.CLASS = Class == null ? string.Empty : Class;
-                systemProc.METHOD = Method == null ? string.Empty : Method;
-                systemProc.DEVICE = Device == null ? string.Empty : Device;
-                systemProc.DATA = Data == null ? string.Empty : Data;
-                systemProc.VHID = VehicleID == null ? string.Empty : VehicleID;
-                systemProc.CRRID = CarrierID == null ? string.Empty : CarrierID;
-                systemProc.TYPE = Type.ToString();
-                systemProc.LOGID = LogID == null ? string.Empty : LogID;
-                systemProc.THREADID = logObj.ThreadID;
-                systemProc.LOT = Lot == null ? string.Empty : Lot;
-                systemProc.LEVEL = Level == null ? string.Empty : Level;
-                systemProc.XID = xid == null ? string.Empty : xid;
-                systemProc.TRXID = logObj.TransactionID;
-                systemProc.DETAILS = Details == null ? string.Empty : Details;
-                System.Threading.ThreadPool.QueueUserWorkItem(new WaitCallback(SCApplication.getInstance().LineService.PublishSystemMsgInfo), systemProc);
+                //SYSTEMPROCESS_INFO systemProc = new SYSTEMPROCESS_INFO();
+                //systemProc.TIME = DateTime.Now.ToString(SCAppConstants.DateTimeFormat_23);
+                //systemProc.SEQ = logObj.Sequence;
+                //systemProc.LOGLEVEL = LogLevel.Name == null ? string.Empty : LogLevel.Name;
+                //systemProc.CLASS = Class == null ? string.Empty : Class;
+                //systemProc.METHOD = Method == null ? string.Empty : Method;
+                //systemProc.DEVICE = Device == null ? string.Empty : Device;
+                //systemProc.DATA = Data == null ? string.Empty : Data;
+                //systemProc.VHID = VehicleID == null ? string.Empty : VehicleID;
+                //systemProc.CRRID = CarrierID == null ? string.Empty : CarrierID;
+                //systemProc.TYPE = Type.ToString();
+                //systemProc.LOGID = LogID == null ? string.Empty : LogID;
+                //systemProc.THREADID = logObj.ThreadID;
+                //systemProc.LOT = Lot == null ? string.Empty : Lot;
+                //systemProc.LEVEL = Level == null ? string.Empty : Level;
+                //systemProc.XID = xid == null ? string.Empty : xid;
+                //systemProc.TRXID = logObj.TransactionID;
+                //systemProc.DETAILS = Details == null ? string.Empty : Details;
+                //System.Threading.ThreadPool.QueueUserWorkItem(new WaitCallback(SCApplication.getInstance().LineService.PublishSystemMsgInfo), systemProc);
             }
             catch (Exception e)
             {

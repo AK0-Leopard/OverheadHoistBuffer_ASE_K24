@@ -95,7 +95,7 @@ namespace com.mirle.ibg3k0.sc.Service
         public void Start(SCApplication app)
         {
             scApp = app;
-            SubscriptionPositionChangeEvent();
+            //SubscriptionPositionChangeEvent();
             scApp.getEQObjCacheManager().getLine().HasHIDPowerAlarmHappendChange += VehicleService_HasHIDPowerAlarmHappendChange;
 
             List<AVEHICLE> vhs = scApp.getEQObjCacheManager().getAllVehicle();
@@ -301,8 +301,9 @@ namespace com.mirle.ibg3k0.sc.Service
                    Data: $"Process vehicle long time block",
                    VehicleID: vh.VEHICLE_ID,
                    CarrierID: vh.CST_ID);
-                Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
                 scApp.TransferService.OHBC_AlarmSet(vh.VEHICLE_ID, ((int)AlarmLst.OHT_BlockingTimeOut).ToString());
+                //Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
+                scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num);
             }
             catch (Exception ex)
             {
@@ -324,7 +325,8 @@ namespace com.mirle.ibg3k0.sc.Service
                    Data: $"Process vehicle long time block (Keep Happening)",
                    VehicleID: vh.VEHICLE_ID,
                    CarrierID: vh.CST_ID);
-                Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
+                //Task.Run(() => scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num));
+                scApp.VehicleBLL.web.vehicleHasCmdNoAction(vh.Num);
             }
             catch (Exception ex)
             {

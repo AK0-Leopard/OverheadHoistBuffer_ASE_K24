@@ -1981,8 +1981,9 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
         public void setAndPublishPositionReportInfo2Redis(string vh_id, ID_134_TRANS_EVENT_REP report_obj)
         {
-            setPositionReportInfo2Redis(vh_id, report_obj);
-            PublishPositionReportInfo2Redis(vh_id, report_obj);
+            //setPositionReportInfo2Redis(vh_id, report_obj);
+            //PublishPositionReportInfo2Redis(vh_id, report_obj);
+            UpdatePositionReportInfo2Cache(vh_id, report_obj);
         }
         private void setPositionReportInfo2Redis(string vh_id, ID_134_TRANS_EVENT_REP report_obj)
         {
@@ -2001,24 +2002,36 @@ namespace com.mirle.ibg3k0.sc.BLL
             scApp.getRedisCacheManager().PublishEvent(key_word_position, arrayByte);
         }
 
+        private void UpdatePositionReportInfo2Cache(string vh_id, ID_134_TRANS_EVENT_REP report_obj)
+        {
+            try
+            {
+                AVEHICLE vh = scApp.getEQObjCacheManager().getVehicletByVHID(vh_id);
+                scApp.VehicleService.PositionReport(scApp.getBCFApplication(), vh, report_obj);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exection:");
+            }
+        }
 
         Google.Protobuf.MessageParser<ID_134_TRANS_EVENT_REP> trans_event_rep_parser = new Google.Protobuf.MessageParser<ID_134_TRANS_EVENT_REP>(() => new ID_134_TRANS_EVENT_REP());
         public void VehiclePositionChangeHandler(RedisChannel channel, RedisValue value)
         {
-            //byte[] SerializationPoitionReport = value;
-            //ID_134_TRANS_EVENT_REP recive_str = trans_event_rep_parser.ParseFrom(SerializationPoitionReport);
-            string vh_id = channel.ToString().Split('#').Last();
-            AVEHICLE vh = scApp.getEQObjCacheManager().getVehicletByVHID(vh_id);
-            //lock (vh.PositionRefresh_Sync)
+            ////byte[] SerializationPoitionReport = value;
+            ////ID_134_TRANS_EVENT_REP recive_str = trans_event_rep_parser.ParseFrom(SerializationPoitionReport);
+            //string vh_id = channel.ToString().Split('#').Last();
+            //AVEHICLE vh = scApp.getEQObjCacheManager().getVehicletByVHID(vh_id);
+            ////lock (vh.PositionRefresh_Sync)
+            ////{
+            ////  if (vh.PositionRefreshTimer.ElapsedMilliseconds > SCAppConstants.POSITION_REFRESH_INTERVAL_TIME)
             //{
-            //  if (vh.PositionRefreshTimer.ElapsedMilliseconds > SCAppConstants.POSITION_REFRESH_INTERVAL_TIME)
-            {
-                //vh.PositionRefreshTimer.Restart();
-                //dynamic service = scApp.VehicleService;
-                //service.PositionReport(scApp.getBCFApplication(), vh, recive_str);
-                scApp.VehicleBLL.getAndProcPositionReportFromRedis(vh.VEHICLE_ID);
-            }
+            //    //vh.PositionRefreshTimer.Restart();
+            //    //dynamic service = scApp.VehicleService;
+            //    //service.PositionReport(scApp.getBCFApplication(), vh, recive_str);
+            //    scApp.VehicleBLL.getAndProcPositionReportFromRedis(vh.VEHICLE_ID);
             //}
+            ////}
         }
         public void loadAllAndProcPositionReportFromRedis()
         {

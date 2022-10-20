@@ -41,7 +41,7 @@ namespace com.mirle.ibg3k0.sc.Common
         }
 
 
-        
+
         public string GetInfoFromServer(string uri, string[] action_targets, string[] param)
         {
             string p = string.Join("", param);
@@ -53,24 +53,30 @@ namespace com.mirle.ibg3k0.sc.Common
             string action_target = string.Join("/", action_targets);
             string address = $"{uri}/{action_target}/{param}";
             LogHelper.Log(logger: NLog.LogManager.GetCurrentClassLogger(), LogLevel: LogLevel.Info, Class: nameof(WebClientManager), Device: "OHxC",
-               Data:$"send GetInfoFromServer: {address} ");
+               Data: $"send GetInfoFromServer: {address} ");
 
             // HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create($"{uri}/{action_target}/{param}");
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(address);
-            httpWebRequest.Timeout = 5000;
-            httpWebRequest.Method = HTTP_METHOD.GET.ToString();
-            //指定 request 的 content type
-            httpWebRequest.ContentType = "application/x-www-form-urlencoded";
-
-            using (var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse())
+            try
             {
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                httpWebRequest.Timeout = 3000;
+                httpWebRequest.Method = HTTP_METHOD.GET.ToString();
+                //指定 request 的 content type
+                httpWebRequest.ContentType = "application/x-www-form-urlencoded";
+
+                using (var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse())
                 {
-                    result = streamReader.ReadToEnd();
+                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    {
+                        result = streamReader.ReadToEnd();
+                    }
+                    httpResponse.Close();
                 }
-                httpResponse.Close();
             }
-            httpWebRequest.Abort();
+            finally
+            {
+                httpWebRequest.Abort();
+            }
             return result;
         }
 
