@@ -1006,6 +1006,8 @@ namespace com.mirle.ibg3k0.sc.Service
                                 TransferCommandHandler(v);
                             }
 
+                            checkHasTransferCommandTransferringTimeOut(transferCmdData);
+
                             //if (cmdFail)
                             //{
                             //    cmdFail = false;
@@ -1085,6 +1087,44 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     Interlocked.Exchange(ref syncTranCmdPoint, 0);
                 }
+            }
+        }
+
+        bool isTransferCommandTransferringTimeOut = false;
+        private void checkHasTransferCommandTransferringTimeOut(List<ACMD_MCS> transferringCmdData)
+        {
+            try
+            {
+                //if (transferringCmdData == null || transferringCmdData.Count == 0) return;
+
+                bool is_transfer_command_transferring_time_out = false;
+                foreach (var v in transferringCmdData)
+                {
+                    if (!v.CMD_START_TIME.HasValue) continue;
+                    var excuting_time = DateTime.Now - v.CMD_START_TIME.Value;
+                    if (excuting_time.TotalSeconds >= SystemParameter.TranferringCmdFinishTimeOut_Second)
+                    {
+                        is_transfer_command_transferring_time_out = true;
+                        break;
+                    }
+                }
+
+                if (isTransferCommandTransferringTimeOut != is_transfer_command_transferring_time_out)
+                {
+                    isTransferCommandTransferringTimeOut = is_transfer_command_transferring_time_out;
+                    if (isTransferCommandTransferringTimeOut)
+                    {
+                        OHBC_AlarmSet(line.LINE_ID, ((int)AlarmLst.OHT_TransferringCmdFinishTimeOut).ToString());
+                    }
+                    else
+                    {
+                        OHBC_AlarmCleared(line.LINE_ID, ((int)AlarmLst.OHT_TransferringCmdFinishTimeOut).ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
             }
         }
 

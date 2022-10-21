@@ -980,6 +980,8 @@ namespace com.mirle.ibg3k0.sc.App
             {
                 SystemParameter.cmdTimeOutToAlternate = 30;
             }
+
+            SystemParameter.setTranferringCmdFinishTimeOut_Second(getUInt("TranferringCmdFinishTimeOutSecond", 1800));
         }
 
         //A0.01
@@ -1779,6 +1781,30 @@ namespace com.mirle.ibg3k0.sc.App
             }
             return rtn;
         }
+        private uint getUInt(string key, uint defaultValue)
+        {
+            uint rtn = defaultValue;
+            try
+            {
+                string value = ConfigurationManager.AppSettings.Get(key);
+                if (SCUtility.isEmpty(value))
+                {
+                    return defaultValue;
+                }
+                else
+                {
+                    rtn = Convert.ToUInt32(value);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.Warn("Get Config error[key:{0}][Exception:{1}]", key, e);
+            }
+            return rtn;
+        }
+
+
+
 
         private double getDouble(string key, double defaultValue)
         {
@@ -2381,7 +2407,8 @@ namespace com.mirle.ibg3k0.sc.App
         public static int cmdPriorityAdd = 1;
         public static int cmdTimeOutToAlternate = 30;
         public static bool IsOpenContinueNotifyWhenVehicleTimeout { get; private set; } = true;
-        public static bool IsOpenReelNTBPortStatusAsk{ get; private set; } = false;
+        public static bool IsOpenReelNTBPortStatusAsk { get; private set; } = false;
+        public static uint TranferringCmdFinishTimeOut_Second = 1800;  //秒鐘
 
         /// <summary>
         /// Sets the secs conversaction timeout.
@@ -2449,6 +2476,12 @@ namespace com.mirle.ibg3k0.sc.App
         {
             IsOpenReelNTBPortStatusAsk = isOpenReelNTBPortStatusAsk;
         }
+
+        public static void setTranferringCmdFinishTimeOut_Second(uint tranferringCmdFinishTimeOut)
+        {
+            TranferringCmdFinishTimeOut_Second = tranferringCmdFinishTimeOut;
+        }
+
     }
 
     public class HAProxyConnectionTest
