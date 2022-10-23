@@ -667,6 +667,8 @@
     <Compile Include="Data\DAO\HIDZoneMasterDao.cs" />
     <Compile Include="Data\DBConnection_EF.cs" />
     <Compile Include="Data\Enum\UnitType.cs" />
+    <Compile Include="Data\PLC_Functions\EFEM\EFEMPortPLCControl.cs" />
+    <Compile Include="Data\PLC_Functions\EFEM\EFEMPortPLCInfo.cs" />
     <Compile Include="Data\PLC_Functions\MGV\Enums\CstType.cs" />
     <Compile Include="Data\PLC_Functions\MGV\Enums\DirectionType.cs" />
     <Compile Include="Data\PLC_Functions\MGV\Enums\MoveBackReasons.cs" />
@@ -900,6 +902,7 @@
     <Compile Include="Data\ValueDefMapAction\Interface\IReelNTBValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\Interface\IManualPortValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\MGVDefaultValueDefMapAction.cs" />
+    <Compile Include="Data\ValueDefMapAction\EFMEPortStationDefaultValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\ReelNTBC\ReelNTBCDefaultMapActionReceive.cs" />
     <Compile Include="Data\ValueDefMapAction\ReelNTBC\ReelNTBCDefaultMapActionSend.cs" />
     <Compile Include="Data\ValueDefMapAction\SimpleMTLValueDefMapAction.cs" />
@@ -919,6 +922,7 @@
     <Compile Include="Data\VO\Interface\IMaintainDevice.cs" />
     <Compile Include="Data\VO\MTLSetting.cs" />
     <Compile Include="Data\VO\PartialVo\ALARM.cs" />
+    <Compile Include="Data\VO\PartialVo\EFEM_PORTSTATION.cs" />
     <Compile Include="Data\VO\ReelNTB.cs" />
     <Compile Include="Data\VO\OHCV.cs" />
     <Compile Include="Data\VO\MaintainLift.cs" />

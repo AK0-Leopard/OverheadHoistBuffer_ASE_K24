@@ -4,11 +4,13 @@ using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
+using System.Diagnostics;
 
 namespace com.mirle.ibg3k0.sc
 {
     public partial class APORTSTATION : BaseEQObject
     {
+
         public APORTSTATION()
         {
             eqptObjectCate = SCAppConstants.EQPT_OBJECT_PORT_STATION;

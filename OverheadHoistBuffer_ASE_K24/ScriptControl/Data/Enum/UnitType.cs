@@ -12,6 +12,7 @@
         AGVZONE,
         LINE,
         EQ,
-        MANUALPORT
+        MANUALPORT,
+        EFEM
     }
 }

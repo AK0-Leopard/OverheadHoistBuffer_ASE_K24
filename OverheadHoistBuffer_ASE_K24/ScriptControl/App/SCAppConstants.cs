@@ -1103,6 +1103,7 @@ namespace com.mirle.ibg3k0.sc.App
             LINE = 14,
             MANUALPORT = 15,
             TRACK = 16,
+            EFEM = 17,
         }
         #endregion Eqpt Type
 

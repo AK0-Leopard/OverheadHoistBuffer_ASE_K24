@@ -2432,6 +2432,27 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     sourcePortType = true;
                 }
+                else if (isUnitType(sourceName, UnitType.EFEM))
+                {
+                    var check_efem_port_status_result =
+                        IsEFEMPortStatueLoadReady(sourceName);
+                    if (!check_efem_port_status_result.isReady)
+                    {
+                        sourcePortType = false;
+                        sourceState = $"{sourceState} {check_efem_port_status_result.result}";
+                        var check_can_send_port_mode_change = IsCanChangeEFEMPortToInput(sourceName);
+                        if (check_can_send_port_mode_change.isCan)
+                        {
+                            sendEFEMPortChangeToInputRequest(sourceName);
+                        }
+                        else
+                        {
+                            TransferServiceLogger.
+                                Info($"{DateTime.Now.ToString("HH:mm:ss.fff ")}OHB >> PLC 無法對 EFEM Port:{sourceName} 發送change to in mode:{check_can_send_port_mode_change.result}");
+                        }
+                    }
+
+                }
                 else
                 {
                     sourcePortType = true;
@@ -2465,6 +2486,81 @@ namespace com.mirle.ibg3k0.sc.Service
                 return false;
             }
         }
+
+        private void sendEFEMPortChangeToInputRequest(string sourceName)
+        {
+            APORTSTATION port_station = scApp.PortStationBLL.OperateCatch.getPortStation(sourceName);
+            if (port_station == null)
+            {
+                TransferServiceLogger.Info($"{DateTime.Now.ToString("HH:mm:ss.fff ")}OHB >> PLC 要對 EFEM Port:{sourceName} 發送change to in mode，但Port不存在");
+                return;
+            }
+            TransferServiceLogger.Info($"{DateTime.Now.ToString("HH:mm:ss.fff ")}OHB >> PLC 對 EFEM Port:{sourceName} 發送change to in mode");
+            port_station.ChangeToInMode(true);
+        }
+
+        private (bool isReady, string result) IsEFEMPortStatueLoadReady(string sourceName)
+        {
+            PortPLCInfo sourcePort = GetPLC_PortData(sourceName);
+            if (sourcePort == null)
+            {
+                return (false, $"port id:{sourceName} 不存在");
+            }
+            if (!sourcePort.OpAutoMode)
+            {
+                return (false, $"{nameof(sourcePort.OpAutoMode)}:{sourcePort.OpAutoMode} 無法進行取貨");
+            }
+            if (!sourcePort.IsInputMode)
+            {
+                return (false, $"{nameof(sourcePort.IsInputMode)}:{sourcePort.IsInputMode} 無法進行取貨");
+            }
+            if (!sourcePort.IsReadyToUnload)
+            {
+                return (false, $"{nameof(sourcePort.IsReadyToUnload)}:{sourcePort.IsReadyToUnload} 無法進行取貨");
+            }
+            return (true, "");
+        }
+
+
+        private (bool isCan, string result) IsCanChangeEFEMPortToInput(string sourceName)
+        {
+            APORTSTATION port_station = scApp.PortStationBLL.OperateCatch.getPortStation(sourceName);
+            PortPLCInfo sourcePort = port_station.getPortPLCInfo();
+            if (!sourcePort.OpAutoMode)
+            {
+                return (false, $"{nameof(sourcePort.OpAutoMode)}:{sourcePort.OpAutoMode} 無法進行Input的狀態切換");
+            }
+            //在oup put的模式下，才需要對EFEM機台進行切成In mode的動作，讓EFEM跟機台交握
+            if (!sourcePort.IsOutputMode)
+            {
+                return (false, $"{nameof(sourcePort.IsOutputMode)}:{sourcePort.IsOutputMode} 無法進行Input的狀態切換");
+            }
+
+            return (true, "");
+        }
+
+        private (bool isReady, string result) IsEFEMPortStatueUnloadReady(string destName)
+        {
+            PortPLCInfo destPort = GetPLC_PortData(destName);
+            if (destPort == null)
+            {
+                return (false, $"port id:{destName} 不存在");
+            }
+            if (!destPort.OpAutoMode)
+            {
+                return (false, $"{nameof(destPort.OpAutoMode)}:{destPort.OpAutoMode}");
+            }
+            if (!destPort.IsOutputMode)
+            {
+                return (false, $"{nameof(destPort.IsOutputMode)}:{destPort.IsOutputMode}");
+            }
+            if (!destPort.IsReadyToLoad)
+            {
+                return (false, $"{nameof(destPort.IsReadyToLoad)}:{destPort.IsReadyToLoad}");
+            }
+            return (true, "");
+        }
+
 
         private const int IGNORE_STAGE_NUM = 1;
 
@@ -2644,6 +2740,14 @@ namespace com.mirle.ibg3k0.sc.Service
                 else if (isUnitType(destName, UnitType.EQ))
                 {
                     destPortType = true;
+                }
+                else if (isUnitType(destName, UnitType.EFEM))
+                {
+                    var check_efem_port_status_result =
+                        IsEFEMPortStatueUnloadReady(destName);
+
+                    destPortType = check_efem_port_status_result.isReady;
+                    destState = $"{destState} {check_efem_port_status_result.result}";
                 }
                 else
                 {

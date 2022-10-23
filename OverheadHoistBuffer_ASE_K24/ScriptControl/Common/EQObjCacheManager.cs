@@ -645,6 +645,19 @@ namespace com.mirle.ibg3k0.sc.Common
                                     CARRIER_CST_TYPE = carrier_cst_type
                                 });
                             }
+                            else if (eqptType == SCAppConstants.EqptType.EFEM)
+                            {
+                                portStationList.Add(new EFEM_PORTSTATION()
+                                {
+                                    EQPT_ID = eqpt_id,
+                                    PORT_ID = port_id,
+                                    ADR_ID = adr_id,
+                                    LD_VH_TYPE = load_vh_type,
+                                    ULD_VH_TYPE = unload_vh_type,
+                                    PORT_STATUS = E_PORT_STATUS.InService,
+                                    CARRIER_CST_TYPE = carrier_cst_type
+                                });
+                            }
                             else
                             {
                                 portStationList.Add(new APORTSTATION()
@@ -747,7 +760,8 @@ namespace com.mirle.ibg3k0.sc.Common
         {
             E_PORT_STATUS port_status = E_PORT_STATUS.OutOfService;
             if (eqptType == SCAppConstants.EqptType.Equipment ||
-                eqptType == SCAppConstants.EqptType.NTB)
+                eqptType == SCAppConstants.EqptType.NTB ||
+                eqptType == SCAppConstants.EqptType.EFEM)
             {
                 port_status = E_PORT_STATUS.InService;
             }
@@ -829,6 +843,9 @@ namespace com.mirle.ibg3k0.sc.Common
 
                 case SCAppConstants.EqptType.MANUALPORT:
                     return UnitType.MANUALPORT.ToString();
+
+                case SCAppConstants.EqptType.EFEM:
+                    return UnitType.EFEM.ToString();
 
                 default:
                     return UnitType.EQ.ToString();
