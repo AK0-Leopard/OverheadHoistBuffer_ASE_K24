@@ -1336,8 +1336,18 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             try
             {
+                string message = $"Do you reload parking addresses?";
+                DialogResult confirmResult = MessageBox.Show(this, message,
+                    BCApplication.getMessageString("CONFIRM"), MessageBoxButtons.YesNo);
+
+                BCUtility.recordAction(bcApp, this.Name, message, confirmResult.ToString());
+                if (confirmResult != System.Windows.Forms.DialogResult.Yes)
+                {
+                    return;
+                }
+
                 btn_reloadParkingAdr.Enabled = false;
-                await Task.Run(() => bcApp.SCApplication.PortDefBLL.upDatePortTypeIndex());
+                await Task.Run(() => bcApp.SCApplication.AddressBLL.reloadAddressType());
             }
             finally
             {

@@ -935,6 +935,10 @@ namespace com.mirle.ibg3k0.sc
             return ITcpIpControl.StopWatch_FromTheLastCommTime(bcfApp, TcpIpAgentName).Elapsed.TotalSeconds;
 
         }
+        internal void StopTcpIpConnection(BCFApplication bcfApp)
+        {
+            bcfApp.getTcpIpAgent(TcpIpAgentName).stop();
+        }
 
         #endregion TcpIpAgentInfo
 

@@ -86,7 +86,7 @@ namespace com.mirle.ibg3k0.sc.Common
 
             foreach (var add in Addresses)
             {
-                add.initialAddressType();
+                add.updateAddressType();
             }
 
 

@@ -15,12 +15,12 @@ namespace com.mirle.ibg3k0.sc
     {
         private const int BIT_INDEX_AVOID = 1;
 
-        public Boolean[] AddressTypeFlags { get; set; }
+        public Boolean[] AddressTypeFlags { get; private set; }
         public string[] SegmentIDs { get; set; }
 
         public event EventHandler<string> VehicleRelease;
 
-        public void initialAddressType()
+        public void updateAddressType()
         {
             //string s_type = ADR_ID.Substring(0, 2);
             int i_type = (int)ADRTYPE;

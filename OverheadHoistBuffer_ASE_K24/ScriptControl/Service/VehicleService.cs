@@ -366,6 +366,9 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 if (vhStopSingle == VhStopSingle.StopSingleOn)
                 {
+                    //如果OHT不為Install且為AutoLocal模式就不用呼叫異常通知
+                    if (!vh.IS_INSTALLED && vh.MODE_STATUS == VHModeStatus.AutoLocal)
+                        return;
                     Task.Run(() => scApp.VehicleBLL.web.errorHappendNotify(vh.Num));
                 }
             }
@@ -455,9 +458,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 //var endPoint = vh.getIPEndPoint(scApp.getBCFApplication());
                 int port_num = vh.getPortNum(scApp.getBCFApplication());
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                   Data: $"Over {AVEHICLE.MAX_STATUS_REQUEST_FAIL_TIMES} times request status fail, begin restart tcpip server port:{port_num}...(current pass this function)",
+                   Data: $"Over {AVEHICLE.MAX_STATUS_REQUEST_FAIL_TIMES} times request status fail, begin force close tcpip section...",
                    VehicleID: vh.VEHICLE_ID,
                    CarrierID: vh.CST_ID);
+                vh.StopTcpIpConnection(scApp.getBCFApplication());
 
                 //stopVehicleTcpIpServer(vh);
                 //SpinWait.SpinUntil(() => false, 2000);
