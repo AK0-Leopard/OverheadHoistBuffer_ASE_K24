@@ -117,6 +117,8 @@ CRANE,626,2,Traveling reducer_ abnormal temperature
 CRANE,627,2,Rotating motor_ abnormal temperature
 CRANE,628,2,Side shift motor_ abnormal temperature
 CRANE,629,2,Winding motor_ abnormal temperature
+CRANE,640,2,PIO is shipping_Receive EQ and send HO_Suspected TP3 timeout is abnormal
+CRANE,641,2,PIO is under delivery_Receive EQ and send HO_Suspected TP3 timeout is abnormal
 CRANE,705,2,Step forward to prevent falling_extension abnormal
 CRANE,706,2,Step forward to prevent falling _ abnormal folding
 CRANE,707,2,Anti-falling after going up_extension abnormal

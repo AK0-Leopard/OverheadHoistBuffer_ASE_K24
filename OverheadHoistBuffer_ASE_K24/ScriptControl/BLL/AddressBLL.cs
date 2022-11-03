@@ -3,6 +3,7 @@ using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.Data.DAO;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace com.mirle.ibg3k0.sc.BLL
 {
     public class AddressBLL
     {
+        private Logger logger = LogManager.GetCurrentClassLogger();
+
         public SCApplication scApp;
         public Database dataBase { get; private set; }
         public Cache cache { get; private set; }
@@ -25,6 +28,23 @@ namespace com.mirle.ibg3k0.sc.BLL
             scApp = _app;
             dataBase = new Database(scApp.AddressDao);
             cache = new Cache(scApp.getCommObjCacheManager());
+
+        }
+        public void reloadAddressType()
+        {
+            try
+            {
+                var all_address = dataBase.loadAllAddress();
+                cache.upDataAddressType(all_address);
+                var avoid_adr = cache.loadCanAvoidAddresses().Where(a => a.IsAvoid).Select(a => a.ADR_ID).ToList();
+                Console.WriteLine($"avoid:{string.Join(",", avoid_adr)}");
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(AddressBLL), Device: "OHx",
+                   Data: $"current avoid adr id:{string.Join(",", avoid_adr)}");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
         }
         public class Database
         {
@@ -63,6 +83,17 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return CommObjCacheManager.getAddresses().
                                            Where(a => a.IsAvoid).
                                            ToList();
+            }
+            public void upDataAddressType(List<AADDRESS> inputAdrData)
+            {
+                var addresses = CommObjCacheManager.getAddresses();
+                foreach (var db_adr in inputAdrData)
+                {
+                    var cache_adr = addresses.Where(a => SCUtility.isMatche(a.ADR_ID, db_adr.ADR_ID)).FirstOrDefault();
+                    if (cache_adr == null) continue;
+                    cache_adr.ADRTYPE = db_adr.ADRTYPE;
+                    cache_adr.updateAddressType();
+                }
             }
         }
     }
