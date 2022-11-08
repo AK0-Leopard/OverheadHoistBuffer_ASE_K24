@@ -80,6 +80,34 @@ namespace WebApplication1.Controllers
                         _logger.LogInformation("10號車發生異常");
                         service.oht10_error.PlaySync();
                         break;
+                    case "11":
+                        _logger.LogInformation("11號車發生異常");
+                        service.oht11_error.PlaySync();
+                        break;
+                    case "12":
+                        _logger.LogInformation("12號車發生異常");
+                        service.oht12_error.PlaySync();
+                        break;
+                    case "13":
+                        _logger.LogInformation("13號車發生異常");
+                        service.oht13_error.PlaySync();
+                        break;
+                    case "14":
+                        _logger.LogInformation("14號車發生異常");
+                        service.oht14_error.PlaySync();
+                        break;
+                    case "15":
+                        _logger.LogInformation("15號車發生異常");
+                        service.oht15_error.PlaySync();
+                        break;
+                    case "16":
+                        _logger.LogInformation("16號車發生異常");
+                        service.oht16_error.PlaySync();
+                        break;
+                    case "17":
+                        _logger.LogInformation("17號車發生異常");
+                        service.oht17_error.PlaySync();
+                        break;
                 }
                 //if (!service.passReportVh.Contains(id))
                 //    serialPort.closePort();
@@ -131,6 +159,34 @@ namespace WebApplication1.Controllers
                     case "10":
                         _logger.LogInformation("10號車發生斷線");
                         service.oht10_disconnection.PlaySync();
+                        break;
+                    case "11":
+                        _logger.LogInformation("11號車發生斷線");
+                        service.oht11_disconnection.PlaySync();
+                        break;
+                    case "12":
+                        _logger.LogInformation("12號車發生斷線");
+                        service.oht12_disconnection.PlaySync();
+                        break;
+                    case "13":
+                        _logger.LogInformation("13號車發生斷線");
+                        service.oht13_disconnection.PlaySync();
+                        break;
+                    case "14":
+                        _logger.LogInformation("14號車發生斷線");
+                        service.oht14_disconnection.PlaySync();
+                        break;
+                    case "15":
+                        _logger.LogInformation("15號車發生斷線");
+                        service.oht15_disconnection.PlaySync();
+                        break;
+                    case "16":
+                        _logger.LogInformation("16號車發生斷線");
+                        service.oht16_disconnection.PlaySync();
+                        break;
+                    case "17":
+                        _logger.LogInformation("17號車發生斷線");
+                        service.oht17_disconnection.PlaySync();
                         break;
                 }
             }
