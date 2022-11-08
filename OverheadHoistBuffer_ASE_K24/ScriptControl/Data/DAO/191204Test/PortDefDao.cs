@@ -94,6 +94,7 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
                                    || a.UnitType == "AGVZONE"
                                    || a.UnitType == "EQ"
                                    || a.UnitType == "MANUALPORT"
+                                   || a.UnitType == "EFEM"
                                      )
                            select a;
                 return port.ToList();

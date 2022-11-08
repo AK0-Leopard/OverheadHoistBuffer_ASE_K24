@@ -576,6 +576,11 @@ namespace com.mirle.ibg3k0.sc
             {
                 CanNotServiceReason = reason;
                 IsCanNotServiceReasonChanged = true;
+                string id = sc.Common.SCUtility.Trim(CMD_ID, true);
+                string source = sc.Common.SCUtility.Trim(HOSTSOURCE, true);
+                string dest = sc.Common.SCUtility.Trim(HOSTDESTINATION, true);
+                string relay = sc.Common.SCUtility.Trim(RelayStation, true);
+                NLog.LogManager.GetLogger("TransferServiceLogger").Info($"tran id:{id} source:{source} dest:{dest} relay:{relay},無法派送原因:{reason}");
                 return true;
             }
             return false;

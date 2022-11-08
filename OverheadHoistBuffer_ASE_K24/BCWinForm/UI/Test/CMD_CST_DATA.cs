@@ -44,6 +44,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Test
                     || BCApp.SCApplication.TransferService.isAGVZone(v.PortName)
                     || BCApp.SCApplication.TransferService.isEQPort(v.PortName)
                     || BCApp.SCApplication.TransferService.isNTBPort(v.PortName)
+                    || BCApp.SCApplication.TransferService.isEFEMPort(v.PortName)
                    )
                 {
                     comboBox1.Items.Add(v.PortName);

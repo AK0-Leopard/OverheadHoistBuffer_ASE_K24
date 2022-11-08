@@ -37,7 +37,8 @@ namespace com.mirle.ibg3k0.bc.winform
 
             foreach (var v in portList)
             {
-                if (transferService.isCVPort(v.PLCPortID) && transferService.isAGVZone(v.PLCPortID) == false)
+                if ((transferService.isCVPort(v.PLCPortID) && transferService.isAGVZone(v.PLCPortID) == false) ||
+                     transferService.isEFEMPort(v.PLCPortID))
                 {
                     comboBox1.Items.Add(v.PLCPortID);
                 }
@@ -157,12 +158,14 @@ namespace com.mirle.ibg3k0.bc.winform
             dataGridView2.Rows[15].Cells[2].Value = portData.cim_on.ToString();
             dataGridView2.Rows[16].Cells[2].Value = portData.preLoadOK.ToString();
 
-            var manualPort = port as MANUAL_PORTSTATION;
-            var manualPortData = manualPort.getManualPortPLCInfo();
+            if (port is MANUAL_PORTSTATION)
+            {
+                var manualPort = port as MANUAL_PORTSTATION;
+                var manualPortData = manualPort.getManualPortPLCInfo();
 
-            dataGridView2.Rows[17].Cells[2].Value = manualPortData.ErrorIndex.ToString();
-            dataGridView2.Rows[18].Cells[2].Value = manualPortData.AlarmCode.ToString();
-
+                dataGridView2.Rows[17].Cells[2].Value = manualPortData.ErrorIndex.ToString();
+                dataGridView2.Rows[18].Cells[2].Value = manualPortData.AlarmCode.ToString();
+            }
             #endregion dataGridView2再Manual Port
 
             #region dataGridView3

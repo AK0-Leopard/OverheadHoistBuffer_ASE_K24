@@ -7610,6 +7610,27 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
+        public bool isEFEMPort(string portName)
+        {
+            try
+            {
+                portName = portName.Trim();
+                if (portINIData[portName].UnitType == UnitType.EFEM.ToString())
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "isCVPort    portName:" + portName);
+                return false;
+            }
+        }
+
 
         public bool isEQPort(string portName)
         {
