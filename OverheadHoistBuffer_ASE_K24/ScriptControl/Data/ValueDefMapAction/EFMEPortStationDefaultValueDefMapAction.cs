@@ -12,6 +12,8 @@
 using System;
 using System.Threading.Tasks;
 using com.mirle.ibg3k0.bcf.App;
+using com.mirle.ibg3k0.bcf.Common;
+using com.mirle.ibg3k0.bcf.Controller;
 using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.EFEM;
@@ -61,7 +63,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 switch (runLevel)
                 {
                     case BCFAppConstants.RUN_LEVEL.ZERO:
-
+                        port.AliveStopwatch.Restart();
                         break;
                     case BCFAppConstants.RUN_LEVEL.ONE:
                         break;
@@ -83,6 +85,22 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         {
             try
             {
+                if (bcfApp.tryGetReadValueEventstring(port.EqptObjectCate, port.PORT_ID, "MGV_TO_OHxC_HEARTBEAT", out ValueRead vr1))
+                {
+                    vr1.afterValueChange += (_sender, e) => MGV_TO_OHxC_HEARTBEAT(_sender, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+        private void MGV_TO_OHxC_HEARTBEAT(object sender, ValueChangedEventArgs e)
+        {
+            try
+            {
+                port.AliveStopwatch.Restart();
             }
             catch (Exception ex)
             {
@@ -106,6 +124,36 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 CommitChange(function);
             });
         }
+
+        public Task HeartBeatAsync(bool setOn)
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    var function = scApp.getFunBaseObj<EFEMPortPLCControl_HeartBeat>(port.PORT_ID) as EFEMPortPLCControl_HeartBeat;
+                    try
+                    {
+                        function.IsHeartBeatOn = setOn;
+                        function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
+                        logger.Info(function.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex, "Exception");
+                    }
+                    finally
+                    {
+                        scApp.putFunBaseObj<EFEMPortPLCControl>(function);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+            });
+        }
+
         private void CommitChange(EFEMPortPLCControl function)
         {
             try
@@ -126,38 +174,38 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 
         public Task ChangeToOutModeAsync(bool isOn)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
 
         public Task ResetAlarmAsync()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task StopBuzzerAsync()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task SetRunAsync()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task SetStopAsync()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task SetCommandingAsync(bool setOn)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task SetControllerErrorIndexAsync(int newIndex)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

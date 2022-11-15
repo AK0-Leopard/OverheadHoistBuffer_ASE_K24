@@ -27,5 +27,6 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface
         Task SetCommandingAsync(bool setOn);
 
         Task SetControllerErrorIndexAsync(int newIndex);
+        Task HeartBeatAsync(bool setOn);
     }
 }

@@ -2172,6 +2172,11 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             throw new NotImplementedException();
         }
 
+        public Task HeartBeatAsync(bool setOn)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion OHB >> PLC
     }
 }

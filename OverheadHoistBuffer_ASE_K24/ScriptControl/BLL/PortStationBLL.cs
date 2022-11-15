@@ -309,6 +309,13 @@ namespace com.mirle.ibg3k0.sc.BLL
                 var map_actions = ports.Select(port => (port as MANUAL_PORTSTATION).getExcuteMapAction());
                 return map_actions;
             }
+            public List<EFEM_PORTSTATION> loadAllEFEMPortStation()
+            {
+                var ports = CacheManager.getALLPortStation().Where(port => port is EFEM_PORTSTATION).
+                                                             Select(port => port as EFEM_PORTSTATION).
+                                                             ToList();
+                return ports;
+            }
 
 
         }

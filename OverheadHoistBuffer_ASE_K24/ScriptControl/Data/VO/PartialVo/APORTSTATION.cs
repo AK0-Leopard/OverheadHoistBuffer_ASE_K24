@@ -95,6 +95,12 @@ namespace com.mirle.ibg3k0.sc
             if (portValueDefMapAction == null) return;
             portValueDefMapAction.SetCommandingAsync(isCommanding);
         }
+        public void SetHeartBeat(bool setOn)
+        {
+            var portValueDefMapAction = getICommonPortInfoValueDefMapAction();
+            if (portValueDefMapAction == null) return;
+            portValueDefMapAction.HeartBeatAsync(setOn);
+        }
 
         public void SetControllerErrorIndex(int index)
         {
@@ -112,6 +118,23 @@ namespace com.mirle.ibg3k0.sc
                 return false;
             }
             return eq.Type == SCAppConstants.EqptType.Equipment;
+        }
+
+        const int MAX_ALIVE_TIME_OUT_MILLISECION = 10_000;
+        public Stopwatch AliveStopwatch = new Stopwatch();
+        public bool IsAlive
+        {
+            get
+            {
+                if (AliveStopwatch.IsRunning)
+                {
+                    return AliveStopwatch.ElapsedMilliseconds > MAX_ALIVE_TIME_OUT_MILLISECION;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
     }
 }

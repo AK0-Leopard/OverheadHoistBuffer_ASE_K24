@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace com.mirle.ibg3k0.sc.Service
 {
@@ -106,16 +107,30 @@ namespace com.mirle.ibg3k0.sc.Service
         }
 
         #endregion Log
-
+        private long syncPoint = 0;
         public void ReflashState()
         {
-            HeartBeat();
-            tryExcuteTimeCalibration();
-            var allCommands = ACMD_MCS.MCS_CMD_InfoList;
-            ReflashPlcMonitor(allCommands);
-            ReflashReadyToWaitOutCarrier();
-            ReflashComingOutCarrier();
-            CheckCommandingSignal(allCommands);
+            if (Interlocked.Exchange(ref syncPoint, 1) == 0)
+            {
+                try
+                {
+                    HeartBeat();
+                    tryExcuteTimeCalibration();
+                    var allCommands = ACMD_MCS.MCS_CMD_InfoList;
+                    ReflashPlcMonitor(allCommands);
+                    ReflashReadyToWaitOutCarrier();
+                    ReflashComingOutCarrier();
+                    CheckCommandingSignal(allCommands);
+                }
+                catch(Exception ex)
+                {
+                    logger.Error(ex, "Exception:");
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref syncPoint, 0);
+                }
+            }
         }
 
         private void tryExcuteTimeCalibration()

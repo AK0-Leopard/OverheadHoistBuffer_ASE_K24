@@ -40,6 +40,5 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface
 
         Task TimeCalibrationAsync();
 
-        Task HeartBeatAsync(bool setOn);
     }
 }

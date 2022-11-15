@@ -82,5 +82,6 @@ namespace com.mirle.ibg3k0.sc
         public DirectionType direction;
         public RequestType requestType;
         public string CarrierReelId;
+
     }
 }

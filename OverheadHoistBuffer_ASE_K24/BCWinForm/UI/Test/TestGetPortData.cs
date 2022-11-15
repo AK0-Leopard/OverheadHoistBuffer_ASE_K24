@@ -75,6 +75,7 @@ namespace com.mirle.ibg3k0.bc.winform
             dataGridView2.Rows.Add("PLC 預先入料完成", "PreLoadOK", "");
             dataGridView2.Rows.Add("PLC 異常編號", "PLC_AlarmIndex", "");
             dataGridView2.Rows.Add("異常碼", "AlarmCode", "");                 //18
+            dataGridView2.Rows.Add("連線狀態", "Alive", "");                 //19
 
             dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView2.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
@@ -166,6 +167,8 @@ namespace com.mirle.ibg3k0.bc.winform
                 dataGridView2.Rows[17].Cells[2].Value = manualPortData.ErrorIndex.ToString();
                 dataGridView2.Rows[18].Cells[2].Value = manualPortData.AlarmCode.ToString();
             }
+            dataGridView2.Rows[19].Cells[2].Value = port.IsAlive.ToString();
+
             #endregion dataGridView2再Manual Port
 
             #region dataGridView3

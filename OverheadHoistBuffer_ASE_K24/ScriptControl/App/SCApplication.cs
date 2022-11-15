@@ -654,7 +654,7 @@ namespace com.mirle.ibg3k0.sc.App
         public IManualPortControlService ManualPortControlService { get { return manualPortControlService; } }
         private IManualPortEventService manualPortEventService = null;
         public IManualPortEventService ManualPortEventService { get { return manualPortEventService; } }
-
+   
         private DataSyncBLL datasynBLL = null;
         public DataSyncBLL DataSyncBLL { get { return datasynBLL; } }
 
