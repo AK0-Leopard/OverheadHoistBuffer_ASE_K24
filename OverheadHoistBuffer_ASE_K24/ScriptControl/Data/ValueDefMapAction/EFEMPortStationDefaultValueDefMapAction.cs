@@ -23,7 +23,7 @@ using NLog;
 
 namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 {
-    public class EFMEPortStationDefaultValueDefMapAction : ICommonPortInfoValueDefMapAction
+    public class EFEMPortStationDefaultValueDefMapAction : ICommonPortInfoValueDefMapAction
     {
 
         protected Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -32,7 +32,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         private BCFApplication bcfApp = null;
 
         protected ANODE node = null;
-        public EFMEPortStationDefaultValueDefMapAction()
+        public EFEMPortStationDefaultValueDefMapAction()
             : base()
         {
             scApp = SCApplication.getInstance();
@@ -89,8 +89,26 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 {
                     vr1.afterValueChange += (_sender, e) => MGV_TO_OHxC_HEARTBEAT(_sender, e);
                 }
+                if (bcfApp.tryGetReadValueEventstring(port.EqptObjectCate, port.PORT_ID, "MGV_TO_OHxC_PORTALLINFO", out ValueRead vr2))
+                {
+                    vr2.afterValueChange += (_sender, e) => MGV_TO_OHxC_PORTALLINFO(_sender, e);
+                }
             }
             catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+            }
+        }
+
+        private void MGV_TO_OHxC_PORTALLINFO(object sender, ValueChangedEventArgs e)
+        {
+            try
+            {
+                var port_data = scApp.getFunBaseObj<EFEMPortPLCInfo>(port.PORT_ID) as EFEMPortPLCInfo;
+                port_data.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
+                logger.Info(port_data.ToString());
+            }
+            catch(Exception ex)
             {
                 logger.Error(ex, "Exception:");
             }

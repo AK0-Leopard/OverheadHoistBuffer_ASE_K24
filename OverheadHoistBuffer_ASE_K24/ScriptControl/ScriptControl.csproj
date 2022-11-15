@@ -902,7 +902,7 @@
     <Compile Include="Data\ValueDefMapAction\Interface\IReelNTBValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\Interface\IManualPortValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\MGVDefaultValueDefMapAction.cs" />
-    <Compile Include="Data\ValueDefMapAction\EFMEPortStationDefaultValueDefMapAction.cs" />
+    <Compile Include="Data\ValueDefMapAction\EFEMPortStationDefaultValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\ReelNTBC\ReelNTBCDefaultMapActionReceive.cs" />
     <Compile Include="Data\ValueDefMapAction\ReelNTBC\ReelNTBCDefaultMapActionSend.cs" />
     <Compile Include="Data\ValueDefMapAction\SimpleMTLValueDefMapAction.cs" />

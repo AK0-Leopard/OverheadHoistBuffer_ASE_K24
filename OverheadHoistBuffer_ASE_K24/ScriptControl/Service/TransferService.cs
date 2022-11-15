@@ -2434,28 +2434,35 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else if (isUnitType(sourceName, UnitType.EFEM))
                 {
-                    var check_efem_port_status_result =
-                        IsEFEMPortStatueUnloadReady(sourceName);
-                    if (check_efem_port_status_result.isReady)
+                    if (DebugParameter.IsOpenByPassEFEMStatus)
                     {
                         sourcePortType = true;
+                        TransferServiceLogger.Warn("By pass EFEM Status");
                     }
                     else
                     {
-                        sourcePortType = false;
-                        sourceState = $"{sourceState} {check_efem_port_status_result.result}";
-                        var check_can_send_port_mode_change = IsCanChangeEFEMPortToInput(sourceName);
-                        if (check_can_send_port_mode_change.isCan)
+                        var check_efem_port_status_result =
+                            IsEFEMPortStatueUnloadReady(sourceName);
+                        if (check_efem_port_status_result.isReady)
                         {
-                            sendEFEMPortChangeToInputRequest(sourceName);
+                            sourcePortType = true;
                         }
                         else
                         {
-                            TransferServiceLogger.
-                                Info($"{DateTime.Now.ToString("HH:mm:ss.fff ")}OHB >> PLC 無法對 EFEM Port:{sourceName} 發送change to in mode:{check_can_send_port_mode_change.result}");
+                            sourcePortType = false;
+                            sourceState = $"{sourceState} {check_efem_port_status_result.result}";
+                            var check_can_send_port_mode_change = IsCanChangeEFEMPortToInput(sourceName);
+                            if (check_can_send_port_mode_change.isCan)
+                            {
+                                sendEFEMPortChangeToInputRequest(sourceName);
+                            }
+                            else
+                            {
+                                TransferServiceLogger.
+                                    Info($"{DateTime.Now.ToString("HH:mm:ss.fff ")}OHB >> PLC 無法對 EFEM Port:{sourceName} 發送change to in mode:{check_can_send_port_mode_change.result}");
+                            }
                         }
                     }
-
                 }
                 else
                 {
@@ -2763,11 +2770,18 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else if (isUnitType(destName, UnitType.EFEM))
                 {
-                    var check_efem_port_status_result =
+                    if (DebugParameter.IsOpenByPassEFEMStatus)
+                    {
+                        destPortType = true;
+                        TransferServiceLogger.Warn("By pass EFEM Status");
+                    }
+                    else
+                    {
+                        var check_efem_port_status_result =
                         IsEFEMPortStatueLoadReady(destName);
-
-                    destPortType = check_efem_port_status_result.isReady;
-                    destState = $"{destState} {check_efem_port_status_result.result}";
+                        destPortType = check_efem_port_status_result.isReady;
+                        destState = $"{destState} {check_efem_port_status_result.result}";
+                    }
                 }
                 else
                 {

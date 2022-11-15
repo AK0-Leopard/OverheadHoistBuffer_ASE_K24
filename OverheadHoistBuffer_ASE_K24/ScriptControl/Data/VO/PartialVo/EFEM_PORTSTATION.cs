@@ -73,7 +73,7 @@ namespace com.mirle.ibg3k0.sc
         protected override ICommonPortInfoValueDefMapAction getICommonPortInfoValueDefMapAction()
         {
             ICommonPortInfoValueDefMapAction portValueDefMapAction =
-                getMapActionByIdentityKey(typeof(Data.ValueDefMapAction.EFMEPortStationDefaultValueDefMapAction).Name) as ICommonPortInfoValueDefMapAction;
+                getMapActionByIdentityKey(typeof(Data.ValueDefMapAction.EFEMPortStationDefaultValueDefMapAction).Name) as ICommonPortInfoValueDefMapAction;
             return portValueDefMapAction;
         }
 
