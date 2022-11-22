@@ -2506,8 +2506,9 @@ namespace com.mirle.ibg3k0.sc.Service
                 TransferServiceLogger.Info($"{DateTime.Now.ToString("HH:mm:ss.fff ")}OHB >> PLC 要對 EFEM Port:{sourceName} 發送change to in mode，但Port不存在");
                 return;
             }
+            //port_station.ChangeToInMode(true);
             TransferServiceLogger.Info($"{DateTime.Now.ToString("HH:mm:ss.fff ")}OHB >> PLC 對 EFEM Port:{sourceName} 發送change to in mode");
-            port_station.ChangeToInMode(true);
+            port_station.ChangeToInModeAndAutoReset();
         }
 
         private (bool isReady, string result) IsEFEMPortStatueUnloadReady(string sourceName)
@@ -3739,7 +3740,8 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                     else if (isUnitType(dest, UnitType.SHELF) ||
                              isUnitType(dest, UnitType.EQ) ||
-                             isUnitType(dest, UnitType.NTB))
+                             isUnitType(dest, UnitType.NTB) ||
+                             isUnitType(dest, UnitType.EFEM))
 
                     {
                         cassette_dataBLL.UpdateCSTLoc(unLoadCstData.BOXID, dest, 1);
@@ -3794,7 +3796,8 @@ namespace com.mirle.ibg3k0.sc.Service
                             QueryLotID(unLoadCstData);
                         }
                         else if (isUnitType(dest, UnitType.EQ) ||
-                                 isUnitType(dest, UnitType.NTB))
+                                 isUnitType(dest, UnitType.NTB) ||
+                                 isUnitType(dest, UnitType.EFEM))
                         {
                             reportBLL.ReportCarrierWaitOut(unLoadCstData, "1");
                             //reportBLL.ReportCarrierRemovedCompleted(unLoadCstData.CSTID, unLoadCstData.BOXID);
@@ -3872,7 +3875,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 QueryLotID(unLoadCstData);
             }
             else if (isUnitType(dest, UnitType.EQ) ||
-                     isUnitType(dest, UnitType.NTB))
+                     isUnitType(dest, UnitType.NTB) ||
+                     isUnitType(dest, UnitType.EFEM))
             {
                 reportBLL.ReportCarrierWaitOut(unLoadCstData, "1");
                 reportBLL.ReportCarrierRemovedFromPort(unLoadCstData, SECSConst.HandoffType_Automated);
@@ -6013,31 +6017,37 @@ namespace com.mirle.ibg3k0.sc.Service
                     + "    portID:" + portID
                     + "    inout:" + mode
                 );
-
                 PortPLCInfo plcInfo = GetPLC_PortData(portID);
 
-                bool typeEnable = plcInfo.IsModeChangable;
-
-                if (typeEnable == false)
+                if (isEFEMPort(portID))
                 {
-                    TransferServiceLogger.Info
-                    (
-                        DateTime.Now.ToString("HH:mm:ss.fff ") +
-                        "PLC >> OHB|目前不能切流向 IsModeChangable = " + typeEnable
-                    );
+                    //not thing...
+                }
+                else
+                {
 
-                    string cmdID = "PortTypeChange-" + portID + ">>" + mode;
+                    bool typeEnable = plcInfo.IsModeChangable;
 
-                    if (cmdBLL.getCMD_MCSByID(cmdID) != null)
+                    if (typeEnable == false)
                     {
+                        TransferServiceLogger.Info
+                        (
+                            DateTime.Now.ToString("HH:mm:ss.fff ") +
+                            "PLC >> OHB|目前不能切流向 IsModeChangable = " + typeEnable
+                        );
+
+                        string cmdID = "PortTypeChange-" + portID + ">>" + mode;
+
+                        if (cmdBLL.getCMD_MCSByID(cmdID) != null)
+                        {
+                            return true;
+                        }
+
+                        SetPortTypeCmd(portID, mode);
+
                         return true;
                     }
-
-                    SetPortTypeCmd(portID, mode);
-
-                    return true;
                 }
-
                 //PortValueDefMapAction portValueDefMapAction = scApp.getEQObjCacheManager().getPortStationByPortID(portID).getMapActionByIdentityKey(typeof(PortValueDefMapAction).Name) as PortValueDefMapAction;
                 var port_station = PortStationBLL.OperateCatch.getPortStation(portID);
                 if (mode == E_PortType.In)
@@ -6056,7 +6066,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         + " 目前狀態 InputMode:" + plcInfo.IsInputMode + "  OutputMode:" + plcInfo.IsOutputMode
                     );
 
-                    if (plcInfo.IsInputMode)
+                    if (!isEFEMPort(portID) && plcInfo.IsInputMode)
                     {
                         ReportPortType(portID, mode, "PortTypeChange");
                     }
@@ -6077,7 +6087,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         + " 目前狀態 InputMode:" + plcInfo.IsInputMode + "  OutputMode:" + plcInfo.IsOutputMode
                     );
 
-                    if (plcInfo.IsOutputMode)
+                    if (!isEFEMPort(portID) && plcInfo.IsOutputMode)
                     {
                         ReportPortType(portID, mode, "PortTypeChange");
                     }
@@ -11373,9 +11383,19 @@ namespace com.mirle.ibg3k0.sc.Service
             //        reportBLL.ReportCarrierRemovedCompleted(cassette_data.CSTID, cassette_data.BOXID);
             //    }
             //}
+            //if (!isUnitType(sc.Common.SCUtility.Trim(cmdMCS.HOSTSOURCE, true), UnitType.EQ))
+            //    return (false, null);
 
-            if (!isUnitType(sc.Common.SCUtility.Trim(cmdMCS.HOSTSOURCE, true), UnitType.EQ))
+            if (isUnitType(sc.Common.SCUtility.Trim(cmdMCS.HOSTSOURCE, true), UnitType.EQ) ||
+                isUnitType(sc.Common.SCUtility.Trim(cmdMCS.HOSTSOURCE, true), UnitType.EFEM))
+            {
+                //not thing...
+            }
+            else
+            {
                 return (false, null);
+            }
+
             bool is_exist = cassette_dataBLL.GetCarrierByBoxId(cmdMCS.BOX_ID, out CassetteData cassette_data);
             if (!is_exist)
                 return (false, null);

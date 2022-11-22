@@ -162,7 +162,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                     }
                     finally
                     {
-                        scApp.putFunBaseObj<EFEMPortPLCControl>(function);
+                        scApp.putFunBaseObj<EFEMPortPLCControl_HeartBeat>(function);
                     }
                 }
                 catch (Exception ex)

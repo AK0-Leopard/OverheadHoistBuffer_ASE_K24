@@ -38,11 +38,11 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
             }
         }
 
-        private long syncPoint = 0;
+        private long EFEMPortHeartBeatSyncPointe = 0;
         private bool LAST_HEART_BEAT_STATUS = false;
         private void EFEM_PORT_HEARBEAT_PULSE()
         {
-            if (Interlocked.Exchange(ref syncPoint, 1) == 0)
+            if (Interlocked.Exchange(ref EFEMPortHeartBeatSyncPointe, 1) == 0)
             {
                 bool current_set_heart_beat_status = LAST_HEART_BEAT_STATUS ? false : true;
                 try
@@ -59,7 +59,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                 }
                 finally
                 {
-                    Interlocked.Exchange(ref syncPoint, 0);
+                    Interlocked.Exchange(ref EFEMPortHeartBeatSyncPointe, 0);
                     LAST_HEART_BEAT_STATUS = current_set_heart_beat_status;
                 }
             }

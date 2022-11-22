@@ -26,6 +26,8 @@ namespace com.mirle.ibg3k0.sc.BLL._191204Test.Extensions
                 return UnitType.STK;
             else if (portDef.UnitType == "MANUALPORT")
                 return UnitType.MANUALPORT;
+            else if (portDef.UnitType == "EFEM")
+                return UnitType.EFEM;
             else
                 return UnitType.ZONE;
         }

@@ -408,7 +408,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                     //TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "MCS >> OHB|S2F50: BOXID: " + box_id + " 不存在");
                     //return SECSConst.HCACK_Obj_Not_Exist;
                     if (scApp.TransferService.isEQPort(HostSource) ||
-                        scApp.TransferService.isNTBPort(HostSource))
+                        scApp.TransferService.isNTBPort(HostSource) ||
+                        scApp.TransferService.isEFEMPort(HostSource))
                     {
                         string cst_type = cstType;
                         var port_station = scApp.PortStationBLL.OperateCatch.getPortStation(HostSource);

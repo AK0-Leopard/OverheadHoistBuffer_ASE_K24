@@ -5,6 +5,7 @@ using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 using System.Diagnostics;
+using System.Threading;
 
 namespace com.mirle.ibg3k0.sc
 {
@@ -54,6 +55,30 @@ namespace com.mirle.ibg3k0.sc
             portValueDefMapAction.ChangeToInModeAsync(isOn);
         }
 
+        private long syncInModePoint = 0;
+        public void ChangeToInModeAndAutoReset()
+        {
+            if (Interlocked.Exchange(ref syncInModePoint, 1) == 0)
+            {
+                NLog.LogManager.GetLogger("TransferServiceLogger").Info($"進行port id {PORT_ID} In Mode Change流程...");
+                try
+                {
+                    var portValueDefMapAction = getICommonPortInfoValueDefMapAction();
+                    if (portValueDefMapAction == null) return;
+                    portValueDefMapAction.ChangeToInModeAsync(true);
+                    System.Threading.SpinWait.SpinUntil(() => false, 5_000);
+                    portValueDefMapAction.ChangeToInModeAsync(false);
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref syncInModePoint, 0);
+                }
+            }
+            else
+            {
+                NLog.LogManager.GetLogger("TransferServiceLogger").Warn($"port id {PORT_ID} 正在進行In Mode Change流程中，無法再次下達");
+            }
+        }
         public void ChangeToOutMode(bool isOn)
         {
             var portValueDefMapAction = getICommonPortInfoValueDefMapAction();
@@ -128,7 +153,7 @@ namespace com.mirle.ibg3k0.sc
             {
                 if (AliveStopwatch.IsRunning)
                 {
-                    return AliveStopwatch.ElapsedMilliseconds > MAX_ALIVE_TIME_OUT_MILLISECION;
+                    return AliveStopwatch.ElapsedMilliseconds < MAX_ALIVE_TIME_OUT_MILLISECION;
                 }
                 else
                 {
