@@ -2451,16 +2451,17 @@ namespace com.mirle.ibg3k0.sc.Service
                         {
                             sourcePortType = false;
                             sourceState = $"{sourceState} {check_efem_port_status_result.result}";
-                            var check_can_send_port_mode_change = IsCanChangeEFEMPortToInput(sourceName);
-                            if (check_can_send_port_mode_change.isCan)
-                            {
-                                sendEFEMPortChangeToInputRequest(sourceName);
-                            }
-                            else
-                            {
-                                TransferServiceLogger.
-                                    Info($"{DateTime.Now.ToString("HH:mm:ss.fff ")}OHB >> PLC 無法對 EFEM Port:{sourceName} 發送change to in mode:{check_can_send_port_mode_change.result}");
-                            }
+                            //取消對EFEM Port的In mode切換(SEPC_v1.3)
+                            //var check_can_send_port_mode_change = IsCanChangeEFEMPortToInput(sourceName);
+                            //if (check_can_send_port_mode_change.isCan)
+                            //{
+                            //    sendEFEMPortChangeToInputRequest(sourceName);
+                            //}
+                            //else
+                            //{
+                            //    TransferServiceLogger.
+                            //        Info($"{DateTime.Now.ToString("HH:mm:ss.fff ")}OHB >> PLC 無法對 EFEM Port:{sourceName} 發送change to in mode:{check_can_send_port_mode_change.result}");
+                            //}
                         }
                     }
                 }

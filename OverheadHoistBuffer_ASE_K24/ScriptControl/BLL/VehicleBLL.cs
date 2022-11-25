@@ -504,10 +504,15 @@ namespace com.mirle.ibg3k0.sc.BLL
                     isSuccess = true;
                 }
             }
-            finally
+            catch (Exception ex)
             {
-                scApp.VehiclPool.PutObject(vh);
+                isSuccess = false;
+                logger.Error(ex, "Exception:");
             }
+            //finally
+            //{
+            //    scApp.VehiclPool.PutObject(vh);
+            //}
             //});
             return isSuccess;
         }
