@@ -17,13 +17,14 @@ using com.mirle.ibg3k0.bcf.Controller;
 using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.EFEM;
+using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events.EFEM;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 using com.mirle.ibg3k0.sc.Data.VO;
 using NLog;
 
 namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
 {
-    public class EFEMPortStationDefaultValueDefMapAction : ICommonPortInfoValueDefMapAction
+    public class EFEMPortStationDefaultValueDefMapAction : IEFEMValueDefMapAction
     {
 
         protected Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -32,6 +33,12 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
         private BCFApplication bcfApp = null;
 
         protected ANODE node = null;
+
+        public event EFEMEvents.EFEMEventHandler OnAlarmHappen;
+        public event EFEMEvents.EFEMEventHandler OnAlarmClear;
+
+        public string PortName => port == null ? "" : port.PORT_ID;
+
         public EFEMPortStationDefaultValueDefMapAction()
             : base()
         {
@@ -93,10 +100,47 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 {
                     vr2.afterValueChange += (_sender, e) => MGV_TO_OHxC_PORTALLINFO(_sender, e);
                 }
+                if (bcfApp.tryGetReadValueEventstring(port.EqptObjectCate, port.PORT_ID, "MGV_TO_OHxC_ERRORINDEX", out ValueRead vr3))
+                {
+                    vr3.afterValueChange += (_sender, e) => MGV_TO_OHxC_ErrorIndexChanged(_sender, e);
+                }
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "Exception:");
+            }
+        }
+
+        private void MGV_TO_OHxC_ErrorIndexChanged(object sender, ValueChangedEventArgs e)
+        {
+            var function = scApp.getFunBaseObj<EFEMPortPLCInfo>(port.PORT_ID) as EFEMPortPLCInfo;
+
+            try
+            {
+                //1.建立各個Function物件
+                function.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
+
+                //2.read log
+                logger.Info(function.ToString());
+
+                var first_alarm_code = function.AlarmCodes[0];
+
+                if (first_alarm_code == 0)
+                {
+                    OnAlarmClear?.Invoke(this, new EFEMEventArgs(function));
+                }
+                else
+                {
+                    OnAlarmHappen?.Invoke(this, new EFEMEventArgs(function));
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+            finally
+            {
+                scApp.putFunBaseObj<EFEMPortPLCInfo>(function);
             }
         }
 
@@ -108,7 +152,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 port_data.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
                 logger.Info(port_data.ToString());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Error(ex, "Exception:");
             }
@@ -142,6 +186,30 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 CommitChange(function);
             });
         }
+        public Task SetControllerErrorIndexAsync(int newIndex)
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<EFEMPortPLCControl_ERROR_INDEX>(port.PORT_ID) as EFEMPortPLCControl_ERROR_INDEX;
+                try
+                {
+                    function.OhbcErrorIndex = (UInt16)newIndex;
+
+                    function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
+
+                    logger.Info(function.ToString());
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    scApp.putFunBaseObj<EFEMPortPLCControl_ERROR_INDEX>(function);
+                }
+            });
+        }
+
 
         public Task HeartBeatAsync(bool setOn)
         {
@@ -221,9 +289,5 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             return Task.CompletedTask;
         }
 
-        public Task SetControllerErrorIndexAsync(int newIndex)
-        {
-            return Task.CompletedTask;
-        }
     }
 }

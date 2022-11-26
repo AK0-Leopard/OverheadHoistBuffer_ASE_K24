@@ -13,6 +13,11 @@ namespace com.mirle.ibg3k0.sc
         public EFEM_PORTSTATION() : base()
         {
         }
+        public IEFEMValueDefMapAction getExcuteMapAction()
+        {
+            IEFEMValueDefMapAction mapAction = this.getMapActionByIdentityKey(typeof(EFEMPortStationDefaultValueDefMapAction).Name) as IEFEMValueDefMapAction;
+            return mapAction;
+        }
 
         public override PortPLCInfo getPortPLCInfo()
         {

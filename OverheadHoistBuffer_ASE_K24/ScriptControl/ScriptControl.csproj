@@ -893,12 +893,15 @@
     <Compile Include="Data\TimerAction\TaskCommandTimerAction.cs" />
     <Compile Include="Data\TimerAction\DBTableWatcherTimerAction.cs" />
     <Compile Include="Data\ValueDefMapAction\ASEMCSDefaultMapAction.cs" />
+    <Compile Include="Data\ValueDefMapAction\Events\EFEM\EFEMEventArgs.cs" />
+    <Compile Include="Data\ValueDefMapAction\Events\EFEM\EFEMEvents.cs" />
     <Compile Include="Data\ValueDefMapAction\Events\ManualPortEventArgs.cs" />
     <Compile Include="Data\ValueDefMapAction\Events\ManualPortEvents.cs" />
     <Compile Include="Data\ValueDefMapAction\Events\ReelNTB\ReelNTBEvents.cs" />
     <Compile Include="Data\ValueDefMapAction\Events\ReelNTB\ReelNTBEventArgs.cs" />
     <Compile Include="Data\ValueDefMapAction\Extension\ValueDefMapActionExtensions.cs" />
     <Compile Include="Data\ValueDefMapAction\Interface\ICommonPortInfoValueDefMapAction.cs" />
+    <Compile Include="Data\ValueDefMapAction\Interface\IEFEMValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\Interface\IReelNTBValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\Interface\IManualPortValueDefMapAction.cs" />
     <Compile Include="Data\ValueDefMapAction\MGVDefaultValueDefMapAction.cs" />
@@ -1104,6 +1107,7 @@
     <Compile Include="Service\Interface\IVehicleTransferHandler.cs" />
     <Compile Include="Service\LineService.cs" />
     <Compile Include="Service\ManualPortControlService.cs" />
+    <Compile Include="Service\EFEMService.cs" />
     <Compile Include="Service\ManualPortEventService.cs" />
     <Compile Include="Service\OHCVService.cs" />
     <Compile Include="Service\MTLService.cs" />

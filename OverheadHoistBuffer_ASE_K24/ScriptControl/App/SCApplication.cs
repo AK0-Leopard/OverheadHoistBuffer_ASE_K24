@@ -654,7 +654,9 @@ namespace com.mirle.ibg3k0.sc.App
         public IManualPortControlService ManualPortControlService { get { return manualPortControlService; } }
         private IManualPortEventService manualPortEventService = null;
         public IManualPortEventService ManualPortEventService { get { return manualPortEventService; } }
-   
+        private EFEMService efemServer = null;
+        public EFEMService EFEMService { get { return efemServer; } }
+
         private DataSyncBLL datasynBLL = null;
         public DataSyncBLL DataSyncBLL { get { return datasynBLL; } }
 
@@ -1600,7 +1602,7 @@ namespace com.mirle.ibg3k0.sc.App
 
             manualPortControlService = new ManualPortControlService();
             manualPortEventService = new ManualPortEventService();
-
+            efemServer = new EFEMService();
             gRPC_With_VehicleControlFun = new Grpc.Core.Server()
             {
                 Services = { com.mirle.AK0.ProtocolFormat.VehicleControlFun.BindService(new WebAPI.VehicleControlFun()) },
@@ -1697,11 +1699,15 @@ namespace com.mirle.ibg3k0.sc.App
             var manual_port_map_action = PortStationBLL.OperateCatch.loadAllMgvPortStationMapAction();
             manualPortControlService.Start(manual_port_map_action);
             manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL, transferService);
+            
+            var efem_map_action = PortStationBLL.OperateCatch.loadAllEFEMMapAction();
+            efemServer.Start(this, efem_map_action);
+
             gRPC_With_VehicleControlFun.Start();
             gRPC_With_Shelf.Start();
             gRPC_With_ManualPort.Start();
             gRPC_With_AlarmFun.Start();
-            gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
+           // gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
         }
 
         /// <summary>

@@ -316,6 +316,12 @@ namespace com.mirle.ibg3k0.sc.BLL
                                                              ToList();
                 return ports;
             }
+            public IEnumerable<Data.ValueDefMapAction.Interface.IEFEMValueDefMapAction> loadAllEFEMMapAction()
+            {
+                var ports = CacheManager.getALLPortStation().Where(port => port is EFEM_PORTSTATION).ToList();
+                var map_actions = ports.Select(port => (port as EFEM_PORTSTATION).getExcuteMapAction());
+                return map_actions;
+            }
 
 
         }

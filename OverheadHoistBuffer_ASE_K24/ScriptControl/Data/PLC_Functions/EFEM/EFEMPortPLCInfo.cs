@@ -68,11 +68,11 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.EFEM
         //[PLCElement(ValueName = "MGV_TO_OHxC_DOOROPEN")]
         //public bool IsDoorOpen;
 
-        //[PLCElement(ValueName = "MGV_TO_OHxC_ERRORINDEX")]
-        //public UInt16 ErrorIndex;
+        [PLCElement(ValueName = "MGV_TO_OHxC_ERRORINDEX")]
+        public UInt16 ErrorIndex;
 
-        //[PLCElement(ValueName = "MGV_TO_OHxC_ERRORCODE")]
-        //public UInt16 AlarmCode;
+        [PLCElement(ValueName = "MGV_TO_OHxC_ERRORCODES")]
+        public UInt16[] AlarmCodes;
 
         //[PLCElement(ValueName = "MGV_TO_OHxC_STAGE1CARRIERID")]
         //public string CarrierIdOfStage1;
