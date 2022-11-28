@@ -1699,7 +1699,7 @@ namespace com.mirle.ibg3k0.sc.App
             var manual_port_map_action = PortStationBLL.OperateCatch.loadAllMgvPortStationMapAction();
             manualPortControlService.Start(manual_port_map_action);
             manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL, transferService);
-            
+
             var efem_map_action = PortStationBLL.OperateCatch.loadAllEFEMMapAction();
             efemServer.Start(this, efem_map_action);
 
@@ -1707,7 +1707,7 @@ namespace com.mirle.ibg3k0.sc.App
             gRPC_With_Shelf.Start();
             gRPC_With_ManualPort.Start();
             gRPC_With_AlarmFun.Start();
-           // gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
+            gRPC_With_ReelNTBCDefaultMapActionReceive.Start();
         }
 
         /// <summary>

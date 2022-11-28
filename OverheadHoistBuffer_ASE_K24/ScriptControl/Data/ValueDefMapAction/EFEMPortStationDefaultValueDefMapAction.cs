@@ -176,6 +176,29 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             port_data.Read(bcfApp, port.EqptObjectCate, port.PORT_ID);
             return port_data;
         }
+        public Task NotifyAcquireStartedFromEQPortAsync(bool isOn)
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<EFEMPortPLCControl_NOTIFYACQUIRESTARTED>(port.PORT_ID) as EFEMPortPLCControl_NOTIFYACQUIRESTARTED;
+                try
+                {
+                    function.IsNotifyAcquireStartedFromEQPort = isOn;
+
+                    function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
+
+                    logger.Info(function.ToString());
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    scApp.putFunBaseObj<EFEMPortPLCControl_NOTIFYACQUIRESTARTED>(function);
+                }
+            });
+        }
 
         public Task ChangeToInModeAsync(bool isOn)
         {
@@ -209,6 +232,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
                 }
             });
         }
+
 
 
         public Task HeartBeatAsync(bool setOn)

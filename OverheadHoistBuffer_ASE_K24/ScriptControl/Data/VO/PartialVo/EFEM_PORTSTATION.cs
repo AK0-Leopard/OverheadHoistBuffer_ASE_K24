@@ -28,7 +28,22 @@ namespace com.mirle.ibg3k0.sc
 
             return EFEMPortInfoToPortInfo(mgv_port_info);
         }
+        public EFEMPortPLCInfo getEFEMPortPLCInfo()
+        {
+            ICommonPortInfoValueDefMapAction portValueDefMapAction = getICommonPortInfoValueDefMapAction();
+            if (portValueDefMapAction == null) return null;
 
+            var efem_port_info = portValueDefMapAction.GetPortState() as EFEMPortPLCInfo;
+
+            return efem_port_info;
+        }
+
+        public override void ChangeToInMode(bool isOn)
+        {
+            var portValueDefMapAction = getExcuteMapAction();
+            if (portValueDefMapAction == null) return;
+            portValueDefMapAction.NotifyAcquireStartedFromEQPortAsync(isOn);
+        }
         private PortPLCInfo EFEMPortInfoToPortInfo(EFEMPortPLCInfo efemPortInfo)
         {
             return new PortPLCInfo()
