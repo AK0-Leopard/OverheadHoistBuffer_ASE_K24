@@ -606,5 +606,12 @@ namespace com.mirle.ibg3k0.bc.winform
 
             MessageBox.Show($"Port ID:{comboBox1.Text} 已執行 關閉蜂鳴器", "Message", MessageBoxButtons.OK);
         }
+
+        private async void btn_errorIndexTest_Click(object sender, EventArgs e)
+        {
+            var port = BCApp.SCApplication.PortStationBLL.OperateCatch.getPortStation(comboBox1.Text);
+            await Task.Run(() => port.SetControllerErrorIndex(5678));
+
+        }
     }
 }

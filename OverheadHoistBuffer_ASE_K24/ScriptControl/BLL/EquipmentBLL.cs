@@ -228,6 +228,17 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return eqpts;
             }
 
+            public bool IsEFEM(string eqID)
+            {
+                var eqpts = eqObjCacheManager.getAllEquipment().
+                            Where(eq => SCUtility.isMatche(eq.EQPT_ID, eqID)).
+                            FirstOrDefault();
+                if (eqpts != null && eqpts.Type == SCAppConstants.EqptType.EFEM)
+                    return true;
+                else
+                    return false;
+            }
+
         }
 
     }
