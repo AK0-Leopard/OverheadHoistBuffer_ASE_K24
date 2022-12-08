@@ -62,6 +62,7 @@ namespace com.mirle.ibg3k0.sc
                 IsAutoMode = false,
                 IsReadyToLoad = efemPortInfo.IsLoadOK,
                 IsReadyToUnload = efemPortInfo.IsUnloadOK,
+                IsPreReadyToUnload = efemPortInfo.IsPreReadyToUnload,
                 LoadPosition1 = efemPortInfo.LoadPosition1,
                 LoadPosition2 = false,
                 LoadPosition3 = false,

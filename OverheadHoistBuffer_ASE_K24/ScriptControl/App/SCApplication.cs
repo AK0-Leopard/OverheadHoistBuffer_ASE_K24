@@ -2633,6 +2633,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean IsOpenTrackResetByVhBlockRelease = false;
         public static Boolean IsOpenCheckTrackAlive = true;
         public static Boolean IsOpenByPassEFEMStatus = false;
+        public static Boolean IsOpenEFEMPreUnloadOkFun = false;
 
     }
 }

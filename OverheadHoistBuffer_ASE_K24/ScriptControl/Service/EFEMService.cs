@@ -66,6 +66,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 WriteLog($"Process eq:{port_station.EQPT_ID} Port:{efem_valus_map_action.PortName} alarm all clear.");
                 scApp.TransferService.OHBC_AlarmAllCleared(port_station.EQPT_ID);
                 WriteLog($"End process eq:{port_station.EQPT_ID} Port:{efem_valus_map_action.PortName} alarm all clear.");
+                efem_valus_map_action.SetControllerErrorIndexAsync(args.efemPortInfo.ErrorIndex);
+
             }
             catch (Exception ex)
             {

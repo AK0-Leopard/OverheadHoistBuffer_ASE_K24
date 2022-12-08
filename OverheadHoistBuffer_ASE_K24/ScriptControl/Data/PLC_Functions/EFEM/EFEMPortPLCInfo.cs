@@ -40,6 +40,8 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.EFEM
 
         [PLCElement(ValueName = "MGV_TO_OHxC_UNLOADOK")]
         public bool IsUnloadOK;
+        [PLCElement(ValueName = "MGV_TO_OHxC_PREUNLOADOK")]
+        public bool IsPreReadyToUnload;
 
         [PLCElement(ValueName = "MGV_TO_OHxC_LOADPRESENCE1")]
         public bool LoadPosition1;

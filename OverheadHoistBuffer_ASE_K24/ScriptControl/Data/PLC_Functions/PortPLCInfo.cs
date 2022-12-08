@@ -55,6 +55,8 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions
         public bool IsReadyToLoad;      //D6401.12
         [PLCElement(ValueName = "READY_TO_UNLOAD")]
         public bool IsReadyToUnload;    //D6401.13
+        [PLCElement(ValueName = "MGV_TO_OHxC_PREUNLOADOK")]
+        public bool IsPreReadyToUnload; //D6401.14
 
         [PLCElement(ValueName = "LOAD_POSITION_1")]
         public bool LoadPosition1;      //D6402.0
