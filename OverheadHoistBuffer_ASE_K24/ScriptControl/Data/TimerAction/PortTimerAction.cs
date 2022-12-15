@@ -31,6 +31,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     Task.Run(() => scApp.ReelNTBEventService.RefreshReelNTBPortSignal());
                 scApp.ManualPortControlService?.ReflashState();
                 EFEM_PORT_HEARBEAT_PULSE();
+                scApp.EFEMService.checkIsNeedToNotifyEFEMEqHasCSTWillIn();
             }
             catch (Exception ex)
             {

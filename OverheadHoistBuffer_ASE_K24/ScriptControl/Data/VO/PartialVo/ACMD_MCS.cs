@@ -628,4 +628,11 @@ namespace com.mirle.ibg3k0.sc
             return transferService.isNTBPort(HOSTDESTINATION);
         }
     }
+    public partial class ACMD_MCS //EFEM機台使用
+    {
+        public bool IsHostEFEM(sc.Service.TransferService transferService)
+        {
+            return transferService.isEFEMPort(HOSTDESTINATION);
+        }
+    }
 }

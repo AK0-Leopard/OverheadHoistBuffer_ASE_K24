@@ -40,6 +40,8 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.EFEM
 
         [PLCElement(ValueName = "MGV_TO_OHxC_UNLOADOK")]
         public bool IsUnloadOK;
+        [PLCElement(ValueName = "MGV_TO_OHxC_PREUNLOADOK")]
+        public bool IsPreReadyToUnload;
 
         [PLCElement(ValueName = "MGV_TO_OHxC_LOADPRESENCE1")]
         public bool LoadPosition1;
@@ -73,6 +75,9 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.EFEM
 
         [PLCElement(ValueName = "MGV_TO_OHxC_ERRORCODES")]
         public UInt16[] AlarmCodes;
+
+        [PLCElement(ValueName = "OHxC_TO_MGV_NOTIFYACQUIRESTARTED_R")]
+        public bool IsNotifyAcquireStarted;
 
         //[PLCElement(ValueName = "MGV_TO_OHxC_STAGE1CARRIERID")]
         //public string CarrierIdOfStage1;

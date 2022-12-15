@@ -5065,10 +5065,29 @@ namespace com.mirle.ibg3k0.sc.Service
                     vh.getConnectionIntervalTime(bcfApp));
 
                 //set the connection alarm code 99999
-                scApp.TransferService.OHBC_AlarmSet(vh.VEHICLE_ID, SCAppConstants.SystemAlarmCode.OHT_Issue.OHTAccidentOfflineWarning);
+                //scApp.TransferService.OHBC_AlarmSet(vh.VEHICLE_ID, SCAppConstants.SystemAlarmCode.OHT_Issue.OHTNormalDisconnection);
+                string dis_connection_alarm_code = GetDisconnectionAlarmCode(vh);
+                scApp.TransferService.OHBC_AlarmSet(vh.VEHICLE_ID, dis_connection_alarm_code);
             }
             Task.Run(() => scApp.VehicleBLL.web.vehicleDisconnection(vh.Num));
         }
+
+        private string GetDisconnectionAlarmCode(AVEHICLE vh)
+        {
+            if (vh.IsError)
+            {
+                return SCAppConstants.SystemAlarmCode.OHT_Issue.OHTErrorDisconnection;
+            }
+            else if (!vh.IS_INSTALLED && vh.MODE_STATUS == VHModeStatus.AutoLocal)
+            {
+                return SCAppConstants.SystemAlarmCode.OHT_Issue.OHTManualDisconnection;
+            }
+            else
+            {
+                return SCAppConstants.SystemAlarmCode.OHT_Issue.OHTNormalDisconnection;
+            }
+        }
+
 
         #endregion Vh connection / disconnention
 

@@ -184,6 +184,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     alarmUnitType = "TRACK";
                 }
+                else if (scApp.EquipmentBLL.cache.IsEFEM(eq_id))
+                {
+                    alarmUnitType = "EFEM";
+                }
 
                 AlarmMap alarmMap = alarmMapDao.getAlarmMap(alarmUnitType, error_code);
                 string alam_desc = "";

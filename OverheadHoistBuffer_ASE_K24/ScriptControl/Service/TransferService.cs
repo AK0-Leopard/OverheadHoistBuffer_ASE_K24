@@ -2532,6 +2532,13 @@ namespace com.mirle.ibg3k0.sc.Service
             //{
             //    return (false, $"{nameof(sourcePort.IsInputMode)}:{sourcePort.IsInputMode} 無法進行取貨");
             //}
+
+            //當pre load訊號有亮時，可以進行預先派車的命令
+            if (DebugParameter.IsOpenEFEMPreUnloadOkFun && source_port_plc_info.IsPreReadyToUnload)
+            {
+                TransferServiceLogger.Info($"port id:{sourceName}{nameof(source_port_plc_info.IsPreReadyToUnload)}:{source_port_plc_info.IsPreReadyToUnload} 可以進行預先派車");
+                return (true, $"");
+            }
             if (!source_port_plc_info.IsReadyToUnload)
             {
                 return (false, $"port id:{sourceName}{nameof(source_port_plc_info.IsReadyToUnload)}:{source_port_plc_info.IsReadyToUnload} 無法進行取貨");

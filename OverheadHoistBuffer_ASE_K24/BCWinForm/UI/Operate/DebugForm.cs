@@ -94,6 +94,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_isOpenReelNTBPortStatusAsk.Checked = sc.App.SystemParameter.IsOpenReelNTBPortStatusAsk;
             cb_checkTrackAlive.Checked = DebugParameter.IsOpenCheckTrackAlive;
             cb_ByPassEFEMEqStatus.Checked = DebugParameter.IsOpenByPassEFEMStatus;
+            cb_openEFEMPrelunloadFun.Checked = DebugParameter.IsOpenEFEMPreUnloadOkFun;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -1561,6 +1562,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_ByPassEFEMEqStatus_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.IsOpenByPassEFEMStatus = cb_ByPassEFEMEqStatus.Checked;
+        }
+
+        private void cb_openEFEMPrelunloadFun_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsOpenEFEMPreUnloadOkFun = cb_openEFEMPrelunloadFun.Checked;
         }
     }
 }

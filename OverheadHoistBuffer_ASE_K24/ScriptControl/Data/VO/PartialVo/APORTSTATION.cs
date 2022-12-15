@@ -48,7 +48,7 @@ namespace com.mirle.ibg3k0.sc
             return portValueDefMapAction;
         }
 
-        public void ChangeToInMode(bool isOn)
+        public virtual void ChangeToInMode(bool isOn)
         {
             var portValueDefMapAction = getICommonPortInfoValueDefMapAction();
             if (portValueDefMapAction == null) return;
@@ -124,7 +124,7 @@ namespace com.mirle.ibg3k0.sc
         {
             var portValueDefMapAction = getICommonPortInfoValueDefMapAction();
             if (portValueDefMapAction == null) return;
-            portValueDefMapAction.HeartBeatAsync(setOn);
+            portValueDefMapAction.HeartBeatAsync(setOn).Wait();
         }
 
         public void SetControllerErrorIndex(int index)

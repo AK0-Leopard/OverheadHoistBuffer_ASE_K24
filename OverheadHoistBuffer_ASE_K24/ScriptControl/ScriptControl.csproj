@@ -868,6 +868,7 @@
     <Compile Include="Data\SECS\SECSDriver\SEMDriver.cs" />
     <Compile Include="Data\TcpIp\MsgStructure.cs" />
     <Compile Include="Data\TimerAction\EmptyBoxHandlerTimer.cs" />
+    <Compile Include="Data\TimerAction\LogFileHandlerTimer.cs" />
     <Compile Include="Data\TimerAction\OHCVAliveTimer.cs" />
     <Compile Include="Data\TimerAction\OHxCAliveTimer.cs" />
     <Compile Include="Data\TimerAction\PLCAliveTimer.cs" />
@@ -1116,8 +1117,8 @@
     <Compile Include="Service\PortStationService.cs" />
     <Compile Include="Service\TrackService.cs" />
     <Compile Include="Service\ShelfService.cs" />
-    <Compile Include="Service\TransferService.cs" />
     <Compile Include="Service\ConnectionInfoService.cs" />
+    <Compile Include="Service\TransferService.cs" />
     <Compile Include="Service\UserControlService.cs" />
     <Compile Include="Service\VehicleService.cs" />
     <Compile Include="ShelfDef.cs">
