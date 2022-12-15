@@ -108,6 +108,46 @@ namespace WebApplication1.Controllers
                         _logger.LogInformation("17號車發生異常");
                         service.oht17_error.PlaySync();
                         break;
+                    case "18":
+                        _logger.LogInformation("18號車發生異常");
+                        service.oht17_error.PlaySync();
+                        break;
+                    case "19":
+                        _logger.LogInformation("19號車發生異常");
+                        service.oht17_error.PlaySync();
+                        break;
+                    case "20":
+                        _logger.LogInformation("20號車發生異常");
+                        service.oht17_error.PlaySync();
+                        break;
+                    case "21":
+                        _logger.LogInformation("21號車發生異常");
+                        service.oht17_error.PlaySync();
+                        break;
+                    case "22":
+                        _logger.LogInformation("22號車發生異常");
+                        service.oht17_error.PlaySync();
+                        break;
+                    case "23":
+                        _logger.LogInformation("23號車發生異常");
+                        service.oht17_error.PlaySync();
+                        break;
+                    case "24":
+                        _logger.LogInformation("24號車發生異常");
+                        service.oht17_error.PlaySync();
+                        break;
+                    case "25":
+                        _logger.LogInformation("25號車發生異常");
+                        service.oht17_error.PlaySync();
+                        break;
+                    case "26":
+                        _logger.LogInformation("26號車發生異常");
+                        service.oht17_error.PlaySync();
+                        break;
+                    case "27":
+                        _logger.LogInformation("27號車發生異常");
+                        service.oht17_error.PlaySync();
+                        break;
                 }
                 //if (!service.passReportVh.Contains(id))
                 //    serialPort.closePort();
