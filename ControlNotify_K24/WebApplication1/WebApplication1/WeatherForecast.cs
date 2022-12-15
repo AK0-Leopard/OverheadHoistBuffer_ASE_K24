@@ -152,6 +152,17 @@ namespace WebApplication1
             oht15_error.LoadAsync();
             oht16_error.LoadAsync();
             oht17_error.LoadAsync();
+            oht18_error.LoadAsync();
+            oht19_error.LoadAsync();
+            oht20_error.LoadAsync();
+            oht21_error.LoadAsync();
+            oht22_error.LoadAsync();
+            oht23_error.LoadAsync();
+            oht24_error.LoadAsync();
+            oht25_error.LoadAsync();
+            oht26_error.LoadAsync();
+            oht27_error.LoadAsync();
+            oht28_error.LoadAsync();
 
             oht1_disconnection.LoadAsync();
             oht2_disconnection.LoadAsync();
@@ -169,6 +180,17 @@ namespace WebApplication1
             oht15_disconnection.LoadAsync();
             oht15_disconnection.LoadAsync();
             oht17_disconnection.LoadAsync();
+            oht18_disconnection.LoadAsync();
+            oht19_disconnection.LoadAsync();
+            oht20_disconnection.LoadAsync();
+            oht21_disconnection.LoadAsync();
+            oht22_disconnection.LoadAsync();
+            oht23_disconnection.LoadAsync();
+            oht24_disconnection.LoadAsync();
+            oht25_disconnection.LoadAsync();
+            oht26_disconnection.LoadAsync();
+            oht27_disconnection.LoadAsync();
+            oht28_disconnection.LoadAsync();
 
             vhHasCmdNoAction.LoadAsync();
 

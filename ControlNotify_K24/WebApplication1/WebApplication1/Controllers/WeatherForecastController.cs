@@ -110,43 +110,43 @@ namespace WebApplication1.Controllers
                         break;
                     case "18":
                         _logger.LogInformation("18號車發生異常");
-                        service.oht17_error.PlaySync();
+                        service.oht18_error.PlaySync();
                         break;
                     case "19":
                         _logger.LogInformation("19號車發生異常");
-                        service.oht17_error.PlaySync();
+                        service.oht19_error.PlaySync();
                         break;
                     case "20":
                         _logger.LogInformation("20號車發生異常");
-                        service.oht17_error.PlaySync();
+                        service.oht20_error.PlaySync();
                         break;
                     case "21":
                         _logger.LogInformation("21號車發生異常");
-                        service.oht17_error.PlaySync();
+                        service.oht21_error.PlaySync();
                         break;
                     case "22":
                         _logger.LogInformation("22號車發生異常");
-                        service.oht17_error.PlaySync();
+                        service.oht22_error.PlaySync();
                         break;
                     case "23":
                         _logger.LogInformation("23號車發生異常");
-                        service.oht17_error.PlaySync();
+                        service.oht23_error.PlaySync();
                         break;
                     case "24":
                         _logger.LogInformation("24號車發生異常");
-                        service.oht17_error.PlaySync();
+                        service.oht24_error.PlaySync();
                         break;
                     case "25":
                         _logger.LogInformation("25號車發生異常");
-                        service.oht17_error.PlaySync();
+                        service.oht25_error.PlaySync();
                         break;
                     case "26":
                         _logger.LogInformation("26號車發生異常");
-                        service.oht17_error.PlaySync();
+                        service.oht26_error.PlaySync();
                         break;
                     case "27":
                         _logger.LogInformation("27號車發生異常");
-                        service.oht17_error.PlaySync();
+                        service.oht27_error.PlaySync();
                         break;
                 }
                 //if (!service.passReportVh.Contains(id))
@@ -228,20 +228,69 @@ namespace WebApplication1.Controllers
                         _logger.LogInformation("17號車發生斷線");
                         service.oht17_disconnection.PlaySync();
                         break;
+                    case "18":
+                        _logger.LogInformation("18號車發生斷線");
+                        service.oht18_disconnection.PlaySync();
+                        break;
+                    case "19":
+                        _logger.LogInformation("19號車發生斷線");
+                        service.oht19_disconnection.PlaySync();
+                        break;
+                    case "20":
+                        _logger.LogInformation("20號車發生斷線");
+                        service.oht20_disconnection.PlaySync();
+                        break;
+                    case "21":
+                        _logger.LogInformation("21號車發生斷線");
+                        service.oht21_disconnection.PlaySync();
+                        break;
+                    case "22":
+                        _logger.LogInformation("22號車發生斷線");
+                        service.oht22_disconnection.PlaySync();
+                        break;
+                    case "23":
+                        _logger.LogInformation("23號車發生斷線");
+                        service.oht23_disconnection.PlaySync();
+                        break;
+                    case "24":
+                        _logger.LogInformation("24號車發生斷線");
+                        service.oht24_disconnection.PlaySync();
+                        break;
+                    case "25":
+                        _logger.LogInformation("25號車發生斷線");
+                        service.oht25_disconnection.PlaySync();
+                        break;
+                    case "26":
+                        _logger.LogInformation("26號車發生斷線");
+                        service.oht26_disconnection.PlaySync();
+                        break;
+                    case "27":
+                        _logger.LogInformation("27號車發生斷線");
+                        service.oht27_disconnection.PlaySync();
+                        break;
                 }
             }
 
             return "ok";
         }
+        private long NoActionSyncPoint = 0;
         [HttpGet("VhHasCmdNoAction/{id}")]
         public String VhHasCmdNoAction(string id, [FromServices] WeatherForecast service, [FromServices] SerialPortService serialPort)
 
         {
 
-            lock (lock_obj)
+            if (System.Threading.Interlocked.Exchange(ref NoActionSyncPoint, 1) == 0)
             {
-                _logger.LogInformation("天車無法移動");
-                service.vhHasCmdNoAction.PlaySync();
+                try
+                {
+
+                    _logger.LogInformation("天車無法移動");
+                    service.vhHasCmdNoAction.PlaySync();
+                }
+                finally
+                {
+                    System.Threading.Interlocked.Exchange(ref NoActionSyncPoint, 0);
+                }
             }
 
             return "ok";
