@@ -60,8 +60,6 @@ namespace WebApplication1
         public SoundPlayer oht24_disconnection;
         public SoundPlayer oht25_disconnection;
         public SoundPlayer oht26_disconnection;
-        public SoundPlayer oht27_disconnection;
-        public SoundPlayer oht28_disconnection;
 
         public SoundPlayer vhHasCmdNoAction;
 
@@ -129,8 +127,6 @@ namespace WebApplication1
             oht24_disconnection = new SoundPlayer($"{executablePath}disconnection\\24.wav");
             oht25_disconnection = new SoundPlayer($"{executablePath}disconnection\\25.wav");
             oht26_disconnection = new SoundPlayer($"{executablePath}disconnection\\26.wav");
-            oht27_disconnection = new SoundPlayer($"{executablePath}disconnection\\27.wav");
-            oht28_disconnection = new SoundPlayer($"{executablePath}disconnection\\28.wav");
 
             vhHasCmdNoAction = new SoundPlayer($"{executablePath}vh\\OHT_Not_Move.wav");
 
@@ -189,8 +185,6 @@ namespace WebApplication1
             oht24_disconnection.LoadAsync();
             oht25_disconnection.LoadAsync();
             oht26_disconnection.LoadAsync();
-            oht27_disconnection.LoadAsync();
-            oht28_disconnection.LoadAsync();
 
             vhHasCmdNoAction.LoadAsync();
 

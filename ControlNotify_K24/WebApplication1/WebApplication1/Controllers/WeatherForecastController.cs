@@ -264,10 +264,6 @@ namespace WebApplication1.Controllers
                         _logger.LogInformation("26號車發生斷線");
                         service.oht26_disconnection.PlaySync();
                         break;
-                    case "27":
-                        _logger.LogInformation("27號車發生斷線");
-                        service.oht27_disconnection.PlaySync();
-                        break;
                 }
             }
 
