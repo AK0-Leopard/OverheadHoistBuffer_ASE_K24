@@ -34,6 +34,14 @@ namespace WebApplication1
         public SoundPlayer oht26_error;
         public SoundPlayer oht27_error;
         public SoundPlayer oht28_error;
+        public SoundPlayer oht29_error;
+        public SoundPlayer oht30_error;
+        public SoundPlayer oht31_error;
+        public SoundPlayer oht32_error;
+        public SoundPlayer oht33_error;
+        public SoundPlayer oht34_error;
+        public SoundPlayer oht35_error;
+        public SoundPlayer oht36_error;
 
         public SoundPlayer oht1_disconnection;
         public SoundPlayer oht2_disconnection;
@@ -60,6 +68,16 @@ namespace WebApplication1
         public SoundPlayer oht24_disconnection;
         public SoundPlayer oht25_disconnection;
         public SoundPlayer oht26_disconnection;
+        public SoundPlayer oht27_disconnection;
+        public SoundPlayer oht28_disconnection;
+        public SoundPlayer oht29_disconnection;
+        public SoundPlayer oht30_disconnection;
+        public SoundPlayer oht31_disconnection;
+        public SoundPlayer oht32_disconnection;
+        public SoundPlayer oht33_disconnection;
+        public SoundPlayer oht34_disconnection;
+        public SoundPlayer oht35_disconnection;
+        public SoundPlayer oht36_disconnection;
 
         public SoundPlayer vhHasCmdNoAction;
 
@@ -101,6 +119,14 @@ namespace WebApplication1
             oht26_error = new SoundPlayer($"{executablePath}alarm\\26.wav");
             oht27_error = new SoundPlayer($"{executablePath}alarm\\27.wav");
             oht28_error = new SoundPlayer($"{executablePath}alarm\\28.wav");
+            oht29_error = new SoundPlayer($"{executablePath}alarm\\29.wav");
+            oht30_error = new SoundPlayer($"{executablePath}alarm\\30.wav");
+            oht31_error = new SoundPlayer($"{executablePath}alarm\\31.wav");
+            oht32_error = new SoundPlayer($"{executablePath}alarm\\32.wav");
+            oht33_error = new SoundPlayer($"{executablePath}alarm\\33.wav");
+            oht34_error = new SoundPlayer($"{executablePath}alarm\\34.wav");
+            oht35_error = new SoundPlayer($"{executablePath}alarm\\35.wav");
+            oht36_error = new SoundPlayer($"{executablePath}alarm\\36.wav");
 
             oht1_disconnection = new SoundPlayer($"{executablePath}disconnection\\1.wav");
             oht2_disconnection = new SoundPlayer($"{executablePath}disconnection\\2.wav");
@@ -127,6 +153,16 @@ namespace WebApplication1
             oht24_disconnection = new SoundPlayer($"{executablePath}disconnection\\24.wav");
             oht25_disconnection = new SoundPlayer($"{executablePath}disconnection\\25.wav");
             oht26_disconnection = new SoundPlayer($"{executablePath}disconnection\\26.wav");
+            oht27_disconnection = new SoundPlayer($"{executablePath}disconnection\\27.wav");
+            oht28_disconnection = new SoundPlayer($"{executablePath}disconnection\\28.wav");
+            oht29_disconnection = new SoundPlayer($"{executablePath}disconnection\\29.wav");
+            oht30_disconnection = new SoundPlayer($"{executablePath}disconnection\\30.wav");
+            oht31_disconnection = new SoundPlayer($"{executablePath}disconnection\\31.wav");
+            oht32_disconnection = new SoundPlayer($"{executablePath}disconnection\\32.wav");
+            oht33_disconnection = new SoundPlayer($"{executablePath}disconnection\\33.wav");
+            oht34_disconnection = new SoundPlayer($"{executablePath}disconnection\\34.wav");
+            oht35_disconnection = new SoundPlayer($"{executablePath}disconnection\\35.wav");
+            oht36_disconnection = new SoundPlayer($"{executablePath}disconnection\\36.wav");
 
             vhHasCmdNoAction = new SoundPlayer($"{executablePath}vh\\OHT_Not_Move.wav");
 
@@ -159,6 +195,14 @@ namespace WebApplication1
             oht26_error.LoadAsync();
             oht27_error.LoadAsync();
             oht28_error.LoadAsync();
+            oht29_error.LoadAsync();
+            oht30_error.LoadAsync();
+            oht31_error.LoadAsync();
+            oht32_error.LoadAsync();
+            oht33_error.LoadAsync();
+            oht34_error.LoadAsync();
+            oht35_error.LoadAsync();
+            oht36_error.LoadAsync();
 
             oht1_disconnection.LoadAsync();
             oht2_disconnection.LoadAsync();
@@ -185,6 +229,16 @@ namespace WebApplication1
             oht24_disconnection.LoadAsync();
             oht25_disconnection.LoadAsync();
             oht26_disconnection.LoadAsync();
+            oht27_disconnection.LoadAsync();
+            oht28_disconnection.LoadAsync();
+            oht29_disconnection.LoadAsync();
+            oht30_disconnection.LoadAsync();
+            oht31_disconnection.LoadAsync();
+            oht32_disconnection.LoadAsync();
+            oht33_disconnection.LoadAsync();
+            oht34_disconnection.LoadAsync();
+            oht35_disconnection.LoadAsync();
+            oht36_disconnection.LoadAsync();
 
             vhHasCmdNoAction.LoadAsync();
 

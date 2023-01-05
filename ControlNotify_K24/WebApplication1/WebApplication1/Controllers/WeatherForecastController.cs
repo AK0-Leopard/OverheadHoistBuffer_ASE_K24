@@ -148,6 +148,42 @@ namespace WebApplication1.Controllers
                         _logger.LogInformation("27號車發生異常");
                         service.oht27_error.PlaySync();
                         break;
+                    case "28":
+                        _logger.LogInformation("28號車發生異常");
+                        service.oht28_error.PlaySync();
+                        break;
+                    case "29":
+                        _logger.LogInformation("29號車發生異常");
+                        service.oht29_error.PlaySync();
+                        break;
+                    case "30":
+                        _logger.LogInformation("30號車發生異常");
+                        service.oht30_error.PlaySync();
+                        break;
+                    case "31":
+                        _logger.LogInformation("31號車發生異常");
+                        service.oht31_error.PlaySync();
+                        break;
+                    case "32":
+                        _logger.LogInformation("32號車發生異常");
+                        service.oht32_error.PlaySync();
+                        break;
+                    case "33":
+                        _logger.LogInformation("33號車發生異常");
+                        service.oht33_error.PlaySync();
+                        break;
+                    case "34":
+                        _logger.LogInformation("34號車發生異常");
+                        service.oht34_error.PlaySync();
+                        break;
+                    case "35":
+                        _logger.LogInformation("35號車發生異常");
+                        service.oht35_error.PlaySync();
+                        break;
+                    case "36":
+                        _logger.LogInformation("36號車發生異常");
+                        service.oht36_error.PlaySync();
+                        break;
                 }
                 //if (!service.passReportVh.Contains(id))
                 //    serialPort.closePort();
@@ -263,6 +299,46 @@ namespace WebApplication1.Controllers
                     case "26":
                         _logger.LogInformation("26號車發生斷線");
                         service.oht26_disconnection.PlaySync();
+                        break;
+                    case "27":
+                        _logger.LogInformation("27號車發生斷線");
+                        service.oht27_disconnection.PlaySync();
+                        break;
+                    case "28":
+                        _logger.LogInformation("28號車發生斷線");
+                        service.oht28_disconnection.PlaySync();
+                        break;
+                    case "29":
+                        _logger.LogInformation("29號車發生斷線");
+                        service.oht29_disconnection.PlaySync();
+                        break;
+                    case "30":
+                        _logger.LogInformation("30號車發生斷線");
+                        service.oht30_disconnection.PlaySync();
+                        break;
+                    case "31":
+                        _logger.LogInformation("31號車發生斷線");
+                        service.oht31_disconnection.PlaySync();
+                        break;
+                    case "32":
+                        _logger.LogInformation("32號車發生斷線");
+                        service.oht32_disconnection.PlaySync();
+                        break;
+                    case "33":
+                        _logger.LogInformation("33號車發生斷線");
+                        service.oht33_disconnection.PlaySync();
+                        break;
+                    case "34":
+                        _logger.LogInformation("34號車發生斷線");
+                        service.oht34_disconnection.PlaySync();
+                        break;
+                    case "35":
+                        _logger.LogInformation("35號車發生斷線");
+                        service.oht35_disconnection.PlaySync();
+                        break;
+                    case "36":
+                        _logger.LogInformation("36號車發生斷線");
+                        service.oht36_disconnection.PlaySync();
                         break;
                 }
             }

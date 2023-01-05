@@ -73,7 +73,31 @@
     <None Update="alarm\28.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="alarm\29.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="alarm\3.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="alarm\30.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="alarm\31.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="alarm\32.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="alarm\33.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="alarm\34.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="alarm\35.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="alarm\36.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="alarm\5.wav">
@@ -148,7 +172,37 @@
     <None Update="disconnection\26.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="disconnection\27.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="disconnection\28.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="disconnection\29.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="disconnection\3.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="disconnection\30.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="disconnection\31.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="disconnection\32.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="disconnection\33.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="disconnection\34.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="disconnection\35.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="disconnection\36.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="disconnection\5.wav">
