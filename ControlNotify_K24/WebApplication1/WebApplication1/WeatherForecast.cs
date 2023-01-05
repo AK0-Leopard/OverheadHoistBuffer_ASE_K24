@@ -116,7 +116,7 @@ namespace WebApplication1
             oht13_disconnection = new SoundPlayer($"{executablePath}disconnection\\13.wav");
             oht14_disconnection = new SoundPlayer($"{executablePath}disconnection\\14.wav");
             oht15_disconnection = new SoundPlayer($"{executablePath}disconnection\\15.wav");
-            oht15_disconnection = new SoundPlayer($"{executablePath}disconnection\\16.wav");
+            oht16_disconnection = new SoundPlayer($"{executablePath}disconnection\\16.wav");
             oht17_disconnection = new SoundPlayer($"{executablePath}disconnection\\17.wav");
             oht18_disconnection = new SoundPlayer($"{executablePath}disconnection\\18.wav");
             oht19_disconnection = new SoundPlayer($"{executablePath}disconnection\\19.wav");
