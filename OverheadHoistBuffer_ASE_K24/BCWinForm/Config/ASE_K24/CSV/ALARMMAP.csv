@@ -119,6 +119,7 @@ CRANE,628,2,Side shift motor_ abnormal temperature
 CRANE,629,2,Winding motor_ abnormal temperature
 CRANE,640,2,PIO is shipping_Receive EQ and send HO_Suspected TP3 timeout is abnormal
 CRANE,641,2,PIO is under delivery_Receive EQ and send HO_Suspected TP3 timeout is abnormal
+CRANE,699,2,Route planning generated delivery timeout exception
 CRANE,705,2,Step forward to prevent falling_extension abnormal
 CRANE,706,2,Step forward to prevent falling _ abnormal folding
 CRANE,707,2,Anti-falling after going up_extension abnormal
@@ -281,7 +282,7 @@ CRANE,949,1,PIO releases BUSY Hi before receiving EQ and sending ES abnormal Lo
 CRANE,950,2,In remote maintenance mode
 CRANE,951,2,Abnormal right orbit of starting station
 CRANE,952,2,Abnormal left sky orbit
-CRANE,953,2,Turn right and do nˇt change hands
+CRANE,953,2,Turn right and dont change hands
 CRANE,954,2,Turn left and never change hands
 CRANE,955,2,Turn right forward start exclusive trigger exception
 CRANE,956,2,Turn left forward start exclusive trigger exception
@@ -369,6 +370,8 @@ CRANE,100013,1,PORT_BOXID_READ_FAIL
 CRANE,100014,1,PORT_CSTID_READ_FAIL
 CRANE,100016,1,OHT_QueueCmdTimeOut
 CRANE,100022,1,OHT_IDMismatchUNKU
+CRANE,100032,1,OHT_BlockingTimeOut 
+CRANE,100033,1,OHT_ObstaclingTimeOut 
 LINE,100015,1,OHT_IDLE_HasCMD_TimeOut
 LINE,100031,1,OHT_CommandNotFinishedInTime
 LINE,100016,1,Queue command time out
@@ -1807,7 +1810,7 @@ EFEM,29398,2,[M29398][Other_RC_A]
 EFEM,29399,2,[M29399][Other_RC_A]
 EFEM,29400,2,[M29400][E84_A][Port#01]L/U_REQ ON -> TR_REQ ON TP1 Overtime
 EFEM,29401,2,[M29401][E84_A][Port#01]READY ON -> BUSY ON TP2 Overtime
-EFEM,29402,2,[M29402][E84_A][Port#01]BUSY ON-> CARRIER浪代 TP3 Overtime
+EFEM,29402,2,[M29402][E84_A][Port#01]BUSY ON-> CARRIER TP3 Overtime
 EFEM,29403,2,[M29403][E84_A][Port#01]L/U_REQ OFF -> BUSY OFF TP4 Overtime
 EFEM,29404,2,[M29404][E84_A][Port#01]READY OFF -> VALID OFF TP5 Overtime
 EFEM,29405,2,[M29405][E84_A][Port#01]VALID OFF -> VALID ON TP6 Overtime
@@ -1823,7 +1826,7 @@ EFEM,29414,2,[M29414][E84_A][Port#01].ERR Spare
 EFEM,29415,2,[M29415][E84_A][Port#01].ERR Spare
 EFEM,29416,2,[M29416][E84_A][Port#02]L/U_REQ ON -> TR_REQ ON TP1 Overtime
 EFEM,29417,2,[M29417][E84_A][Port#02]READY ON -> BUSY ON TP2 Overtime
-EFEM,29418,2,[M29418][E84_A][Port#02]BUSY ON-> CARRIER浪代 TP3 Overtime
+EFEM,29418,2,[M29418][E84_A][Port#02]BUSY ON-> CARRIER TP3 Overtime
 EFEM,29419,2,[M29419][E84_A][Port#02]L/U_REQ OFF -> BUSY OFF TP4 Overtime
 EFEM,29420,2,[M29420][E84_A][Port#02]READY OFF -> VALID OFF TP5 Overtime
 EFEM,29421,2,[M29421][E84_A][Port#02]VALID OFF -> VALID ON TP6 Overtime
@@ -1839,7 +1842,7 @@ EFEM,29430,2,[M29430][E84_A][Port#02].ERR Spare
 EFEM,29431,2,[M29431][E84_A][Port#02].ERR Spare
 EFEM,29432,2,[M29432][E84_A][Port#03]L/U_REQ ON -> TR_REQ ON TP1 Overtime
 EFEM,29433,2,[M29433][E84_A][Port#03]READY ON -> BUSY ON TP2 Overtime
-EFEM,29434,2,[M29434][E84_A][Port#03]BUSY ON-> CARRIER浪代 TP3 Overtime
+EFEM,29434,2,[M29434][E84_A][Port#03]BUSY ON-> CARRIER TP3 Overtime
 EFEM,29435,2,[M29435][E84_A][Port#03]L/U_REQ OFF -> BUSY OFF TP4 Overtime
 EFEM,29436,2,[M29436][E84_A][Port#03]READY OFF -> VALID OFF TP5 Overtime
 EFEM,29437,2,[M29437][E84_A][Port#03]VALID OFF -> VALID ON TP6 Overtime
@@ -1855,7 +1858,7 @@ EFEM,29446,2,[M29446][E84_A][Port#03].ERR Spare
 EFEM,29447,2,[M29447][E84_A][Port#03].ERR Spare
 EFEM,29448,2,[M29448][E84_A][Port#04]L/U_REQ ON -> TR_REQ ON TP1 Overtime
 EFEM,29449,2,[M29449][E84_A][Port#04]READY ON -> BUSY ON TP2 Overtime
-EFEM,29450,2,[M29450][E84_A][Port#04]BUSY ON-> CARRIER浪代 TP3 Overtime
+EFEM,29450,2,[M29450][E84_A][Port#04]BUSY ON-> CARRIER TP3 Overtime
 EFEM,29451,2,[M29451][E84_A][Port#04]L/U_REQ OFF -> BUSY OFF TP4 Overtime
 EFEM,29452,2,[M29452][E84_A][Port#04]READY OFF -> VALID OFF TP5 Overtime
 EFEM,29453,2,[M29453][E84_A][Port#04]VALID OFF -> VALID ON TP6 Overtime
@@ -1871,7 +1874,7 @@ EFEM,29462,2,[M29462][E84_A][Port#04].ERR Spare
 EFEM,29463,2,[M29463][E84_A][Port#04].ERR Spare
 EFEM,29464,2,[M29464][E84_A][Port#05]L/U_REQ ON -> TR_REQ ON TP1 Overtime
 EFEM,29465,2,[M29465][E84_A][Port#05]READY ON -> BUSY ON TP2 Overtime
-EFEM,29466,2,[M29466][E84_A][Port#05]BUSY ON-> CARRIER浪代 TP3 Overtime
+EFEM,29466,2,[M29466][E84_A][Port#05]BUSY ON-> CARRIER TP3 Overtime
 EFEM,29467,2,[M29467][E84_A][Port#05]L/U_REQ OFF -> BUSY OFF TP4 Overtime
 EFEM,29468,2,[M29468][E84_A][Port#05]READY OFF -> VALID OFF TP5 Overtime
 EFEM,29469,2,[M29469][E84_A][Port#05]VALID OFF -> VALID ON TP6 Overtime
@@ -1887,13 +1890,13 @@ EFEM,29478,2,[M29478][E84_A][Port#05].ERR Spare
 EFEM,29479,2,[M29479][E84_A][Port#05].ERR Spare
 EFEM,29480,2,[M29480][E84_A][Port#06]L/U_REQ ON -> TR_REQ ON TP1 Overtime
 EFEM,29481,2,[M29481][E84_A][Port#06]READY ON -> BUSY ON TP2 Overtime
-EFEM,29482,2,[M29482][E84_A][Port#06]BUSY ON-> CARRIER浪代 TP3 Overtime
+EFEM,29482,2,[M29482][E84_A][Port#06]BUSY ON-> CARRIER TP3 Overtime
 EFEM,29483,2,[M29483][E84_A][Port#06]L/U_REQ OFF -> BUSY OFF TP4 Overtime
 EFEM,29484,2,[M29484][E84_A][Port#06]READY OFF -> VALID OFF TP5 Overtime
 EFEM,29485,2,[M29485][E84_A][Port#06]VALID OFF -> VALID ON TP6 Overtime
 EFEM,29486,2,[M29486][E84_A][Port#06]VALID ON -> L/U_REQ ON TA1 Overtime
 EFEM,29487,2,[M29487][E84_A][Port#06]TR_REQ ON -> READY ON TA2 Overtime
-EFEM,29488,2,[M29488][E84_A][Port#06]COMPT ON -> READY OFF TA3筄
+EFEM,29488,2,[M29488][E84_A][Port#06]COMPT ON -> READY OFF TA3 Overtime
 EFEM,29489,2,[M29489][E84_A][Port#06][L] Handshake Exception
 EFEM,29490,2,[M29490][E84_A][Port#06][U] Handshake Exception
 EFEM,29491,2,[M29491][E84_A][Port#06].ERR Spare
