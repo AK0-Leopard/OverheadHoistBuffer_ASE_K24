@@ -654,6 +654,8 @@ namespace com.mirle.ibg3k0.sc.App
         public IManualPortControlService ManualPortControlService { get { return manualPortControlService; } }
         private IManualPortEventService manualPortEventService = null;
         public IManualPortEventService ManualPortEventService { get { return manualPortEventService; } }
+        private ZoneService zoneservice = null;
+        public ZoneService ZoneService { get { return zoneservice; } }
 
         private DataSyncBLL datasynBLL = null;
         public DataSyncBLL DataSyncBLL { get { return datasynBLL; } }
@@ -671,6 +673,7 @@ namespace com.mirle.ibg3k0.sc.App
         public CassetteDataBLL CassetteDataBLL { get; private set; } = null;
         public ReserveBLL ReserveBLL { get; private set; } = null; //A0.01
         public UnitBLL UnitBLL { get; private set; } = null; //A0.01
+        public ParkingZoneBLL ParkingZoneBLL { get; private set; } = null; //A0.01
 
         //WIF
         /// <summary>
@@ -1579,6 +1582,7 @@ namespace com.mirle.ibg3k0.sc.App
             CassetteDataBLL = new CassetteDataBLL();
             ReserveBLL = new ReserveBLL(); //A0.01
             UnitBLL = new UnitBLL(); //A0.01
+            ParkingZoneBLL = new ParkingZoneBLL(); //A0.01
         }
 
         public void initServer()
@@ -1597,7 +1601,7 @@ namespace com.mirle.ibg3k0.sc.App
             emptyBoxHandlerService = new EmptyBoxHandlerService();
             reelNTBEventService = new ReelNTBEventService();
             trackService = new TrackService();
-
+            zoneservice = new ZoneService();
             manualPortControlService = new ManualPortControlService();
             manualPortEventService = new ManualPortEventService();
 
@@ -1674,6 +1678,7 @@ namespace com.mirle.ibg3k0.sc.App
             CassetteDataBLL.start(this);
             ReserveBLL.start(this); //A0.01
             UnitBLL.start(this); //A0.01
+            ParkingZoneBLL.start(this); //A0.01
         }
 
         private void startService()
@@ -1693,7 +1698,7 @@ namespace com.mirle.ibg3k0.sc.App
 
             ReelNTBEventService.Start(this, reportBLL, equipmentBLL, PortStationBLL);
             trackService.Start(this);
-
+            zoneservice.Start(this);
             var manual_port_map_action = PortStationBLL.OperateCatch.loadAllMgvPortStationMapAction();
             manualPortControlService.Start(manual_port_map_action);
             manualPortEventService.Start(manual_port_map_action, reportBLL, PortDefBLL, ShelfDefBLL, CassetteDataBLL, cmdBLL, alarmBLL, transferService);
@@ -2626,6 +2631,9 @@ namespace com.mirle.ibg3k0.sc.App
         public static Boolean IsCloseCorrectGuideInfoWhenSameLoadAdr = false;
         public static Boolean IsOpenTrackResetByVhBlockRelease = false;
         public static Boolean IsOpenCheckTrackAlive = true;
+        public static Boolean IsOpenParkingZoneControlFunction = false;
+        public static Boolean IsOpenParkingZoneAutoPull = false;
+
 
     }
 }

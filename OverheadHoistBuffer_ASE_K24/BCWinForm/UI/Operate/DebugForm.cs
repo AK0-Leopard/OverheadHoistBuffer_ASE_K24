@@ -94,6 +94,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_isOpenReelNTBPortStatusAsk.Checked = sc.App.SystemParameter.IsOpenReelNTBPortStatusAsk;
             cb_openTrackResetByVhBlockRelease.Checked = DebugParameter.IsOpenTrackResetByVhBlockRelease;
             cb_checkTrackAlive.Checked = DebugParameter.IsOpenCheckTrackAlive;
+            cb_IsOpenParkingZoneControlFunction.Checked = DebugParameter.IsOpenParkingZoneControlFunction;
+            cb_IsOpenParkingZoneAutoPull.Checked = DebugParameter.IsOpenParkingZoneAutoPull;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -1560,6 +1562,17 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_checkTrackAlive_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.IsOpenCheckTrackAlive = cb_checkTrackAlive.Checked;
+        }
+
+        private void cb_IsOpenParkingZoneControlFunction_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsOpenParkingZoneControlFunction = cb_IsOpenParkingZoneControlFunction.Checked;
+        }
+
+        private void cb_IsOpenParkingZoneAutoPull_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsOpenParkingZoneAutoPull = cb_IsOpenParkingZoneAutoPull.Checked;
+
         }
     }
 }
