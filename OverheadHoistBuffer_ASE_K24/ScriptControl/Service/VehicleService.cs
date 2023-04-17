@@ -2395,7 +2395,7 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             bool is_success = false;
             LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                                   Data: $"start try drive out vh:{inTheWayVhID}...",
+                                   Data: $"start try drive out vh:{inTheWayVhID} (new)...",
                                    VehicleID: willPassVhID);
 
             //確認能否把該Vh趕走
@@ -2566,13 +2566,18 @@ namespace com.mirle.ibg3k0.sc.Service
             (AVEHICLE willPassVh, AVEHICLE findAvoidAdrOfVh)
         {
             string needToAvoidAdr = findNeedAvoidAddress(willPassVh);
-
+            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                                   Data: $"vh:{findAvoidAdrOfVh.VEHICLE_ID} 正在找尋停車位，需要特別避開的點位:{needToAvoidAdr}...",
+                                   VehicleID: willPassVh.VEHICLE_ID);
 
             bool isFindNotConflict = TryFindAvoidAddress(willPassVh, findAvoidAdrOfVh, needToAvoidAdr, out string escapeAddress);
             if (isFindNotConflict)
             {
                 return (true, escapeAddress);
             }
+            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                                   Data: $"vh:{findAvoidAdrOfVh.VEHICLE_ID} 正在找尋停車位，取消需要特別避開的點位再找一次...",
+                                   VehicleID: willPassVh.VEHICLE_ID);
             bool isFindClosest = TryFindAvoidAddress(willPassVh, findAvoidAdrOfVh, "", out string escapeAddressClosest);
             if (isFindClosest)
             {
@@ -2637,17 +2642,34 @@ namespace com.mirle.ibg3k0.sc.Service
                 escapeAddressID = String.Empty;
                 List<string> bypassSections = new List<string>();
                 if (!string.IsNullOrEmpty(needToAvoidAdr))
+                {
                     bypassSections = scApp.SectionBLL.cache.GetSectionsByToAddress(needToAvoidAdr).Select(s => s.SEC_ID).ToList();
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"vh:{escapedVehicle.VEHICLE_ID} 正在找尋停車位，需要特別避開的點位:{needToAvoidAdr},因此需要特別避開的section ids:{string.Join(",", bypassSections)}",
+                           VehicleID: commandingVehicle.VEHICLE_ID);
+                }
 
                 var avoidAddresses = scApp.ParkingZoneBLL.LoadAvoidParkingzoneAddresses(escapedVehicle);
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"vh:{escapedVehicle.VEHICLE_ID}-Type:{escapedVehicle.VEHICLE_TYPE} 正在找尋停車位，目前上有停車空間的停車區點位:{string.Join(",", avoidAddresses)}",
+                       VehicleID: commandingVehicle.VEHICLE_ID);
+
                 isSuccess = findBestEscapeAddress(avoidAddresses, commandingVehicle, escapedVehicle.CUR_ADR_ID, bypassSections, out escapeAddressID);
                 if (!isSuccess)
                 {
                     avoidAddresses = scApp.AddressBLL.cache.LoadCanAvoidAddresses()
                         .Where(adr => !adr.ADR_ID.Equals(escapedVehicle.CUR_ADR_ID))
                         .Select(adr => adr.ADR_ID.Trim()).ToList();
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"vh:{escapedVehicle.VEHICLE_ID}-Type:{escapedVehicle.VEHICLE_TYPE} 正在找尋停車位，停車區的找尋失敗改找可以避車的點位:{string.Join(",", avoidAddresses)}",
+                           VehicleID: commandingVehicle.VEHICLE_ID);
+
                     isSuccess = findBestEscapeAddress(avoidAddresses, commandingVehicle, escapedVehicle.CUR_ADR_ID, bypassSections, out escapeAddressID);
                 }
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"vh:{escapedVehicle.VEHICLE_ID}-Type:{escapedVehicle.VEHICLE_TYPE} 正在找尋停車位，停車點找尋結果:{isSuccess}，找尋到的停車點位:{escapeAddressID}",
+                       VehicleID: commandingVehicle.VEHICLE_ID);
+
                 return isSuccess;
             }
             catch (Exception ex)
@@ -2700,14 +2722,23 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 if (checkAvoidAdrIsCommandingVhWillPass(commandingVehicle, avoidPoint))
                 {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"停車點:{avoidPoint} 為vh:{commandingVehicle.VEHICLE_ID} 即將通過的路段繼續找下一個...",
+                           VehicleID: commandingVehicle.VEHICLE_ID);
                     continue;
                 }
                 var roadCheckResult = scApp.GuideBLL.getGuideInfo(escapedVehicleaddress, avoidPoint, bypassSections);
-                if (roadCheckResult.totalCost < minCost && roadCheckResult.totalCost != 0)
+                if (roadCheckResult.isSuccess)
                 {
-                    minCost = roadCheckResult.totalCost;
-                    escapeAddressID = avoidPoint;
-                    isSuccess = true;
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"停車點:{avoidPoint} 距離:{roadCheckResult.totalCost}",
+                           VehicleID: commandingVehicle.VEHICLE_ID);
+                    if (roadCheckResult.totalCost < minCost && roadCheckResult.totalCost > 0)
+                    {
+                        minCost = roadCheckResult.totalCost;
+                        escapeAddressID = avoidPoint;
+                        isSuccess = true;
+                    }
                 }
             }
             return isSuccess;
