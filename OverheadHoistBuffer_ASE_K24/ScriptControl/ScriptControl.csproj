@@ -541,6 +541,7 @@
     <Compile Include="BLL\MapBLL.cs" />
     <Compile Include="BLL\ParkBLL.cs" />
     <Compile Include="BLL\NodeBLL.cs" />
+    <Compile Include="BLL\ParkingZoneBLL.cs" />
     <Compile Include="BLL\PortBLL.cs" />
     <Compile Include="BLL\191204Test\PortDefBLL.cs" />
     <Compile Include="BLL\PortStationBLL.cs" />
@@ -871,6 +872,7 @@
     <Compile Include="Data\TimerAction\LogFileHandlerTimer.cs" />
     <Compile Include="Data\TimerAction\OHCVAliveTimer.cs" />
     <Compile Include="Data\TimerAction\OHxCAliveTimer.cs" />
+    <Compile Include="Data\TimerAction\ParkingZoneCheckTimerAction.cs" />
     <Compile Include="Data\TimerAction\PLCAliveTimer.cs" />
     <Compile Include="Data\TimerAction\PLCTimeCalibrationTimer.cs" />
     <Compile Include="Data\TimerAction\TrackTimerAction.cs" />
@@ -989,6 +991,7 @@
     <Compile Include="Data\VO\Track.cs" />
     <Compile Include="Data\VO\UserOperationLog.cs" />
     <Compile Include="Data\VO\VEHICLEMAP.cs" />
+    <Compile Include="Data\VO\ZoneInfo.cs" />
     <Compile Include="EventAction\ImmediateNotificationRegister.cs" />
     <Compile Include="EventAction\QueryExtension.cs" />
     <Compile Include="E_ADR_TYPE.cs">
@@ -1121,6 +1124,7 @@
     <Compile Include="Service\TransferService.cs" />
     <Compile Include="Service\UserControlService.cs" />
     <Compile Include="Service\VehicleService.cs" />
+    <Compile Include="Service\ZoneService.cs" />
     <Compile Include="ShelfDef.cs">
       <DependentUpon>OHTCContext.tt</DependentUpon>
     </Compile>

@@ -95,6 +95,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                     cache_adr.updateAddressType();
                 }
             }
+
+            public List<AADDRESS> LoadCanAvoidAddresses()
+            {
+                return CommObjCacheManager.getAddresses().
+                    Where(adr => adr.IsAvoid).
+                    ToList();
+            }
+
         }
     }
 }

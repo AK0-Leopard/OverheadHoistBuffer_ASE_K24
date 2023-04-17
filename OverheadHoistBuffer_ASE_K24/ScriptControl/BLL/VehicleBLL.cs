@@ -2347,6 +2347,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                 vh.VEHICLE_TYPE = vhType;
             }
 
+            public List<AVEHICLE> getIdleVhs(CMDBLL cmdBLL)
+            {
+                List<AVEHICLE> vhs = eqObjCacheManager.getAllVehicle();
+                return vhs.Where(vh => vh.MODE_STATUS == VHModeStatus.AutoRemote &&
+                                       vh.ACT_STATUS == VHActionStatus.NoCommand &&
+                                       !vh.IsError &&
+                                       !cmdBLL.cache.IsExcuteCmdOhtc(vh.VEHICLE_ID)).ToList();
+            }
         }
         public class Web
         {

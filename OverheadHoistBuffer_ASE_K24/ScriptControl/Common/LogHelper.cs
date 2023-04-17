@@ -302,309 +302,309 @@ namespace com.mirle.ibg3k0.sc.Common
 
         public static void RecordReportInfo(sc.BLL.CMDBLL cmdBLL, AVEHICLE vh, IMessage message, int seqNum, [CallerMemberName] string Method = "")
         {
-            Logger logger = LogManager.GetLogger("RecordReportInfo");
-            string vhID = vh.VEHICLE_ID;
-            string detail = PrintMessage(message, "", "");
-            string function = getIMessageName(message);
-            if (message is ID_31_TRANS_REQUEST)
-            {
-                var id_31 = message as ID_31_TRANS_REQUEST;
-                var cmd_id = id_31.CmdID;
-                string cst_id = id_31.CSTID;
-                string lot_id = id_31.LOTID;
-                var command_action = id_31.ActType;
-                var load_adr = id_31.LoadAdr;
-                var dest_adr = id_31.ToAdr;
-                var load_port = id_31.LoadPortID;
-                var unload_port = id_31.UnloadPortID;
-                string display_load = sc.Common.SCUtility.isEmpty(load_port) ? load_adr : $"{load_port}({load_adr})";
-                string display_dest = sc.Common.SCUtility.isEmpty(unload_port) ? dest_adr : $"{unload_port}({dest_adr})";
+            //Logger logger = LogManager.GetLogger("RecordReportInfo");
+            //string vhID = vh.VEHICLE_ID;
+            //string detail = PrintMessage(message, "", "");
+            //string function = getIMessageName(message);
+            //if (message is ID_31_TRANS_REQUEST)
+            //{
+            //    var id_31 = message as ID_31_TRANS_REQUEST;
+            //    var cmd_id = id_31.CmdID;
+            //    string cst_id = id_31.CSTID;
+            //    string lot_id = id_31.LOTID;
+            //    var command_action = id_31.ActType;
+            //    var load_adr = id_31.LoadAdr;
+            //    var dest_adr = id_31.ToAdr;
+            //    var load_port = id_31.LoadPortID;
+            //    var unload_port = id_31.UnloadPortID;
+            //    string display_load = sc.Common.SCUtility.isEmpty(load_port) ? load_adr : $"{load_port}({load_adr})";
+            //    string display_dest = sc.Common.SCUtility.isEmpty(unload_port) ? dest_adr : $"{unload_port}({dest_adr})";
 
-                var cmd = cmdBLL.cache.getExcuteCmd(cmd_id);
-                string tran_id = "";
-                if (cmd != null)
-                {
-                    tran_id = SCUtility.Trim(cmd.CMD_ID_MCS);
-                }
-                var attenion_vaule_1 = new { cmdID = cmd_id, tranID = tran_id, cstID = cst_id, lotID = lot_id, commandAction = command_action, load = display_load, dest = display_dest };
-                logger.WithProperty("msgDetail", detail).
-                       Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
-                                , function, vhID, seqNum, attenion_vaule_1);
-            }
-            else if (message is ID_131_TRANS_RESPONSE)
-            {
-                var id_131 = message as ID_131_TRANS_RESPONSE;
-                var cmd_id = id_131.CmdID;
-                var command_action = id_131.ActType;
-                var reply_code = id_131.ReplyCode;
-                var ng_reason = id_131.NgReason;
-                var vehicle_c_ngreason = id_131.NgReason;
-                var cmd = cmdBLL.cache.getExcuteCmd(cmd_id);
-                string tran_id = "";
-                if (cmd != null)
-                {
-                    tran_id = SCUtility.Trim(cmd.CMD_ID_MCS);
-                }
+            //    var cmd = cmdBLL.cache.tryGetExcuteCmd(cmd_id);
+            //    string tran_id = "";
+            //    if (cmd != null)
+            //    {
+            //        tran_id = SCUtility.Trim(cmd.CMD_ID_MCS);
+            //    }
+            //    var attenion_vaule_1 = new { cmdID = cmd_id, tranID = tran_id, cstID = cst_id, lotID = lot_id, commandAction = command_action, load = display_load, dest = display_dest };
+            //    logger.WithProperty("msgDetail", detail).
+            //           Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
+            //                    , function, vhID, seqNum, attenion_vaule_1);
+            //}
+            //else if (message is ID_131_TRANS_RESPONSE)
+            //{
+            //    var id_131 = message as ID_131_TRANS_RESPONSE;
+            //    var cmd_id = id_131.CmdID;
+            //    var command_action = id_131.ActType;
+            //    var reply_code = id_131.ReplyCode;
+            //    var ng_reason = id_131.NgReason;
+            //    var vehicle_c_ngreason = id_131.NgReason;
+            //    var cmd = cmdBLL.cache.tryGetExcuteCmd(cmd_id);
+            //    string tran_id = "";
+            //    if (cmd != null)
+            //    {
+            //        tran_id = SCUtility.Trim(cmd.CMD_ID_MCS);
+            //    }
 
-                var attenion_vaule_1 = new { cmdID = cmd_id, tranID = tran_id, commandAction = command_action, replyCode = reply_code, NgReason = ng_reason, vehicleControlNgReason = vehicle_c_ngreason };
-                logger.WithProperty("msgDetail", detail).
-                       Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
-                                , function, vhID, seqNum, attenion_vaule_1);
+            //    var attenion_vaule_1 = new { cmdID = cmd_id, tranID = tran_id, commandAction = command_action, replyCode = reply_code, NgReason = ng_reason, vehicleControlNgReason = vehicle_c_ngreason };
+            //    logger.WithProperty("msgDetail", detail).
+            //           Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
+            //                    , function, vhID, seqNum, attenion_vaule_1);
 
-            }
-            else if (message is ID_132_TRANS_COMPLETE_REPORT)
-            {
-                var id_132 = message as ID_132_TRANS_COMPLETE_REPORT;
-                var cmd_id = id_132.CmdID;
-                string cst_id = id_132.CSTID;
-                var complete_status = id_132.CmpStatus;
-                var cmd = cmdBLL.cache.getExcuteCmd(cmd_id);
-                string tran_id = "";
-                if (cmd != null)
-                {
-                    tran_id = SCUtility.Trim(cmd.CMD_ID_MCS);
-                }
-                var attenion_vaule_1 = new { cmdID = cmd_id, tranID = tran_id, cstID = cst_id, completeStatus = complete_status };
-                logger.WithProperty("msgDetail", detail).
-                       Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
-                                , function, vhID, seqNum, attenion_vaule_1);
-            }
-            else if (message is ID_32_TRANS_COMPLETE_RESPONSE)
-            {
-                var id_32 = message as ID_32_TRANS_COMPLETE_RESPONSE;
-                var reply_code = id_32.ReplyCode;
+            //}
+            //else if (message is ID_132_TRANS_COMPLETE_REPORT)
+            //{
+            //    var id_132 = message as ID_132_TRANS_COMPLETE_REPORT;
+            //    var cmd_id = id_132.CmdID;
+            //    string cst_id = id_132.CSTID;
+            //    var complete_status = id_132.CmpStatus;
+            //    var cmd = cmdBLL.cache.tryGetExcuteCmd(cmd_id);
+            //    string tran_id = "";
+            //    if (cmd != null)
+            //    {
+            //        tran_id = SCUtility.Trim(cmd.CMD_ID_MCS);
+            //    }
+            //    var attenion_vaule_1 = new { cmdID = cmd_id, tranID = tran_id, cstID = cst_id, completeStatus = complete_status };
+            //    logger.WithProperty("msgDetail", detail).
+            //           Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
+            //                    , function, vhID, seqNum, attenion_vaule_1);
+            //}
+            //else if (message is ID_32_TRANS_COMPLETE_RESPONSE)
+            //{
+            //    var id_32 = message as ID_32_TRANS_COMPLETE_RESPONSE;
+            //    var reply_code = id_32.ReplyCode;
 
-                var attenion_vaule_1 = new { replyCode = reply_code };
-                logger.WithProperty("msgDetail", detail).
-                       Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
-                                , function, vhID, seqNum, attenion_vaule_1);
+            //    var attenion_vaule_1 = new { replyCode = reply_code };
+            //    logger.WithProperty("msgDetail", detail).
+            //           Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
+            //                    , function, vhID, seqNum, attenion_vaule_1);
 
-            }
-            else if (message is ID_134_TRANS_EVENT_REP)
-            {
-                var id_134 = message as ID_134_TRANS_EVENT_REP;
-                var attenion_vaule = new { secID = id_134.CurrentSecID, adrID = id_134.CurrentSecID, distance = id_134.SecDistance };
-                logger.WithProperty("msgDetail", detail).Info(vh, "{method} | {vhID} | {seqNum} {@attenion_vaule}"
-                                                                , function
-                                                                , vhID
-                                                                , seqNum
-                                                                , attenion_vaule);
-            }
-            else if (message is ID_136_TRANS_EVENT_REP)
-            {
-                var id_136 = message as ID_136_TRANS_EVENT_REP;
-                var event_tpye = id_136.EventType;
-                string cmd_id = SCUtility.Trim(vh.OHTC_CMD, true);
-                string trna_id = "";
-                var cmd = cmdBLL.cache.getExcuteCmd(cmd_id);
-                string location = getLoction(id_136);
-                if (cmd != null)
-                {
-                    trna_id = SCUtility.Trim(cmd.CMD_ID_MCS);
-                }
-                switch (event_tpye)
-                {
-                    case EventType.LoadArrivals:
-                    case EventType.Vhloading:
-                    case EventType.LoadComplete:
-                    case EventType.UnloadArrivals:
-                    case EventType.Vhunloading:
-                    case EventType.UnloadComplete:
-                        var attenion_vaule_1 = new { cmdID = cmd_id, tranID = trna_id, cstID = id_136.CSTID, location = location };
-                        logger.WithProperty("msgDetail", detail).
-                               Info(vh, "{method} | {eventType} | {vhID} | {seqNum} {@attenionVaule}"
-                                        , function, event_tpye, vhID, seqNum, attenion_vaule_1);
-                        break;
-                    case EventType.ReserveReq:
-                        break;
-                    case EventType.BlockReq:
-                        var attenion_vaule_2 = new { reqSec = id_136.RequestBlockID };
-                        logger.WithProperty("msgDetail", detail).
-                               Info(vh, "{method} | {eventType} | {vhID} | {seqNum} {@attenionVaule}"
-                                        , function, event_tpye, vhID, seqNum, attenion_vaule_2);
-                        break;
-                    case EventType.Bcrread:
-                        var attenion_vaule_3 = new { cmdID = cmd_id, BcrReadResult = id_136.BCRReadResult, cstID = id_136.CSTID };
-                        logger.WithProperty("msgDetail", detail).
-                               Info(vh, "{method} | {eventType} | {vhID} | {seqNum} {@attenionVaule}"
-                                        , function, event_tpye, vhID, seqNum, attenion_vaule_3);
-                        break;
-                    default:
-                        logger.WithProperty("msgDetail", detail).
-                               Info(vh, "{method} | {eventType} | {vhID} | {seqNum}"
-                                       , function, event_tpye, vhID, seqNum);
-                        break;
-                }
-            }
-            else if (message is ID_36_TRANS_EVENT_RESPONSE)
-            {
-                var id_36 = message as ID_36_TRANS_EVENT_RESPONSE;
-                string cmd_id = SCUtility.Trim(vh.OHTC_CMD, true);
-                string trna_id = "";
-                var cmd = cmdBLL.cache.getExcuteCmd(cmd_id);
-                var event_type = id_36.EventType;
+            //}
+            //else if (message is ID_134_TRANS_EVENT_REP)
+            //{
+            //    var id_134 = message as ID_134_TRANS_EVENT_REP;
+            //    var attenion_vaule = new { secID = id_134.CurrentSecID, adrID = id_134.CurrentSecID, distance = id_134.SecDistance };
+            //    logger.WithProperty("msgDetail", detail).Info(vh, "{method} | {vhID} | {seqNum} {@attenion_vaule}"
+            //                                                    , function
+            //                                                    , vhID
+            //                                                    , seqNum
+            //                                                    , attenion_vaule);
+            //}
+            //else if (message is ID_136_TRANS_EVENT_REP)
+            //{
+            //    var id_136 = message as ID_136_TRANS_EVENT_REP;
+            //    var event_tpye = id_136.EventType;
+            //    string cmd_id = SCUtility.Trim(vh.OHTC_CMD, true);
+            //    string trna_id = "";
+            //    var cmd = cmdBLL.cache.tryGetExcuteCmd(cmd_id);
+            //    string location = getLoction(id_136);
+            //    if (cmd != null)
+            //    {
+            //        trna_id = SCUtility.Trim(cmd.CMD_ID_MCS);
+            //    }
+            //    switch (event_tpye)
+            //    {
+            //        case EventType.LoadArrivals:
+            //        case EventType.Vhloading:
+            //        case EventType.LoadComplete:
+            //        case EventType.UnloadArrivals:
+            //        case EventType.Vhunloading:
+            //        case EventType.UnloadComplete:
+            //            var attenion_vaule_1 = new { cmdID = cmd_id, tranID = trna_id, cstID = id_136.CSTID, location = location };
+            //            logger.WithProperty("msgDetail", detail).
+            //                   Info(vh, "{method} | {eventType} | {vhID} | {seqNum} {@attenionVaule}"
+            //                            , function, event_tpye, vhID, seqNum, attenion_vaule_1);
+            //            break;
+            //        case EventType.ReserveReq:
+            //            break;
+            //        case EventType.BlockReq:
+            //            var attenion_vaule_2 = new { reqSec = id_136.RequestBlockID };
+            //            logger.WithProperty("msgDetail", detail).
+            //                   Info(vh, "{method} | {eventType} | {vhID} | {seqNum} {@attenionVaule}"
+            //                            , function, event_tpye, vhID, seqNum, attenion_vaule_2);
+            //            break;
+            //        case EventType.Bcrread:
+            //            var attenion_vaule_3 = new { cmdID = cmd_id, BcrReadResult = id_136.BCRReadResult, cstID = id_136.CSTID };
+            //            logger.WithProperty("msgDetail", detail).
+            //                   Info(vh, "{method} | {eventType} | {vhID} | {seqNum} {@attenionVaule}"
+            //                            , function, event_tpye, vhID, seqNum, attenion_vaule_3);
+            //            break;
+            //        default:
+            //            logger.WithProperty("msgDetail", detail).
+            //                   Info(vh, "{method} | {eventType} | {vhID} | {seqNum}"
+            //                           , function, event_tpye, vhID, seqNum);
+            //            break;
+            //    }
+            //}
+            //else if (message is ID_36_TRANS_EVENT_RESPONSE)
+            //{
+            //    var id_36 = message as ID_36_TRANS_EVENT_RESPONSE;
+            //    string cmd_id = SCUtility.Trim(vh.OHTC_CMD, true);
+            //    string trna_id = "";
+            //    var cmd = cmdBLL.cache.tryGetExcuteCmd(cmd_id);
+            //    var event_type = id_36.EventType;
 
-                if (cmd != null)
-                {
-                    trna_id = SCUtility.Trim(cmd.CMD_ID_MCS);
-                }
+            //    if (cmd != null)
+            //    {
+            //        trna_id = SCUtility.Trim(cmd.CMD_ID_MCS);
+            //    }
 
-                switch (event_type)
-                {
-                    case EventType.LoadArrivals:
-                    case EventType.Vhloading:
-                    case EventType.LoadComplete:
-                    case EventType.UnloadArrivals:
-                    case EventType.Vhunloading:
-                    case EventType.UnloadComplete:
-                        var attenionVaule_1 = new { cmdID = cmd_id, tranID = trna_id, replyAction = id_36.ReplyActiveType };
-                        logger.WithProperty("msgDetail", detail).
-                               Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
-                                        , function, event_type, vhID, seqNum, attenionVaule_1);
-                        break;
-                    case EventType.ReserveReq:
+            //    switch (event_type)
+            //    {
+            //        case EventType.LoadArrivals:
+            //        case EventType.Vhloading:
+            //        case EventType.LoadComplete:
+            //        case EventType.UnloadArrivals:
+            //        case EventType.Vhunloading:
+            //        case EventType.UnloadComplete:
+            //            var attenionVaule_1 = new { cmdID = cmd_id, tranID = trna_id, replyAction = id_36.ReplyActiveType };
+            //            logger.WithProperty("msgDetail", detail).
+            //                   Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
+            //                            , function, event_type, vhID, seqNum, attenionVaule_1);
+            //            break;
+            //        case EventType.ReserveReq:
 
-                        break;
-                    case EventType.BlockReq:
-                        var attenionVaule_2 = new { cmdID = cmd_id, isReserveOK = id_36.IsBlockPass };
-                        logger.WithProperty("msgDetail", detail).
-                               Info(vh, "{method} | {eventType} | {vhID} | {seqNum} {@attenionVaule}"
-                                        , function, event_type, vhID, seqNum, attenionVaule_2);
-                        break;
-                    case EventType.Bcrread:
-                        var attenionVaule_3 = new { cmdID = cmd_id, replyAction = id_36.ReplyActiveType, renameID = id_36.RenameBOXID };
-                        logger.WithProperty("msgDetail", detail).
-                               Info(vh, "{method} | {eventType} | {vhID} | {seqNum} {@attenionVaule}"
-                                        , function, event_type, vhID, seqNum, attenionVaule_3);
-                        break;
-                    default:
-                        logger.WithProperty("msgDetail", detail).
-                               Info(vh, "{method} | {eventType} | {vhID} | {seqNum}"
-                                        , function, event_type, vhID, seqNum);
-                        break;
-                }
-            }
-            else if (message is ID_37_TRANS_CANCEL_REQUEST)
-            {
-                var id_37 = message as ID_37_TRANS_CANCEL_REQUEST;
-                var cmd_id = id_37.CmdID;
-                var cancel_action = id_37.ActType;
-                var attenion_vaule_1 = new { cmdID = cmd_id, cancelAction = cancel_action };
-                logger.WithProperty("msgDetail", detail).
-                       Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
-                                , function, vhID, seqNum, attenion_vaule_1);
-            }
-            else if (message is ID_137_TRANS_CANCEL_RESPONSE)
-            {
-                var id_137 = message as ID_137_TRANS_CANCEL_RESPONSE;
-                var cmd_id = id_137.CmdID;
-                var cancel_action = id_137.ActType;
-                var reply_code = id_137.ReplyCode;
-                var attenion_vaule_1 = new { cmdID = cmd_id, cancelAction = cancel_action, replyCode = reply_code };
-                logger.WithProperty("msgDetail", detail).
-                       Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
-                                , function, vhID, seqNum, attenion_vaule_1);
-            }
-            else if (message is ID_39_PAUSE_REQUEST)
-            {
-                var id_39 = message as ID_39_PAUSE_REQUEST;
-                var event_tpye = id_39.EventType;
-                var pause_tpye = id_39.PauseType;
-                var attenion_vaule_1 = new { pauseEventType = event_tpye, pauseType = pause_tpye };
-                logger.WithProperty("msgDetail", detail).
-                       Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
-                                , function, vhID, seqNum, attenion_vaule_1);
-            }
-            else if (message is ID_139_PAUSE_RESPONSE)
-            {
-                var id_139 = message as ID_139_PAUSE_RESPONSE;
-                var event_tpye = id_139.EventType;
-                var attenion_vaule_1 = new { pauseEventType = event_tpye, repleCode = id_139.ReplyCode };
-                logger.WithProperty("msgDetail", detail).
-                       Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
-                                , function, vhID, seqNum, attenion_vaule_1);
-            }
-            else if (message is ID_43_STATUS_REQUEST)
-            {
-                var id_43 = message as ID_43_STATUS_REQUEST;
-                var attenionVaule_1 = new
-                {
-                    time = id_43.SystemTime
-                };
-                logger.WithProperty("msgDetail", detail).
-                       Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
-                                , function, vhID, seqNum, attenionVaule_1);
-            }
-            else if (message is ID_143_STATUS_RESPONSE)
-            {
-                var id_143 = message as ID_143_STATUS_RESPONSE;
-                var mode = id_143.ModeStatus;
-                var action = id_143.ActionStatus;
-                var error = id_143.ErrorStatus == VhStopSingle.StopSingleOn;
-                var pause = id_143.PauseStatus == VhStopSingle.StopSingleOn;
-                var block = id_143.BlockingStatus == VhStopSingle.StopSingleOn;
-                var obs = id_143.ObstacleStatus == VhStopSingle.StopSingleOn;
-                var hid = id_143.HIDStatus == VhStopSingle.StopSingleOn;
-                var earquake = id_143.EarthquakePauseTatus == VhStopSingle.StopSingleOn;
-                var safety = id_143.SafetyPauseStatus == VhStopSingle.StopSingleOn;
-                var has_box = id_143.HasBox;
-                var cmd_box_id = id_143.BOXID;
-                var car_box_id = id_143.CarBoxID;
+            //            break;
+            //        case EventType.BlockReq:
+            //            var attenionVaule_2 = new { cmdID = cmd_id, isReserveOK = id_36.IsBlockPass };
+            //            logger.WithProperty("msgDetail", detail).
+            //                   Info(vh, "{method} | {eventType} | {vhID} | {seqNum} {@attenionVaule}"
+            //                            , function, event_type, vhID, seqNum, attenionVaule_2);
+            //            break;
+            //        case EventType.Bcrread:
+            //            var attenionVaule_3 = new { cmdID = cmd_id, replyAction = id_36.ReplyActiveType, renameID = id_36.RenameBOXID };
+            //            logger.WithProperty("msgDetail", detail).
+            //                   Info(vh, "{method} | {eventType} | {vhID} | {seqNum} {@attenionVaule}"
+            //                            , function, event_type, vhID, seqNum, attenionVaule_3);
+            //            break;
+            //        default:
+            //            logger.WithProperty("msgDetail", detail).
+            //                   Info(vh, "{method} | {eventType} | {vhID} | {seqNum}"
+            //                            , function, event_type, vhID, seqNum);
+            //            break;
+            //    }
+            //}
+            //else if (message is ID_37_TRANS_CANCEL_REQUEST)
+            //{
+            //    var id_37 = message as ID_37_TRANS_CANCEL_REQUEST;
+            //    var cmd_id = id_37.CmdID;
+            //    var cancel_action = id_37.ActType;
+            //    var attenion_vaule_1 = new { cmdID = cmd_id, cancelAction = cancel_action };
+            //    logger.WithProperty("msgDetail", detail).
+            //           Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
+            //                    , function, vhID, seqNum, attenion_vaule_1);
+            //}
+            //else if (message is ID_137_TRANS_CANCEL_RESPONSE)
+            //{
+            //    var id_137 = message as ID_137_TRANS_CANCEL_RESPONSE;
+            //    var cmd_id = id_137.CmdID;
+            //    var cancel_action = id_137.ActType;
+            //    var reply_code = id_137.ReplyCode;
+            //    var attenion_vaule_1 = new { cmdID = cmd_id, cancelAction = cancel_action, replyCode = reply_code };
+            //    logger.WithProperty("msgDetail", detail).
+            //           Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
+            //                    , function, vhID, seqNum, attenion_vaule_1);
+            //}
+            //else if (message is ID_39_PAUSE_REQUEST)
+            //{
+            //    var id_39 = message as ID_39_PAUSE_REQUEST;
+            //    var event_tpye = id_39.EventType;
+            //    var pause_tpye = id_39.PauseType;
+            //    var attenion_vaule_1 = new { pauseEventType = event_tpye, pauseType = pause_tpye };
+            //    logger.WithProperty("msgDetail", detail).
+            //           Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
+            //                    , function, vhID, seqNum, attenion_vaule_1);
+            //}
+            //else if (message is ID_139_PAUSE_RESPONSE)
+            //{
+            //    var id_139 = message as ID_139_PAUSE_RESPONSE;
+            //    var event_tpye = id_139.EventType;
+            //    var attenion_vaule_1 = new { pauseEventType = event_tpye, repleCode = id_139.ReplyCode };
+            //    logger.WithProperty("msgDetail", detail).
+            //           Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
+            //                    , function, vhID, seqNum, attenion_vaule_1);
+            //}
+            //else if (message is ID_43_STATUS_REQUEST)
+            //{
+            //    var id_43 = message as ID_43_STATUS_REQUEST;
+            //    var attenionVaule_1 = new
+            //    {
+            //        time = id_43.SystemTime
+            //    };
+            //    logger.WithProperty("msgDetail", detail).
+            //           Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
+            //                    , function, vhID, seqNum, attenionVaule_1);
+            //}
+            //else if (message is ID_143_STATUS_RESPONSE)
+            //{
+            //    var id_143 = message as ID_143_STATUS_RESPONSE;
+            //    var mode = id_143.ModeStatus;
+            //    var action = id_143.ActionStatus;
+            //    var error = id_143.ErrorStatus == VhStopSingle.StopSingleOn;
+            //    var pause = id_143.PauseStatus == VhStopSingle.StopSingleOn;
+            //    var block = id_143.BlockingStatus == VhStopSingle.StopSingleOn;
+            //    var obs = id_143.ObstacleStatus == VhStopSingle.StopSingleOn;
+            //    var hid = id_143.HIDStatus == VhStopSingle.StopSingleOn;
+            //    var earquake = id_143.EarthquakePauseTatus == VhStopSingle.StopSingleOn;
+            //    var safety = id_143.SafetyPauseStatus == VhStopSingle.StopSingleOn;
+            //    var has_box = id_143.HasBox;
+            //    var cmd_box_id = id_143.BOXID;
+            //    var car_box_id = id_143.CarBoxID;
 
-                var attenionVaule_1 = new
-                {
-                    Mode = mode,
-                    Action = action,
-                    Error = error,
-                    Pause = pause,
-                    Block = block,
-                    Obs = obs,
-                    HID = hid,
-                    Earquake = earquake,
-                    Safety = safety,
-                    HasBox = has_box,
-                    CmdBoxID = cmd_box_id,
-                    CarBoxID = car_box_id
-                };
-                logger.WithProperty("msgDetail", detail).
-                       Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
-                                , function, vhID, seqNum, attenionVaule_1);
-            }
-            else if (message is ID_144_STATUS_CHANGE_REP)
-            {
-                var id_144 = message as ID_144_STATUS_CHANGE_REP;
-                var mode = id_144.ModeStatus;
-                var action = id_144.ActionStatus;
-                var error = id_144.ErrorStatus == VhStopSingle.StopSingleOn;
-                var pause = id_144.PauseStatus == VhStopSingle.StopSingleOn;
-                var block = id_144.BlockingStatus == VhStopSingle.StopSingleOn;
-                var obs = id_144.ObstacleStatus == VhStopSingle.StopSingleOn;
-                var hid = id_144.HIDStatus == VhStopSingle.StopSingleOn;
-                var earquake = id_144.EarthquakePauseTatus == VhStopSingle.StopSingleOn;
-                var safety = id_144.SafetyPauseStatus == VhStopSingle.StopSingleOn;
-                var has_box = id_144.HasBox;
-                var cmd_box_id = id_144.BOXID;
-                var car_box_id = id_144.CarBoxID;
+            //    var attenionVaule_1 = new
+            //    {
+            //        Mode = mode,
+            //        Action = action,
+            //        Error = error,
+            //        Pause = pause,
+            //        Block = block,
+            //        Obs = obs,
+            //        HID = hid,
+            //        Earquake = earquake,
+            //        Safety = safety,
+            //        HasBox = has_box,
+            //        CmdBoxID = cmd_box_id,
+            //        CarBoxID = car_box_id
+            //    };
+            //    logger.WithProperty("msgDetail", detail).
+            //           Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
+            //                    , function, vhID, seqNum, attenionVaule_1);
+            //}
+            //else if (message is ID_144_STATUS_CHANGE_REP)
+            //{
+            //    var id_144 = message as ID_144_STATUS_CHANGE_REP;
+            //    var mode = id_144.ModeStatus;
+            //    var action = id_144.ActionStatus;
+            //    var error = id_144.ErrorStatus == VhStopSingle.StopSingleOn;
+            //    var pause = id_144.PauseStatus == VhStopSingle.StopSingleOn;
+            //    var block = id_144.BlockingStatus == VhStopSingle.StopSingleOn;
+            //    var obs = id_144.ObstacleStatus == VhStopSingle.StopSingleOn;
+            //    var hid = id_144.HIDStatus == VhStopSingle.StopSingleOn;
+            //    var earquake = id_144.EarthquakePauseTatus == VhStopSingle.StopSingleOn;
+            //    var safety = id_144.SafetyPauseStatus == VhStopSingle.StopSingleOn;
+            //    var has_box = id_144.HasBox;
+            //    var cmd_box_id = id_144.BOXID;
+            //    var car_box_id = id_144.CarBoxID;
 
-                var attenionVaule_1 = new
-                {
-                    Mode = mode,
-                    Action = action,
-                    Error = error,
-                    Pause = pause,
-                    Block = block,
-                    Obs = obs,
-                    HID = hid,
-                    Earquake = earquake,
-                    Safety = safety,
-                    HasBox = has_box,
-                    CmdBoxID = cmd_box_id,
-                    CarBoxID = car_box_id
-                };
-                logger.WithProperty("msgDetail", detail).
-                       Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
-                                , function, vhID, seqNum, attenionVaule_1);
-            }
+            //    var attenionVaule_1 = new
+            //    {
+            //        Mode = mode,
+            //        Action = action,
+            //        Error = error,
+            //        Pause = pause,
+            //        Block = block,
+            //        Obs = obs,
+            //        HID = hid,
+            //        Earquake = earquake,
+            //        Safety = safety,
+            //        HasBox = has_box,
+            //        CmdBoxID = cmd_box_id,
+            //        CarBoxID = car_box_id
+            //    };
+            //    logger.WithProperty("msgDetail", detail).
+            //           Info(vh, "{method} | {vhID} | {seqNum} {@attenionVaule}"
+            //                    , function, vhID, seqNum, attenionVaule_1);
+            //}
 
         }
 

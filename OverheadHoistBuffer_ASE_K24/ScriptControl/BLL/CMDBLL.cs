@@ -4524,7 +4524,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         {
                             LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(CMDBLL), Device: string.Empty,
                                Data: $"can't send command ,id:{SCUtility.Trim(cmd.CMD_ID)},vh id:{SCUtility.Trim(cmd.VH_ID)} current status not allowed." +
-                               $"is connect:{assignVH.isTcpIpConnect },is error:{assignVH.IsError }, current assign ohtc cmd id:{assignVH.OHTC_CMD}." +
+                               $"is connect:{assignVH.isTcpIpConnect},is error:{assignVH.IsError}, current assign ohtc cmd id:{assignVH.OHTC_CMD}." +
                                $"assignVH.ACT_STATUS:{assignVH.ACT_STATUS}.");
                             continue;
                         }
@@ -6136,9 +6136,40 @@ namespace com.mirle.ibg3k0.sc.BLL
                 app = _app;
             }
 
-            public ACMD_OHTC getExcuteCmd(string cmdID)
+            public (bool isExist, ACMD_OHTC cmdOHTC) tryGetExcuteCmd(string cmdID)
             {
-                return new ACMD_OHTC();
+                try
+                {
+                    var excute_cmds_ohtc = ACMD_OHTC.CMD_OHTC_InfoList.ToArray();
+                    var excute_cmd_ohtc = excute_cmds_ohtc.Select(cmd_ohtcKeyValue => cmd_ohtcKeyValue.Value)
+                                                          .Where(cmd_ohtc => SCUtility.isMatche(cmd_ohtc.CMD_ID, cmdID))
+                                                          .FirstOrDefault();
+
+                    return (excute_cmd_ohtc != null, excute_cmd_ohtc);
+                }
+
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                    return (false, null);
+                }
+            }
+            public (bool isExist, ACMD_MCS cmdMCS) tryGetCMD_MCS(string cmdID)
+            {
+                try
+                {
+                    var excute_cmds_mcs = ACMD_MCS.tryGetMCSCommandList();
+
+                    var excute_cmd_mcs = excute_cmds_mcs.Where(cmd_mcs => SCUtility.isMatche(cmd_mcs.CMD_ID, cmdID)).FirstOrDefault();
+
+                    return (excute_cmd_mcs != null, excute_cmd_mcs);
+                }
+
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                    return (false, null);
+                }
             }
             public bool IsExcuteCmdByToAdr(string adrID)
             {
@@ -6167,6 +6198,59 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     logger.Error(ex, "Exception");
                     return new List<ACMD_OHTC>();
+                }
+            }
+
+            public List<ACMD_OHTC> loadUnfinishMoveCmd()
+            {
+                try
+                {
+                    var excute_cmd_ohtcs = ACMD_OHTC.CMD_OHTC_InfoList.ToArray();
+                    var excute_move_cmd_ohtcs = excute_cmd_ohtcs.
+                                                Where(cmd_keyValus => cmd_keyValus.Value.CMD_TPYE == E_CMD_TYPE.Move).
+                                                Select(cmd_keyValus => cmd_keyValus.Value).
+                                                ToList();
+                    return excute_move_cmd_ohtcs;
+                }
+
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                    return new List<ACMD_OHTC>();
+                }
+            }
+            public bool IsExcuteCmdOhtc(string vhID)
+            {
+                try
+                {
+                    var excute_cmd_ohtcs = ACMD_OHTC.CMD_OHTC_InfoList.ToArray();
+
+                    int excute_cmd_count_by_oht_id = excute_cmd_ohtcs.Where(cmd_keyValue => SCUtility.isMatche(cmd_keyValue.Value.VH_ID, vhID)).Count();
+
+                    return excute_cmd_count_by_oht_id > 0;
+                }
+
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                    return false;
+                }
+            }
+            public bool hasCMD_MCSByHostSourcePort(string hostPortID)
+            {
+                try
+                {
+                    var excute_cmds_mcs = ACMD_MCS.tryGetMCSCommandList();
+
+                    int excute_cmd_count_by_oht_id = excute_cmds_mcs.Where(cmd_mcs => SCUtility.isMatche(cmd_mcs.HOSTSOURCE, hostPortID)).Count();
+
+                    return excute_cmd_count_by_oht_id > 0;
+                }
+
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                    return false;
                 }
             }
         }

@@ -42,7 +42,6 @@ namespace com.mirle.ibg3k0.sc
         public bool IsAvoid
         { get { return AddressTypeFlags[BIT_INDEX_AVOID]; } }
 
-
         public bool HasVhWillComeHere(BLL.CMDBLL cmdBLL)
         {
             try

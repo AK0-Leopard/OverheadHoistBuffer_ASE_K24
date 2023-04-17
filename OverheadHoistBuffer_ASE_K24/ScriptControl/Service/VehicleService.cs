@@ -2315,7 +2315,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        private void tryDriveOutTheVh(string willPassVhID, string inTheWayVhID)
+        private void tryDriveOutTheVh(string willPassVhID, string onTheWayVhID)
         {
             if (!DebugParameter.IsAutoDriveOut)
             {
@@ -2329,7 +2329,14 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 try
                 {
-                    findTheVhOfAvoidAddress(willPassVhID, inTheWayVhID);
+                    if (DebugParameter.IsOpenParkingZoneControlFunction)
+                    {
+                        findTheVhOfAvoidAddressNew(willPassVhID, onTheWayVhID);
+                    }
+                    else
+                    {
+                        findTheVhOfAvoidAddress(willPassVhID, onTheWayVhID);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -2384,7 +2391,46 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             return is_success;
         }
+        private bool findTheVhOfAvoidAddressNew(string willPassVhID, string inTheWayVhID)
+        {
+            bool is_success = false;
+            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                                   Data: $"start try drive out vh:{inTheWayVhID}...",
+                                   VehicleID: willPassVhID);
 
+            //確認能否把該Vh趕走
+            AVEHICLE on_the_way_vh = scApp.VehicleBLL.cache.getVhByID(inTheWayVhID);
+            var check_can_excute_parking_cmd = on_the_way_vh.CanCreatParkingCommand(scApp.CMDBLL);
+
+            if (check_can_excute_parking_cmd.is_can)
+            {
+                AVEHICLE will_pass_vh = scApp.VehicleBLL.cache.getVhByID(willPassVhID);
+                var find_result = findNotConflictSectionAndAvoidAddressNew(will_pass_vh, on_the_way_vh);
+                if (find_result.isFind)
+                {
+                    is_success = scApp.CMDBLL.doCreatTransferCommand(inTheWayVhID,
+                                                                         cmd_type: E_CMD_TYPE.Move,
+                                                                         destination_address: find_result.avoidAdr);
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"Try to notify vh avoid,requestVh:{willPassVhID} reservedVh:{inTheWayVhID} avoid address:{find_result.avoidAdr}," +
+                             $" is success :{is_success}.",
+                       VehicleID: willPassVhID);
+                }
+                else
+                {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"Can't find the avoid address.",
+                       VehicleID: willPassVhID);
+                }
+            }
+            else
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"start try drive out vh:{inTheWayVhID},but vh status not ready,reason:{check_can_excute_parking_cmd.result}",
+                   VehicleID: willPassVhID);
+            }
+            return is_success;
+        }
         private (bool isFind, string avoidAdr) findAvoidAddressForFixPort(AVEHICLE willDrivenAwayVh)
         {
             //1.找看看是否有設定的固定避車點。
@@ -2514,6 +2560,181 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             return (nearest_address != null, nearest_address);
         }
+
+
+        private (bool isFind, string avoidAdr) findNotConflictSectionAndAvoidAddressNew
+            (AVEHICLE willPassVh, AVEHICLE findAvoidAdrOfVh)
+        {
+            string needToAvoidAdr = findNeedAvoidAddress(willPassVh);
+
+
+            bool isFindNotConflict = TryFindAvoidAddress(willPassVh, findAvoidAdrOfVh, needToAvoidAdr, out string escapeAddress);
+            if (isFindNotConflict)
+            {
+                return (true, escapeAddress);
+            }
+            bool isFindClosest = TryFindAvoidAddress(willPassVh, findAvoidAdrOfVh, "", out string escapeAddressClosest);
+            if (isFindClosest)
+            {
+                return (true, escapeAddressClosest);
+            }
+            return (false, "");
+
+        }
+
+        private string findNeedAvoidAddress(AVEHICLE willPassVh)
+        {
+            if (!willPassVh.IsExcuteCMD_OHTC)
+                return "";
+            if (willPassVh.IsExcuteCMD_MCS)
+            {
+                var get_mcs_cmd_resutl = scApp.CMDBLL.cache.tryGetCMD_MCS(willPassVh.MCS_CMD);
+                if (get_mcs_cmd_resutl.isExist)
+                {
+                    var cmd_mcs = get_mcs_cmd_resutl.cmdMCS;
+                    if (cmd_mcs.COMMANDSTATE < ACMD_MCS.COMMAND_STATUS_BIT_INDEX_ENROUTE)
+                    {
+                        var source_port_station = scApp.PortStationBLL.OperateCatch.getPortStation(cmd_mcs.HOSTSOURCE);
+                        return source_port_station == null ? string.Empty : source_port_station.ADR_ID;
+                    }
+                    else
+                    {
+                        var dest_port_station = scApp.PortStationBLL.OperateCatch.getPortStation(cmd_mcs.HOSTDESTINATION);
+                        return dest_port_station == null ? string.Empty : dest_port_station.ADR_ID;
+                    }
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            else
+            {
+                var get_ohtc_cmd_resutl = scApp.CMDBLL.cache.tryGetExcuteCmd(willPassVh.OHTC_CMD);
+                if (get_ohtc_cmd_resutl.isExist)
+                {
+                    var cmd_ohtc = get_ohtc_cmd_resutl.cmdOHTC;
+                    if (cmd_ohtc.CMD_TPYE == E_CMD_TYPE.Move)
+                    {
+                        return cmd_ohtc.DESTINATION_ADR;
+                    }
+                    else
+                    {
+                        return "";
+                    }
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+        private bool TryFindAvoidAddress(AVEHICLE commandingVehicle, AVEHICLE escapedVehicle, string needToAvoidAdr, out string escapeAddressID)
+        {
+            try
+            {
+                bool isSuccess = false;
+                escapeAddressID = String.Empty;
+                List<string> bypassSections = new List<string>();
+                if (!string.IsNullOrEmpty(needToAvoidAdr))
+                    bypassSections = scApp.SectionBLL.cache.GetSectionsByToAddress(needToAvoidAdr).Select(s => s.SEC_ID).ToList();
+
+                var avoidAddresses = scApp.ParkingZoneBLL.LoadAvoidParkingzoneAddresses(escapedVehicle);
+                isSuccess = findBestEscapeAddress(avoidAddresses, commandingVehicle, escapedVehicle.CUR_ADR_ID, bypassSections, out escapeAddressID);
+                if (!isSuccess)
+                {
+                    avoidAddresses = scApp.AddressBLL.cache.LoadCanAvoidAddresses()
+                        .Where(adr => !adr.ADR_ID.Equals(escapedVehicle.CUR_ADR_ID))
+                        .Select(adr => adr.ADR_ID.Trim()).ToList();
+                    isSuccess = findBestEscapeAddress(avoidAddresses, commandingVehicle, escapedVehicle.CUR_ADR_ID, bypassSections, out escapeAddressID);
+                }
+                return isSuccess;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+                escapeAddressID = String.Empty;
+                return false;
+            }
+        }
+        //private bool findBestEscapeAddress(List<string> avoidAddresses, AVEHICLE commandingVehicle, string escapedVehicleaddress, List<string> bypassSections, out string escapeAddressID)
+        //{
+        //    int minCost = int.MaxValue;
+        //    bool isSuccess = false;
+        //    escapeAddressID = String.Empty;
+        //    foreach (var avoidPoint in avoidAddresses)
+        //    {
+        //        bool isOKPoint;
+        //        //確認退讓車移位後的結果，是否不在命令車的路徑上了，若找不到車輛路徑則無條件通過
+        //        if (commandingVehicle.WillPassSectionID == null || commandingVehicle.WillPassSectionID.Count == 0)
+        //            isOKPoint = true;
+        //        else
+        //            isOKPoint = !commandingVehicle.WillPassAddressIDs.Contains(avoidPoint);
+        //        if (isOKPoint)
+        //        {
+        //            //通過移位後路權檢驗，確認cost
+        //            var roadCheckResult = scApp.GuideBLL.getGuideInfo(escapedVehicleaddress, avoidPoint, bypassSections);
+        //            //logToVehicleServiceLogger($"check avoid candidate address {avoidPoint.ADR_ID}, " +
+        //            //    $"PassVehicle:{commandingVehicle.VEHICLE_ID}, AvoidVehicle:{escapedVehicle.VEHICLE_ID}, cost:{roadCheckResult.totalCost}.", LogLevel.Info);
+        //            if (roadCheckResult.totalCost < minCost && roadCheckResult.totalCost != 0)
+        //            {
+        //                minCost = roadCheckResult.totalCost;
+        //                escapeAddressID = avoidPoint;
+        //                isSuccess = true;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            //移位後路權檢驗不通過
+        //            //logToVehicleServiceLogger($"Remove {avoidPoint.ADR_ID} from avoid candidate address list.", LogLevel.Info);
+        //        }
+        //    }
+        //    return isSuccess;
+        //}
+        private bool findBestEscapeAddress(List<string> avoidAddresses, AVEHICLE commandingVehicle, string escapedVehicleaddress, List<string> bypassSections, out string escapeAddressID)
+        {
+            int minCost = int.MaxValue;
+            bool isSuccess = false;
+            escapeAddressID = String.Empty;
+            foreach (var avoidPoint in avoidAddresses)
+            {
+                if (checkAvoidAdrIsCommandingVhWillPass(commandingVehicle, avoidPoint))
+                {
+                    continue;
+                }
+                var roadCheckResult = scApp.GuideBLL.getGuideInfo(escapedVehicleaddress, avoidPoint, bypassSections);
+                if (roadCheckResult.totalCost < minCost && roadCheckResult.totalCost != 0)
+                {
+                    minCost = roadCheckResult.totalCost;
+                    escapeAddressID = avoidPoint;
+                    isSuccess = true;
+                }
+            }
+            return isSuccess;
+        }
+        private bool checkAvoidAdrIsCommandingVhWillPass(AVEHICLE commandingVh, string avoidAdr)
+        {
+            if (commandingVh.WillPassSectionID == null || commandingVh.WillPassSectionID.Count == 0)
+            {
+                return false;
+            }
+
+            var avoid_sections = scApp.SectionBLL.cache.GetSectionsByToAddress(avoidAdr);
+            if (avoid_sections == null || avoid_sections.Count == 0)
+            {
+                return false;
+            }
+            foreach (var avoid_sec in avoid_sections)
+            {
+                if (commandingVh.WillPassSectionID.Contains(avoid_sec.SEC_ID))
+                {
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
 
         private void PositionReport_LoadingUnloading(BCFApplication bcfApp, AVEHICLE eqpt, ID_136_TRANS_EVENT_REP recive_str, int seq_num, EventType eventType)
         {
@@ -4367,143 +4588,155 @@ namespace com.mirle.ibg3k0.sc.Service
         [ClassAOPAspect]
         public void CommandCompleteReport(string tcpipAgentName, BCFApplication bcfApp, AVEHICLE vh, ID_132_TRANS_COMPLETE_REPORT recive_str, int seq_num)
         {
-            if (scApp.getEQObjCacheManager().getLine().ServerPreStop)
-                return;
-            LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, recive_str, seq_num);
-            string vh_id = vh.VEHICLE_ID;
-            string finish_ohxc_cmd = vh.OHTC_CMD;
-            string finish_mcs_cmd = vh.MCS_CMD;
-            string cmd_id = recive_str.CmdID;
-            int travel_dis = recive_str.CmdDistance;
-            CompleteStatus completeStatus = recive_str.CmpStatus;
-            string cur_sec_id = recive_str.CurrentSecID;
-            string cur_adr_id = recive_str.CurrentAdrID;
-            string cst_id = SCUtility.Trim(recive_str.CSTID, true);
-            VhLoadCarrierStatus vhLoadCSTStatus = recive_str.HasCst;
-            string car_cst_id = recive_str.BOXID;
-            bool isSuccess = true;
-            bool is_direct_finish = true;
-            ACMD_MCS cmd_mcs = scApp.CMDBLL.getCMD_MCSByID(finish_mcs_cmd);
-            if (cmd_mcs != null)
+            try
             {
-                if (cmd_mcs.IsScanCommand)
+                vh.isCommandEnding = true;
+                if (scApp.getEQObjCacheManager().getLine().ServerPreStop)
+                    return;
+                LogHelper.RecordReportInfoByQueue(scApp, scApp.CMDBLL, vh, recive_str, seq_num);
+                string vh_id = vh.VEHICLE_ID;
+                string finish_ohxc_cmd = vh.OHTC_CMD;
+                string finish_mcs_cmd = vh.MCS_CMD;
+                string cmd_id = recive_str.CmdID;
+                int travel_dis = recive_str.CmdDistance;
+                CompleteStatus completeStatus = recive_str.CmpStatus;
+                string cur_sec_id = recive_str.CurrentSecID;
+                string cur_adr_id = recive_str.CurrentAdrID;
+                string cst_id = SCUtility.Trim(recive_str.CSTID, true);
+                VhLoadCarrierStatus vhLoadCSTStatus = recive_str.HasCst;
+                string car_cst_id = recive_str.BOXID;
+                bool isSuccess = true;
+                bool is_direct_finish = true;
+                ACMD_MCS cmd_mcs = scApp.CMDBLL.getCMD_MCSByID(finish_mcs_cmd);
+                if (cmd_mcs != null)
                 {
-                    is_direct_finish = true;
-                }
-                else
-                {
-                    if (cmd_mcs.isLoading || cmd_mcs.isUnloading)
+                    if (cmd_mcs.IsScanCommand)
                     {
-                        is_direct_finish = false;
+                        is_direct_finish = true;
+                    }
+                    else
+                    {
+                        if (cmd_mcs.isLoading || cmd_mcs.isUnloading)
+                        {
+                            is_direct_finish = false;
+                        }
                     }
                 }
-            }
-            if (scApp.CMDBLL.isCMCD_OHTCFinish(cmd_id))
-            {
-                replyCommandComplete(vh, seq_num, finish_ohxc_cmd, finish_mcs_cmd);
-
-                LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                   Data: $"commnad id:{cmd_id} has already process. well pass this report.",
-                   VehicleID: vh.VEHICLE_ID,
-                   CarrierID: vh.CST_ID);
-                return;
-            }
-
-            if (recive_str.CmpStatus == CompleteStatus.CmpStatusInterlockError)
-            {
-                scApp.TransferService.OHT_TransferStatus(finish_ohxc_cmd,
-                    vh.VEHICLE_ID, ACMD_MCS.COMMAND_STATUS_BIT_INDEX_InterlockError);
-                //B0.03
-                scApp.TransferService.OHBC_AlarmSet(vh.VEHICLE_ID, ((int)AlarmLst.OHT_INTERLOCK_ERROR).ToString());
-                scApp.TransferService.OHBC_AlarmCleared(vh.VEHICLE_ID, ((int)AlarmLst.OHT_INTERLOCK_ERROR).ToString());
-                //
-            }
-            else if (recive_str.CmpStatus == CompleteStatus.CmpStatusVehicleAbort)
-            {
-                if (!is_direct_finish)
+                if (scApp.CMDBLL.isCMCD_OHTCFinish(cmd_id))
                 {
-                    //not thing...
+                    replyCommandComplete(vh, seq_num, finish_ohxc_cmd, finish_mcs_cmd);
+
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                       Data: $"commnad id:{cmd_id} has already process. well pass this report.",
+                       VehicleID: vh.VEHICLE_ID,
+                       CarrierID: vh.CST_ID);
+                    return;
+                }
+
+                if (recive_str.CmpStatus == CompleteStatus.CmpStatusInterlockError)
+                {
+                    scApp.TransferService.OHT_TransferStatus(finish_ohxc_cmd,
+                        vh.VEHICLE_ID, ACMD_MCS.COMMAND_STATUS_BIT_INDEX_InterlockError);
+                    //B0.03
+                    scApp.TransferService.OHBC_AlarmSet(vh.VEHICLE_ID, ((int)AlarmLst.OHT_INTERLOCK_ERROR).ToString());
+                    scApp.TransferService.OHBC_AlarmCleared(vh.VEHICLE_ID, ((int)AlarmLst.OHT_INTERLOCK_ERROR).ToString());
+                    //
+                }
+                else if (recive_str.CmpStatus == CompleteStatus.CmpStatusVehicleAbort)
+                {
+                    if (!is_direct_finish)
+                    {
+                        //not thing...
+                    }
+                    else
+                    {
+                        scApp.TransferService.OHT_TransferStatus(finish_ohxc_cmd,
+                            vh.VEHICLE_ID, ACMD_MCS.COMMAND_STATUS_BIT_INDEX_VEHICLE_ABORT);
+                        //B0.03
+                        scApp.TransferService.OHBC_AlarmSet(vh.VEHICLE_ID, ((int)AlarmLst.OHT_VEHICLE_ABORT).ToString());
+                        scApp.TransferService.OHBC_AlarmCleared(vh.VEHICLE_ID, ((int)AlarmLst.OHT_VEHICLE_ABORT).ToString());
+                    }
+                    //
+                }
+                //todo id mismatch、id read fail
+                else if (recive_str.CmpStatus == CompleteStatus.CmpStatusIdmisMatch)
+                {
+                    scApp.TransferService.CommandCompleteByIDMismatch(vh_id, finish_ohxc_cmd);
+
+                }
+                else if (recive_str.CmpStatus == CompleteStatus.CmpStatusIdreadFailed)
+                {
+                    scApp.TransferService.CommandCompleteByIDReadFail(vh_id, finish_ohxc_cmd);
+                }
+                else if (recive_str.CmpStatus == CompleteStatus.CmpStatusCancel)
+                {
+                    scApp.TransferService.CommandCompleteByCancel(vh_id, finish_ohxc_cmd);
+                }
+                else if (recive_str.CmpStatus == CompleteStatus.CmpStatusAbort)
+                {
+                    scApp.TransferService.CommandCompleteByAbort(vh_id, finish_ohxc_cmd);
                 }
                 else
                 {
                     scApp.TransferService.OHT_TransferStatus(finish_ohxc_cmd,
-                        vh.VEHICLE_ID, ACMD_MCS.COMMAND_STATUS_BIT_INDEX_VEHICLE_ABORT);
-                    //B0.03
-                    scApp.TransferService.OHBC_AlarmSet(vh.VEHICLE_ID, ((int)AlarmLst.OHT_VEHICLE_ABORT).ToString());
-                    scApp.TransferService.OHBC_AlarmCleared(vh.VEHICLE_ID, ((int)AlarmLst.OHT_VEHICLE_ABORT).ToString());
+                        vh.VEHICLE_ID, ACMD_MCS.COMMAND_STATUS_BIT_INDEX_COMMNAD_FINISH);
                 }
-                //
-            }
-            //todo id mismatch、id read fail
-            else if (recive_str.CmpStatus == CompleteStatus.CmpStatusIdmisMatch)
-            {
-                scApp.TransferService.CommandCompleteByIDMismatch(vh_id, finish_ohxc_cmd);
-
-            }
-            else if (recive_str.CmpStatus == CompleteStatus.CmpStatusIdreadFailed)
-            {
-                scApp.TransferService.CommandCompleteByIDReadFail(vh_id, finish_ohxc_cmd);
-            }
-            else if (recive_str.CmpStatus == CompleteStatus.CmpStatusCancel)
-            {
-                scApp.TransferService.CommandCompleteByCancel(vh_id, finish_ohxc_cmd);
-            }
-            else if (recive_str.CmpStatus == CompleteStatus.CmpStatusAbort)
-            {
-                scApp.TransferService.CommandCompleteByAbort(vh_id, finish_ohxc_cmd);
-            }
-            else
-            {
-                scApp.TransferService.OHT_TransferStatus(finish_ohxc_cmd,
-                    vh.VEHICLE_ID, ACMD_MCS.COMMAND_STATUS_BIT_INDEX_COMMNAD_FINISH);
-            }
 
 
-            if (recive_str.CmpStatus == CompleteStatus.CmpStatusVehicleAbort)
-            {
-                if (is_direct_finish)
-                    isSuccess = finishOHTCCmd(vh, cmd_id, finish_mcs_cmd, completeStatus);
-            }
-            else
-            {
-                isSuccess = finishOHTCCmd(vh, cmd_id, finish_mcs_cmd, completeStatus);
-
-                scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID);
-            }
-
-
-            replyCommandComplete(vh, seq_num, finish_ohxc_cmd, finish_mcs_cmd);
-            scApp.CMDBLL.removeAllWillPassSection(vh.VEHICLE_ID);
-            //scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID); 20221004 若是Vehicle abort就不直接將路權移除
-            //scApp.ReserveBLL.TryAddReservedSection(vh.VEHICLE_ID, vh.CUR_SEC_ID);
-
-            if (DebugParameter.IsDebugMode && DebugParameter.IsCycleRun)
-            {
-                SpinWait.SpinUntil(() => false, 3000);
-                TestCycleRun(vh, cmd_id);
-            }
-            else
-            {
-                checkIsMoveToMTxDevice(vh, completeStatus, cur_adr_id);
-            }
-
-            if (scApp.getEQObjCacheManager().getLine().SCStats == ALINE.TSCState.PAUSING)
-            {
-                List<ACMD_MCS> cmd_mcs_lst = scApp.CMDBLL.loadACMD_MCSIsUnfinished();
-                if (cmd_mcs_lst.Count == 0)
+                if (recive_str.CmpStatus == CompleteStatus.CmpStatusVehicleAbort)
                 {
-                    scApp.LineService.TSCStateToPause("");
+                    if (is_direct_finish)
+                        isSuccess = finishOHTCCmd(vh, cmd_id, finish_mcs_cmd, completeStatus);
                 }
+                else
+                {
+                    isSuccess = finishOHTCCmd(vh, cmd_id, finish_mcs_cmd, completeStatus);
+
+                    scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID);
+                }
+
+
+                replyCommandComplete(vh, seq_num, finish_ohxc_cmd, finish_mcs_cmd);
+                scApp.CMDBLL.removeAllWillPassSection(vh.VEHICLE_ID);
+                //scApp.ReserveBLL.RemoveAllReservedSectionsByVehicleID(vh.VEHICLE_ID); 20221004 若是Vehicle abort就不直接將路權移除
+                //scApp.ReserveBLL.TryAddReservedSection(vh.VEHICLE_ID, vh.CUR_SEC_ID);
+
+                if (DebugParameter.IsDebugMode && DebugParameter.IsCycleRun)
+                {
+                    SpinWait.SpinUntil(() => false, 3000);
+                    TestCycleRun(vh, cmd_id);
+                }
+                else
+                {
+                    checkIsMoveToMTxDevice(vh, completeStatus, cur_adr_id);
+                }
+
+                if (scApp.getEQObjCacheManager().getLine().SCStats == ALINE.TSCState.PAUSING)
+                {
+                    List<ACMD_MCS> cmd_mcs_lst = scApp.CMDBLL.loadACMD_MCSIsUnfinished();
+                    if (cmd_mcs_lst.Count == 0)
+                    {
+                        scApp.LineService.TSCStateToPause("");
+                    }
+                }
+                Task.Run(() =>
+                {
+                    scApp.TransferService.TransferRun();//B0.08.0 處發TransferRun，使MCS命令可以在多車情形下早於趕車CMD下達。
+                });
+                vh.onCommandComplete(completeStatus);
+                //if (recive_str.CmpStatus == CompleteStatus.CmpStatusLoadunload)
+                //{
+                //    scApp.TransferService.findTransferCommandByVhViewer(vh);
+                //}
             }
-            Task.Run(() =>
+            catch (Exception ex)
             {
-                scApp.TransferService.TransferRun();//B0.08.0 處發TransferRun，使MCS命令可以在多車情形下早於趕車CMD下達。
-            });
-            vh.onCommandComplete(completeStatus);
-            //if (recive_str.CmpStatus == CompleteStatus.CmpStatusLoadunload)
-            //{
-            //    scApp.TransferService.findTransferCommandByVhViewer(vh);
-            //}
+                logger.Error(ex, "Exception:");
+            }
+            finally
+            {
+                vh.isCommandEnding = false;
+            }
         }
 
         private void checkIsMoveToMTxDevice(AVEHICLE vh, CompleteStatus completeStatus, string curAdrID)
