@@ -86,7 +86,8 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         public List<string> LoadAvoidParkingzoneAddresses(AVEHICLE avoidVH)
         {
-            return cache.LoadAllParkingZoneInfo().Where(PZ => PZ.AllowedVehicleTypes.Contains(avoidVH.VEHICLE_TYPE) && (PZ.UsedCount < (PZ.Capacity + 1)))
+            //return cache.LoadAllParkingZoneInfo().Where(PZ => PZ.AllowedVehicleTypes.Contains(avoidVH.VEHICLE_TYPE) && (PZ.UsedCount < (PZ.Capacity + 1)))
+            return cache.LoadAllParkingZoneInfo().Where(PZ => PZ.AllowedVehicleTypes.Contains(avoidVH.VEHICLE_TYPE) && (PZ.UsedCount < (PZ.Capacity)))
                                                  .SelectMany(PZ => PZ.ParkAddressIDs).ToList();
         }
 

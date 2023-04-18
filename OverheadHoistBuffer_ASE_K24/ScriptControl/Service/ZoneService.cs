@@ -64,6 +64,9 @@ namespace com.mirle.ibg3k0.sc.Service
             {
                 pkvhs = pkvhs.Where(vh => underWaterLevelParkingZone.AllowedVehicleTypes.Contains(vh.VEHICLE_TYPE)).ToList();
             }
+            string correspond_vh_ids = string.Join(",", pkvhs.Select(vh => vh.VEHICLE_ID));
+            LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(ZoneService), Device: string.Empty,
+                Data: $"找尋低水位停車區:{underWaterLevelParkingZone.ParkingZoneID} 可支援車輛，進行目前閒置車輛:{correspond_vh_ids}。");
 
             int minDistance = int.MaxValue;
             int distToPark;
@@ -83,17 +86,23 @@ namespace com.mirle.ibg3k0.sc.Service
             // 若找到的車在停車區內且該停車區的水位低於其最低水位 則不拉車
             if ((minDistance < int.MaxValue) && (bestVH != null))
             {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(ZoneService), Device: string.Empty,
+                    Data: $"低水位停車區:{underWaterLevelParkingZone.ParkingZoneID}，找到最近的閒置車輛:{bestVH.VEHICLE_ID} 開始嘗試拉車...");
                 ParkingZone bestvhPZ = GetParkingZonebyAdr(bestVH.CUR_ADR_ID);
                 //if ((bestvhPZ != null) && (bestvhPZ.GetUsage(pkvhs, ufcmds) < bestvhPZ.LowWaterlevel))
                 if ((bestvhPZ != null) && (bestvhPZ.UsedCount < bestvhPZ.LowWaterlevel))
                 {
+                    LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(ZoneService), Device: string.Empty,
+                        Data: $"最近的閒置車輛:{bestVH.VEHICLE_ID} 位於低水位停車區:{bestvhPZ.ParkingZoneID}，取消拉車功能。");
                     bestVH = null;
                     return false;
                 }
                 else
                 {
                     //if (canCreatPZCommand(bestVH))
-                    if (bestVH.CanCreatParkingCommand(scApp.CMDBLL).is_can)
+                    var check_can_creat_parking_command = bestVH.CanCreatParkingCommand(scApp.CMDBLL);
+                    //if (bestVH.CanCreatParkingCommand(scApp.CMDBLL).is_can)
+                    if (check_can_creat_parking_command.is_can)
                     {
                         //bool is_success = VehicleService.Command.Move(bestVH.VEHICLE_ID, underWaterLevelParkingZone.EntryAddress).isSuccess;
 
@@ -101,11 +110,22 @@ namespace com.mirle.ibg3k0.sc.Service
                                                                               cmd_type: E_CMD_TYPE.Move,
                                                                               destination_address: underWaterLevelParkingZone.EntryAddress);
                     }
+                    else
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(ZoneService), Device: string.Empty,
+                                      Data: $"最近的閒置車輛:{bestVH.VEHICLE_ID} 不能創建停車命令 reason:{check_can_creat_parking_command.result}，取消拉車功能。");
+                        bestVH = null;
+                        return false;
+                    }
                 }
                 return true;
             }
             else
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(ZoneService), Device: string.Empty,
+                              Data: $"並無找到適合的Idle車輛");
                 return false;
+            }
         }
         public void pushAllParkingZone()
         {

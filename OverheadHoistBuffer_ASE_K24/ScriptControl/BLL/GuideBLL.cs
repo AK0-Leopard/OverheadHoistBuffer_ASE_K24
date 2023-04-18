@@ -24,13 +24,18 @@ namespace com.mirle.ibg3k0.sc.BLL
         public (bool isSuccess, List<string> guideSegmentIds, List<string> guideSectionIds, List<string> guideAddressIds, int totalCost)
         getGuideInfoForMtx(string startAddress, string targetAddress)
         {
-            return getGuideInfo(startAddress, targetAddress, null);
+            return getGuideInfoInternalUse(startAddress, targetAddress, null);
         }
         public (bool isSuccess, List<string> guideSegmentIds, List<string> guideSectionIds, List<string> guideAddressIds, int totalCost)
-        getGuideInfo(string startAddress, string targetAddress)
+        getGuideInfo(string startAddress, string targetAddress, List<string> byPassSectionIDs = null)
         {
-            List<string> mtx_section_ids = scApp.MTLService.All_Mtx_Devic_Section_Ids;
             List<string> by_pass_section_ids = new List<string>();
+            if (byPassSectionIDs != null && byPassSectionIDs.Any())
+            {
+                by_pass_section_ids.AddRange(byPassSectionIDs);
+            }
+
+            List<string> mtx_section_ids = scApp.MTLService.All_Mtx_Devic_Section_Ids;
             by_pass_section_ids.AddRange(mtx_section_ids);
             if (!DebugParameter.IsPaassErrorVhAndTrackStatus)
             {
@@ -42,11 +47,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(GuideBLL), Device: "OHx",
                    Data: $"Pass error vh and tarck status");
             }
-            return getGuideInfo(startAddress, targetAddress, by_pass_section_ids);
+            return getGuideInfoInternalUse(startAddress, targetAddress, by_pass_section_ids);
         }
 
-        public (bool isSuccess, List<string> guideSegmentIds, List<string> guideSectionIds, List<string> guideAddressIds, int totalCost)
-        getGuideInfo(string startAddress, string targetAddress, List<string> byPassSectionIDs)
+        private (bool isSuccess, List<string> guideSegmentIds, List<string> guideSectionIds, List<string> guideAddressIds, int totalCost)
+        getGuideInfoInternalUse(string startAddress, string targetAddress, List<string> byPassSectionIDs)
         {
             if (SCUtility.isMatche(startAddress, targetAddress))
             {
@@ -101,14 +106,14 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return (false, int.MaxValue);
             }
         }
-        public (bool isSuccess, int distance) IsRoadWalkable(string startAddress, string targetAddress)
+        public (bool isSuccess, int distance) IsRoadWalkable(string startAddress, string targetAddress, List<string> byPassSectionIDs = null)
         {
             try
             {
                 if (SCUtility.isMatche(startAddress, targetAddress))
                     return (true, 0);
 
-                var guide_info = getGuideInfo(startAddress, targetAddress);
+                var guide_info = getGuideInfo(startAddress, targetAddress, byPassSectionIDs);
                 //if ((guide_info.guideAddressIds != null && guide_info.guideAddressIds.Count != 0) &&
                 //    ((guide_info.guideSectionIds != null && guide_info.guideSectionIds.Count != 0)))
                 if (guide_info.isSuccess)

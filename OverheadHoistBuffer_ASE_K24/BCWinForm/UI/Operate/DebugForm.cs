@@ -95,6 +95,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_checkTrackAlive.Checked = DebugParameter.IsOpenCheckTrackAlive;
             cb_ByPassEFEMEqStatus.Checked = DebugParameter.IsOpenByPassEFEMStatus;
             cb_openEFEMPrelunloadFun.Checked = DebugParameter.IsOpenEFEMPreUnloadOkFun;
+            cb_IsOpenParkingZoneAutoPullFun.Checked = DebugParameter.IsOpenParkingZoneAutoPull;
+            cb_IsOpenParkingZoneFun.Checked = DebugParameter.IsOpenParkingZoneControlFunction;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -1567,6 +1569,27 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void cb_openEFEMPrelunloadFun_CheckedChanged(object sender, EventArgs e)
         {
             DebugParameter.IsOpenEFEMPreUnloadOkFun = cb_openEFEMPrelunloadFun.Checked;
+        }
+
+        private void cb_IsOpenParkingZoneAutoPullFun_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsOpenParkingZoneAutoPull = cb_IsOpenParkingZoneAutoPullFun.Checked;
+        }
+
+        private void cb_IsOpenParkingZoneFun_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsOpenParkingZoneControlFunction = cb_IsOpenParkingZoneFun.Checked;
+        }
+
+        private void uctlButton2_Click(object sender, EventArgs e)
+        {
+            var will_pass_vh = bcApp.SCApplication.VehicleBLL.cache.getVhByID("B6_OHB01_CR01");
+            var on_the_way_vh = bcApp.SCApplication.VehicleBLL.cache.getVhByID("B6_OHB01_CR06");
+            on_the_way_vh.CUR_ADR_ID = "13002";
+            on_the_way_vh.ACT_STATUS = sc.ProtocolFormat.OHTMessage.VHActionStatus.NoCommand;
+            on_the_way_vh.MODE_STATUS = sc.ProtocolFormat.OHTMessage.VHModeStatus.AutoRemote;
+            on_the_way_vh.isTcpIpConnect = true;
+            bcApp.SCApplication.VehicleService.TestDriveOutTheVh(will_pass_vh.VEHICLE_ID, on_the_way_vh.VEHICLE_ID);
         }
     }
 }

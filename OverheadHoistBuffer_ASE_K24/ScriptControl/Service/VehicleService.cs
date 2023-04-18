@@ -2315,6 +2315,10 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
+        public void TestDriveOutTheVh(string willPassVhID, string onTheWayVhID)
+        {
+            tryDriveOutTheVh(willPassVhID, onTheWayVhID);
+        }
         private void tryDriveOutTheVh(string willPassVhID, string onTheWayVhID)
         {
             if (!DebugParameter.IsAutoDriveOut)
@@ -2727,15 +2731,15 @@ namespace com.mirle.ibg3k0.sc.Service
                            VehicleID: commandingVehicle.VEHICLE_ID);
                     continue;
                 }
-                var roadCheckResult = scApp.GuideBLL.getGuideInfo(escapedVehicleaddress, avoidPoint, bypassSections);
+                var roadCheckResult = scApp.GuideBLL.IsRoadWalkable(escapedVehicleaddress, avoidPoint, bypassSections);
                 if (roadCheckResult.isSuccess)
                 {
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
-                           Data: $"停車點:{avoidPoint} 距離:{roadCheckResult.totalCost}",
+                           Data: $"停車點:{avoidPoint} 距離:{roadCheckResult.distance}",
                            VehicleID: commandingVehicle.VEHICLE_ID);
-                    if (roadCheckResult.totalCost < minCost && roadCheckResult.totalCost > 0)
+                    if (roadCheckResult.distance < minCost && roadCheckResult.distance > 0)
                     {
-                        minCost = roadCheckResult.totalCost;
+                        minCost = roadCheckResult.distance;
                         escapeAddressID = avoidPoint;
                         isSuccess = true;
                     }
