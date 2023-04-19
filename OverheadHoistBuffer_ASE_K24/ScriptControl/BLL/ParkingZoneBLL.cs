@@ -87,8 +87,18 @@ namespace com.mirle.ibg3k0.sc.BLL
         public List<string> LoadAvoidParkingzoneAddresses(AVEHICLE avoidVH)
         {
             //return cache.LoadAllParkingZoneInfo().Where(PZ => PZ.AllowedVehicleTypes.Contains(avoidVH.VEHICLE_TYPE) && (PZ.UsedCount < (PZ.Capacity + 1)))
-            return cache.LoadAllParkingZoneInfo().Where(PZ => PZ.AllowedVehicleTypes.Contains(avoidVH.VEHICLE_TYPE) && (PZ.UsedCount < (PZ.Capacity)))
-                                                 .SelectMany(PZ => PZ.ParkAddressIDs).ToList();
+            var enough_position_parking_zone = cache.LoadAllParkingZoneInfo().Where(PZ => PZ.AllowedVehicleTypes.Contains(avoidVH.VEHICLE_TYPE) && (PZ.UsedCount < (PZ.Capacity))).ToList();
+            var check_vh_is_in_parking_zone = cache.tryGetParkingZonebyAdr(avoidVH.CUR_ADR_ID);
+            if (check_vh_is_in_parking_zone.isFind)
+            {
+                if (!enough_position_parking_zone.Contains(check_vh_is_in_parking_zone.parkingZone))
+                {
+                    enough_position_parking_zone.Add(check_vh_is_in_parking_zone.parkingZone);
+                }
+            }
+            return enough_position_parking_zone.SelectMany(PZ => PZ.ParkAddressIDs).ToList();
+            //return cache.LoadAllParkingZoneInfo().Where(PZ => PZ.AllowedVehicleTypes.Contains(avoidVH.VEHICLE_TYPE) && (PZ.UsedCount < (PZ.Capacity)))
+            //                                 .SelectMany(PZ => PZ.ParkAddressIDs).ToList();
         }
 
         public class Database
@@ -129,6 +139,19 @@ namespace com.mirle.ibg3k0.sc.BLL
             public List<ParkingZone> LoadAllParkingZoneInfo()
             {
                 return CommObjCacheManager.GetAllParkingZonesInfos();
+            }
+            public (bool isFind, ParkingZone parkingZone) tryGetParkingZonebyAdr(string address)
+            {
+                List<ParkingZone> parkingZones = LoadAllParkingZoneInfo();
+
+                foreach (ParkingZone pz in parkingZones)
+                {
+                    if (pz.ParkAddressIDs.Contains(address))
+                    {
+                        return (true, pz);
+                    }
+                }
+                return (false, null);
             }
         }
     }

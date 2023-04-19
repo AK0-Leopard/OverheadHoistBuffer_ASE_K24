@@ -1584,7 +1584,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void uctlButton2_Click(object sender, EventArgs e)
         {
             var will_pass_vh = bcApp.SCApplication.VehicleBLL.cache.getVhByID("B6_OHB01_CR01");
-            var on_the_way_vh = bcApp.SCApplication.VehicleBLL.cache.getVhByID("B6_OHB01_CR06");
+            var on_the_way_vh = bcApp.SCApplication.VehicleBLL.cache.getVhByID("B6_OHB01_CR02");
             on_the_way_vh.CUR_ADR_ID = "13002";
             on_the_way_vh.ACT_STATUS = sc.ProtocolFormat.OHTMessage.VHActionStatus.NoCommand;
             on_the_way_vh.MODE_STATUS = sc.ProtocolFormat.OHTMessage.VHModeStatus.AutoRemote;
