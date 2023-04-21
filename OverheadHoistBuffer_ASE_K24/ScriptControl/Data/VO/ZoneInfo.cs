@@ -1,4 +1,5 @@
-﻿using System;
+﻿using com.mirle.ibg3k0.sc.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,7 +43,8 @@ namespace com.mirle.ibg3k0.sc.Data.VO
             }
             foreach (var cmd in executingCommands)
             {
-                if (ParkAddressIDs.Contains(cmd.DESTINATION.Trim()))
+                //if (ParkAddressIDs.Contains(cmd.DESTINATION.Trim()))
+                if (ParkAddressIDs.Contains(SCUtility.Trim(cmd.DESTINATION_ADR, true)))
                     usedParkingSlot++;
             }
             UsedCount = usedParkingSlot;

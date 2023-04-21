@@ -89,11 +89,17 @@ namespace com.mirle.ibg3k0.sc.BLL
             //return cache.LoadAllParkingZoneInfo().Where(PZ => PZ.AllowedVehicleTypes.Contains(avoidVH.VEHICLE_TYPE) && (PZ.UsedCount < (PZ.Capacity + 1)))
             var enough_position_parking_zone = cache.LoadAllParkingZoneInfo().Where(PZ => PZ.AllowedVehicleTypes.Contains(avoidVH.VEHICLE_TYPE) && (PZ.UsedCount < (PZ.Capacity))).ToList();
             var check_vh_is_in_parking_zone = cache.tryGetParkingZonebyAdr(avoidVH.CUR_ADR_ID);
+           
             if (check_vh_is_in_parking_zone.isFind)
             {
                 if (!enough_position_parking_zone.Contains(check_vh_is_in_parking_zone.parkingZone))
                 {
-                    enough_position_parking_zone.Add(check_vh_is_in_parking_zone.parkingZone);
+                    //兩台車 2 - 1 < 2 (一台包含自己)
+                    //三台車 3 - 1 < 2 (一台包含自己)
+                    if (check_vh_is_in_parking_zone.parkingZone.UsedCount - 1 < check_vh_is_in_parking_zone.parkingZone.Capacity)
+                    {
+                        enough_position_parking_zone.Add(check_vh_is_in_parking_zone.parkingZone);
+                    }
                 }
             }
             return enough_position_parking_zone.SelectMany(PZ => PZ.ParkAddressIDs).ToList();
