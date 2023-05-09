@@ -487,7 +487,7 @@ Id,PositionX,PositionY,IsWorkStation,CanLeftLoad,CanLeftUnload,CanRightLoad,CanR
 10875,27629,49118,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
 10876,27629,50768,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
 10877,27629,52568,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
-10878,27629,53908,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
+10878,27629,54898,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
 10838,26000,53338,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
 11839,26000,51838,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0
 11840,26000,50338,True,True,False,False,False,False,None,None,True,False,Left,False,0,0,0,0,0

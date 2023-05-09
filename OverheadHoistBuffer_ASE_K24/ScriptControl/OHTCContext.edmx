@@ -360,6 +360,9 @@
           <Property Name="EQPT_ID" Type="char" MaxLength="15" Nullable="false" />
           <Property Name="ALAM_CODE" Type="char" MaxLength="10" Nullable="false" />
           <Property Name="ENABLE_FLG" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="USER_ID" Type="char" MaxLength="10" />
+          <Property Name="REASON" Type="nvarchar" MaxLength="80" />
+          <Property Name="DISABLE_TIME" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="ALINE">
           <Key>
@@ -2705,6 +2708,9 @@
           <Property Name="EQPT_ID" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
           <Property Name="ALAM_CODE" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="ENABLE_FLG" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="USER_ID" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="REASON" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="DISABLE_TIME" Type="DateTime" Precision="7" />
         </EntityType>
         <EnumType Name="E_PORT_STATUS">
           <Member Name="OutOfService" Value="1" />
@@ -4132,6 +4138,9 @@
           <EntitySetMapping Name="ALARMRPTCOND">
             <EntityTypeMapping TypeName="IsTypeOf(OHTC_DevModel.ALARMRPTCOND)">
               <MappingFragment StoreEntitySet="ALARMRPTCOND">
+                <ScalarProperty Name="DISABLE_TIME" ColumnName="DISABLE_TIME" />
+                <ScalarProperty Name="REASON" ColumnName="REASON" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="EQPT_ID" ColumnName="EQPT_ID" />
                 <ScalarProperty Name="ALAM_CODE" ColumnName="ALAM_CODE" />
                 <ScalarProperty Name="ENABLE_FLG" ColumnName="ENABLE_FLG" />

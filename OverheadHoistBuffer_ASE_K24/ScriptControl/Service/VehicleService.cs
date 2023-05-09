@@ -546,7 +546,6 @@ namespace com.mirle.ibg3k0.sc.Service
                 return;
             }
             string leave_section_id = e.LeaveSection;
-            //ASECTION leave_section = scApp.SectionBLL.cache.GetSection(e.LeaveSection);
             ASECTION leave_section = scApp.SectionBLL.cache.GetSection(leave_section_id);
             if (leave_section == null)
             {
@@ -576,7 +575,6 @@ namespace com.mirle.ibg3k0.sc.Service
                        VehicleID: vh.VEHICLE_ID);
                 }
             }
-
             var entry_sec_related_blocks = scApp.BlockControlBLL.cache.loadBlockZoneMasterBySectionID(e.EntrySection);
             //var leave_sec_related_blocks = scApp.BlockControlBLL.cache.loadBlockZoneMasterBySectionID(e.LeaveSection);
             var leave_sec_related_blocks = scApp.BlockControlBLL.cache.loadBlockZoneMasterBySectionID(leave_section_id);
@@ -593,14 +591,6 @@ namespace com.mirle.ibg3k0.sc.Service
                    Data: $"vh:{vh.VEHICLE_ID} leave block {leave_block.ENTRY_SEC_ID},remove reserved.",
                    VehicleID: vh.VEHICLE_ID);
             }
-
-            //if (vh.WillPassSectionID != null && leave_section != null)
-            //{
-            //    vh.WillPassSectionID.Remove(SCUtility.Trim(leave_section.SEC_ID, true));
-            //}
-            //tryDriveOutTheVhByLocationChange(vh);
-
-
         }
         const int ADVANCE_DRIVE_OUT_DISTANCE_IN_GUIDE_SECTION_MM = 20000;
         const int ADVANCE_DRIVE_OUT_DISTANCE_NOT_IN_GUIDE_SECTION_MM = 2000;

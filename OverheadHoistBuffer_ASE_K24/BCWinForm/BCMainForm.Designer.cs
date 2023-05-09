@@ -95,6 +95,7 @@ namespace com.mirle.ibg3k0.bc.winform
             this.reserveInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.shelfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zh_twToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -109,7 +110,7 @@ namespace com.mirle.ibg3k0.bc.winform
             this.搬送模擬ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.port內容值ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.命令卡匣資料ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.trackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alarmEnableDisableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.CMS_OnLineMode.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -371,7 +372,8 @@ namespace com.mirle.ibg3k0.bc.winform
             this.reserveInfoToolStripMenuItem,
             this.toolStripSeparator2,
             this.shelfToolStripMenuItem,
-            this.trackToolStripMenuItem});
+            this.trackToolStripMenuItem,
+            this.alarmEnableDisableToolStripMenuItem});
             this.mataToolStripMenuItem.Name = "mataToolStripMenuItem";
             resources.ApplyResources(this.mataToolStripMenuItem, "mataToolStripMenuItem");
             // 
@@ -420,6 +422,12 @@ namespace com.mirle.ibg3k0.bc.winform
             this.shelfToolStripMenuItem.Name = "shelfToolStripMenuItem";
             resources.ApplyResources(this.shelfToolStripMenuItem, "shelfToolStripMenuItem");
             this.shelfToolStripMenuItem.Click += new System.EventHandler(this.shelfToolStripMenuItem_Click);
+            // 
+            // trackToolStripMenuItem
+            // 
+            this.trackToolStripMenuItem.Name = "trackToolStripMenuItem";
+            resources.ApplyResources(this.trackToolStripMenuItem, "trackToolStripMenuItem");
+            this.trackToolStripMenuItem.Click += new System.EventHandler(this.trackToolStripMenuItem_Click);
             // 
             // languageToolStripMenuItem
             // 
@@ -515,11 +523,11 @@ namespace com.mirle.ibg3k0.bc.winform
             this.命令卡匣資料ToolStripMenuItem.Name = "命令卡匣資料ToolStripMenuItem";
             this.命令卡匣資料ToolStripMenuItem.Click += new System.EventHandler(this.命令卡匣資料ToolStripMenuItem_Click);
             // 
-            // trackToolStripMenuItem
+            // alarmEnableDisableToolStripMenuItem
             // 
-            this.trackToolStripMenuItem.Name = "trackToolStripMenuItem";
-            resources.ApplyResources(this.trackToolStripMenuItem, "trackToolStripMenuItem");
-            this.trackToolStripMenuItem.Click += new System.EventHandler(this.trackToolStripMenuItem_Click);
+            this.alarmEnableDisableToolStripMenuItem.Name = "alarmEnableDisableToolStripMenuItem";
+            resources.ApplyResources(this.alarmEnableDisableToolStripMenuItem, "alarmEnableDisableToolStripMenuItem");
+            this.alarmEnableDisableToolStripMenuItem.Click += new System.EventHandler(this.alarmEnableDisableToolStripMenuItem_Click);
             // 
             // BCMainForm
             // 
@@ -679,6 +687,7 @@ namespace com.mirle.ibg3k0.bc.winform
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem shelfToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem trackToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem alarmEnableDisableToolStripMenuItem;
     }
 
     /// <summary>

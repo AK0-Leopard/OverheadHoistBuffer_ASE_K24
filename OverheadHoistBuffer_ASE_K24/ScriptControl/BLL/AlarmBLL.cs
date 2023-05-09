@@ -30,6 +30,8 @@ using com.mirle.ibg3k0.sc.BLL.Interface;
 using com.mirle.ibg3k0.sc.Data.Enum;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
 using CommonMessage.ProtocolFormat.AlarmFun;
+using System.Drawing;
+using static com.mirle.ibg3k0.sc.Data.SECS.ASE.S2F49_TRANSFEREXT.REPITEM.CST.CARR;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
@@ -426,7 +428,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             return true;
         }
 
-        public bool enableAlarmReport(string alarm_id, Boolean isEnable)
+        public bool enableAlarmReport(string eqID, string alarm_id, Boolean isEnable, string userID = "", string reason = "")
         {
             bool isSuccess = true;
             try
@@ -436,34 +438,201 @@ namespace com.mirle.ibg3k0.sc.BLL
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
                     ALARMRPTCOND cond = null;
-                    cond = alarmRptCondDao.getRptCond(con, alarm_id);
+                    DateTime? disable_time = null;
+                    if (isEnable)
+                    {
+                        disable_time = null;
+                    }
+                    else
+                    {
+                        disable_time = DateTime.Now;
+                    }
+                    cond = alarmRptCondDao.getRptCond(con, eqID, alarm_id);
                     if (cond != null)
                     {
                         cond.ENABLE_FLG = enable_flag;
-                        alarmRptCondDao.insertRptCond(con, cond);
+                        cond.USER_ID = userID;
+                        cond.REASON = reason;
+                        cond.DISABLE_TIME = disable_time;
+                        alarmRptCondDao.updateRptCond(con, cond);
                     }
                     else
                     {
                         cond = new ALARMRPTCOND()
                         {
+                            EQPT_ID = eqID,
                             ALAM_CODE = alarm_id,
-                            ENABLE_FLG = enable_flag
+                            ENABLE_FLG = enable_flag,
+                            USER_ID = userID,
+                            REASON = reason,
+                            DISABLE_TIME = disable_time
                         };
                         alarmRptCondDao.insertRptCond(con, cond);
                     }
                 }
+                scApp.getCommObjCacheManager().RefreshAlarmReportCond();
             }
             catch (Exception ex)
             {
-                isSuccess = true;
+                isSuccess = false;
                 logger.Error(ex, "Exception");
             }
             return isSuccess;
+        }
+        public List<ALARMRPTCOND> loadAllAlarmRptCond()
+        {
+            List<ALARMRPTCOND> alarm_rpt_conds = null;
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                alarm_rpt_conds = alarmRptCondDao.loadAllRptCond(con);
+            }
+            return alarm_rpt_conds;
+        }
+
+
+        public bool isReportAlarmReport2MCS(string eqID, string alarmID, bool isDeviceType = false)
+        {
+            try
+            {
+                string device_type = eqID;
+                if (!isDeviceType)
+                    device_type = getAlarmDeviceType(eqID);
+                var alarm_report_conds = scApp.getCommObjCacheManager().getAlarmReportConds();
+                if (alarm_report_conds == null) return true;
+                var alarm_report_cond = alarm_report_conds.Where(cond => SCUtility.isMatche(cond.EQPT_ID, device_type) &&
+                                                                        SCUtility.isMatche(cond.ALAM_CODE, alarmID))
+                                                          .FirstOrDefault();
+                if (alarm_report_cond == null) return true;
+                return SCUtility.isMatche(alarm_report_cond.ENABLE_FLG, SCAppConstants.YES_FLAG);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+                return false;
+            }
+        }
+        public string getAlarmDeviceType(string eq_id)
+        {
+            string alarmUnitType = "LINE";
+
+            if (scApp.TransferService.isUnitType(eq_id, UnitType.AGV))
+            {
+                alarmUnitType = "AGV";
+            }
+            else if (scApp.TransferService.isUnitType(eq_id, UnitType.CRANE))
+            {
+                alarmUnitType = "CRANE";
+            }
+            else if (scApp.TransferService.isUnitType(eq_id, UnitType.NTB))
+            {
+                alarmUnitType = "NTB";
+            }
+            else if (scApp.TransferService.isUnitType(eq_id, UnitType.OHCV)
+                  || scApp.TransferService.isUnitType(eq_id, UnitType.STK)
+               )
+            {
+                int stage = scApp.TransferService.portINIData[eq_id].Stage;
+
+                if (stage == 7)
+                {
+                    alarmUnitType = "OHCV_7";
+                }
+                else
+                {
+                    alarmUnitType = "OHCV_5";
+                }
+            }
+            else if (scApp.TransferService.isUnitType(eq_id, UnitType.AGVZONE))
+            {
+                //B7_OHBLINE1_ST01
+                alarmUnitType = "LINE";
+            }
+            else if (scApp.TransferService.isUnitType(eq_id, UnitType.MANUALPORT))
+            {
+                //B7_OHBLINE1_ST01
+                alarmUnitType = "MANUALPORT";
+            }
+            else if (scApp.TransferService.isUnitType(eq_id, UnitType.EQ) ||
+                     scApp.TransferService.isUnitType(eq_id, UnitType.NTB))
+            {
+                //不會上報Eq的alarm
+            }
+            else if (scApp.UnitBLL.cache.IsTrack(eq_id))
+            {
+                alarmUnitType = "TRACK";
+            }
+            else if (scApp.EquipmentBLL.cache.IsEFEM(eq_id))
+            {
+                alarmUnitType = "EFEM";
+            }
+            return alarmUnitType;
+        }
+        public string getAlarmReportCondUserID(string deviceID, string alarmID)
+        {
+            try
+            {
+                var alarm_report_conds = scApp.getCommObjCacheManager().getAlarmReportConds();
+                if (alarm_report_conds == null) return "";
+                var alarm_report_cond = alarm_report_conds.Where(cond => SCUtility.isMatche(cond.EQPT_ID, deviceID) &&
+                                                                        SCUtility.isMatche(cond.ALAM_CODE, alarmID))
+                                                          .FirstOrDefault();
+                if (alarm_report_cond == null) return "";
+                return alarm_report_cond.USER_ID;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+                return "";
+            }
+        }
+        public string getAlarmReportCondReason(string deviceID, string alarmID)
+        {
+            try
+            {
+                var alarm_report_conds = scApp.getCommObjCacheManager().getAlarmReportConds();
+                if (alarm_report_conds == null) return "";
+                var alarm_report_cond = alarm_report_conds.Where(cond => SCUtility.isMatche(cond.EQPT_ID, deviceID) &&
+                                                                        SCUtility.isMatche(cond.ALAM_CODE, alarmID))
+                                                          .FirstOrDefault();
+                if (alarm_report_cond == null) return "";
+                return alarm_report_cond.REASON;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+                return "";
+            }
+        }
+        public string getAlarmReportCondDisableTime(string deviceID, string alarmID)
+        {
+            try
+            {
+                var alarm_report_conds = scApp.getCommObjCacheManager().getAlarmReportConds();
+                if (alarm_report_conds == null) return "";
+                var alarm_report_cond = alarm_report_conds.Where(cond => SCUtility.isMatche(cond.EQPT_ID, deviceID) &&
+                                                                        SCUtility.isMatche(cond.ALAM_CODE, alarmID))
+                                                          .FirstOrDefault();
+                if (alarm_report_cond == null) return "";
+                var disable_dateTime = alarm_report_cond.DISABLE_TIME.HasValue ?
+                                       alarm_report_cond.DISABLE_TIME.Value.ToString(SCAppConstants.DateTimeFormat_22) :
+                                       "";
+                return disable_dateTime;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception:");
+                return "";
+            }
         }
 
         public List<AlarmMap> loadAlarmMaps()
         {
             List<AlarmMap> alarmMaps = alarmMapDao.loadAlarmMaps();
+            return alarmMaps;
+        }
+        public List<AlarmMap> loadAlarmMaps(string eqObject)
+        {
+            List<AlarmMap> alarmMaps = alarmMapDao.loadAlarmMapsByEQRealID(eqObject);
             return alarmMaps;
         }
 

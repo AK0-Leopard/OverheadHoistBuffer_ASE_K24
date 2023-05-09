@@ -46,6 +46,7 @@ namespace com.mirle.ibg3k0.sc.Common
         private CommonInfo CommonInfo;
         private List<ABLOCKZONEMASTER> BlockZoneMasters;
         private List<ParkingZone> ParkingZones = null;
+        private List<ALARMRPTCOND> AlarmReportCond;
 
         private CommObjCacheManager() { }
         public static CommObjCacheManager getInstance()
@@ -75,6 +76,7 @@ namespace com.mirle.ibg3k0.sc.Common
             BlockZoneMasters = scApp.MapBLL.loadAllBlockZoneMaster();
             ParkingZones = scApp.ParkingZoneBLL.getAllParkingZoneData();
             ReserveEnhanceInfos = scApp.ReserveEnhanceInfoDao.loadReserveInfos(scApp);
+            AlarmReportCond = scApp.AlarmBLL.loadAllAlarmRptCond();
             foreach (ASEGMENT segment in Segments)
             {
                 segment.SetSectionList(scApp.SectionBLL);
@@ -179,6 +181,10 @@ namespace com.mirle.ibg3k0.sc.Common
         {
             return ReserveEnhanceInfos;
         }
+        public List<ALARMRPTCOND> getAlarmReportConds()
+        {
+            return AlarmReportCond;
+        }
 
         #endregion
 
@@ -194,6 +200,11 @@ namespace com.mirle.ibg3k0.sc.Common
         public List<ParkingZone> GetAllParkingZonesInfos()
         {
             return ParkingZones;
+        }
+
+        internal void RefreshAlarmReportCond()
+        {
+            AlarmReportCond = scApp.AlarmBLL.loadAllAlarmRptCond();
         }
 
         #region 將最新物件資料，放置入Cache的方法

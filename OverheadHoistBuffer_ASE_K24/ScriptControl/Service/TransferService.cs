@@ -8036,6 +8036,16 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 if (alarm != null)
                 {
+                    bool is_need_report = scApp.AlarmBLL.isReportAlarmReport2MCS(eqName, errCode);
+                    if (!is_need_report)
+                    {
+                        TransferServiceLogger.Info
+                        (
+                            $"{DateTime.Now.ToString("HH:mm:ss.fff ")} OHT_AlarmSet| eq type:{eqName} code:{errCode} set 發生，不需要報告MCS"
+                        );
+                        return;
+                    }
+
                     if (alarm.ALAM_LVL == E_ALARM_LVL.Error)
                     {
                         reportBLL.ReportAlarmHappend(ErrorStatus.ErrSet, alarm.ALAM_CODE, alarm.ALAM_DESC);
