@@ -707,6 +707,7 @@
     <None Include="Config\ASE_K24\TcpIpConnectionSetting.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Config\EquipmentDefs_simple.config" />
     <None Include="Config\Hsinchu_2F\AddressBaseDefs_simple.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
