@@ -5806,7 +5806,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 string alarmCode = ((int)alarm).ToString();
                 string alarmDesc = alarm.ToString();
                 //逐一上報
-                scApp.TransferService.OHBC_AlarmSet(e.railChanger_No, alarmCode, alarmDesc);
+                scApp.TransferService.OHBC_AlarmSet(e.railChanger_No, alarmCode, alarmDesc, "");
                 LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
                     Data: $"Track({e.railChanger_No}) alarm is happend, alarm Code:{alarmCode}, alarm Desc: {alarmDesc} ");
                 //Data: $"Find vehicle {vehicleCache.VEHICLE_ID}, vehicle address Id = {vehicleCache.CUR_ADR_ID}, = port address ID {portAddressID}");

@@ -125,7 +125,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
         private object lock_obj_alarm = new object();
 
-        public ALARM setAlarmReport(string node_id, string eq_id, string error_code, ACMD_MCS mcsCmdData, string desc)
+        public ALARM setAlarmReport(string node_id, string eq_id, string error_code, ACMD_MCS mcsCmdData, string desc, string onEQCstID = null)
         {
             lock (lock_obj_alarm)
             {
@@ -239,6 +239,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     alarm.CMD_ID = SCUtility.Trim(mcsCmdData.CMD_ID, true);
                     alarm.CARRIER_ID = SCUtility.Trim(mcsCmdData.CARRIER_ID, true);
+                }
+                else if (!SCUtility.isEmpty(onEQCstID))
+                {
+                    alarm.CARRIER_ID = SCUtility.Trim(onEQCstID, true);
                 }
 
                 if (scApp.TransferService.isUnitType(eq_id, UnitType.CRANE))

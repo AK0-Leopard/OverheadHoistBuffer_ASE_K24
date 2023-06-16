@@ -7973,10 +7973,10 @@ namespace com.mirle.ibg3k0.sc.Service
 
         public void OHBC_AlarmSet(string _eqName, string errCode)
         {
-            OHBC_AlarmSet(_eqName, errCode, "");
+            OHBC_AlarmSet(_eqName, errCode, "", "");
         }
 
-        public void OHBC_AlarmSet(string _eqName, string errCode, string desc)
+        public void OHBC_AlarmSet(string _eqName, string errCode, string desc, string onEQCstID)
         {
             try
             {
@@ -8032,7 +8032,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 ACMD_MCS mcsCmdData = cmdBLL.getCMD_ByOHTName(eqName).FirstOrDefault();
 
-                ALARM alarm = scApp.AlarmBLL.setAlarmReport(null, eqName, errCode, mcsCmdData, desc);
+                ALARM alarm = scApp.AlarmBLL.setAlarmReport(null, eqName, errCode, mcsCmdData, desc, onEQCstID: onEQCstID);
 
                 if (alarm != null)
                 {

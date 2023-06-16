@@ -82,8 +82,8 @@ namespace com.mirle.ibg3k0.sc.Data.PLC_Functions.EFEM
         //[PLCElement(ValueName = "MGV_TO_OHxC_STAGE1CARRIERID")]
         //public string CarrierIdOfStage1;
 
-        //[PLCElement(ValueName = "MGV_TO_OHxC_BCRREADRESULT")]
-        //public string CarrierIdReadResult;
+        [PLCElement(ValueName = "MGV_TO_OHxC_BCRREADRESULT")]
+        public string CarrierIdReadResult;
 
         //[PLCElement(ValueName = "MGV_TO_OHxC_CSTTYPE")]
         //public UInt16 CstTypes;

@@ -82,13 +82,15 @@ namespace com.mirle.ibg3k0.sc.Service
                 IEFEMValueDefMapAction efem_valus_map_action = sender as IEFEMValueDefMapAction;
                 var port_station = scApp.PortStationBLL.OperateCatch.getPortStationByID(efem_valus_map_action.PortName);
                 UInt16[] alarm_codes = args.efemPortInfo.AlarmCodes;
-                WriteLog($"Process eq:{port_station.EQPT_ID} Port:{efem_valus_map_action.PortName} alarm report,alarm code:{string.Join(",", alarm_codes)}.");
+                string on_eq_cst_id = args.efemPortInfo.CarrierIdReadResult;
+
+                WriteLog($"Process eq:{port_station.EQPT_ID} Port:{efem_valus_map_action.PortName} alarm report,alarm code:{string.Join(",", alarm_codes)}, cst id:{on_eq_cst_id}.");
                 foreach (var alarm_code in alarm_codes)
                 {
                     if (alarm_code == 0)
                         continue;
                     string s_alarm_code = alarm_code.ToString();
-                    scApp.TransferService.OHBC_AlarmSet(port_station.EQPT_ID, s_alarm_code);
+                    scApp.TransferService.OHBC_AlarmSet(port_station.EQPT_ID, s_alarm_code, "", on_eq_cst_id);
                 }
                 WriteLog($"set error index:{args.efemPortInfo.ErrorIndex} to eq:{port_station.EQPT_ID} Port:{efem_valus_map_action.PortName}.");
                 efem_valus_map_action.SetControllerErrorIndexAsync(args.efemPortInfo.ErrorIndex);
