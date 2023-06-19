@@ -17,6 +17,7 @@ using com.mirle.ibg3k0.bcf.Controller;
 using com.mirle.ibg3k0.bcf.Data.VO;
 using com.mirle.ibg3k0.sc.App;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.EFEM;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Events.EFEM;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface;
 using com.mirle.ibg3k0.sc.Data.VO;
@@ -313,5 +314,32 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             return Task.CompletedTask;
         }
 
+        public Task ShowComingOutCarrierOnMonitorAsync(string carrierId)
+        {
+            return Task.Run(() =>
+            {
+                var function = scApp.getFunBaseObj<EFEMPortPLCControl_ComingOutCarrierId>(port.PORT_ID) as EFEMPortPLCControl_ComingOutCarrierId;
+                try
+                {
+                    carrierId = carrierId.Trim();
+
+                    if (carrierId.Length > 14)
+                        carrierId = carrierId.Substring(0, 14);
+
+                    function.ComingOutCarrierId = carrierId;
+
+                    function.Write(bcfApp, port.EqptObjectCate, port.PORT_ID);
+                    logger.Info(function.ToString());
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    scApp.putFunBaseObj<EFEMPortPLCControl_ComingOutCarrierId>(function);
+                }
+            });
+        }
     }
 }

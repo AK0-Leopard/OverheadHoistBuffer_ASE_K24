@@ -243,6 +243,11 @@ namespace com.mirle.ibg3k0.sc.BLL
                 else if (!SCUtility.isEmpty(onEQCstID))
                 {
                     alarm.CARRIER_ID = SCUtility.Trim(onEQCstID, true);
+                    alarm.ALAM_DESC = $"{alarmMap.ALARM_DESC}({alarm.CARRIER_ID})";
+                    if (alarm.ALAM_DESC.Length >= 80)
+                    {
+                        alarm.ALAM_DESC = alarm.ALAM_DESC.Substring(0, 80);
+                    }
                 }
 
                 if (scApp.TransferService.isUnitType(eq_id, UnitType.CRANE))

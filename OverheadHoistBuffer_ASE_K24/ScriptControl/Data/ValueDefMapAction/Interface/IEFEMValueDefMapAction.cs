@@ -12,6 +12,7 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction.Interface
 
         event EFEMEventHandler OnAlarmClear;
         Task NotifyAcquireStartedFromEQPortAsync(bool isOn);
+        Task ShowComingOutCarrierOnMonitorAsync(string carrierId);
 
     }
 }

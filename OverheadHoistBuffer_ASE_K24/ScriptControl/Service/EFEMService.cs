@@ -24,7 +24,9 @@ namespace com.mirle.ibg3k0.sc.Service
         private Logger logger = LogManager.GetLogger("EFEMLogger");
 
         private string now { get => DateTime.Now.ToString("HH:mm:ss.fff"); }
-
+        private ConcurrentDictionary<string, IEFEMValueDefMapAction> efemPorts { get; set; }
+        private ConcurrentDictionary<string, string> comingOutCarrierOfEFEMPorts { get; set; }
+        private ConcurrentDictionary<string, string> lastComingOutCarrierOfEFEMPorts { get; set; }
 
         sc.App.SCApplication scApp = null;
 
@@ -46,11 +48,19 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private void RegisterEvent(IEnumerable<IEFEMValueDefMapAction> ports)
         {
-
+            comingOutCarrierOfEFEMPorts = new ConcurrentDictionary<string, string>();
+            lastComingOutCarrierOfEFEMPorts = new ConcurrentDictionary<string, string>();
+            efemPorts = new ConcurrentDictionary<string, IEFEMValueDefMapAction>();
             foreach (var port in ports)
             {
                 port.OnAlarmHappen += Port_OnAlarmHappen;
                 port.OnAlarmClear += Port_OnAlarmClear;
+
+
+                efemPorts.TryAdd(port.PortName, port);
+
+                comingOutCarrierOfEFEMPorts.TryAdd(port.PortName, string.Empty);
+                lastComingOutCarrierOfEFEMPorts.TryAdd(port.PortName, string.Empty);
 
                 WriteLog($"Add EFEM Event Success ({port.PortName})");
             }
@@ -116,7 +126,7 @@ namespace com.mirle.ibg3k0.sc.Service
         }
 
         #endregion Log
-        private long SyncPointe = 0;
+        private long SyncPointe_NeedNotyfyWaitIn = 0;
         public void checkIsNeedToNotifyEFEMEqHasCSTWillIn()
         {
             if (DebugParameter.IsOpenByPassEFEMStatus)
@@ -124,7 +134,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 WriteLog($"目前開啟By pass EFEM 狀態，不主動觸發通知PLC取貨訊號.");
                 return;
             }
-            if (Interlocked.Exchange(ref SyncPointe, 1) == 0)
+            if (Interlocked.Exchange(ref SyncPointe_NeedNotyfyWaitIn, 1) == 0)
             {
                 try
                 {
@@ -158,7 +168,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 finally
                 {
-                    Interlocked.Exchange(ref SyncPointe, 0);
+                    Interlocked.Exchange(ref SyncPointe_NeedNotyfyWaitIn, 0);
                 }
             }
         }
@@ -185,5 +195,105 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
             }
         }
+
+        private long SyncPointe_EfemHearBeat = 0;
+        private bool LAST_HEART_BEAT_STATUS = false;
+        private void EfemPortHearbeatPulse()
+        {
+            if (Interlocked.Exchange(ref SyncPointe_EfemHearBeat, 1) == 0)
+            {
+                bool current_set_heart_beat_status = LAST_HEART_BEAT_STATUS ? false : true;
+                try
+                {
+                    var efem_ports = scApp.PortStationBLL.OperateCatch.loadAllEFEMPortStation();
+                    foreach (var efem_port in efem_ports)
+                    {
+                        efem_port.SetHeartBeat(current_set_heart_beat_status);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref SyncPointe_EfemHearBeat, 0);
+                    LAST_HEART_BEAT_STATUS = current_set_heart_beat_status;
+                }
+            }
+        }
+        private long SyncPointe_ReflashComingOutCarrier = 0;
+        private void ReflashComingOutCarrier()
+        {
+            if (Interlocked.Exchange(ref SyncPointe_ReflashComingOutCarrier, 1) == 0)
+            {
+                try
+                {
+                    var commandsOfOHT = ACMD_OHTC.CMD_OHTC_InfoList;
+                    var efem_ports = scApp.PortStationBLL.OperateCatch.loadAllEFEMPortStation();
+                    foreach (var portItem in efem_ports)
+                    {
+                        var portName = portItem.PORT_ID;
+                        comingOutCarrierOfEFEMPorts[portName] = string.Empty;
+
+                        var cmds = commandsOfOHT.Where(c => SCUtility.isMatche(c.Value.DESTINATION.Trim(), portName) &&
+                                                            c.Value.CMD_STAUS >= E_CMD_STATUS.Execution
+                                                            ).Select(c => c.Value).ToList();
+
+                        var cmd = cmds.FirstOrDefault();
+                        if (cmd == null)
+                            continue;
+
+                        comingOutCarrierOfEFEMPorts[portName] = cmd.BOX_ID.Trim();
+                    }
+
+                    foreach (var item in comingOutCarrierOfEFEMPorts)
+                    {
+                        var carrierId = item.Value;
+
+                        if (lastComingOutCarrierOfEFEMPorts[item.Key] == carrierId)
+                            continue;
+
+                        lastComingOutCarrierOfEFEMPorts[item.Key] = carrierId;
+
+                        if (SCUtility.isEmpty(item.Value))
+                        {
+                            WriteLog($"{item.Key} Has no carrier coming out. 保持上筆紀錄");
+                        }
+                        else
+                        {
+                            WriteLog($"{item.Key} Has carrier coming out. Show PLC Monitor ({carrierId}).  有「正在出庫的」的 ID");
+
+                            efemPorts[item.Key].ShowComingOutCarrierOnMonitorAsync(carrierId);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Exception");
+                    WriteLog($"{MethodBase.GetCurrentMethod()}, Exception Happen: (( {ex} ))");
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref SyncPointe_ReflashComingOutCarrier, 0);
+                }
+            }
+        }
+
+
+        public void ReflashState()
+        {
+            try
+            {
+                checkIsNeedToNotifyEFEMEqHasCSTWillIn();
+                EfemPortHearbeatPulse();
+                ReflashComingOutCarrier();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+        }
+
     }
 }
