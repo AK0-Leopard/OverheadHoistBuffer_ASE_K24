@@ -133,7 +133,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             var guide_info = bcApp.SCApplication.CMDBLL.FindGuideInfo(startSection, startAdr, fromAdr, toAdr, sc.ProtocolFormat.OHTMessage.ActiveType.Loadunload);
             if (test.isSuccess)
             {
-                mainForm.setSpecifyRail(test.guideSectionIds.ToArray());
+                //mainForm.setSpecifyRail(test.guideSectionIds.ToArray());
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine($"Guide Address: {string.Join(",", test.guideAddressIds)}");
                 sb.AppendLine($"Guide section: {string.Join(",", test.guideSectionIds)}");
