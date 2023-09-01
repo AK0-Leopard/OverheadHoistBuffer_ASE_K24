@@ -1970,6 +1970,9 @@ namespace com.mirle.ibg3k0.sc.Data.ValueDefMapAction
             List<ACMD_MCS> mcs_cmds = scApp.CMDBLL.LoadCmdData().Where(data => data.CMDTYPE != ACMD_MCS.CmdType.PortTypeChange.ToString()
 
                                                                       ).ToList();
+
+            //因為該廠會在OHT上報Unload Complete後就會報告MCS命令結束，因此此時若有同步的話也要當作已經結束不用報給MCS
+            mcs_cmds = mcs_cmds.Where(c => c.COMMANDSTATE < ACMD_MCS.COMMAND_STATUS_BIT_INDEX_UNLOAD_COMPLETE).ToList();
             int cmd_count = mcs_cmds.Count;
             S6F11.RPTINFO.RPTITEM.VIDITEM_76_SV viditem_76 = new S6F11.RPTINFO.RPTITEM.VIDITEM_76_SV();
             //viditem_76.ENHANCED_TRANSFER_CMD = new S6F11.RPTINFO.RPTITEM.VIDITEM_205_SV[cmd_count];

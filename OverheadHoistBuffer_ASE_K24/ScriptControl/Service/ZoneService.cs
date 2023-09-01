@@ -32,8 +32,6 @@ namespace com.mirle.ibg3k0.sc.Service
             VehicleService = scApp.VehicleService;
         }
 
-
-
         private ParkingZone GetParkingZonebyAdr(string address)
         {
             List<ParkingZone> parkingZones = scApp.ParkingZoneBLL.cache.LoadAllParkingZoneInfo();

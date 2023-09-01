@@ -2146,8 +2146,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     if (vh.isTcpIpConnect &&
                         (vh.MODE_STATUS != VHModeStatus.Manual) &&
-                        vh.IsObstacle
-                        )
+                         vh.IsObstacle)
                     {
                         LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
                                                Data: $"start try find blocked vh...",
