@@ -53,11 +53,11 @@ namespace com.mirle.ibg3k0.sc.Data.DAO.EntityFramework
 
 
         #region Redis
-        TimeSpan timeSpan_1Hour = new TimeSpan(1, 0, 10);
+        TimeSpan timeSpan_1Hour = new TimeSpan(1, 0, 0);
         public void add(RedisCacheManager redisCache, ASYSEXCUTEQUALITY quality)
         {
-            //redisCache.Obj2ByteArraySetAsync(quality.CMD_ID_MCS, quality, timeSpan_1Hour);
-            redisCache.Obj2ByteArraySetAsync(quality.CMD_ID_MCS, quality);
+            redisCache.Obj2ByteArraySetAsync(quality.CMD_ID_MCS, quality, timeSpan_1Hour);
+            //redisCache.Obj2ByteArraySetAsync(quality.CMD_ID_MCS, quality);
         }
 
         public ASYSEXCUTEQUALITY getByID(RedisCacheManager redisCache, String cmd_id)
