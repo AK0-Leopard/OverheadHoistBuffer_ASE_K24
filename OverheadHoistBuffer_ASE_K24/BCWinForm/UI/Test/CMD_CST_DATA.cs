@@ -109,16 +109,31 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Test
                  + "異常搬送次數: " + cmdData.Where(data => data.COMMANDSTATE != 128).Count() + "\n"
                 ;
         }
-        public void GetAllHMCSCmdData()
+        public async void GetAllHMCSCmdDataAsync()
         {
-            List<HCMD_MCS> cmdData = BCApp.SCApplication.CMDBLL.LoadHMCSCmdDataByStartEnd(dateTimePicker1.Value, dateTimePicker2.Value);
+            DateTime start_time = dateTimePicker1.Value;
+            DateTime end_time = dateTimePicker2.Value;
+            //結束時間不可小於開始時間
+            if (end_time < start_time)
+            {
+                MessageBox.Show("結束時間不可小於開始時間");
+                return;
+            }
+
+            //限制查詢時間區間
+            if (end_time.Subtract(start_time).TotalDays > 3)
+            {
+                MessageBox.Show("查詢區間不可超過3天");
+                return;
+            }
+
+            List<HCMD_MCS> cmdData = await Task.Run(() => BCApp.SCApplication.CMDBLL.LoadHMCSCmdDataByStartEnd(start_time, end_time));
             dataGridView1.DataSource = cmdData;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             label13.Text = "總搬送次數: " + cmdData.Count() + "\n"
                  + "正常搬送次數: " + cmdData.Where(data => data.COMMANDSTATE == 128).Count() + "\n"
-                 + "異常搬送次數: " + cmdData.Where(data => data.COMMANDSTATE != 128).Count() + "\n"
-                ;
+                 + "異常搬送次數: " + cmdData.Where(data => data.COMMANDSTATE != 128).Count() + "\n";
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -127,7 +142,19 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Test
         private void button12_Click(object sender, EventArgs e)
         {
             //GetAllCmdData();
-            GetAllHMCSCmdData();
+            try
+            {
+                button12.Enabled = false;
+                GetAllHMCSCmdDataAsync();
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception:");
+            }
+            finally
+            {
+                button12.Enabled = true;
+            }
         }
         private void button4_Click(object sender, EventArgs e)
         {
