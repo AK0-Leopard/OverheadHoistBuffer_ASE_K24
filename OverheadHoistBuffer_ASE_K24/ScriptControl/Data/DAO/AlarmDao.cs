@@ -381,5 +381,16 @@ namespace com.mirle.ibg3k0.sc.Data.DAO
             conn.SaveChanges();
             return result;
         }
+        public bool removeAlarmBefore6Months(DBConnection_EF conn)
+        {
+            bool result = true;
+            //刪除6個月前的ALARM資料
+            string trn_dt = DateTime.Now.AddMonths(-6).ToString(sc.App.SCAppConstants.DateTimeFormat_22);
+
+            string removeAlarm = "delete from ALARM where RPT_DATE_TIME < {0}";
+            conn.Database.ExecuteSqlCommand(removeAlarm, trn_dt);
+            return result;
+        }
+
     }
 }

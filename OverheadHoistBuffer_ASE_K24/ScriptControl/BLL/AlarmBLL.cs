@@ -784,6 +784,14 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
+        public void RemoteAlarmBefore6Months()
+        {
+            using (DBConnection_EF con = DBConnection_EF.GetUContext())
+            {
+                alarmDao.removeAlarmBefore6Months(con);
+            }
+        }
+
     }
     public partial class AlarmBLL : IAlarmRemarkFun
     {

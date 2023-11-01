@@ -121,9 +121,9 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Test
             }
 
             //限制查詢時間區間
-            if (end_time.Subtract(start_time).TotalDays > 3)
+            if (end_time.Subtract(start_time).TotalDays > 1)
             {
-                MessageBox.Show("查詢區間不可超過3天");
+                MessageBox.Show("查詢區間不可超過1天");
                 return;
             }
 
@@ -139,13 +139,37 @@ namespace com.mirle.ibg3k0.bc.winform.UI.Test
         {
             UpDate_CmdData();
         }
-        private void button12_Click(object sender, EventArgs e)
+        private async void button12_Click(object sender, EventArgs e)
         {
             //GetAllCmdData();
             try
             {
                 button12.Enabled = false;
-                GetAllHMCSCmdDataAsync();
+                //GetAllHMCSCmdDataAsync();
+                DateTime start_time = dateTimePicker1.Value;
+                DateTime end_time = dateTimePicker2.Value;
+                //結束時間不可小於開始時間
+                if (end_time < start_time)
+                {
+                    MessageBox.Show("結束時間不可小於開始時間");
+                    return;
+                }
+
+                //限制查詢時間區間
+                if (end_time.Subtract(start_time).TotalDays > 1)
+                {
+                    MessageBox.Show("查詢區間不可超過1天");
+                    return;
+                }
+
+                List<HCMD_MCS> cmdData = await Task.Run(() => BCApp.SCApplication.CMDBLL.LoadHMCSCmdDataByStartEnd(start_time, end_time));
+                dataGridView1.DataSource = cmdData;
+                dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+                label13.Text = "總搬送次數: " + cmdData.Count() + "\n"
+                     + "正常搬送次數: " + cmdData.Where(data => data.COMMANDSTATE == 128).Count() + "\n"
+                     + "異常搬送次數: " + cmdData.Where(data => data.COMMANDSTATE != 128).Count() + "\n";
+
             }
             catch (Exception ex)
             {

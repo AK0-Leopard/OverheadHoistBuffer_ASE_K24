@@ -59,11 +59,12 @@ namespace com.mirle.ibg3k0.sc.Scheduler
                     {
                         DeleteHCMD_OHTC();
                     }
-                    //SpinWait.SpinUntil(() => false, 5000);
-                    //using (DBConnection_EF con = DBConnection_EF.GetUContext())
-                    //{
-                    //    MoveHALARM_ALARMToHALARM();
-                    //}
+                    SpinWait.SpinUntil(() => false, 5000);
+                    using (DBConnection_EF con = DBConnection_EF.GetUContext())
+                    {
+                        //MoveHALARM_ALARMToHALARM();
+                        DeleteALARM();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -100,6 +101,10 @@ namespace com.mirle.ibg3k0.sc.Scheduler
         private void MoveHALARM_ALARMToHALARM()
         {
             scApp.AlarmBLL.moveAlarmToHAlarm();
+        }
+        private void DeleteALARM()
+        {
+            scApp.AlarmBLL.RemoteAlarmBefore6Months();
         }
         private void DeleteHCMD_MCS()
         {
