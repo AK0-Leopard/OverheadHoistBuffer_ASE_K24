@@ -96,6 +96,7 @@ namespace com.mirle.ibg3k0.bc.winform
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.shelfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alarmEnableDisableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zh_twToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,7 +111,6 @@ namespace com.mirle.ibg3k0.bc.winform
             this.搬送模擬ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.port內容值ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.命令卡匣資料ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.alarmEnableDisableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.CMS_OnLineMode.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -429,6 +429,12 @@ namespace com.mirle.ibg3k0.bc.winform
             resources.ApplyResources(this.trackToolStripMenuItem, "trackToolStripMenuItem");
             this.trackToolStripMenuItem.Click += new System.EventHandler(this.trackToolStripMenuItem_Click);
             // 
+            // alarmEnableDisableToolStripMenuItem
+            // 
+            this.alarmEnableDisableToolStripMenuItem.Name = "alarmEnableDisableToolStripMenuItem";
+            resources.ApplyResources(this.alarmEnableDisableToolStripMenuItem, "alarmEnableDisableToolStripMenuItem");
+            this.alarmEnableDisableToolStripMenuItem.Click += new System.EventHandler(this.alarmEnableDisableToolStripMenuItem_Click);
+            // 
             // languageToolStripMenuItem
             // 
             this.languageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -522,12 +528,6 @@ namespace com.mirle.ibg3k0.bc.winform
             resources.ApplyResources(this.命令卡匣資料ToolStripMenuItem, "命令卡匣資料ToolStripMenuItem");
             this.命令卡匣資料ToolStripMenuItem.Name = "命令卡匣資料ToolStripMenuItem";
             this.命令卡匣資料ToolStripMenuItem.Click += new System.EventHandler(this.命令卡匣資料ToolStripMenuItem_Click);
-            // 
-            // alarmEnableDisableToolStripMenuItem
-            // 
-            this.alarmEnableDisableToolStripMenuItem.Name = "alarmEnableDisableToolStripMenuItem";
-            resources.ApplyResources(this.alarmEnableDisableToolStripMenuItem, "alarmEnableDisableToolStripMenuItem");
-            this.alarmEnableDisableToolStripMenuItem.Click += new System.EventHandler(this.alarmEnableDisableToolStripMenuItem_Click);
             // 
             // BCMainForm
             // 

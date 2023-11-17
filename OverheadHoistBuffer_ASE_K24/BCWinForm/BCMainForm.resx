@@ -510,6 +510,9 @@
   <data name="搬送模擬ToolStripMenuItem.Text" xml:space="preserve">
     <value>搬送模擬</value>
   </data>
+  <data name="搬送模擬ToolStripMenuItem.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="port內容值ToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft JhengHei UI, 14.25pt</value>
   </data>
@@ -1400,6 +1403,12 @@
   <data name="&gt;&gt;trackToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;alarmEnableDisableToolStripMenuItem.Name" xml:space="preserve">
+    <value>alarmEnableDisableToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;alarmEnableDisableToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;languageToolStripMenuItem.Name" xml:space="preserve">
     <value>languageToolStripMenuItem</value>
   </data>
@@ -1482,12 +1491,6 @@
     <value>命令卡匣資料ToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;命令卡匣資料ToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;alarmEnableDisableToolStripMenuItem.Name" xml:space="preserve">
-    <value>alarmEnableDisableToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;alarmEnableDisableToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
