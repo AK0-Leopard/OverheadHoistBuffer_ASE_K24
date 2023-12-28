@@ -80,6 +80,7 @@ namespace com.mirle.ibg3k0.sc.Service
         OHT_BlockingTimeOut = 100032,
         OHT_ObstaclingTimeOut = 100033,
         OHT_TransferringCmdFinishTimeOut = 100034,
+        OHT_HasUnknowCstDataHappend = 100035,
     }
 
     public class VehicleService : IDynamicMetaObjectProvider

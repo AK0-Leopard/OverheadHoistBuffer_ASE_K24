@@ -3212,7 +3212,7 @@ namespace com.mirle.ibg3k0.sc.Service
                             {
                                 string dest = cmd.HOSTDESTINATION.Trim();
                                 bool is_ready_pass_account = DoubleCheckUnloadCstData(cmd);
-                                if(is_ready_pass_account)
+                                if (is_ready_pass_account)
                                 {
                                     TransferServiceLogger.Info
                                     (
@@ -11306,6 +11306,41 @@ namespace com.mirle.ibg3k0.sc.Service
         {
             string ohtName = vehicleBLL.cache.loadVhs().FirstOrDefault().VEHICLE_ID;
             OHBC_AlarmCleared(ohtName, SCAppConstants.SystemAlarmCode.PLC_Issue.MasterDisconnedted);
+        }
+
+        private long syncCheckHasUnknowDataHappend = 0;
+        private bool HasUnknowCstDataHappend = false;
+        internal void CheckHasUnknowDataHappend()
+        {
+            if (Interlocked.Exchange(ref syncCheckHasUnknowDataHappend, 1) == 0)
+            {
+                try
+                {
+                    var cst_list = CassetteData.CassetteData_InfoList.ToArray();
+                    bool has_unknow_cst_data_happend = cst_list.Where(cst => cst.BOXID.StartsWith(SYMBOL_UNKNOW_CST_ID)).Any();
+                    if (HasUnknowCstDataHappend != has_unknow_cst_data_happend)
+                    {
+                        HasUnknowCstDataHappend = has_unknow_cst_data_happend;
+                        if (HasUnknowCstDataHappend)
+                        {
+                            OHBC_AlarmSet(line.LINE_ID, ((int)AlarmLst.OHT_HasUnknowCstDataHappend).ToString());
+                        }
+                        else
+                        {
+                            OHBC_AlarmCleared(line.LINE_ID, ((int)AlarmLst.OHT_HasUnknowCstDataHappend).ToString());
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    TransferServiceLogger.Error(ex, "CheckHasUnknowDataHappend");
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref syncCheckHasUnknowDataHappend, 0);
+                }
+            }
         }
 
         #endregion disconnection alarm handler

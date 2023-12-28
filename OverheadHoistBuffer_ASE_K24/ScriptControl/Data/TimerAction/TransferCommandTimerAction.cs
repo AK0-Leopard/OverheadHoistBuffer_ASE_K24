@@ -62,6 +62,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
 
                 scApp.TransferService.PortTypeCommandProcess();
 
+                scApp.TransferService.CheckHasUnknowDataHappend();
 
                 //A20.05.28.0 用於定時觸發退補整條線的空box
                 //Task.Run(() => scApp.TransferService.CheckTheEmptyBoxStockLevel());
