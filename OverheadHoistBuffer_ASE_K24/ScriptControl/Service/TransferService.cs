@@ -1124,7 +1124,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else
                 {
-                    if(isTransferCommandTransferringTimeOut)
+                    if (isTransferCommandTransferringTimeOut)
                     {
                         isTransferCommandTransferringTimeOut = false;
                         OHBC_AlarmCleared(line.LINE_ID, ((int)AlarmLst.OHT_TransferringCmdFinishTimeOut).ToString());
@@ -1310,7 +1310,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         }
                         else
                         {
-                            destPortType = AreDestEnable(mcsCmd.HOSTDESTINATION);
+                            destPortType = AreDestEnable(mcsCmd.HOSTDESTINATION).isReady;
                         }
                         if (!destPortType)
                         {
@@ -1785,6 +1785,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                     bool sourcePortType = false;
                     bool destPortType = false;
+                    string ng_reason = string.Empty;
                     #region 檢查來源狀態
 
                     if (string.IsNullOrWhiteSpace(mcsCmd.RelayStation))  //檢查命令是否先搬到中繼站
@@ -1883,12 +1884,12 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                     else
                     {
-                        destPortType = AreDestEnable(mcsCmd.HOSTDESTINATION);
+                        (destPortType, ng_reason) = AreDestEnable(mcsCmd.HOSTDESTINATION);
                     }
 
                     if (!destPortType)
                     {
-                        SetTransferCommandNGReason(mcsCmd.CMD_ID, $"Dest. port:{SCUtility.Trim(mcsCmd.HOSTDESTINATION)},狀態不正確");
+                        SetTransferCommandNGReason(mcsCmd.CMD_ID, $"Dest. port:{SCUtility.Trim(mcsCmd.HOSTDESTINATION)},狀態不正確.原因:{ng_reason}");
                     }
                     #endregion 檢查目的狀態
 
@@ -2351,7 +2352,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 bool destPortType = false;
 
                 sourcePortType = AreSourceEnable(sourceName);
-                destPortType = AreDestEnable(destName);
+                destPortType = AreDestEnable(destName).isReady;
 
                 return (sourcePortType && destPortType);
             }
@@ -2622,7 +2623,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private const int IGNORE_STAGE_NUM = 1;
 
-        public bool AreDestEnable(string destName)    //檢查目的狀態是否正確
+        public (bool isReady, string reason) AreDestEnable(string destName)    //檢查目的狀態是否正確
         {
             try
             {
@@ -2640,7 +2641,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         (
                             $"{DateTime.Now.ToString("HH:mm:ss.fff ")} Port:{destName} is reel ntb port, 但目前是忽略NTB Port狀態，直接回覆True."
                         );
-                        return true;
+                        return (true, "");
                     }
                     var reel_ntb_port_result = scApp.PortStationBLL.getReelNtbPosition(destName);
                     if (!reel_ntb_port_result.isExist)
@@ -2649,7 +2650,7 @@ namespace com.mirle.ibg3k0.sc.Service
                         (
                             $"{DateTime.Now.ToString("HH:mm:ss.fff ")} Port:{destName} is reel ntb port, but no data in position"
                         );
-                        return false;
+                        return (false, "");
                     }
                     var reel_ntb_port = reel_ntb_port_result.reelPortStation;
                     if (reel_ntb_port.requestType != Mirle.U332MA30.Grpc.OhbcNtbcConnect.RequestType.LoadRequest)
@@ -2658,9 +2659,9 @@ namespace com.mirle.ibg3k0.sc.Service
                         (
                             $"{DateTime.Now.ToString("HH:mm:ss.fff ")} Port:{destName} is reel ntb port, current request type:{reel_ntb_port.requestType}"
                         );
-                        return false;
+                        return (false, "");
                     }
-                    return true;
+                    return (true, "");
                 }
 
                 if (isAGVZone(destName))
@@ -2682,7 +2683,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     {
                         if (command_count != 0)
                         {
-                            return false;
+                            return (false, "已有命令即將前往");
                         }
                     }
 
@@ -2717,7 +2718,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                         DateTime.Now.ToString("HH:mm:ss.fff ") +
                                         "Port " + destName + "have enough capacity, is ok to send box to port."
                                     );
-                                    return true;
+                                    return (true, "");
                                 }
                                 else
                                 {
@@ -2726,7 +2727,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                         DateTime.Now.ToString("HH:mm:ss.fff ") +
                                         "Port " + destName + "not have enough capacity, is can't to send box to port."
                                     );
-                                    return false;
+                                    return (false, "");
                                 }
                             }
 
@@ -2837,12 +2838,12 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                 }
 
-                return destPortType;
+                return (destPortType, "");
             }
             catch (Exception ex)
             {
                 TransferServiceLogger.Error(ex, "AreDestEnable");
-                return false;
+                return (false, "例外發生");
             }
         }
 
@@ -9249,7 +9250,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     PortPLCInfo agvInfo = GetPLC_PortData(agvPortData.PortName);
 
-                    if (agvInfo.IsOutputMode && AreDestEnable(agvPortData.PortName))
+                    if (agvInfo.IsOutputMode && AreDestEnable(agvPortData.PortName).isReady)
                     {
                         agvPortName = agvPortData.PortName;
                         break;
