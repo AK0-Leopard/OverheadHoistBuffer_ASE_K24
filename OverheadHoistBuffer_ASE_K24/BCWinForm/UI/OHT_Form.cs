@@ -34,7 +34,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         BindingSource bindingSource = new BindingSource();
         string[] allAdr_ID = null;
         string[] allPortID = null;
-        List<CMD_MCSObjToShow> cmd_mcs_obj_to_show = null;
+        List<CMD_MCSObjToShow> cmd_mcs_obj_to_show = new List<CMD_MCSObjToShow>();
         BindingSource cmsMCS_bindingSource = new BindingSource();
 
         List<ALARM> aLARMs = new List<ALARM>();
@@ -764,19 +764,67 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             is_nats_conn ? Color.Green : Color.Gray;
         }
 
-        private async void updateTransferCommand()
+        private void updateTransferCommand()
         {
-            List<ACMD_MCS> ACMD_MCSs = null;
-            await Task.Run(() => ACMD_MCSs = mainform.BCApp.SCApplication.CMDBLL.loadACMD_MCSIsUnfinished());
-            if (ACMD_MCSs != null)
+            try
             {
-                cmd_mcs_obj_to_show = ACMD_MCSs.Select(cmd => new CMD_MCSObjToShow(mainform.BCApp.SCApplication.VehicleBLL, cmd)).ToList();
-                //cmd_mcs_obj_to_show = mainform.BCApp.SCApplication.CMDBLL.loadACMD_MCSIsUnfinishedObjToShow();
-                cmsMCS_bindingSource.DataSource = cmd_mcs_obj_to_show;
+                var current_cmds_mcs = ACMD_MCS.tryGetMCSCommandList();
+                refreshACMD_MCSInfoList(current_cmds_mcs);
                 dgv_TransferCommand.Refresh();
             }
+            catch(Exception ex)
+            {
+                logger.Error(ex, "Exception");
+            }
+            //List<ACMD_MCS> ACMD_MCSs = null;
+            //await Task.Run(() => ACMD_MCSs = mainform.BCApp.SCApplication.CMDBLL.loadACMD_MCSIsUnfinished());
+            //if (ACMD_MCSs != null)
+            //{
+            //    cmd_mcs_obj_to_show = ACMD_MCSs.Select(cmd => new CMD_MCSObjToShow(mainform.BCApp.SCApplication.VehicleBLL, cmd)).ToList();
+            //    //cmd_mcs_obj_to_show = mainform.BCApp.SCApplication.CMDBLL.loadACMD_MCSIsUnfinishedObjToShow();
+            //    cmsMCS_bindingSource.DataSource = cmd_mcs_obj_to_show;
+            //    dgv_TransferCommand.Refresh();
+            //}
         }
+        private void refreshACMD_MCSInfoList(List<ACMD_MCS> currentExcuteTranCmd)
+        {
+            try
+            {
+                List<string> new_current_excute_tran_cmd = currentExcuteTranCmd.Select(cmd => SCUtility.Trim(cmd.CMD_ID, true)).ToList();
+                List<string> old_current_excute_tran_cmd = cmd_mcs_obj_to_show.Select(cmd => cmd.CMD_ID).ToList();
 
+                List<string> new_add_mcs_cmds = new_current_excute_tran_cmd.Except(old_current_excute_tran_cmd).ToList();
+                //1.新增多出來的命令
+                foreach (string new_cmd in new_add_mcs_cmds)
+                {
+                    var cmd_obj = currentExcuteTranCmd.Where(cmd => SCUtility.isMatche(cmd.CMD_ID, new_cmd)).FirstOrDefault();
+                    if (cmd_obj == null) continue;
+                    CMD_MCSObjToShow new_cmd_obj = new CMD_MCSObjToShow(mainform.BCApp.SCApplication.VehicleBLL, cmd_obj);
+                    cmsMCS_bindingSource.Add(new_cmd_obj);
+                }
+                //2.刪除以結束的命令
+                List<string> will_del_mcs_cmds = old_current_excute_tran_cmd.Except(new_current_excute_tran_cmd).ToList();
+                foreach (string old_cmd in will_del_mcs_cmds)
+                {
+                    var cmd_obj = cmd_mcs_obj_to_show.Where(cmd => SCUtility.isMatche(cmd.CMD_ID, old_cmd)).FirstOrDefault();
+                    cmsMCS_bindingSource.Remove(cmd_obj);
+                }
+                //3.更新現有命令
+                foreach (var tran_obj_show_item in cmd_mcs_obj_to_show)
+                {
+                    var cmd_obj = currentExcuteTranCmd.Where(cmd => SCUtility.isMatche(cmd.CMD_ID, tran_obj_show_item.CMD_ID)).FirstOrDefault();
+                    if (cmd_obj == null)
+                    {
+                        continue;
+                    }
+                    tran_obj_show_item.put(cmd_obj);
+                }
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception");
+            }
+        }
 
         int currentSelectIndex = -1;
         //Equipment InObservationVh = null;
@@ -1282,6 +1330,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void OHT_Form_Load(object sender, EventArgs e)
         {
             ck_montor_vh.Checked = true;
+            cmsMCS_bindingSource.DataSource = cmd_mcs_obj_to_show;
             dgv_TransferCommand.DataSource = cmsMCS_bindingSource;
         }
 
@@ -1324,6 +1373,11 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void txt_cstType_TextChanged(object sender, EventArgs e)
         {
             DebugParameter.CST_TYPE = txt_cstType.Text;
+        }
+
+        private void dgv_TransferCommand_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            logger.Warn(e.Exception, "dgv_TransferCommand error happend");
         }
     }
 }

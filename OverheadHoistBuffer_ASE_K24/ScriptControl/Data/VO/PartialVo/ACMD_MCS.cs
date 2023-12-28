@@ -5,6 +5,7 @@
 // 2020/06/04    Jason Wu       N/A            A20.06.04   修改priority判定部分(由僅用priority sum大小比較 變為分組比較99 up or 99 down)
 // 2020/06/09    Jason Wu       N/A            A20.06.09.0 修改判定部分(新增判定來源目的地是非shelf的優先)
 //**********************************************************************************
+using com.mirle.ibg3k0.sc.Common;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -560,6 +561,21 @@ namespace com.mirle.ibg3k0.sc
             if (REPLACE != ortherObj.REPLACE)
             {
                 REPLACE = ortherObj.REPLACE;
+                has_change = true;
+            }
+            if (LOT_ID != ortherObj.LOT_ID)
+            {
+                LOT_ID = ortherObj.LOT_ID;
+                has_change = true;
+            }
+            if (CARRIER_ID_ON_CRANE != ortherObj.CARRIER_ID_ON_CRANE)
+            {
+                CARRIER_ID_ON_CRANE = ortherObj.CARRIER_ID_ON_CRANE;
+                has_change = true;
+            }
+            if (!SCUtility.isMatche(CRANE, ortherObj.CRANE))
+            {
+                CRANE = SCUtility.Trim(ortherObj.CRANE, true);
                 has_change = true;
             }
             if (IsCanNotServiceReasonChanged)

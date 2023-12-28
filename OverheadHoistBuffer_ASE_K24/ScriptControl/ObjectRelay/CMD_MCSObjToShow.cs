@@ -26,13 +26,14 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
         {
             get
             {
-                if (VehicleBLL != null)
-                {
-                    var vh = VehicleBLL.cache.getVehicleByMCSCmdID(CMD_ID);
-                    return vh == null ? "" : vh.VEHICLE_ID;
-                }
-                else
-                    return "";
+                return cmd_mcs.CRANE;
+                //if (VehicleBLL != null)
+                //{
+                //    var vh = VehicleBLL.cache.getVehicleByMCSCmdID(CMD_ID);
+                //    return vh == null ? "" : vh.VEHICLE_ID;
+                //}
+                //else
+                //    return "";
             }
         }
 
@@ -59,7 +60,18 @@ namespace com.mirle.ibg3k0.sc.ObjectRelay
         public Nullable<System.DateTime> CMD_START_TIME { get { return cmd_mcs.CMD_START_TIME; } }
         public Nullable<System.DateTime> CMD_FINISH_TIME { get { return cmd_mcs.CMD_FINISH_TIME; } }
         public int REPLACE { get { return cmd_mcs.REPLACE; } }
+        public string ReadyReason
+        {
+            get
+            {
+                return cmd_mcs.CanNotServiceReason;
+            }
+        }
 
+        public void put(ACMD_MCS cmdMcs)
+        {
+            cmd_mcs = cmdMcs;
+        }
     }
     //public class HCMD_MCSObjToShow
     //{
