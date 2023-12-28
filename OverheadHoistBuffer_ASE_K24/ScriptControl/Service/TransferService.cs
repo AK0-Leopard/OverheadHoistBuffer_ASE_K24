@@ -3211,13 +3211,25 @@ namespace com.mirle.ibg3k0.sc.Service
                             if (isShelfPort(cmd.HOSTDESTINATION))
                             {
                                 string dest = cmd.HOSTDESTINATION.Trim();
+                                bool is_ready_pass_account = DoubleCheckUnloadCstData(cmd);
+                                if(is_ready_pass_account)
+                                {
+                                    TransferServiceLogger.Info
+                                    (
+                                        DateTime.Now.ToString("HH:mm:ss.fff ")
+                                        + "OHT >> OHB|OHT_UnLoadCompleted 位置： " + ohtName.Trim() + $" 找不到卡匣資料，但於目的地:{dest}有找到該科帳料"
+                                    );
+                                }
+                                else
+                                {
+                                    CassetteData destBoxData = new CassetteData();
+                                    //destBoxData.CSTID = CarrierReadFail(dest);
+                                    destBoxData.BOXID = CarrierReadFail(ohtCmd.VH_ID, dest);
+                                    destBoxData.Carrier_LOC = dest;
 
-                                CassetteData destBoxData = new CassetteData();
-                                //destBoxData.CSTID = CarrierReadFail(dest);
-                                destBoxData.BOXID = CarrierReadFail(ohtCmd.VH_ID, dest);
-                                destBoxData.Carrier_LOC = dest;
+                                    NotAccountHaveRead(destBoxData);
+                                }
 
-                                NotAccountHaveRead(destBoxData);
                             }
                         }
 
@@ -3378,6 +3390,28 @@ namespace com.mirle.ibg3k0.sc.Service
             catch (Exception ex)
             {
                 TransferServiceLogger.Error(ex, "OHT_TransferProcess");
+                return false;
+            }
+        }
+
+        private bool DoubleCheckUnloadCstData(ACMD_MCS cmd)
+        {
+            try
+            {
+                CassetteData double_check_unLoadCSTData = cassette_dataBLL.loadCassetteDataByLoc(cmd.HOSTDESTINATION);
+                if (double_check_unLoadCSTData == null)
+                {
+                    return false;
+                }
+                if (!SCUtility.isMatche(cmd.BOX_ID, double_check_unLoadCSTData.BOXID))
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Exception");
                 return false;
             }
         }
