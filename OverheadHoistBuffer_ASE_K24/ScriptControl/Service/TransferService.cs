@@ -3241,13 +3241,17 @@ namespace com.mirle.ibg3k0.sc.Service
 
                         if (cmd.TRANSFERSTATE == E_TRAN_STATUS.Canceling)
                         {
-                            cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                            //cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                            cmdBLL.retryUndateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+
                             reportBLL.ReportTransferCancelCompleted(cmd.CMD_ID);
                             break;
                         }
                         else if (cmd.TRANSFERSTATE == E_TRAN_STATUS.Aborting)
                         {
-                            cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                            //cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                            cmdBLL.retryUndateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+
                             scApp.ReportBLL.ReportTransferAbortCompleted(cmd.CMD_ID);
                             break;
                         }
@@ -3256,11 +3260,13 @@ namespace com.mirle.ibg3k0.sc.Service
                             cmdBLL.updateCMD_MCS_CmdStatus(cmd.CMD_ID, 0);
                             break;
                         }
-                        cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                        //cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                        cmdBLL.retryUndateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
 
                         if (cmd.COMMANDSTATE == COMMAND_STATUS_BIT_INDEX_LOAD_COMPLETE)
                         {
-                            cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                            //cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+                            cmdBLL.retryUndateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
 
                             CassetteData dbCstData = cassette_dataBLL.loadCassetteDataByLoc(ohtName.Trim());
 

@@ -1401,6 +1401,20 @@ namespace com.mirle.ibg3k0.sc.BLL
             return isSuccess;
         }
 
+        public bool retryUndateCMD_MCS_TranStatus(string cmd_id, E_TRAN_STATUS status)
+        {
+            if (!updateCMD_MCS_TranStatus(cmd_id, status))
+            {
+                TransferServiceLogger.Info
+                (
+                   $"{DateTime.Now.ToString("HH:mm:ss.fff ")}OHB >> DB|updateCMD_MCS_TranStatus cmd_id: {cmd_id} status:{status} 更新失敗，準備進行retry..." 
+                );
+                SpinWait.SpinUntil(() => false, 1_000);
+                return updateCMD_MCS_TranStatus(cmd_id, status);
+            }
+            return true;
+        }
+
         public bool updateCMD_MCS_TranStatus(string cmd_id, E_TRAN_STATUS status)
         {
             bool isSuccess = true;
