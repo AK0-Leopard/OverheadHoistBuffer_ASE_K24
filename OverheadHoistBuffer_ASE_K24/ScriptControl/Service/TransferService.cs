@@ -1090,6 +1090,9 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
+
+        Stopwatch LastReportTransferTimeoutAlarm = new Stopwatch();
+        int CheckTrnasferTimeoutAlarmInterval_ms = 300_000;
         bool isTransferCommandTransferringTimeOut = false;
         private void checkHasTransferCommandTransferringTimeOut(List<ACMD_MCS> transferringCmdData)
         {
@@ -1109,18 +1112,37 @@ namespace com.mirle.ibg3k0.sc.Service
                     }
                 }
 
-                if (isTransferCommandTransferringTimeOut != is_transfer_command_transferring_time_out)
+                if (is_transfer_command_transferring_time_out)
                 {
-                    isTransferCommandTransferringTimeOut = is_transfer_command_transferring_time_out;
-                    if (isTransferCommandTransferringTimeOut)
+                    isTransferCommandTransferringTimeOut = true;
+                    if (!LastReportTransferTimeoutAlarm.IsRunning ||
+                         LastReportTransferTimeoutAlarm.ElapsedMilliseconds > CheckTrnasferTimeoutAlarmInterval_ms)
                     {
+                        LastReportTransferTimeoutAlarm.Restart();
                         OHBC_AlarmSet(line.LINE_ID, ((int)AlarmLst.OHT_TransferringCmdFinishTimeOut).ToString());
                     }
-                    else
+                }
+                else
+                {
+                    if(isTransferCommandTransferringTimeOut)
                     {
+                        isTransferCommandTransferringTimeOut = false;
                         OHBC_AlarmCleared(line.LINE_ID, ((int)AlarmLst.OHT_TransferringCmdFinishTimeOut).ToString());
                     }
                 }
+
+                //if (isTransferCommandTransferringTimeOut != is_transfer_command_transferring_time_out)
+                //{
+                //    isTransferCommandTransferringTimeOut = is_transfer_command_transferring_time_out;
+                //    if (isTransferCommandTransferringTimeOut)
+                //    {
+                //        OHBC_AlarmSet(line.LINE_ID, ((int)AlarmLst.OHT_TransferringCmdFinishTimeOut).ToString());
+                //    }
+                //    else
+                //    {
+                //        OHBC_AlarmCleared(line.LINE_ID, ((int)AlarmLst.OHT_TransferringCmdFinishTimeOut).ToString());
+                //    }
+                //}
             }
             catch (Exception ex)
             {
