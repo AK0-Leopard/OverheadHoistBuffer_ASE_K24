@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnl_Map = new System.Windows.Forms.Panel();
@@ -79,22 +79,6 @@
             this.tbcList = new System.Windows.Forms.TabControl();
             this.tab_vhStatus = new System.Windows.Forms.TabPage();
             this.dgv_vhStatus = new System.Windows.Forms.DataGridView();
-            this.tapTransferCmd = new System.Windows.Forms.TabPage();
-            this.tapDetail = new System.Windows.Forms.TabPage();
-            this.dgv_TaskCommand = new System.Windows.Forms.DataGridView();
-            this.tapCurrentAlarm = new System.Windows.Forms.TabPage();
-            this.tlp_crtAlarm = new System.Windows.Forms.TableLayoutPanel();
-            this.dgv_Alarm = new System.Windows.Forms.DataGridView();
-            this.eqpt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.alarm_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.alarm_lvl = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.report_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.alarm_desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timer_TimedUpdates = new System.Windows.Forms.Timer(this.components);
-            this.dgv_TransferCommand = new System.Windows.Forms.DataGridView();
-            this.ReadyReason = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VEHICLE_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.uctl_Map = new com.mirle.ibg3k0.bc.winform.UI.Components.uctl_Map();
             this.vEHICLEIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mODESTATUSDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.aCTSTATUSDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -114,7 +98,11 @@
             this.VH_TYPE = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.uPDTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.vehicleObjToShowBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.tapTransferCmd = new System.Windows.Forms.TabPage();
+            this.dgv_TransferCommand = new System.Windows.Forms.DataGridView();
             this.cMDIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReadyReason = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VEHICLE_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cARRIERIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tRANSFERSTATEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.hOSTSOURCEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -123,7 +111,11 @@
             this.cMDINSERTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cMDSTARTTIMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cMDMCSObjToShowBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.tapDetail = new System.Windows.Forms.TabPage();
+            this.dgv_TaskCommand = new System.Windows.Forms.DataGridView();
+            this.timer_TimedUpdates = new System.Windows.Forms.Timer(this.components);
             this.vehicleObjToShowBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.uctl_Map = new com.mirle.ibg3k0.bc.winform.UI.Components.uctl_Map();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -137,15 +129,12 @@
             this.tbcList.SuspendLayout();
             this.tab_vhStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_vhStatus)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource1)).BeginInit();
             this.tapTransferCmd.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_TransferCommand)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cMDMCSObjToShowBindingSource)).BeginInit();
             this.tapDetail.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_TaskCommand)).BeginInit();
-            this.tapCurrentAlarm.SuspendLayout();
-            this.tlp_crtAlarm.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_Alarm)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_TransferCommand)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cMDMCSObjToShowBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -166,7 +155,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tbcList);
             this.splitContainer1.Size = new System.Drawing.Size(1924, 1054);
-            this.splitContainer1.SplitterDistance = 757;
+            this.splitContainer1.SplitterDistance = 415;
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -183,7 +172,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 86.89655F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1924, 757);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1924, 415);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // pnl_Map
@@ -193,7 +182,7 @@
             this.pnl_Map.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnl_Map.Location = new System.Drawing.Point(3, 3);
             this.pnl_Map.Name = "pnl_Map";
-            this.pnl_Map.Size = new System.Drawing.Size(1559, 751);
+            this.pnl_Map.Size = new System.Drawing.Size(1559, 409);
             this.pnl_Map.TabIndex = 0;
             // 
             // panel1
@@ -217,7 +206,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(1568, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(353, 751);
+            this.panel1.Size = new System.Drawing.Size(353, 409);
             this.panel1.TabIndex = 1;
             // 
             // lb_natsConn
@@ -672,14 +661,13 @@
             this.tbcList.Controls.Add(this.tab_vhStatus);
             this.tbcList.Controls.Add(this.tapTransferCmd);
             this.tbcList.Controls.Add(this.tapDetail);
-            this.tbcList.Controls.Add(this.tapCurrentAlarm);
             this.tbcList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbcList.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
             this.tbcList.ItemSize = new System.Drawing.Size(160, 23);
             this.tbcList.Location = new System.Drawing.Point(0, 0);
             this.tbcList.Name = "tbcList";
             this.tbcList.SelectedIndex = 0;
-            this.tbcList.Size = new System.Drawing.Size(1924, 291);
+            this.tbcList.Size = new System.Drawing.Size(1924, 633);
             this.tbcList.TabIndex = 2;
             // 
             // tab_vhStatus
@@ -688,7 +676,7 @@
             this.tab_vhStatus.Location = new System.Drawing.Point(4, 27);
             this.tab_vhStatus.Name = "tab_vhStatus";
             this.tab_vhStatus.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_vhStatus.Size = new System.Drawing.Size(1916, 99);
+            this.tab_vhStatus.Size = new System.Drawing.Size(1916, 764);
             this.tab_vhStatus.TabIndex = 5;
             this.tab_vhStatus.Text = "Vehicle Status            ";
             this.tab_vhStatus.UseVisualStyleBackColor = true;
@@ -699,14 +687,14 @@
             this.dgv_vhStatus.AllowUserToDeleteRows = false;
             this.dgv_vhStatus.AutoGenerateColumns = false;
             this.dgv_vhStatus.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_vhStatus.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_vhStatus.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgv_vhStatus.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_vhStatus.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.vEHICLEIDDataGridViewTextBoxColumn,
@@ -735,200 +723,10 @@
             this.dgv_vhStatus.ReadOnly = true;
             this.dgv_vhStatus.RowTemplate.Height = 24;
             this.dgv_vhStatus.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_vhStatus.Size = new System.Drawing.Size(1910, 93);
+            this.dgv_vhStatus.Size = new System.Drawing.Size(1910, 758);
             this.dgv_vhStatus.TabIndex = 0;
             this.dgv_vhStatus.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_vhStatus_CellClick);
             this.dgv_vhStatus.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_vhStatus_DataError);
-            // 
-            // tapTransferCmd
-            // 
-            this.tapTransferCmd.BackColor = System.Drawing.SystemColors.Control;
-            this.tapTransferCmd.Controls.Add(this.dgv_TransferCommand);
-            this.tapTransferCmd.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold);
-            this.tapTransferCmd.Location = new System.Drawing.Point(4, 27);
-            this.tapTransferCmd.Margin = new System.Windows.Forms.Padding(0);
-            this.tapTransferCmd.Name = "tapTransferCmd";
-            this.tapTransferCmd.Size = new System.Drawing.Size(1916, 260);
-            this.tapTransferCmd.TabIndex = 0;
-            this.tapTransferCmd.Text = "Transfer Command            ";
-            // 
-            // tapDetail
-            // 
-            this.tapDetail.Controls.Add(this.dgv_TaskCommand);
-            this.tapDetail.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold);
-            this.tapDetail.Location = new System.Drawing.Point(4, 27);
-            this.tapDetail.Margin = new System.Windows.Forms.Padding(0);
-            this.tapDetail.Name = "tapDetail";
-            this.tapDetail.Size = new System.Drawing.Size(1916, 99);
-            this.tapDetail.TabIndex = 1;
-            this.tapDetail.Text = "Command Detail            ";
-            this.tapDetail.UseVisualStyleBackColor = true;
-            // 
-            // dgv_TaskCommand
-            // 
-            this.dgv_TaskCommand.AllowUserToAddRows = false;
-            this.dgv_TaskCommand.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgv_TaskCommand.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_TaskCommand.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_TaskCommand.GridColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.dgv_TaskCommand.Location = new System.Drawing.Point(0, 0);
-            this.dgv_TaskCommand.Name = "dgv_TaskCommand";
-            this.dgv_TaskCommand.ReadOnly = true;
-            this.dgv_TaskCommand.RowTemplate.Height = 24;
-            this.dgv_TaskCommand.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_TaskCommand.Size = new System.Drawing.Size(1916, 99);
-            this.dgv_TaskCommand.TabIndex = 0;
-            // 
-            // tapCurrentAlarm
-            // 
-            this.tapCurrentAlarm.Controls.Add(this.tlp_crtAlarm);
-            this.tapCurrentAlarm.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold);
-            this.tapCurrentAlarm.Location = new System.Drawing.Point(4, 27);
-            this.tapCurrentAlarm.Name = "tapCurrentAlarm";
-            this.tapCurrentAlarm.Size = new System.Drawing.Size(1916, 99);
-            this.tapCurrentAlarm.TabIndex = 2;
-            this.tapCurrentAlarm.Text = "Current  Alarm            ";
-            this.tapCurrentAlarm.UseVisualStyleBackColor = true;
-            // 
-            // tlp_crtAlarm
-            // 
-            this.tlp_crtAlarm.ColumnCount = 1;
-            this.tlp_crtAlarm.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_crtAlarm.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlp_crtAlarm.Controls.Add(this.dgv_Alarm, 0, 0);
-            this.tlp_crtAlarm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlp_crtAlarm.Location = new System.Drawing.Point(0, 0);
-            this.tlp_crtAlarm.Name = "tlp_crtAlarm";
-            this.tlp_crtAlarm.RowCount = 1;
-            this.tlp_crtAlarm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_crtAlarm.Size = new System.Drawing.Size(1916, 99);
-            this.tlp_crtAlarm.TabIndex = 1;
-            // 
-            // dgv_Alarm
-            // 
-            this.dgv_Alarm.AllowUserToAddRows = false;
-            this.dgv_Alarm.AllowUserToDeleteRows = false;
-            this.dgv_Alarm.AllowUserToOrderColumns = true;
-            this.dgv_Alarm.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgv_Alarm.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.dgv_Alarm.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_Alarm.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.eqpt_id,
-            this.alarm_code,
-            this.alarm_lvl,
-            this.report_time,
-            this.alarm_desc});
-            this.dgv_Alarm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_Alarm.GridColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.dgv_Alarm.Location = new System.Drawing.Point(3, 3);
-            this.dgv_Alarm.Name = "dgv_Alarm";
-            this.dgv_Alarm.ReadOnly = true;
-            this.dgv_Alarm.RowTemplate.Height = 24;
-            this.dgv_Alarm.Size = new System.Drawing.Size(1910, 93);
-            this.dgv_Alarm.TabIndex = 0;
-            // 
-            // eqpt_id
-            // 
-            this.eqpt_id.DataPropertyName = "EQPT_ID";
-            this.eqpt_id.HeaderText = "EQPT ID";
-            this.eqpt_id.Name = "eqpt_id";
-            this.eqpt_id.ReadOnly = true;
-            // 
-            // alarm_code
-            // 
-            this.alarm_code.DataPropertyName = "ALAM_CODE";
-            this.alarm_code.HeaderText = "Code";
-            this.alarm_code.Name = "alarm_code";
-            this.alarm_code.ReadOnly = true;
-            // 
-            // alarm_lvl
-            // 
-            this.alarm_lvl.DataPropertyName = "ALAM_LVL";
-            this.alarm_lvl.HeaderText = "Level";
-            this.alarm_lvl.Name = "alarm_lvl";
-            this.alarm_lvl.ReadOnly = true;
-            // 
-            // report_time
-            // 
-            this.report_time.DataPropertyName = "RPT_DATE_TIME";
-            this.report_time.HeaderText = "Time";
-            this.report_time.Name = "report_time";
-            this.report_time.ReadOnly = true;
-            // 
-            // alarm_desc
-            // 
-            this.alarm_desc.DataPropertyName = "ALAM_DESC";
-            this.alarm_desc.FillWeight = 200F;
-            this.alarm_desc.HeaderText = "Description";
-            this.alarm_desc.Name = "alarm_desc";
-            this.alarm_desc.ReadOnly = true;
-            // 
-            // timer_TimedUpdates
-            // 
-            this.timer_TimedUpdates.Interval = 1000;
-            this.timer_TimedUpdates.Tick += new System.EventHandler(this.timer_TimedUpdates_Tick);
-            // 
-            // dgv_TransferCommand
-            // 
-            this.dgv_TransferCommand.AllowUserToAddRows = false;
-            this.dgv_TransferCommand.AutoGenerateColumns = false;
-            this.dgv_TransferCommand.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgv_TransferCommand.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.dgv_TransferCommand.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_TransferCommand.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.cMDIDDataGridViewTextBoxColumn,
-            this.ReadyReason,
-            this.VEHICLE_ID,
-            this.cARRIERIDDataGridViewTextBoxColumn,
-            this.tRANSFERSTATEDataGridViewTextBoxColumn,
-            this.hOSTSOURCEDataGridViewTextBoxColumn,
-            this.hOSTDESTINATIONDataGridViewTextBoxColumn,
-            this.pRIORITYDataGridViewTextBoxColumn,
-            this.cMDINSERTIMEDataGridViewTextBoxColumn,
-            this.cMDSTARTTIMEDataGridViewTextBoxColumn});
-            this.dgv_TransferCommand.DataSource = this.cMDMCSObjToShowBindingSource;
-            this.dgv_TransferCommand.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_TransferCommand.GridColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.dgv_TransferCommand.Location = new System.Drawing.Point(0, 0);
-            this.dgv_TransferCommand.Name = "dgv_TransferCommand";
-            this.dgv_TransferCommand.ReadOnly = true;
-            this.dgv_TransferCommand.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.dgv_TransferCommand.RowTemplate.Height = 24;
-            this.dgv_TransferCommand.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_TransferCommand.Size = new System.Drawing.Size(1916, 260);
-            this.dgv_TransferCommand.TabIndex = 2;
-            this.dgv_TransferCommand.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_TransferCommand_DataError);
-            // 
-            // ReadyReason
-            // 
-            this.ReadyReason.DataPropertyName = "ReadyReason";
-            this.ReadyReason.HeaderText = "描述";
-            this.ReadyReason.MinimumWidth = 300;
-            this.ReadyReason.Name = "ReadyReason";
-            this.ReadyReason.ReadOnly = true;
-            this.ReadyReason.Width = 300;
-            // 
-            // VEHICLE_ID
-            // 
-            this.VEHICLE_ID.DataPropertyName = "VEHICLE_ID";
-            this.VEHICLE_ID.HeaderText = "Vh";
-            this.VEHICLE_ID.MinimumWidth = 250;
-            this.VEHICLE_ID.Name = "VEHICLE_ID";
-            this.VEHICLE_ID.ReadOnly = true;
-            this.VEHICLE_ID.Width = 250;
-            // 
-            // uctl_Map
-            // 
-            this.uctl_Map.AutoScroll = true;
-            this.uctl_Map.BackColor = System.Drawing.Color.MidnightBlue;
-            this.uctl_Map.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uctl_Map.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uctl_Map.Location = new System.Drawing.Point(0, 0);
-            this.uctl_Map.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uctl_Map.Name = "uctl_Map";
-            this.uctl_Map.Size = new System.Drawing.Size(1559, 751);
-            this.uctl_Map.TabIndex = 0;
-            this.uctl_Map.Load += new System.EventHandler(this.uctl_Map_Load);
             // 
             // vEHICLEIDDataGridViewTextBoxColumn
             // 
@@ -1078,6 +876,49 @@
             // 
             this.vehicleObjToShowBindingSource1.DataSource = typeof(com.mirle.ibg3k0.sc.ObjectRelay.VehicleObjToShow);
             // 
+            // tapTransferCmd
+            // 
+            this.tapTransferCmd.BackColor = System.Drawing.SystemColors.Control;
+            this.tapTransferCmd.Controls.Add(this.dgv_TransferCommand);
+            this.tapTransferCmd.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold);
+            this.tapTransferCmd.Location = new System.Drawing.Point(4, 27);
+            this.tapTransferCmd.Margin = new System.Windows.Forms.Padding(0);
+            this.tapTransferCmd.Name = "tapTransferCmd";
+            this.tapTransferCmd.Size = new System.Drawing.Size(1916, 602);
+            this.tapTransferCmd.TabIndex = 0;
+            this.tapTransferCmd.Text = "Transfer Command            ";
+            // 
+            // dgv_TransferCommand
+            // 
+            this.dgv_TransferCommand.AllowUserToAddRows = false;
+            this.dgv_TransferCommand.AutoGenerateColumns = false;
+            this.dgv_TransferCommand.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgv_TransferCommand.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dgv_TransferCommand.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_TransferCommand.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.cMDIDDataGridViewTextBoxColumn,
+            this.ReadyReason,
+            this.VEHICLE_ID,
+            this.cARRIERIDDataGridViewTextBoxColumn,
+            this.tRANSFERSTATEDataGridViewTextBoxColumn,
+            this.hOSTSOURCEDataGridViewTextBoxColumn,
+            this.hOSTDESTINATIONDataGridViewTextBoxColumn,
+            this.pRIORITYDataGridViewTextBoxColumn,
+            this.cMDINSERTIMEDataGridViewTextBoxColumn,
+            this.cMDSTARTTIMEDataGridViewTextBoxColumn});
+            this.dgv_TransferCommand.DataSource = this.cMDMCSObjToShowBindingSource;
+            this.dgv_TransferCommand.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_TransferCommand.GridColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.dgv_TransferCommand.Location = new System.Drawing.Point(0, 0);
+            this.dgv_TransferCommand.Name = "dgv_TransferCommand";
+            this.dgv_TransferCommand.ReadOnly = true;
+            this.dgv_TransferCommand.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dgv_TransferCommand.RowTemplate.Height = 24;
+            this.dgv_TransferCommand.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_TransferCommand.Size = new System.Drawing.Size(1916, 602);
+            this.dgv_TransferCommand.TabIndex = 2;
+            this.dgv_TransferCommand.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_TransferCommand_DataError);
+            // 
             // cMDIDDataGridViewTextBoxColumn
             // 
             this.cMDIDDataGridViewTextBoxColumn.DataPropertyName = "CMD_ID";
@@ -1085,6 +926,24 @@
             this.cMDIDDataGridViewTextBoxColumn.Name = "cMDIDDataGridViewTextBoxColumn";
             this.cMDIDDataGridViewTextBoxColumn.ReadOnly = true;
             this.cMDIDDataGridViewTextBoxColumn.Width = 54;
+            // 
+            // ReadyReason
+            // 
+            this.ReadyReason.DataPropertyName = "ReadyReason";
+            this.ReadyReason.HeaderText = "描述";
+            this.ReadyReason.MinimumWidth = 300;
+            this.ReadyReason.Name = "ReadyReason";
+            this.ReadyReason.ReadOnly = true;
+            this.ReadyReason.Width = 300;
+            // 
+            // VEHICLE_ID
+            // 
+            this.VEHICLE_ID.DataPropertyName = "VEHICLE_ID";
+            this.VEHICLE_ID.HeaderText = "Vh";
+            this.VEHICLE_ID.MinimumWidth = 250;
+            this.VEHICLE_ID.Name = "VEHICLE_ID";
+            this.VEHICLE_ID.ReadOnly = true;
+            this.VEHICLE_ID.Width = 250;
             // 
             // cARRIERIDDataGridViewTextBoxColumn
             // 
@@ -1152,9 +1011,54 @@
             // 
             this.cMDMCSObjToShowBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ObjectRelay.CMD_MCSObjToShow);
             // 
+            // tapDetail
+            // 
+            this.tapDetail.Controls.Add(this.dgv_TaskCommand);
+            this.tapDetail.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold);
+            this.tapDetail.Location = new System.Drawing.Point(4, 27);
+            this.tapDetail.Margin = new System.Windows.Forms.Padding(0);
+            this.tapDetail.Name = "tapDetail";
+            this.tapDetail.Size = new System.Drawing.Size(1916, 764);
+            this.tapDetail.TabIndex = 1;
+            this.tapDetail.Text = "Command Detail            ";
+            this.tapDetail.UseVisualStyleBackColor = true;
+            // 
+            // dgv_TaskCommand
+            // 
+            this.dgv_TaskCommand.AllowUserToAddRows = false;
+            this.dgv_TaskCommand.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgv_TaskCommand.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_TaskCommand.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_TaskCommand.GridColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.dgv_TaskCommand.Location = new System.Drawing.Point(0, 0);
+            this.dgv_TaskCommand.Name = "dgv_TaskCommand";
+            this.dgv_TaskCommand.ReadOnly = true;
+            this.dgv_TaskCommand.RowTemplate.Height = 24;
+            this.dgv_TaskCommand.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_TaskCommand.Size = new System.Drawing.Size(1916, 764);
+            this.dgv_TaskCommand.TabIndex = 0;
+            // 
+            // timer_TimedUpdates
+            // 
+            this.timer_TimedUpdates.Interval = 1000;
+            this.timer_TimedUpdates.Tick += new System.EventHandler(this.timer_TimedUpdates_Tick);
+            // 
             // vehicleObjToShowBindingSource
             // 
             this.vehicleObjToShowBindingSource.DataSource = typeof(com.mirle.ibg3k0.sc.ObjectRelay.VehicleObjToShow);
+            // 
+            // uctl_Map
+            // 
+            this.uctl_Map.AutoScroll = true;
+            this.uctl_Map.BackColor = System.Drawing.Color.MidnightBlue;
+            this.uctl_Map.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uctl_Map.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uctl_Map.Location = new System.Drawing.Point(0, 0);
+            this.uctl_Map.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uctl_Map.Name = "uctl_Map";
+            this.uctl_Map.Size = new System.Drawing.Size(1559, 409);
+            this.uctl_Map.TabIndex = 0;
+            this.uctl_Map.Load += new System.EventHandler(this.uctl_Map_Load);
             // 
             // OHT_Form
             // 
@@ -1188,15 +1092,12 @@
             this.tbcList.ResumeLayout(false);
             this.tab_vhStatus.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_vhStatus)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource1)).EndInit();
             this.tapTransferCmd.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_TransferCommand)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cMDMCSObjToShowBindingSource)).EndInit();
             this.tapDetail.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_TaskCommand)).EndInit();
-            this.tapCurrentAlarm.ResumeLayout(false);
-            this.tlp_crtAlarm.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_Alarm)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_TransferCommand)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cMDMCSObjToShowBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.vehicleObjToShowBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -1208,9 +1109,6 @@
         private System.Windows.Forms.TabControl tbcList;
         private System.Windows.Forms.TabPage tapDetail;
         private System.Windows.Forms.DataGridView dgv_TaskCommand;
-        private System.Windows.Forms.TabPage tapCurrentAlarm;
-        private System.Windows.Forms.TableLayoutPanel tlp_crtAlarm;
-        private System.Windows.Forms.DataGridView dgv_Alarm;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel pnl_Map;
         private System.Windows.Forms.Panel panel1;
@@ -1248,11 +1146,6 @@
         private System.Windows.Forms.Button btn_parkZoneTypeChange;
         private System.Windows.Forms.Label lbl_RediStat;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eqpt_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn alarm_code;
-        private System.Windows.Forms.DataGridViewTextBoxColumn alarm_lvl;
-        private System.Windows.Forms.DataGridViewTextBoxColumn report_time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn alarm_desc;
         private Components.uctl_Map uctl_Map;
         private System.Windows.Forms.BindingSource vehicleObjToShowBindingSource;
         private System.Windows.Forms.BindingSource vehicleObjToShowBindingSource1;

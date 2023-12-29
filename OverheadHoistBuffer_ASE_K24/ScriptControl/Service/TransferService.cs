@@ -1124,6 +1124,11 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else
                 {
+                    if (LastReportTransferTimeoutAlarm.IsRunning)
+                    {
+                        LastReportTransferTimeoutAlarm.Stop();
+                        LastReportTransferTimeoutAlarm.Reset();
+                    }
                     if (isTransferCommandTransferringTimeOut)
                     {
                         isTransferCommandTransferringTimeOut = false;
@@ -8791,6 +8796,10 @@ namespace com.mirle.ibg3k0.sc.Service
             else if (boxid.ToUpper().Contains("CIM"))
             {
                 //如果是CIM開頭則不進行Box ID的檢查
+            }
+            else if (boxid.ToUpper().Contains(SYMBOL_UNKNOW_CST_ID))
+            {
+                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + "OHB >> OHB| 強制建置 UNK 的帳料於系統上");
             }
             else
             {

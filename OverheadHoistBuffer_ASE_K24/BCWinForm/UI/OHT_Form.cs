@@ -169,7 +169,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             List<ALARM> alarms = scApp.AlarmBLL.getCurrentAlarmsFromRedis();
             Adapter.Invoke((obj) =>
             {
-                dgv_Alarm.DataSource = alarms;
+                //dgv_Alarm.DataSource = alarms;
             }, null);
         }
 
@@ -281,8 +281,8 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         private void initialDataGreadView()
         {
             aLARMs.Add(new ALARM());
-            dgv_Alarm.AutoGenerateColumns = false;
-            dgv_Alarm.DataSource = aLARMs;
+            //dgv_Alarm.AutoGenerateColumns = false;
+            //dgv_Alarm.DataSource = aLARMs;
         }
 
 
