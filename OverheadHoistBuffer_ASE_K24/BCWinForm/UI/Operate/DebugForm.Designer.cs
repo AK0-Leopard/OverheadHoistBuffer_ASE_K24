@@ -405,6 +405,7 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
+            this.btn_csttypemismatch = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -2733,7 +2734,7 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(486, 11);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(486, 6);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
             this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
             this.cb_Cache_data_Name.TabIndex = 1;
@@ -2947,6 +2948,7 @@
             // 
             // groupBox18
             // 
+            this.groupBox18.Controls.Add(this.btn_csttypemismatch);
             this.groupBox18.Controls.Add(this.btn_initial);
             this.groupBox18.Controls.Add(this.btn_cmp_vh_complete);
             this.groupBox18.Controls.Add(this.btn_cmp_vh_abort);
@@ -4968,6 +4970,16 @@
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
+            // btn_csttypemismatch
+            // 
+            this.btn_csttypemismatch.Location = new System.Drawing.Point(238, 115);
+            this.btn_csttypemismatch.Name = "btn_csttypemismatch";
+            this.btn_csttypemismatch.Size = new System.Drawing.Size(199, 30);
+            this.btn_csttypemismatch.TabIndex = 55;
+            this.btn_csttypemismatch.Text = "CST Type Mismatch";
+            this.btn_csttypemismatch.UseVisualStyleBackColor = true;
+            this.btn_csttypemismatch.Click += new System.EventHandler(this.btn_csttypemismatch_Click);
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -5428,5 +5440,6 @@
         private System.Windows.Forms.CheckBox cb_IsOpenParkingZoneAutoPullFun;
         private System.Windows.Forms.CheckBox cb_IsOpenParkingZoneFun;
         private Components.uctlButton uctlButton2;
+        private System.Windows.Forms.Button btn_csttypemismatch;
     }
 }

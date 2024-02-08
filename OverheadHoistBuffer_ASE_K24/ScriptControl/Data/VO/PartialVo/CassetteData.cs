@@ -1,4 +1,6 @@
-﻿using System;
+﻿using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
+using com.mirle.ibg3k0.sc.Service;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,6 +106,37 @@ namespace com.mirle.ibg3k0.sc
             }
         }
 
+        public CstType GetCstType()
+        {
+            if (IsReelCST)
+            {
+                return CstType.ReelCST;
+            }
+            else if (IsFoupCST)
+            {
+                return CstType.A;
+            }
+            else if (IsLightCST)
+            {
+                return CstType.B;
+            }
+
+            if (!int.TryParse(CSTType, out int i_cst_type))
+            {
+                return CstType.Undefined;
+            }
+            else
+            {
+                //檢查i_cst_type是否為合法的CST Type
+                if (!Enum.IsDefined(typeof(CstType), i_cst_type))
+                {
+                    return CstType.Undefined;
+                }
+                return (CstType)i_cst_type;
+            }
+
+        }
+
         public (bool isUnknow, Data.PLC_Functions.MGV.Enums.CstType cstType) IsUnknowBox()
         {
             if (IsUnknow)
@@ -121,7 +154,7 @@ namespace com.mirle.ibg3k0.sc
                 return BOXID.StartsWith(Service.TransferService.SYMBOL_UNKNOW_CST_ID);
             }
         }
-        private Data.PLC_Functions.MGV.Enums.CstType getUnknowCSTType()
+        private CstType getUnknowCSTType()
         {
             if (BOXID.Length < 6)
             {

@@ -1591,5 +1591,12 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             on_the_way_vh.isTcpIpConnect = true;
             bcApp.SCApplication.VehicleService.TestDriveOutTheVh(will_pass_vh.VEHICLE_ID, on_the_way_vh.VEHICLE_ID);
         }
+
+        private void btn_csttypemismatch_Click(object sender, EventArgs e)
+        {
+            var report_event = sc.ProtocolFormat.OHTMessage.EventType.CsttypeMismatch;
+            McsReportEventTest(report_event);
+
+        }
     }
 }

@@ -36,6 +36,7 @@ using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.Data.Enum;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Data.SECS.ASE;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction;
 using com.mirle.ibg3k0.sc.Data.VO;
@@ -49,6 +50,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -171,6 +173,7 @@ namespace com.mirle.ibg3k0.sc.Service
         private Logger logger = NLog.LogManager.GetCurrentClassLogger();
         public Logger TransferServiceLogger = NLog.LogManager.GetLogger("TransferServiceLogger");
         public Logger AGVCTriggerLogger = NLog.LogManager.GetLogger("TransferServiceLogger");
+        public const CstType DefaultCstType = CstType.B;
 
         private SCApplication scApp = null;
         private ReportBLL reportBLL = null;
@@ -911,7 +914,6 @@ namespace com.mirle.ibg3k0.sc.Service
                                 }
 
                                 #endregion 每分鐘權限 + 1
-
                                 #region 搬送命令
                                 bool can_after_on_the_way_tran = false;
                                 var check_can_after_on_the_way_result = checkHasVhAfterOnTheWay(v, transferCmdData);
@@ -3054,7 +3056,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                             if (cmd.CMD_ID.Contains("SCAN-"))
                             {
-                                OHT_ScanProcess(cmd, ohtName, status);
+                                OHT_ScanProcess(cmd, ohtCmdData, ohtName, status, cstType);
                             }
                             else
                             {
@@ -3234,7 +3236,6 @@ namespace com.mirle.ibg3k0.sc.Service
 
                                     NotAccountHaveRead(destBoxData);
                                 }
-
                             }
                         }
 
@@ -3427,7 +3428,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        public void OHT_ScanProcess(ACMD_MCS cmd, string ohtName, int status)
+        public void OHT_ScanProcess(ACMD_MCS cmd, ACMD_OHTC ohtCmd, string ohtName, int status, string cstType)
         {
             try
             {
@@ -3512,6 +3513,9 @@ namespace com.mirle.ibg3k0.sc.Service
                         reportBLL.ReportCraneIdle(ohtName, cmd.CMD_ID);
 
                         break;
+                    case COMMAND_STATUS_BIT_INDEX_CST_TYPE_MISMATCH:
+                        ProcessCstTypeMismatch(ohtCmd, cmd.HOSTSOURCE.Trim());
+                        break;
                 }
             }
             catch (Exception ex)
@@ -3519,6 +3523,60 @@ namespace com.mirle.ibg3k0.sc.Service
                 TransferServiceLogger.Error(ex, "OHT_ScanProcess");
             }
         }
+
+        private void ProcessCstTypeMismatch(ACMD_OHTC ohtCmd, string hostSourcePort)
+        {
+            var original_scan_cst_type = GetOriginalScanCstType(ohtCmd);
+            CstType new_cst_type = GetNewCstType(original_scan_cst_type);
+            CassetteData dbCstData = cassette_dataBLL.loadCassetteDataByLoc(hostSourcePort);
+            if (dbCstData == null)
+            {
+                TransferServiceLogger.
+                    Info($"{DateTime.Now.ToString("HH: mm:ss.fff ")}OHB >> OHB|Cst type mismatch ,來源:{hostSourcePort}並無帳料建立UNKT。");
+                CreatCstTypeMismatchCassetteData(hostSourcePort, new_cst_type);
+            }
+            else
+            {
+                TransferServiceLogger.
+                    Info($"{DateTime.Now.ToString("HH: mm:ss.fff ")}OHB >> OHB|Cst type mismatch ,來源:{hostSourcePort} 有cst id:{SCUtility.Trim(dbCstData.BOXID, true)},準備強制刪帳在建立UNKT。");
+                CreatCstTypeMismatchCassetteData(hostSourcePort, new_cst_type);
+            }
+        }
+        private void CreatCstTypeMismatchCassetteData(string hostSourcePort, CstType cstType)
+        {
+            string boxID = CarrierTypeMismatch(hostSourcePort);
+            string loc = hostSourcePort;
+            TransferServiceLogger.
+                Info($"{DateTime.Now.ToString("HH: mm:ss.fff ")}OHB >> OHB|Cst type mismatch ,建立UNKT帳 ID:{boxID} loc:{loc}。");
+
+            OHBC_InsertCassette(boxID, loc, "CstTypeMismatch", ((int)cstType).ToString());
+        }
+
+        private CstType GetOriginalScanCstType(ACMD_OHTC ohtCmd)
+        {
+            if (!ohtCmd.INTERRUPTED_REASON.HasValue)
+                return CstType.Undefined;
+            int i_cst_type = ohtCmd.INTERRUPTED_REASON.Value;
+            //檢查i_cst_type是否為合法的CST Type
+            if (!Enum.IsDefined(typeof(CstType), i_cst_type))
+            {
+                return TransferService.DefaultCstType;
+            }
+            return (CstType)i_cst_type;
+        }
+        private CstType GetNewCstType(CstType cstType)
+        {
+            switch (cstType)
+            {
+                case CstType.A:
+                    return CstType.B;
+                case CstType.B:
+                    return CstType.A;
+                default:
+                    return DefaultCstType;
+            }
+        }
+
 
         public void OHT_TestProcess(ACMD_OHTC ohtCmdData, int status)  //OHT 單動測試，不會有 MCS_ID，回報指更新 Loc
         {
@@ -6505,6 +6563,10 @@ namespace com.mirle.ibg3k0.sc.Service
             string cst_type_symbol = convertCSTTypeSymbol(cstType);
             return $"{SYMBOL_UNKNOW_CST_ID}S{cst_type_symbol}" + loc + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
         }
+        public string CarrierTypeMismatch(string loc)   //CST Type Mismatch
+        {
+            return $"{SYMBOL_UNKNOW_CST_ID}T" + loc + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+        }
         public string convertCSTTypeSymbol(string scstType)
         {
             switch (scstType)
@@ -7028,6 +7090,10 @@ namespace com.mirle.ibg3k0.sc.Service
 
         public string OHBC_InsertCassette(string boxid, string loc, string sourceAPI)
         {
+            return OHBC_InsertCassette(boxid, loc, sourceAPI, "");
+        }
+        public string OHBC_InsertCassette(string boxid, string loc, string sourceAPI, string cstType)
+        {
             try
             {
                 loc = loc.Trim();
@@ -7059,12 +7125,19 @@ namespace com.mirle.ibg3k0.sc.Service
                 CassetteData datainfo = new CassetteData();
 
                 string cst_type = "";
-                var port_station = scApp.PortStationBLL.OperateCatch.getPortStation(loc);
-                if (port_station != null &&
-                    port_station.LD_VH_TYPE == E_VH_TYPE.ReelCST)
+                if (SCUtility.isEmpty(cstType))
                 {
-                    int i_cst_type = (int)Data.PLC_Functions.MGV.Enums.CstType.ReelCST;
-                    cst_type = i_cst_type.ToString();
+                    var port_station = scApp.PortStationBLL.OperateCatch.getPortStation(loc);
+                    if (port_station != null &&
+                        port_station.LD_VH_TYPE == E_VH_TYPE.ReelCST)
+                    {
+                        int i_cst_type = (int)Data.PLC_Functions.MGV.Enums.CstType.ReelCST;
+                        cst_type = i_cst_type.ToString();
+                    }
+                }
+                else
+                {
+                    cst_type = cstType;
                 }
 
                 datainfo.StockerID = "1";

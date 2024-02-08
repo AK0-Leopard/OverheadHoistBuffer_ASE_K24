@@ -1831,9 +1831,9 @@ namespace com.mirle.ibg3k0.sc.Service
             bool isSuccess = true;
             string cmd_id = cmd.CMD_ID;
             string vh_id = cmd.VH_ID;
-            string cst_type = getCSTType(cmd);
             try
             {
+                string cst_type = getCSTType(cmd);
                 List<AMCSREPORTQUEUE> reportqueues = new List<AMCSREPORTQUEUE>();
                 using (var tx = SCUtility.getTransactionScope())
                 {
@@ -2863,7 +2863,7 @@ namespace com.mirle.ibg3k0.sc.Service
                     break;
 
                 case EventType.CsttypeMismatch:
-                    PositionReport_CSTTypeMismatch(bcfApp, vh, seq_num, recive_str.EventType, carrier_id);
+                    PositionReport_CSTTypeMismatch(bcfApp, vh, seq_num, recive_str.EventType, carrier_id, cst_type);
                     break;
 
                 case EventType.Bcrread:
@@ -4331,7 +4331,7 @@ namespace com.mirle.ibg3k0.sc.Service
         }
 
         private void PositionReport_CSTTypeMismatch(BCFApplication bcfApp, AVEHICLE eqpt, int seqNum
-                                                   , EventType eventType, string carrier_id)
+                                                   , EventType eventType, string carrier_id, string cstType)
         {
             try
             {
@@ -4344,7 +4344,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 {
                     bool retryOrAbort = true;
                     retryOrAbort = scApp.TransferService.OHT_TransferStatus(eqpt.OHTC_CMD,
-                            eqpt.VEHICLE_ID, ACMD_MCS.COMMAND_STATUS_BIT_INDEX_CST_TYPE_MISMATCH);
+                            eqpt.VEHICLE_ID, ACMD_MCS.COMMAND_STATUS_BIT_INDEX_CST_TYPE_MISMATCH,
+                            cstType);
                     Boolean resp_cmp;
                     resp_cmp = replyTranEventReport(bcfApp, eventType, eqpt, seqNum, true, true, true, "", CMDCancelType.CmdCancel);
                 }

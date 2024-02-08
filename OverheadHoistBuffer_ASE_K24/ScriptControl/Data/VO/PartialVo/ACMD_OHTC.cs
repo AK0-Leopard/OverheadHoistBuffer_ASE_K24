@@ -1,4 +1,8 @@
-﻿using System;
+﻿using com.mirle.ibg3k0.sc.BLL;
+using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
+using com.mirle.ibg3k0.sc.Service;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,17 +30,26 @@ namespace com.mirle.ibg3k0.sc
 
                 if (transferService.isShelfPort(SOURCE))
                 {
-                    if (!Common.SCUtility.isEmpty(SOURCE))
+                    string get_cst_type_at_shelf = GetCstTypeOnShelf();
+                    if (!Common.SCUtility.isEmpty(get_cst_type_at_shelf))
                     {
-                        if (BOX_ID.Contains(FOUP_SIGN))
-                            return (true, Data.PLC_Functions.MGV.Enums.CstType.A.ToString());
-                        else if (BOX_ID.Contains(LIGHT_CST_SIGN))
-                            return (true, Data.PLC_Functions.MGV.Enums.CstType.B.ToString());
-                        else
-                        {
-                            return (false, "");
-                        }
+                        return (true, get_cst_type_at_shelf);
                     }
+                    else
+                    {
+                        return (false, "");
+                    }
+                    //if (!Common.SCUtility.isEmpty(SOURCE))
+                    //{
+                    //    if (BOX_ID.Contains(FOUP_SIGN))
+                    //        return (true, Data.PLC_Functions.MGV.Enums.CstType.A.ToString());
+                    //    else if (BOX_ID.Contains(LIGHT_CST_SIGN))
+                    //        return (true, Data.PLC_Functions.MGV.Enums.CstType.B.ToString());
+                    //    else
+                    //    {
+                    //        return (false, "");
+                    //    }
+                    //}
                 }
                 else if (port_station is MANUAL_PORTSTATION)
                 {
@@ -69,6 +82,44 @@ namespace com.mirle.ibg3k0.sc
             {
                 NLog.LogManager.GetCurrentClassLogger().Error(ex, "Exception");
                 return (false, "");
+            }
+        }
+        private string GetCstTypeOnShelf()
+        {
+            if (CMD_TPYE == E_CMD_TYPE.Scan)
+            {
+                if (INTERRUPTED_REASON.HasValue)
+                {
+                    int inturrupted_reason = INTERRUPTED_REASON.Value;
+                    //檢查i_cst_type是否為合法的CST Type
+                    if (!Enum.IsDefined(typeof(CstType), inturrupted_reason))
+                    {
+                        throw new Exception($"CMD ID:{CMD_ID} is scan command, but cst type {inturrupted_reason} is illegal.");
+                    }
+                    return ((CstType)inturrupted_reason).ToString();
+                }
+                else
+                {
+                    throw new Exception($"CMD ID:{CMD_ID} is scan command, but no define cst type.");
+                }
+            }
+            else
+            {
+                if (!Common.SCUtility.isEmpty(SOURCE))
+                {
+                    if (BOX_ID.Contains(FOUP_SIGN))
+                        return Data.PLC_Functions.MGV.Enums.CstType.A.ToString();
+                    else if (BOX_ID.Contains(LIGHT_CST_SIGN))
+                        return Data.PLC_Functions.MGV.Enums.CstType.B.ToString();
+                    else
+                    {
+                        return "";
+                    }
+                }
+                else
+                {
+                    return "";
+                }
             }
         }
         public string CARRIER_ID { get { return this.BOX_ID; } }

@@ -17,10 +17,12 @@ using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.Data.DAO;
 using com.mirle.ibg3k0.sc.Data.DAO.EntityFramework;
 using com.mirle.ibg3k0.sc.Data.Enum;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Data.SECS;
 using com.mirle.ibg3k0.sc.Data.ValueDefMapAction;
 using com.mirle.ibg3k0.sc.Data.VO;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
+using com.mirle.ibg3k0.sc.Service;
 using Mirle.Hlts.Utils;
 using NLog;
 using System;
@@ -1407,7 +1409,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             {
                 TransferServiceLogger.Info
                 (
-                   $"{DateTime.Now.ToString("HH:mm:ss.fff ")}OHB >> DB|updateCMD_MCS_TranStatus cmd_id: {cmd_id} status:{status} 更新失敗，準備進行retry..." 
+                   $"{DateTime.Now.ToString("HH:mm:ss.fff ")}OHB >> DB|updateCMD_MCS_TranStatus cmd_id: {cmd_id} status:{status} 更新失敗，準備進行retry..."
                 );
                 SpinWait.SpinUntil(() => false, 1_000);
                 return updateCMD_MCS_TranStatus(cmd_id, status);
@@ -2864,6 +2866,35 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return (false, "尋車功能被占用");
             }
         }
+        private CstType TryGetScanCSTType(ACMD_MCS mcs_cmd)
+        {
+            CassetteData cst_data = scApp.CassetteDataBLL.loadCassetteDataByLoc(mcs_cmd.HOSTSOURCE);
+            if (cst_data == null)
+            {
+                return TransferService.DefaultCstType;
+            }
+            else
+            {
+                var cst_type = cst_data.GetCstType();
+                if(cst_type == CstType.Undefined)
+                {
+                    return TransferService.DefaultCstType;
+                }
+                return cst_type;
+            }
+        }
+        private E_VH_TYPE GetVhTypeByCstType(CstType iCstType)
+        {
+            switch (iCstType)
+            {
+                case CstType.B:
+                    return E_VH_TYPE.Light;
+                case CstType.A:
+                    return E_VH_TYPE.Foup;
+                default:
+                    return E_VH_TYPE.None;
+            }
+        }
         public (bool canGenerate, string reason) generateOHTCommandNew(ACMD_MCS mcs_cmd)
         {
             if (Interlocked.Exchange(ref syncTranOHTCommandPoint, 1) == 0)
@@ -2876,7 +2907,6 @@ namespace com.mirle.ibg3k0.sc.BLL
                     string to_adr = string.Empty;
                     AVEHICLE bestSuitableVh = null;
                     E_VH_TYPE vh_type = E_VH_TYPE.None;
-
                     //
                     bool has_pre_wait_assign_vh = !SCUtility.isEmpty(mcs_cmd.PreAssignVhID);
 
@@ -2884,7 +2914,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                     {
                         ShelfDef targetShelf = scApp.ShelfDefBLL.GetShelfDataByID(mcs_cmd.HOSTSOURCE);
 
-                        scApp.MapBLL.getAddressID(hostsource, out from_adr, out vh_type);
+                        scApp.MapBLL.getAddressID(hostsource, out from_adr, out var _);
                         if (has_pre_wait_assign_vh)
                         {
                             var pre_wait_assign_vh = scApp.VehicleBLL.cache.getVhByID(mcs_cmd.PreAssignVhID);
@@ -2893,12 +2923,19 @@ namespace com.mirle.ibg3k0.sc.BLL
                                 bestSuitableVh = pre_wait_assign_vh;
                             }
                         }
+                        CstType cst_type = TryGetScanCSTType(mcs_cmd);
                         if (bestSuitableVh == null)
                         {
+                            vh_type = GetVhTypeByCstType(cst_type);
+                            TransferServiceLogger.
+                                Info($"{DateTime.Now.ToString("HH: mm:ss.fff ")}OHB >> OHB|Scan : try scan cst type:{cst_type} ,want find vh type:{vh_type}。");
+
                             bestSuitableVh = scApp.VehicleBLL.findBestSuitableVhStepByNearest(from_adr, vh_type);
                         }
                         if (bestSuitableVh == null)
                         {
+                            TransferServiceLogger.
+                                Info($"{DateTime.Now.ToString("HH: mm:ss.fff ")}OHB >> OHB|Scan : can't find vh to scan。");
                             return (false, "找不到適合的Vh搬送");
                         }
 
@@ -2919,7 +2956,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                             REAL_CMP_TIME = 0,
                             ESTIMATED_TIME = 50,
                             SOURCE_ADR = targetShelf.ADR_ID,
-                            DESTINATION_ADR = targetShelf.ADR_ID
+                            DESTINATION_ADR = targetShelf.ADR_ID,
+                            INTERRUPTED_REASON = (int)cst_type
                         };
 
                         creatCommand_OHTC(cmdohtc);
