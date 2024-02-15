@@ -97,6 +97,7 @@ namespace com.mirle.ibg3k0.bc.winform.UI
             cb_openEFEMPrelunloadFun.Checked = DebugParameter.IsOpenEFEMPreUnloadOkFun;
             cb_IsOpenParkingZoneAutoPullFun.Checked = DebugParameter.IsOpenParkingZoneAutoPull;
             cb_IsOpenParkingZoneFun.Checked = DebugParameter.IsOpenParkingZoneControlFunction;
+            cb_openCstTypeScan.Checked = DebugParameter.IsOpenCstTypeScan;
 
 
             cb_OperMode.DataSource = Enum.GetValues(typeof(sc.ProtocolFormat.OHTMessage.OperatingVHMode));
@@ -1596,6 +1597,22 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
             var report_event = sc.ProtocolFormat.OHTMessage.EventType.CsttypeMismatch;
             McsReportEventTest(report_event);
+
+        }
+
+        private void cb_openCstTypeScan_CheckedChanged(object sender, EventArgs e)
+        {
+            DebugParameter.IsOpenCstTypeScan = cb_openCstTypeScan.Checked;
+        }
+
+        private void btn_cmp_InterlockError_Click(object sender, EventArgs e)
+        {
+            var completeStatus = sc.ProtocolFormat.OHTMessage.CompleteStatus.CmpStatusInterlockError;
+            McsCommandCompleteTest(completeStatus);
+        }
+
+        private void btn_loadComplete_Click(object sender, EventArgs e)
+        {
 
         }
     }

@@ -2868,6 +2868,10 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
         private CstType TryGetScanCSTType(ACMD_MCS mcs_cmd)
         {
+            if (!DebugParameter.IsOpenCstTypeScan)
+            {
+                return CstType.Undefined;
+            }
             CassetteData cst_data = scApp.CassetteDataBLL.loadCassetteDataByLoc(mcs_cmd.HOSTSOURCE);
             if (cst_data == null)
             {
@@ -2876,7 +2880,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             else
             {
                 var cst_type = cst_data.GetCstType();
-                if(cst_type == CstType.Undefined)
+                if (cst_type == CstType.Undefined)
                 {
                     return TransferService.DefaultCstType;
                 }
@@ -2923,6 +2927,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                                 bestSuitableVh = pre_wait_assign_vh;
                             }
                         }
+
                         CstType cst_type = TryGetScanCSTType(mcs_cmd);
                         if (bestSuitableVh == null)
                         {
@@ -2935,7 +2940,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                         if (bestSuitableVh == null)
                         {
                             TransferServiceLogger.
-                                Info($"{DateTime.Now.ToString("HH: mm:ss.fff ")}OHB >> OHB|Scan : can't find vh to scan。");
+                                Info($"{DateTime.Now.ToString("HH: mm:ss.fff ")}OHB >> OHB|Scan : can't find vh(type:{cst_type}) to scan。");
                             return (false, "找不到適合的Vh搬送");
                         }
 
@@ -2959,7 +2964,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                             DESTINATION_ADR = targetShelf.ADR_ID,
                             INTERRUPTED_REASON = (int)cst_type
                         };
-
+                        if (!DebugParameter.IsOpenCstTypeScan)
+                        {
+                            cmdohtc.INTERRUPTED_REASON = null;
+                        }
                         creatCommand_OHTC(cmdohtc);
                         return (true, "");
                     }

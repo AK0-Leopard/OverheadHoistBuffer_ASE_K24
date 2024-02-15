@@ -94,13 +94,13 @@ namespace com.mirle.ibg3k0.sc
                     //檢查i_cst_type是否為合法的CST Type
                     if (!Enum.IsDefined(typeof(CstType), inturrupted_reason))
                     {
-                        throw new Exception($"CMD ID:{CMD_ID} is scan command, but cst type {inturrupted_reason} is illegal.");
+                        return "";
                     }
                     return ((CstType)inturrupted_reason).ToString();
                 }
                 else
                 {
-                    throw new Exception($"CMD ID:{CMD_ID} is scan command, but no define cst type.");
+                    return "";
                 }
             }
             else
