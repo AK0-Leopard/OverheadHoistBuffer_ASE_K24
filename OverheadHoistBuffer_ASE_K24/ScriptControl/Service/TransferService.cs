@@ -3526,6 +3526,12 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private void ProcessCstTypeMismatch(ACMD_OHTC ohtCmd, string hostSourcePort)
         {
+            if (!DebugParameter.IsOpenCstTypeScan)
+            {
+                TransferServiceLogger.
+                    Info($"{DateTime.Now.ToString("HH: mm:ss.fff ")}OHB >> OHB|Cst Type scan功能關閉中，不進行CSTTypeMismatchProcess，flag:{DebugParameter.IsOpenCstTypeScan}。");
+                return;
+            }
             var original_scan_cst_type = GetOriginalScanCstType(ohtCmd);
             CstType new_cst_type = GetNewCstType(original_scan_cst_type);
             CassetteData dbCstData = cassette_dataBLL.loadCassetteDataByLoc(hostSourcePort);
@@ -3541,7 +3547,29 @@ namespace com.mirle.ibg3k0.sc.Service
                     Info($"{DateTime.Now.ToString("HH: mm:ss.fff ")}OHB >> OHB|Cst type mismatch ,來源:{hostSourcePort} 有cst id:{SCUtility.Trim(dbCstData.BOXID, true)},準備強制刪帳在建立UNKT。");
                 CreatCstTypeMismatchCassetteData(hostSourcePort, new_cst_type);
             }
+            //等待10秒鐘後，確認是否已有產生scan命令
+            Task.Run(() =>
+            {
+                tryCreatScanCmdWhenCstTypeMismatchHappend(hostSourcePort);
+            });
         }
+
+        private void tryCreatScanCmdWhenCstTypeMismatchHappend(string hostSourcePort)
+        {
+            try
+            {
+                SpinWait.SpinUntil(() => false, 10_000);
+                string result = SetScanCmd("", hostSourcePort);
+                TransferServiceLogger.Info
+                (DateTime.Now.ToString("HH:mm:ss.fff ")
+                 + $"OHT >> OHB|ProcessCstTypeMismatch 10秒後，嘗試對source:{hostSourcePort} 產生scan命令,result:{result}");
+            }
+            catch (Exception ex)
+            {
+                TransferServiceLogger.Error(ex, "tryCreatScanCmdWhenCstTypeMismatchHappend");
+            }
+        }
+
         private void CreatCstTypeMismatchCassetteData(string hostSourcePort, CstType cstType)
         {
             string boxID = CarrierTypeMismatch(hostSourcePort);
