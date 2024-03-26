@@ -40,6 +40,10 @@ namespace com.mirle.ibg3k0.sc.BLL._191204Test.Extensions
         {
             return type == UnitType.EQ;
         }
+        public static bool IsEFEMPort(this UnitType type)
+        {
+            return type == UnitType.EFEM;
+        }
 
     }
 }

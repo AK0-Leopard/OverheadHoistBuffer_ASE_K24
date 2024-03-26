@@ -423,7 +423,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
             if (commandBLL.GetCommandByBoxId(duplicateCarrierData.BOXID, out var command))
             {
-                bool is_excute_normal_duplocate = duplicatePort.ToUnitType().IsEQPort() &&
+                bool is_excute_normal_duplocate = (duplicatePort.ToUnitType().IsEQPort() || duplicatePort.ToUnitType().IsEFEMPort()) &&
                                                   IsExcuteNormalDuplicateProcess(logTitle, duplicateCarrierData, command);
                 if (is_excute_normal_duplocate)
                 {
