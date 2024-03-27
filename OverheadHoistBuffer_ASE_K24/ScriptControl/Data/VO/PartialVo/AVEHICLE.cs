@@ -83,12 +83,14 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler LongTimeObstaclingKeepHappening;
         public event EventHandler LongTimeObstacleFinish;
         public event EventHandler<VhStopSingle> ErrorStatusChange;
+        public event EventHandler OHTCCommandResidualHappend;
 
 
         VehicleTimerAction vehicleTimer = null;
         private Stopwatch CurrentCommandExcuteTime;
         public Stopwatch CurrentBlockingTime;
         public Stopwatch CurrentObstaclingTime;
+        public Stopwatch OHTCCommandResidualCheckTime;
 
         public void onCommandComplete(CompleteStatus cmpStatus)
         {
@@ -138,6 +140,11 @@ namespace com.mirle.ibg3k0.sc
         {
             ErrorStatusChange?.Invoke(this, vhStopSingle);
         }
+        public void onOHTCCommandResidualHappend()
+        {
+            OHTCCommandResidualHappend?.Invoke(this, EventArgs.Empty);
+        }
+
 
         public object GetFormat(Type formatType)
         {
@@ -156,6 +163,7 @@ namespace com.mirle.ibg3k0.sc
             CurrentCommandExcuteTime = new Stopwatch();
             CurrentBlockingTime = new Stopwatch();
             CurrentObstaclingTime = new Stopwatch();
+            OHTCCommandResidualCheckTime = new Stopwatch();
         }
 
         public void TimerActionStart()
@@ -1568,6 +1576,7 @@ namespace com.mirle.ibg3k0.sc
                             }
                             vh.isLongTimeInaction = false;
                         }
+                        OHTCCommandResidualCheck();
                         LongTimeBlockingCheck();
                         LongTimeObstaclingCheck();
                     }
@@ -1585,6 +1594,48 @@ namespace com.mirle.ibg3k0.sc
 
                 }
             }
+
+            const UInt16 OHTC_COMMAND_RESIDUAL_MAX_TIME_ms = 60_000;
+            private void OHTCCommandResidualCheck()
+            {
+                if (vh.ACT_STATUS != VHActionStatus.NoCommand)
+                {
+                    if (vh.OHTCCommandResidualCheckTime.IsRunning)
+                        vh.OHTCCommandResidualCheckTime.Reset();
+                    return;
+                }
+                if (!HasOHTCCommandResidual())
+                {
+                    if (vh.OHTCCommandResidualCheckTime.IsRunning)
+                        vh.OHTCCommandResidualCheckTime.Reset();
+                    return;
+                }
+
+                if (!vh.OHTCCommandResidualCheckTime.IsRunning)
+                {
+                    vh.OHTCCommandResidualCheckTime.Restart();
+                }
+
+                if (vh.OHTCCommandResidualCheckTime.ElapsedMilliseconds > OHTC_COMMAND_RESIDUAL_MAX_TIME_ms)
+                {
+                    vh.OHTCCommandResidualCheckTime.Restart();
+                    vh.onOHTCCommandResidualHappend();
+                }
+            }
+            private bool HasOHTCCommandResidual()
+            {
+                var get_reuslt = ACMD_OHTC.tryGetExcutingACMDsByVhID(vh.VEHICLE_ID);
+                if (get_reuslt.hasCmds)
+                {
+                    return true;
+                }
+                if(!SCUtility.isEmpty(vh.OHTC_CMD) || !SCUtility.isEmpty(vh.MCS_CMD))
+                {
+                    return true;
+                }
+                return false;
+            }
+
             Stopwatch lastBlockingNotifyIntervalTime = new Stopwatch();
             public static UInt16 NOTIFY_BLOCKING_INTERVAL_TIME_SECOND { get; private set; } = 10;
             private void LongTimeBlockingCheck()

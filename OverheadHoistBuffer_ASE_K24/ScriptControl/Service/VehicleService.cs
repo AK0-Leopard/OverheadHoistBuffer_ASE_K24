@@ -124,6 +124,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.LongTimeObstacleFinish += Vh_LongTimeObstacleFinish;
 
                 vh.ErrorStatusChange += (s1, e1) => Vh_ErrorStatusChange(s1, e1);
+
+                vh.OHTCCommandResidualHappend += Vh_OHTCCommandResidualHappend;
                 vh.TimerActionStart();
             }
 
@@ -133,6 +135,27 @@ namespace com.mirle.ibg3k0.sc.Service
             foreach (Track t in scApp.UnitBLL.cache.GetALLTracks())
             {
                 t.alarmCodeChange += trackAlarmHappend;
+            }
+        }
+
+        private void Vh_OHTCCommandResidualHappend(object sender, EventArgs e)
+        {
+            AVEHICLE vh = sender as AVEHICLE;
+            if (vh == null) return;
+            try
+            {
+                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") +
+                                           $"系統判斷到OHTC殘留命令發生，進行強制清除命令...");
+                bool is_success = scApp.CMDBLL.forceUpdataCmdStatus2FnishByVhID(vh.VEHICLE_ID);
+                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") +
+                                           $"系統判斷到OHTC殘留命令發生，進行強制清除命令，Rssult:{is_success}");
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Warn, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: ex,
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
             }
         }
 

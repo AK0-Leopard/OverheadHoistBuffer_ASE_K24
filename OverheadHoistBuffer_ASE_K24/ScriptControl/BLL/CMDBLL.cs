@@ -4477,6 +4477,8 @@ namespace com.mirle.ibg3k0.sc.BLL
             int count = 0;
             try
             {
+                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") +
+                                           $"開始進行殘留命令清除確認...");
                 using (DBConnection_EF con = DBConnection_EF.GetUContext())
                 {
                     List<ACMD_OHTC> cmds = cmd_ohtcDAO.loadExecuteCmd(con, vh_id);
@@ -4508,6 +4510,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                                     }
                                 }
                             }
+                            TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") +
+                                                       $"強制結束OHT命令，但由於車子為No command，卻尚有ACMD_OHTC搬送命令，進行強制清除 cmd id:{cmd.CMD_ID}");
                         }
                         cmd_ohtcDAO.Update(con, cmds);
                     }
@@ -4525,7 +4529,10 @@ namespace com.mirle.ibg3k0.sc.BLL
                         }
                     }
                 }
-                return count != 0;
+                TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") +
+                                           $"殘留命令清除確認結束");
+                //return count != 0;
+                return true;
             }
             catch (Exception ex)
             {

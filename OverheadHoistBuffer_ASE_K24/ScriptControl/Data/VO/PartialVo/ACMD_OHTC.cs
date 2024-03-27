@@ -15,6 +15,17 @@ namespace com.mirle.ibg3k0.sc
     {
         public static ConcurrentDictionary<string, ACMD_OHTC> CMD_OHTC_InfoList { get; private set; } = new ConcurrentDictionary<string, ACMD_OHTC>();
 
+        public static (bool hasCmds, List<ACMD_OHTC> cmds) tryGetExcutingACMDsByVhID(string vhID)
+        {
+            var list = CMD_OHTC_InfoList.ToArray();
+            var command_list = list.Where(tran => SCUtility.isMatche(tran.Value.VH_ID, vhID) &&
+                                                  tran.Value.CMD_STAUS > E_CMD_STATUS.Queue)
+                             .Select(cmd => cmd.Value)
+                             .ToList();
+            return (command_list.Any(), command_list);
+        }
+
+
         const string LIGHT_CST_SIGN = "LC";
         const string FOUP_SIGN = "BE";
 
