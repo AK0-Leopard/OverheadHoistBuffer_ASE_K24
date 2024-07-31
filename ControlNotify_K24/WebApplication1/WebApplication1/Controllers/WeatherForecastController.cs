@@ -27,7 +27,7 @@ namespace WebApplication1.Controllers
 
         static object lock_obj = new object();
         [HttpGet("alarm/{id}")]
-        public String Happened(string id, [FromServices] WeatherForecast service, [FromServices] SerialPortService serialPort)
+        public String Happened(string id, [FromServices] WeatherForecast service)
 
         {
 
@@ -192,7 +192,7 @@ namespace WebApplication1.Controllers
             return "ok";
         }
         [HttpGet("disconnected/{id}")]
-        public String Disconnected(string id, [FromServices] WeatherForecast service, [FromServices] SerialPortService serialPort)
+        public String Disconnected(string id, [FromServices] WeatherForecast service)
 
         {
 
@@ -347,7 +347,7 @@ namespace WebApplication1.Controllers
         }
         private long NoActionSyncPoint = 0;
         [HttpGet("VhHasCmdNoAction/{id}")]
-        public String VhHasCmdNoAction(string id, [FromServices] WeatherForecast service, [FromServices] SerialPortService serialPort)
+        public String VhHasCmdNoAction(string id, [FromServices] WeatherForecast service)
 
         {
 

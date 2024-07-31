@@ -1551,7 +1551,14 @@ namespace com.mirle.ibg3k0.sc
                         {
                             vh.onLongTimeNoCommuncation();
                         }
-                        if (!vh.isTcpIpConnect) return;
+                        if (!vh.isTcpIpConnect)
+                        {
+                            //如果有發生斷線後，命令殘留計時器要重新計算，避免在異常命令結束(如Loading/Unloading)要保留命令但實際車子已無命令
+                            //後續發生判斷異常的問題
+                            if (vh.OHTCCommandResidualCheckTime.IsRunning)
+                                vh.OHTCCommandResidualCheckTime.Reset();
+                            return;
+                        }
                         double action_time = vh.CurrentCommandExcuteTime.Elapsed.TotalSeconds;
                         if (action_time > AVEHICLE.MAX_ALLOW_ACTION_TIME_SECOND)
                         {
@@ -1598,6 +1605,12 @@ namespace com.mirle.ibg3k0.sc
             const UInt16 OHTC_COMMAND_RESIDUAL_MAX_TIME_ms = 60_000;
             private void OHTCCommandResidualCheck()
             {
+                if (vh.MODE_STATUS == VHModeStatus.Manual)
+                {
+                    if (vh.OHTCCommandResidualCheckTime.IsRunning)
+                        vh.OHTCCommandResidualCheckTime.Reset();
+                    return;
+                }
                 if (vh.ACT_STATUS != VHActionStatus.NoCommand)
                 {
                     if (vh.OHTCCommandResidualCheckTime.IsRunning)
@@ -1629,7 +1642,7 @@ namespace com.mirle.ibg3k0.sc
                 {
                     return true;
                 }
-                if(!SCUtility.isEmpty(vh.OHTC_CMD) || !SCUtility.isEmpty(vh.MCS_CMD))
+                if (!SCUtility.isEmpty(vh.OHTC_CMD) || !SCUtility.isEmpty(vh.MCS_CMD))
                 {
                     return true;
                 }

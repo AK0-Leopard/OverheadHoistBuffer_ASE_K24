@@ -35,6 +35,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.uctl_Send_Fun_71 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -50,6 +51,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnVhTypeUpdate = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.label76 = new System.Windows.Forms.Label();
             this.label98 = new System.Windows.Forms.Label();
             this.cmbVhType = new System.Windows.Forms.ComboBox();
@@ -62,9 +64,17 @@
             this.ck_retry = new System.Windows.Forms.CheckBox();
             this.lbl_listening_status = new System.Windows.Forms.Label();
             this.label42 = new System.Windows.Forms.Label();
+            this.btn_close_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_open_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.lbl_install_status = new System.Windows.Forms.Label();
             this.label73 = new System.Windows.Forms.Label();
             this.cb_test_duplicate = new System.Windows.Forms.CheckBox();
+            this.btn_changeToRemove = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_changeToInstall = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_changeToAutoLocal = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_changeToAutoMTL = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_changeToAutoMTS = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
+            this.btn_changeToAutoRemote = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.ck_CycleRunTest = new System.Windows.Forms.CheckBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.txt_rename_cst_id = new System.Windows.Forms.TextBox();
@@ -79,11 +89,13 @@
             this.label6 = new System.Windows.Forms.Label();
             this.cmb_pauseType = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.btn_pause = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.cmb_pauseEvent = new System.Windows.Forms.ComboBox();
             this.btn_ForceReleaseBlock = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.cb_openCstTypeScan = new System.Windows.Forms.CheckBox();
+            this.uctlButton2 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.cb_IsOpenParkingZoneAutoPullFun = new System.Windows.Forms.CheckBox();
             this.cb_IsOpenParkingZoneFun = new System.Windows.Forms.CheckBox();
             this.cb_openEFEMPrelunloadFun = new System.Windows.Forms.CheckBox();
@@ -318,6 +330,7 @@
             this.btn_mtl_car_out_notify = new System.Windows.Forms.Button();
             this.btn_mtl_message_download = new System.Windows.Forms.Button();
             this.btn_mtl_dateTimeSync = new System.Windows.Forms.Button();
+            this.uctlButton1 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.set_Distance_btn = new System.Windows.Forms.Button();
             this.numericUpDown_distance = new System.Windows.Forms.NumericUpDown();
@@ -394,19 +407,6 @@
             this.ck_SaftyCheckComplete = new System.Windows.Forms.CheckBox();
             this.ck_SaftyCheckRequest = new System.Windows.Forms.CheckBox();
             this.ck_Alive = new System.Windows.Forms.CheckBox();
-            this.uctlButton2 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btnVhTypeUpdate = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_close_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_open_tcp_port = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_changeToRemove = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_changeToInstall = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_changeToAutoLocal = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_changeToAutoMTL = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_changeToAutoMTS = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_changeToAutoRemote = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.btn_pause = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctl_Send_Fun_71 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
-            this.uctlButton1 = new com.mirle.ibg3k0.bc.winform.UI.Components.uctlButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -452,7 +452,7 @@
             this.cb_FroceReservePass.Location = new System.Drawing.Point(28, 22);
             this.cb_FroceReservePass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cb_FroceReservePass.Name = "cb_FroceReservePass";
-            this.cb_FroceReservePass.Size = new System.Drawing.Size(189, 26);
+            this.cb_FroceReservePass.Size = new System.Drawing.Size(242, 32);
             this.cb_FroceReservePass.TabIndex = 7;
             this.cb_FroceReservePass.Text = "Force Block Pass";
             this.cb_FroceReservePass.UseVisualStyleBackColor = true;
@@ -465,7 +465,7 @@
             this.cmb_tcpipctr_Vehicle.Location = new System.Drawing.Point(8, 32);
             this.cmb_tcpipctr_Vehicle.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.cmb_tcpipctr_Vehicle.Name = "cmb_tcpipctr_Vehicle";
-            this.cmb_tcpipctr_Vehicle.Size = new System.Drawing.Size(197, 30);
+            this.cmb_tcpipctr_Vehicle.Size = new System.Drawing.Size(197, 36);
             this.cmb_tcpipctr_Vehicle.TabIndex = 9;
             this.cmb_tcpipctr_Vehicle.SelectedIndexChanged += new System.EventHandler(this.cmb_Vehicle_SelectedIndexChanged);
             // 
@@ -475,7 +475,7 @@
             this.cmb_teach_from_adr.Location = new System.Drawing.Point(10, 64);
             this.cmb_teach_from_adr.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.cmb_teach_from_adr.Name = "cmb_teach_from_adr";
-            this.cmb_teach_from_adr.Size = new System.Drawing.Size(199, 30);
+            this.cmb_teach_from_adr.Size = new System.Drawing.Size(199, 36);
             this.cmb_teach_from_adr.TabIndex = 14;
             // 
             // cmb_teach_to_adr
@@ -484,7 +484,7 @@
             this.cmb_teach_to_adr.Location = new System.Drawing.Point(9, 139);
             this.cmb_teach_to_adr.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.cmb_teach_to_adr.Name = "cmb_teach_to_adr";
-            this.cmb_teach_to_adr.Size = new System.Drawing.Size(199, 30);
+            this.cmb_teach_to_adr.Size = new System.Drawing.Size(199, 36);
             this.cmb_teach_to_adr.TabIndex = 14;
             // 
             // groupBox1
@@ -510,7 +510,7 @@
             this.label2.Location = new System.Drawing.Point(6, 111);
             this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 22);
+            this.label2.Size = new System.Drawing.Size(90, 28);
             this.label2.TabIndex = 15;
             this.label2.Text = "To Adr";
             // 
@@ -520,9 +520,20 @@
             this.label1.Location = new System.Drawing.Point(10, 37);
             this.label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(90, 22);
+            this.label1.Size = new System.Drawing.Size(116, 28);
             this.label1.TabIndex = 15;
             this.label1.Text = "From Adr";
+            // 
+            // uctl_Send_Fun_71
+            // 
+            this.uctl_Send_Fun_71.Location = new System.Drawing.Point(10, 191);
+            this.uctl_Send_Fun_71.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.uctl_Send_Fun_71.Name = "uctl_Send_Fun_71";
+            this.uctl_Send_Fun_71.Size = new System.Drawing.Size(138, 42);
+            this.uctl_Send_Fun_71.TabIndex = 13;
+            this.uctl_Send_Fun_71.Text = "Send Func 71";
+            this.uctl_Send_Fun_71.UseVisualStyleBackColor = true;
+            this.uctl_Send_Fun_71.Click += new System.EventHandler(this.uctl_Send_Fun_71_Click);
             // 
             // button1
             // 
@@ -587,7 +598,7 @@
             this.cb_OperMode.Location = new System.Drawing.Point(10, 51);
             this.cb_OperMode.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.cb_OperMode.Name = "cb_OperMode";
-            this.cb_OperMode.Size = new System.Drawing.Size(199, 30);
+            this.cb_OperMode.Size = new System.Drawing.Size(199, 36);
             this.cb_OperMode.TabIndex = 14;
             // 
             // label3
@@ -596,7 +607,7 @@
             this.label3.Location = new System.Drawing.Point(8, 26);
             this.label3.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(150, 22);
+            this.label3.Size = new System.Drawing.Size(194, 28);
             this.label3.TabIndex = 15;
             this.label3.Text = "Operating Mode";
             // 
@@ -606,7 +617,7 @@
             this.cb_PwrMode.Location = new System.Drawing.Point(9, 56);
             this.cb_PwrMode.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.cb_PwrMode.Name = "cb_PwrMode";
-            this.cb_PwrMode.Size = new System.Drawing.Size(199, 30);
+            this.cb_PwrMode.Size = new System.Drawing.Size(199, 36);
             this.cb_PwrMode.TabIndex = 14;
             // 
             // label4
@@ -615,7 +626,7 @@
             this.label4.Location = new System.Drawing.Point(5, 28);
             this.label4.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(110, 22);
+            this.label4.Size = new System.Drawing.Size(142, 28);
             this.label4.TabIndex = 15;
             this.label4.Text = "Power Mode";
             // 
@@ -645,7 +656,7 @@
             this.cb_StartGenAntoCmd.AutoSize = true;
             this.cb_StartGenAntoCmd.Location = new System.Drawing.Point(1054, 205);
             this.cb_StartGenAntoCmd.Name = "cb_StartGenAntoCmd";
-            this.cb_StartGenAntoCmd.Size = new System.Drawing.Size(349, 26);
+            this.cb_StartGenAntoCmd.Size = new System.Drawing.Size(450, 32);
             this.cb_StartGenAntoCmd.TabIndex = 18;
             this.cb_StartGenAntoCmd.Text = "Start Generates Transfer Command";
             this.cb_StartGenAntoCmd.UseVisualStyleBackColor = true;
@@ -724,13 +735,23 @@
             this.groupBox4.Text = "Specify Vehicle Action";
             this.groupBox4.Enter += new System.EventHandler(this.groupBox4_Enter);
             // 
+            // btnVhTypeUpdate
+            // 
+            this.btnVhTypeUpdate.Location = new System.Drawing.Point(8, 132);
+            this.btnVhTypeUpdate.Name = "btnVhTypeUpdate";
+            this.btnVhTypeUpdate.Size = new System.Drawing.Size(141, 30);
+            this.btnVhTypeUpdate.TabIndex = 61;
+            this.btnVhTypeUpdate.Text = "Update";
+            this.btnVhTypeUpdate.UseVisualStyleBackColor = true;
+            this.btnVhTypeUpdate.Click += new System.EventHandler(this.btnVhTypeUpdate_Click);
+            // 
             // label76
             // 
             this.label76.AutoSize = true;
             this.label76.Location = new System.Drawing.Point(795, 689);
             this.label76.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(20, 22);
+            this.label76.Size = new System.Drawing.Size(25, 28);
             this.label76.TabIndex = 58;
             this.label76.Text = "Y";
             this.label76.Visible = false;
@@ -741,7 +762,7 @@
             this.label98.Location = new System.Drawing.Point(8, 73);
             this.label98.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label98.Name = "label98";
-            this.label98.Size = new System.Drawing.Size(80, 22);
+            this.label98.Size = new System.Drawing.Size(103, 28);
             this.label98.TabIndex = 60;
             this.label98.Text = "vh type";
             // 
@@ -752,7 +773,7 @@
             this.cmbVhType.Location = new System.Drawing.Point(8, 96);
             this.cmbVhType.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.cmbVhType.Name = "cmbVhType";
-            this.cmbVhType.Size = new System.Drawing.Size(141, 30);
+            this.cmbVhType.Size = new System.Drawing.Size(141, 36);
             this.cmbVhType.TabIndex = 59;
             // 
             // num_vh_y
@@ -769,7 +790,7 @@
             0,
             0});
             this.num_vh_y.Name = "num_vh_y";
-            this.num_vh_y.Size = new System.Drawing.Size(172, 30);
+            this.num_vh_y.Size = new System.Drawing.Size(172, 35);
             this.num_vh_y.TabIndex = 59;
             this.num_vh_y.Visible = false;
             this.num_vh_y.ValueChanged += new System.EventHandler(this.num_vh_y_ValueChanged);
@@ -780,7 +801,7 @@
             this.label75.Location = new System.Drawing.Point(795, 650);
             this.label75.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label75.Name = "label75";
-            this.label75.Size = new System.Drawing.Size(20, 22);
+            this.label75.Size = new System.Drawing.Size(25, 28);
             this.label75.TabIndex = 17;
             this.label75.Text = "X";
             this.label75.Visible = false;
@@ -799,7 +820,7 @@
             0,
             0});
             this.num_vh_x.Name = "num_vh_x";
-            this.num_vh_x.Size = new System.Drawing.Size(172, 30);
+            this.num_vh_x.Size = new System.Drawing.Size(172, 35);
             this.num_vh_x.TabIndex = 57;
             this.num_vh_x.Visible = false;
             this.num_vh_x.ValueChanged += new System.EventHandler(this.num_vh_x_ValueChanged);
@@ -809,7 +830,7 @@
             this.Ignore136UnloadComplete.AutoSize = true;
             this.Ignore136UnloadComplete.Location = new System.Drawing.Point(767, 112);
             this.Ignore136UnloadComplete.Name = "Ignore136UnloadComplete";
-            this.Ignore136UnloadComplete.Size = new System.Drawing.Size(249, 26);
+            this.Ignore136UnloadComplete.Size = new System.Drawing.Size(320, 32);
             this.Ignore136UnloadComplete.TabIndex = 56;
             this.Ignore136UnloadComplete.Text = "Ignore Unload Complete";
             this.Ignore136UnloadComplete.UseVisualStyleBackColor = true;
@@ -820,7 +841,7 @@
             // 
             this.txt_current_sec_id.Location = new System.Drawing.Point(819, 551);
             this.txt_current_sec_id.Name = "txt_current_sec_id";
-            this.txt_current_sec_id.Size = new System.Drawing.Size(172, 30);
+            this.txt_current_sec_id.Size = new System.Drawing.Size(172, 35);
             this.txt_current_sec_id.TabIndex = 55;
             this.txt_current_sec_id.Visible = false;
             // 
@@ -838,7 +859,7 @@
             0,
             0});
             this.num_section_dis.Name = "num_section_dis";
-            this.num_section_dis.Size = new System.Drawing.Size(172, 30);
+            this.num_section_dis.Size = new System.Drawing.Size(172, 35);
             this.num_section_dis.TabIndex = 54;
             this.num_section_dis.Visible = false;
             this.num_section_dis.ValueChanged += new System.EventHandler(this.num_section_dis_ValueChanged);
@@ -849,7 +870,7 @@
             this.ck_retry.Location = new System.Drawing.Point(819, 515);
             this.ck_retry.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ck_retry.Name = "ck_retry";
-            this.ck_retry.Size = new System.Drawing.Size(119, 26);
+            this.ck_retry.Size = new System.Drawing.Size(151, 32);
             this.ck_retry.TabIndex = 7;
             this.ck_retry.Text = "136_Retry";
             this.ck_retry.UseVisualStyleBackColor = true;
@@ -862,7 +883,7 @@
             this.lbl_listening_status.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_listening_status.Location = new System.Drawing.Point(364, 40);
             this.lbl_listening_status.Name = "lbl_listening_status";
-            this.lbl_listening_status.Size = new System.Drawing.Size(122, 24);
+            this.lbl_listening_status.Size = new System.Drawing.Size(157, 30);
             this.lbl_listening_status.TabIndex = 53;
             this.lbl_listening_status.Text = "           ";
             this.lbl_listening_status.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbl_listening_status_MouseDoubleClick);
@@ -872,9 +893,31 @@
             this.label42.AutoSize = true;
             this.label42.Location = new System.Drawing.Point(228, 40);
             this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(140, 22);
+            this.label42.Size = new System.Drawing.Size(181, 28);
             this.label42.TabIndex = 52;
             this.label42.Text = "Is Listening:";
+            // 
+            // btn_close_tcp_port
+            // 
+            this.btn_close_tcp_port.Location = new System.Drawing.Point(664, 751);
+            this.btn_close_tcp_port.Name = "btn_close_tcp_port";
+            this.btn_close_tcp_port.Size = new System.Drawing.Size(166, 45);
+            this.btn_close_tcp_port.TabIndex = 51;
+            this.btn_close_tcp_port.Text = "Close Tcp Port";
+            this.btn_close_tcp_port.UseVisualStyleBackColor = true;
+            this.btn_close_tcp_port.Visible = false;
+            this.btn_close_tcp_port.Click += new System.EventHandler(this.btn_close_tcp_port_Click);
+            // 
+            // btn_open_tcp_port
+            // 
+            this.btn_open_tcp_port.Location = new System.Drawing.Point(492, 751);
+            this.btn_open_tcp_port.Name = "btn_open_tcp_port";
+            this.btn_open_tcp_port.Size = new System.Drawing.Size(166, 45);
+            this.btn_open_tcp_port.TabIndex = 50;
+            this.btn_open_tcp_port.Text = "Open Tcp Port";
+            this.btn_open_tcp_port.UseVisualStyleBackColor = true;
+            this.btn_open_tcp_port.Visible = false;
+            this.btn_open_tcp_port.Click += new System.EventHandler(this.btn_open_tcp_port_Click);
             // 
             // lbl_install_status
             // 
@@ -882,7 +925,7 @@
             this.lbl_install_status.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_install_status.Location = new System.Drawing.Point(364, 12);
             this.lbl_install_status.Name = "lbl_install_status";
-            this.lbl_install_status.Size = new System.Drawing.Size(122, 24);
+            this.lbl_install_status.Size = new System.Drawing.Size(157, 30);
             this.lbl_install_status.TabIndex = 49;
             this.lbl_install_status.Text = "           ";
             this.lbl_install_status.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbl_install_status_MouseDoubleClick);
@@ -892,7 +935,7 @@
             this.label73.AutoSize = true;
             this.label73.Location = new System.Drawing.Point(249, 12);
             this.label73.Name = "label73";
-            this.label73.Size = new System.Drawing.Size(120, 22);
+            this.label73.Size = new System.Drawing.Size(155, 28);
             this.label73.TabIndex = 48;
             this.label73.Text = "Is Install:";
             // 
@@ -901,19 +944,79 @@
             this.cb_test_duplicate.AutoSize = true;
             this.cb_test_duplicate.Location = new System.Drawing.Point(767, 69);
             this.cb_test_duplicate.Name = "cb_test_duplicate";
-            this.cb_test_duplicate.Size = new System.Drawing.Size(169, 26);
+            this.cb_test_duplicate.Size = new System.Drawing.Size(216, 32);
             this.cb_test_duplicate.TabIndex = 47;
             this.cb_test_duplicate.Text = "Test Duplicate";
             this.cb_test_duplicate.UseVisualStyleBackColor = true;
             this.cb_test_duplicate.Visible = false;
             this.cb_test_duplicate.CheckedChanged += new System.EventHandler(this.cb_test_duplicate_CheckedChanged);
             // 
+            // btn_changeToRemove
+            // 
+            this.btn_changeToRemove.Location = new System.Drawing.Point(813, 189);
+            this.btn_changeToRemove.Name = "btn_changeToRemove";
+            this.btn_changeToRemove.Size = new System.Drawing.Size(169, 43);
+            this.btn_changeToRemove.TabIndex = 46;
+            this.btn_changeToRemove.Text = "Remove";
+            this.btn_changeToRemove.UseVisualStyleBackColor = true;
+            this.btn_changeToRemove.Click += new System.EventHandler(this.btn_changeToRemove_Click);
+            // 
+            // btn_changeToInstall
+            // 
+            this.btn_changeToInstall.Location = new System.Drawing.Point(816, 240);
+            this.btn_changeToInstall.Name = "btn_changeToInstall";
+            this.btn_changeToInstall.Size = new System.Drawing.Size(169, 43);
+            this.btn_changeToInstall.TabIndex = 45;
+            this.btn_changeToInstall.Text = "Install";
+            this.btn_changeToInstall.UseVisualStyleBackColor = true;
+            this.btn_changeToInstall.Click += new System.EventHandler(this.btn_changeToInstall_Click);
+            // 
+            // btn_changeToAutoLocal
+            // 
+            this.btn_changeToAutoLocal.Location = new System.Drawing.Point(819, 364);
+            this.btn_changeToAutoLocal.Name = "btn_changeToAutoLocal";
+            this.btn_changeToAutoLocal.Size = new System.Drawing.Size(166, 45);
+            this.btn_changeToAutoLocal.TabIndex = 44;
+            this.btn_changeToAutoLocal.Text = "Auto Local";
+            this.btn_changeToAutoLocal.UseVisualStyleBackColor = true;
+            this.btn_changeToAutoLocal.Click += new System.EventHandler(this.btn_changeToAutoLocal_Click_1);
+            // 
+            // btn_changeToAutoMTL
+            // 
+            this.btn_changeToAutoMTL.Location = new System.Drawing.Point(819, 464);
+            this.btn_changeToAutoMTL.Name = "btn_changeToAutoMTL";
+            this.btn_changeToAutoMTL.Size = new System.Drawing.Size(166, 45);
+            this.btn_changeToAutoMTL.TabIndex = 43;
+            this.btn_changeToAutoMTL.Text = "Auto MTL";
+            this.btn_changeToAutoMTL.UseVisualStyleBackColor = true;
+            this.btn_changeToAutoMTL.Click += new System.EventHandler(this.btn_changeToAutoMTL_Click);
+            // 
+            // btn_changeToAutoMTS
+            // 
+            this.btn_changeToAutoMTS.Location = new System.Drawing.Point(819, 413);
+            this.btn_changeToAutoMTS.Name = "btn_changeToAutoMTS";
+            this.btn_changeToAutoMTS.Size = new System.Drawing.Size(166, 45);
+            this.btn_changeToAutoMTS.TabIndex = 42;
+            this.btn_changeToAutoMTS.Text = "Auto MTS";
+            this.btn_changeToAutoMTS.UseVisualStyleBackColor = true;
+            this.btn_changeToAutoMTS.Click += new System.EventHandler(this.btn_changeToAutoLocal_Click);
+            // 
+            // btn_changeToAutoRemote
+            // 
+            this.btn_changeToAutoRemote.Location = new System.Drawing.Point(819, 313);
+            this.btn_changeToAutoRemote.Name = "btn_changeToAutoRemote";
+            this.btn_changeToAutoRemote.Size = new System.Drawing.Size(166, 45);
+            this.btn_changeToAutoRemote.TabIndex = 41;
+            this.btn_changeToAutoRemote.Text = "Auto Remote";
+            this.btn_changeToAutoRemote.UseVisualStyleBackColor = true;
+            this.btn_changeToAutoRemote.Click += new System.EventHandler(this.btn_changeToAutoRemote_Click);
+            // 
             // ck_CycleRunTest
             // 
             this.ck_CycleRunTest.AutoSize = true;
             this.ck_CycleRunTest.Location = new System.Drawing.Point(767, 28);
             this.ck_CycleRunTest.Name = "ck_CycleRunTest";
-            this.ck_CycleRunTest.Size = new System.Drawing.Size(169, 26);
+            this.ck_CycleRunTest.Size = new System.Drawing.Size(216, 32);
             this.ck_CycleRunTest.TabIndex = 38;
             this.ck_CycleRunTest.Text = "Cycle Run Test";
             this.ck_CycleRunTest.UseVisualStyleBackColor = true;
@@ -936,7 +1039,7 @@
             // 
             this.txt_rename_cst_id.Location = new System.Drawing.Point(9, 52);
             this.txt_rename_cst_id.Name = "txt_rename_cst_id";
-            this.txt_rename_cst_id.Size = new System.Drawing.Size(200, 30);
+            this.txt_rename_cst_id.Size = new System.Drawing.Size(200, 35);
             this.txt_rename_cst_id.TabIndex = 17;
             // 
             // label40
@@ -945,7 +1048,7 @@
             this.label40.Location = new System.Drawing.Point(8, 26);
             this.label40.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(70, 22);
+            this.label40.Size = new System.Drawing.Size(90, 28);
             this.label40.TabIndex = 15;
             this.label40.Text = "CST ID";
             // 
@@ -978,7 +1081,7 @@
             this.cb_Abort_Type.FormattingEnabled = true;
             this.cb_Abort_Type.Location = new System.Drawing.Point(20, 75);
             this.cb_Abort_Type.Name = "cb_Abort_Type";
-            this.cb_Abort_Type.Size = new System.Drawing.Size(203, 30);
+            this.cb_Abort_Type.Size = new System.Drawing.Size(203, 36);
             this.cb_Abort_Type.TabIndex = 27;
             // 
             // lbl_id_37_cmdID_value
@@ -987,7 +1090,7 @@
             this.lbl_id_37_cmdID_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_id_37_cmdID_value.Location = new System.Drawing.Point(22, 42);
             this.lbl_id_37_cmdID_value.Name = "lbl_id_37_cmdID_value";
-            this.lbl_id_37_cmdID_value.Size = new System.Drawing.Size(212, 24);
+            this.lbl_id_37_cmdID_value.Size = new System.Drawing.Size(274, 30);
             this.lbl_id_37_cmdID_value.TabIndex = 26;
             this.lbl_id_37_cmdID_value.Text = "                    ";
             // 
@@ -996,7 +1099,7 @@
             this.lbl_cmdID.AutoSize = true;
             this.lbl_cmdID.Location = new System.Drawing.Point(16, 20);
             this.lbl_cmdID.Name = "lbl_cmdID";
-            this.lbl_cmdID.Size = new System.Drawing.Size(70, 22);
+            this.lbl_cmdID.Size = new System.Drawing.Size(90, 28);
             this.lbl_cmdID.TabIndex = 25;
             this.lbl_cmdID.Text = "CMD ID";
             // 
@@ -1031,7 +1134,7 @@
             this.label6.Location = new System.Drawing.Point(5, 90);
             this.label6.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(110, 22);
+            this.label6.Size = new System.Drawing.Size(142, 28);
             this.label6.TabIndex = 15;
             this.label6.Text = "Pause Type";
             // 
@@ -1041,7 +1144,7 @@
             this.cmb_pauseType.Location = new System.Drawing.Point(8, 118);
             this.cmb_pauseType.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.cmb_pauseType.Name = "cmb_pauseType";
-            this.cmb_pauseType.Size = new System.Drawing.Size(199, 30);
+            this.cmb_pauseType.Size = new System.Drawing.Size(199, 36);
             this.cmb_pauseType.TabIndex = 14;
             // 
             // label5
@@ -1050,9 +1153,20 @@
             this.label5.Location = new System.Drawing.Point(9, 27);
             this.label5.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(60, 22);
+            this.label5.Size = new System.Drawing.Size(77, 28);
             this.label5.TabIndex = 15;
             this.label5.Text = "Event";
+            // 
+            // btn_pause
+            // 
+            this.btn_pause.Location = new System.Drawing.Point(8, 171);
+            this.btn_pause.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.btn_pause.Name = "btn_pause";
+            this.btn_pause.Size = new System.Drawing.Size(138, 42);
+            this.btn_pause.TabIndex = 13;
+            this.btn_pause.Text = "Send Func 39";
+            this.btn_pause.UseVisualStyleBackColor = true;
+            this.btn_pause.Click += new System.EventHandler(this.btn_pause_Click);
             // 
             // cmb_pauseEvent
             // 
@@ -1060,7 +1174,7 @@
             this.cmb_pauseEvent.Location = new System.Drawing.Point(9, 54);
             this.cmb_pauseEvent.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.cmb_pauseEvent.Name = "cmb_pauseEvent";
-            this.cmb_pauseEvent.Size = new System.Drawing.Size(199, 30);
+            this.cmb_pauseEvent.Size = new System.Drawing.Size(199, 36);
             this.cmb_pauseEvent.TabIndex = 14;
             // 
             // btn_ForceReleaseBlock
@@ -1121,10 +1235,10 @@
             this.tabPage1.Controls.Add(this.gb_blockControl);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.cb_StartGenAntoCmd);
-            this.tabPage1.Location = new System.Drawing.Point(4, 31);
+            this.tabPage1.Location = new System.Drawing.Point(4, 37);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1763, 936);
+            this.tabPage1.Size = new System.Drawing.Size(1763, 930);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "TcpIp Control";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1134,18 +1248,29 @@
             this.cb_openCstTypeScan.AutoSize = true;
             this.cb_openCstTypeScan.Location = new System.Drawing.Point(1082, 593);
             this.cb_openCstTypeScan.Name = "cb_openCstTypeScan";
-            this.cb_openCstTypeScan.Size = new System.Drawing.Size(243, 26);
+            this.cb_openCstTypeScan.Size = new System.Drawing.Size(311, 32);
             this.cb_openCstTypeScan.TabIndex = 84;
             this.cb_openCstTypeScan.Text = "開啟根據CST Type Scan";
             this.cb_openCstTypeScan.UseVisualStyleBackColor = true;
             this.cb_openCstTypeScan.CheckedChanged += new System.EventHandler(this.cb_openCstTypeScan_CheckedChanged);
+            // 
+            // uctlButton2
+            // 
+            this.uctlButton2.Location = new System.Drawing.Point(869, 826);
+            this.uctlButton2.Name = "uctlButton2";
+            this.uctlButton2.Size = new System.Drawing.Size(166, 45);
+            this.uctlButton2.TabIndex = 62;
+            this.uctlButton2.Text = "停車位功能測試";
+            this.uctlButton2.UseVisualStyleBackColor = true;
+            this.uctlButton2.Visible = false;
+            this.uctlButton2.Click += new System.EventHandler(this.uctlButton2_Click);
             // 
             // cb_IsOpenParkingZoneAutoPullFun
             // 
             this.cb_IsOpenParkingZoneAutoPullFun.AutoSize = true;
             this.cb_IsOpenParkingZoneAutoPullFun.Location = new System.Drawing.Point(1081, 528);
             this.cb_IsOpenParkingZoneAutoPullFun.Name = "cb_IsOpenParkingZoneAutoPullFun";
-            this.cb_IsOpenParkingZoneAutoPullFun.Size = new System.Drawing.Size(260, 26);
+            this.cb_IsOpenParkingZoneAutoPullFun.Size = new System.Drawing.Size(331, 32);
             this.cb_IsOpenParkingZoneAutoPullFun.TabIndex = 83;
             this.cb_IsOpenParkingZoneAutoPullFun.Text = "開啟停車場自動拉車功能";
             this.cb_IsOpenParkingZoneAutoPullFun.UseVisualStyleBackColor = true;
@@ -1156,7 +1281,7 @@
             this.cb_IsOpenParkingZoneFun.AutoSize = true;
             this.cb_IsOpenParkingZoneFun.Location = new System.Drawing.Point(1082, 499);
             this.cb_IsOpenParkingZoneFun.Name = "cb_IsOpenParkingZoneFun";
-            this.cb_IsOpenParkingZoneFun.Size = new System.Drawing.Size(176, 26);
+            this.cb_IsOpenParkingZoneFun.Size = new System.Drawing.Size(223, 32);
             this.cb_IsOpenParkingZoneFun.TabIndex = 82;
             this.cb_IsOpenParkingZoneFun.Text = "開啟停車場機制";
             this.cb_IsOpenParkingZoneFun.UseVisualStyleBackColor = true;
@@ -1167,7 +1292,7 @@
             this.cb_openEFEMPrelunloadFun.AutoSize = true;
             this.cb_openEFEMPrelunloadFun.Location = new System.Drawing.Point(1082, 684);
             this.cb_openEFEMPrelunloadFun.Name = "cb_openEFEMPrelunloadFun";
-            this.cb_openEFEMPrelunloadFun.Size = new System.Drawing.Size(237, 26);
+            this.cb_openEFEMPrelunloadFun.Size = new System.Drawing.Size(302, 32);
             this.cb_openEFEMPrelunloadFun.TabIndex = 81;
             this.cb_openEFEMPrelunloadFun.Text = "開啟EFEM機台預先派貨";
             this.cb_openEFEMPrelunloadFun.UseVisualStyleBackColor = true;
@@ -1178,7 +1303,7 @@
             this.cb_ByPassEFEMEqStatus.AutoSize = true;
             this.cb_ByPassEFEMEqStatus.Location = new System.Drawing.Point(1082, 713);
             this.cb_ByPassEFEMEqStatus.Name = "cb_ByPassEFEMEqStatus";
-            this.cb_ByPassEFEMEqStatus.Size = new System.Drawing.Size(279, 26);
+            this.cb_ByPassEFEMEqStatus.Size = new System.Drawing.Size(356, 32);
             this.cb_ByPassEFEMEqStatus.TabIndex = 80;
             this.cb_ByPassEFEMEqStatus.Text = "關閉EFEM機台狀態確認功能";
             this.cb_ByPassEFEMEqStatus.UseVisualStyleBackColor = true;
@@ -1189,7 +1314,7 @@
             this.cb_checkTrackAlive.AutoSize = true;
             this.cb_checkTrackAlive.Location = new System.Drawing.Point(1507, 681);
             this.cb_checkTrackAlive.Name = "cb_checkTrackAlive";
-            this.cb_checkTrackAlive.Size = new System.Drawing.Size(226, 26);
+            this.cb_checkTrackAlive.Size = new System.Drawing.Size(288, 32);
             this.cb_checkTrackAlive.TabIndex = 79;
             this.cb_checkTrackAlive.Text = "開啟確認換軌器Alive";
             this.cb_checkTrackAlive.UseVisualStyleBackColor = true;
@@ -1201,7 +1326,7 @@
             this.cb_isOpenReelNTBPortStatusAsk.AutoSize = true;
             this.cb_isOpenReelNTBPortStatusAsk.Location = new System.Drawing.Point(1082, 652);
             this.cb_isOpenReelNTBPortStatusAsk.Name = "cb_isOpenReelNTBPortStatusAsk";
-            this.cb_isOpenReelNTBPortStatusAsk.Size = new System.Drawing.Size(327, 26);
+            this.cb_isOpenReelNTBPortStatusAsk.Size = new System.Drawing.Size(419, 32);
             this.cb_isOpenReelNTBPortStatusAsk.TabIndex = 77;
             this.cb_isOpenReelNTBPortStatusAsk.Text = "開啟Reel NTB Port狀態詢問功能";
             this.cb_isOpenReelNTBPortStatusAsk.UseVisualStyleBackColor = true;
@@ -1212,7 +1337,7 @@
             this.cb_openContinueNotifyFun.AutoSize = true;
             this.cb_openContinueNotifyFun.Location = new System.Drawing.Point(1082, 625);
             this.cb_openContinueNotifyFun.Name = "cb_openContinueNotifyFun";
-            this.cb_openContinueNotifyFun.Size = new System.Drawing.Size(350, 26);
+            this.cb_openContinueNotifyFun.Size = new System.Drawing.Size(448, 32);
             this.cb_openContinueNotifyFun.TabIndex = 76;
             this.cb_openContinueNotifyFun.Text = "開啟OHBC連續通知(OHT無法移動時)";
             this.cb_openContinueNotifyFun.UseVisualStyleBackColor = true;
@@ -1223,7 +1348,7 @@
             this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.AutoSize = true;
             this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Location = new System.Drawing.Point(1507, 587);
             this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Name = "cb_cloesCorrectGuideInfoWhenSameLoadAdr";
-            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Size = new System.Drawing.Size(239, 26);
+            this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Size = new System.Drawing.Size(304, 32);
             this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.TabIndex = 75;
             this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.Text = "關閉同站上貨修改功能";
             this.cb_cloesCorrectGuideInfoWhenSameLoadAdr.UseVisualStyleBackColor = true;
@@ -1235,7 +1360,7 @@
             this.cb_SyncWithOHTWhenConnection.AutoSize = true;
             this.cb_SyncWithOHTWhenConnection.Location = new System.Drawing.Point(1082, 563);
             this.cb_SyncWithOHTWhenConnection.Name = "cb_SyncWithOHTWhenConnection";
-            this.cb_SyncWithOHTWhenConnection.Size = new System.Drawing.Size(269, 26);
+            this.cb_SyncWithOHTWhenConnection.Size = new System.Drawing.Size(343, 32);
             this.cb_SyncWithOHTWhenConnection.TabIndex = 74;
             this.cb_SyncWithOHTWhenConnection.Text = "與OHT同步功能改回連線時";
             this.cb_SyncWithOHTWhenConnection.UseVisualStyleBackColor = true;
@@ -1246,7 +1371,7 @@
             this.cb_openGuideSectionChange.AutoSize = true;
             this.cb_openGuideSectionChange.Location = new System.Drawing.Point(1507, 534);
             this.cb_openGuideSectionChange.Name = "cb_openGuideSectionChange";
-            this.cb_openGuideSectionChange.Size = new System.Drawing.Size(218, 26);
+            this.cb_openGuideSectionChange.Size = new System.Drawing.Size(277, 32);
             this.cb_openGuideSectionChange.TabIndex = 73;
             this.cb_openGuideSectionChange.Text = "開啟自動改路徑功能";
             this.cb_openGuideSectionChange.UseVisualStyleBackColor = true;
@@ -1258,7 +1383,7 @@
             this.cb_openSpecifyVh.AutoSize = true;
             this.cb_openSpecifyVh.Location = new System.Drawing.Point(1507, 502);
             this.cb_openSpecifyVh.Name = "cb_openSpecifyVh";
-            this.cb_openSpecifyVh.Size = new System.Drawing.Size(176, 26);
+            this.cb_openSpecifyVh.Size = new System.Drawing.Size(223, 32);
             this.cb_openSpecifyVh.TabIndex = 72;
             this.cb_openSpecifyVh.Text = "開啟指定車功能";
             this.cb_openSpecifyVh.UseVisualStyleBackColor = true;
@@ -1270,7 +1395,7 @@
             this.cb_autoUnloadOnVh.AutoSize = true;
             this.cb_autoUnloadOnVh.Location = new System.Drawing.Point(1082, 467);
             this.cb_autoUnloadOnVh.Name = "cb_autoUnloadOnVh";
-            this.cb_autoUnloadOnVh.Size = new System.Drawing.Size(290, 26);
+            this.cb_autoUnloadOnVh.Size = new System.Drawing.Size(370, 32);
             this.cb_autoUnloadOnVh.TabIndex = 71;
             this.cb_autoUnloadOnVh.Text = "自動車上CST卸貨至儲位開啟";
             this.cb_autoUnloadOnVh.UseVisualStyleBackColor = true;
@@ -1281,7 +1406,7 @@
             this.ch_IsAutoDriveOut.AutoSize = true;
             this.ch_IsAutoDriveOut.Location = new System.Drawing.Point(1082, 430);
             this.ch_IsAutoDriveOut.Name = "ch_IsAutoDriveOut";
-            this.ch_IsAutoDriveOut.Size = new System.Drawing.Size(197, 26);
+            this.ch_IsAutoDriveOut.Size = new System.Drawing.Size(250, 32);
             this.ch_IsAutoDriveOut.TabIndex = 70;
             this.ch_IsAutoDriveOut.Text = "自動趕車功能開啟";
             this.ch_IsAutoDriveOut.UseVisualStyleBackColor = true;
@@ -1292,7 +1417,7 @@
             this.cb_IsSameBayAfterWay.AutoSize = true;
             this.cb_IsSameBayAfterWay.Location = new System.Drawing.Point(1082, 398);
             this.cb_IsSameBayAfterWay.Name = "cb_IsSameBayAfterWay";
-            this.cb_IsSameBayAfterWay.Size = new System.Drawing.Size(206, 26);
+            this.cb_IsSameBayAfterWay.Size = new System.Drawing.Size(262, 32);
             this.cb_IsSameBayAfterWay.TabIndex = 69;
             this.cb_IsSameBayAfterWay.Text = "同Bay順途搬送開啟";
             this.cb_IsSameBayAfterWay.UseVisualStyleBackColor = true;
@@ -1303,7 +1428,7 @@
             this.cb_paassErrorVhAndTrackStatus.AutoSize = true;
             this.cb_paassErrorVhAndTrackStatus.Location = new System.Drawing.Point(1053, 856);
             this.cb_paassErrorVhAndTrackStatus.Name = "cb_paassErrorVhAndTrackStatus";
-            this.cb_paassErrorVhAndTrackStatus.Size = new System.Drawing.Size(344, 26);
+            this.cb_paassErrorVhAndTrackStatus.Size = new System.Drawing.Size(439, 32);
             this.cb_paassErrorVhAndTrackStatus.TabIndex = 68;
             this.cb_paassErrorVhAndTrackStatus.Text = "規劃路徑不參考故障車、軌道狀態";
             this.cb_paassErrorVhAndTrackStatus.UseVisualStyleBackColor = true;
@@ -1314,7 +1439,7 @@
             this.cb_ignoreNTBPort.AutoSize = true;
             this.cb_ignoreNTBPort.Location = new System.Drawing.Point(1053, 826);
             this.cb_ignoreNTBPort.Name = "cb_ignoreNTBPort";
-            this.cb_ignoreNTBPort.Size = new System.Drawing.Size(249, 26);
+            this.cb_ignoreNTBPort.Size = new System.Drawing.Size(320, 32);
             this.cb_ignoreNTBPort.TabIndex = 67;
             this.cb_ignoreNTBPort.Text = "Ignore NTB Port Status";
             this.cb_ignoreNTBPort.UseVisualStyleBackColor = true;
@@ -1349,7 +1474,7 @@
             // 
             this.txt_cycleCstID.Location = new System.Drawing.Point(6, 161);
             this.txt_cycleCstID.Name = "txt_cycleCstID";
-            this.txt_cycleCstID.Size = new System.Drawing.Size(189, 30);
+            this.txt_cycleCstID.Size = new System.Drawing.Size(189, 35);
             this.txt_cycleCstID.TabIndex = 69;
             this.txt_cycleCstID.TextChanged += new System.EventHandler(this.txt_cycleCstID_TextChanged);
             // 
@@ -1358,7 +1483,7 @@
             this.label82.AutoSize = true;
             this.label82.Location = new System.Drawing.Point(18, 137);
             this.label82.Name = "label82";
-            this.label82.Size = new System.Drawing.Size(150, 22);
+            this.label82.Size = new System.Drawing.Size(194, 28);
             this.label82.TabIndex = 65;
             this.label82.Text = "Cycle Run CST:";
             // 
@@ -1367,7 +1492,7 @@
             this.cmb_cycleRunVhId.FormattingEnabled = true;
             this.cmb_cycleRunVhId.Location = new System.Drawing.Point(6, 103);
             this.cmb_cycleRunVhId.Name = "cmb_cycleRunVhId";
-            this.cmb_cycleRunVhId.Size = new System.Drawing.Size(189, 30);
+            this.cmb_cycleRunVhId.Size = new System.Drawing.Size(189, 36);
             this.cmb_cycleRunVhId.TabIndex = 63;
             this.cmb_cycleRunVhId.SelectionChangeCommitted += new System.EventHandler(this.cmb_cycleRunVhId_SelectionChangeCommitted);
             // 
@@ -1376,7 +1501,7 @@
             this.label78.AutoSize = true;
             this.label78.Location = new System.Drawing.Point(18, 79);
             this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(140, 22);
+            this.label78.Size = new System.Drawing.Size(181, 28);
             this.label78.TabIndex = 64;
             this.label78.Text = "Cycle Run Vh:";
             // 
@@ -1385,7 +1510,7 @@
             this.cmb_cycleRunBayID.FormattingEnabled = true;
             this.cmb_cycleRunBayID.Location = new System.Drawing.Point(6, 46);
             this.cmb_cycleRunBayID.Name = "cmb_cycleRunBayID";
-            this.cmb_cycleRunBayID.Size = new System.Drawing.Size(189, 30);
+            this.cmb_cycleRunBayID.Size = new System.Drawing.Size(189, 36);
             this.cmb_cycleRunBayID.TabIndex = 58;
             this.cmb_cycleRunBayID.SelectionChangeCommitted += new System.EventHandler(this.cmb_cycleRunBayID_SelectionChangeCommitted);
             // 
@@ -1394,7 +1519,7 @@
             this.label77.AutoSize = true;
             this.label77.Location = new System.Drawing.Point(18, 22);
             this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(150, 22);
+            this.label77.Size = new System.Drawing.Size(194, 28);
             this.label77.TabIndex = 62;
             this.label77.Text = "Cycle Run Bay:";
             // 
@@ -1403,7 +1528,7 @@
             this.label16.AutoSize = true;
             this.label16.Location = new System.Drawing.Point(1050, 37);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(160, 22);
+            this.label16.Size = new System.Drawing.Size(207, 28);
             this.label16.TabIndex = 61;
             this.label16.Text = "Cycle Run Type:";
             // 
@@ -1412,7 +1537,7 @@
             this.cb_passDriveOutByAreaSensor.AutoSize = true;
             this.cb_passDriveOutByAreaSensor.Location = new System.Drawing.Point(1053, 800);
             this.cb_passDriveOutByAreaSensor.Name = "cb_passDriveOutByAreaSensor";
-            this.cb_passDriveOutByAreaSensor.Size = new System.Drawing.Size(319, 26);
+            this.cb_passDriveOutByAreaSensor.Size = new System.Drawing.Size(411, 32);
             this.cb_passDriveOutByAreaSensor.TabIndex = 60;
             this.cb_passDriveOutByAreaSensor.Text = "Pass Drive Out By Area Sensor";
             this.cb_passDriveOutByAreaSensor.UseVisualStyleBackColor = true;
@@ -1424,7 +1549,7 @@
             this.label12.Location = new System.Drawing.Point(1043, 748);
             this.label12.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(230, 22);
+            this.label12.Size = new System.Drawing.Size(298, 28);
             this.label12.TabIndex = 16;
             this.label12.Text = "Pre Drive Out Distance";
             // 
@@ -1437,7 +1562,7 @@
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(62, 30);
+            this.numericUpDown1.Size = new System.Drawing.Size(62, 35);
             this.numericUpDown1.TabIndex = 59;
             this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
@@ -1446,7 +1571,7 @@
             this.combox_cycle_type.FormattingEnabled = true;
             this.combox_cycle_type.Location = new System.Drawing.Point(1053, 62);
             this.combox_cycle_type.Name = "combox_cycle_type";
-            this.combox_cycle_type.Size = new System.Drawing.Size(186, 30);
+            this.combox_cycle_type.Size = new System.Drawing.Size(186, 36);
             this.combox_cycle_type.TabIndex = 27;
             this.combox_cycle_type.SelectionChangeCommitted += new System.EventHandler(this.combox_cycle_type_SelectionChangeCommitted);
             // 
@@ -1470,7 +1595,7 @@
             this.cb_passTrack.Location = new System.Drawing.Point(28, 130);
             this.cb_passTrack.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cb_passTrack.Name = "cb_passTrack";
-            this.cb_passTrack.Size = new System.Drawing.Size(259, 26);
+            this.cb_passTrack.Size = new System.Drawing.Size(333, 32);
             this.cb_passTrack.TabIndex = 11;
             this.cb_passTrack.Text = "Pass Track Block Status";
             this.cb_passTrack.UseVisualStyleBackColor = true;
@@ -1482,7 +1607,7 @@
             this.cb_ForceNonStraightPass.Location = new System.Drawing.Point(28, 102);
             this.cb_ForceNonStraightPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cb_ForceNonStraightPass.Name = "cb_ForceNonStraightPass";
-            this.cb_ForceNonStraightPass.Size = new System.Drawing.Size(259, 26);
+            this.cb_ForceNonStraightPass.Size = new System.Drawing.Size(333, 32);
             this.cb_ForceNonStraightPass.TabIndex = 10;
             this.cb_ForceNonStraightPass.Text = "Force Non Straight Pass";
             this.cb_ForceNonStraightPass.UseVisualStyleBackColor = true;
@@ -1494,7 +1619,7 @@
             this.cb_ForceStraightPass.Location = new System.Drawing.Point(28, 76);
             this.cb_ForceStraightPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cb_ForceStraightPass.Name = "cb_ForceStraightPass";
-            this.cb_ForceStraightPass.Size = new System.Drawing.Size(219, 26);
+            this.cb_ForceStraightPass.Size = new System.Drawing.Size(281, 32);
             this.cb_ForceStraightPass.TabIndex = 9;
             this.cb_ForceStraightPass.Text = "Force Straight Pass";
             this.cb_ForceStraightPass.UseVisualStyleBackColor = true;
@@ -1506,7 +1631,7 @@
             this.cb_FroceReserveReject.Location = new System.Drawing.Point(28, 47);
             this.cb_FroceReserveReject.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cb_FroceReserveReject.Name = "cb_FroceReserveReject";
-            this.cb_FroceReserveReject.Size = new System.Drawing.Size(209, 26);
+            this.cb_FroceReserveReject.Size = new System.Drawing.Size(268, 32);
             this.cb_FroceReserveReject.TabIndex = 8;
             this.cb_FroceReserveReject.Text = "Force Block Reject";
             this.cb_FroceReserveReject.UseVisualStyleBackColor = true;
@@ -1518,10 +1643,10 @@
             this.tabPage2.Controls.Add(this.tlp_PLCControl);
             this.tabPage2.Controls.Add(this.cmb_plcctr_Vehicle);
             this.tabPage2.Controls.Add(this.ck_PLC_control_flag);
-            this.tabPage2.Location = new System.Drawing.Point(4, 31);
+            this.tabPage2.Location = new System.Drawing.Point(4, 37);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1763, 936);
+            this.tabPage2.Size = new System.Drawing.Size(1763, 930);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "PLC Control";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -2536,7 +2661,7 @@
             this.cmb_plcctr_Vehicle.Location = new System.Drawing.Point(43, 31);
             this.cmb_plcctr_Vehicle.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.cmb_plcctr_Vehicle.Name = "cmb_plcctr_Vehicle";
-            this.cmb_plcctr_Vehicle.Size = new System.Drawing.Size(197, 30);
+            this.cmb_plcctr_Vehicle.Size = new System.Drawing.Size(197, 36);
             this.cmb_plcctr_Vehicle.TabIndex = 10;
             this.cmb_plcctr_Vehicle.SelectedIndexChanged += new System.EventHandler(this.cmb_plcctr_Vehicle_SelectedIndexChanged);
             // 
@@ -2546,7 +2671,7 @@
             this.ck_PLC_control_flag.Enabled = false;
             this.ck_PLC_control_flag.Location = new System.Drawing.Point(871, 83);
             this.ck_PLC_control_flag.Name = "ck_PLC_control_flag";
-            this.ck_PLC_control_flag.Size = new System.Drawing.Size(139, 26);
+            this.ck_PLC_control_flag.Size = new System.Drawing.Size(177, 32);
             this.ck_PLC_control_flag.TabIndex = 27;
             this.ck_PLC_control_flag.Text = "PLC Control";
             this.ck_PLC_control_flag.UseVisualStyleBackColor = true;
@@ -2555,10 +2680,10 @@
             // table_cache_data_pisplay
             // 
             this.table_cache_data_pisplay.Controls.Add(this.tableLayoutPanel2);
-            this.table_cache_data_pisplay.Location = new System.Drawing.Point(4, 31);
+            this.table_cache_data_pisplay.Location = new System.Drawing.Point(4, 37);
             this.table_cache_data_pisplay.Name = "table_cache_data_pisplay";
             this.table_cache_data_pisplay.Padding = new System.Windows.Forms.Padding(3);
-            this.table_cache_data_pisplay.Size = new System.Drawing.Size(1763, 936);
+            this.table_cache_data_pisplay.Size = new System.Drawing.Size(1763, 930);
             this.table_cache_data_pisplay.TabIndex = 3;
             this.table_cache_data_pisplay.Text = "Cache Data Display";
             this.table_cache_data_pisplay.UseVisualStyleBackColor = true;
@@ -2578,7 +2703,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.61165F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 95.38835F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1757, 939);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1757, 924);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // dgv_cache_object_data
@@ -2589,13 +2714,13 @@
             this.Column_cst_id});
             this.tableLayoutPanel2.SetColumnSpan(this.dgv_cache_object_data, 2);
             this.dgv_cache_object_data.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_cache_object_data.Location = new System.Drawing.Point(3, 46);
+            this.dgv_cache_object_data.Location = new System.Drawing.Point(3, 45);
             this.dgv_cache_object_data.MultiSelect = false;
             this.dgv_cache_object_data.Name = "dgv_cache_object_data";
             this.dgv_cache_object_data.RowHeadersWidth = 51;
             this.dgv_cache_object_data.RowTemplate.Height = 24;
             this.dgv_cache_object_data.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_cache_object_data.Size = new System.Drawing.Size(1751, 890);
+            this.dgv_cache_object_data.Size = new System.Drawing.Size(1751, 876);
             this.dgv_cache_object_data.TabIndex = 0;
             this.dgv_cache_object_data.EditModeChanged += new System.EventHandler(this.dgv_cache_object_data_EditModeChanged);
             // 
@@ -2622,9 +2747,9 @@
             // 
             this.cb_Cache_data_Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_Cache_data_Name.FormattingEnabled = true;
-            this.cb_Cache_data_Name.Location = new System.Drawing.Point(486, 6);
+            this.cb_Cache_data_Name.Location = new System.Drawing.Point(486, 9);
             this.cb_Cache_data_Name.Name = "cb_Cache_data_Name";
-            this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 30);
+            this.cb_Cache_data_Name.Size = new System.Drawing.Size(193, 36);
             this.cb_Cache_data_Name.TabIndex = 1;
             this.cb_Cache_data_Name.SelectedIndexChanged += new System.EventHandler(this.cb_Cache_data_Name_SelectedIndexChanged);
             // 
@@ -2632,9 +2757,9 @@
             // 
             this.label22.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(320, 10);
+            this.label22.Location = new System.Drawing.Point(273, 7);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(160, 22);
+            this.label22.Size = new System.Drawing.Size(207, 28);
             this.label22.TabIndex = 2;
             this.label22.Text = "Cache Data Name";
             // 
@@ -2662,10 +2787,10 @@
             this.tabPage3.Controls.Add(this.label8);
             this.tabPage3.Controls.Add(this.button8);
             this.tabPage3.Controls.Add(this.ck_test_carrierinterface_error);
-            this.tabPage3.Location = new System.Drawing.Point(4, 31);
+            this.tabPage3.Location = new System.Drawing.Point(4, 37);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1763, 936);
+            this.tabPage3.Size = new System.Drawing.Size(1763, 930);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -2686,7 +2811,7 @@
             this.cb_unloadArrivePassReply11.AutoSize = true;
             this.cb_unloadArrivePassReply11.Location = new System.Drawing.Point(10, 580);
             this.cb_unloadArrivePassReply11.Name = "cb_unloadArrivePassReply11";
-            this.cb_unloadArrivePassReply11.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply11.Size = new System.Drawing.Size(437, 32);
             this.cb_unloadArrivePassReply11.TabIndex = 68;
             this.cb_unloadArrivePassReply11.Text = "Unload Arrive Reply Pass(OHT11)";
             this.cb_unloadArrivePassReply11.UseVisualStyleBackColor = true;
@@ -2697,7 +2822,7 @@
             this.cb_unloadArrivePassReply10.AutoSize = true;
             this.cb_unloadArrivePassReply10.Location = new System.Drawing.Point(10, 548);
             this.cb_unloadArrivePassReply10.Name = "cb_unloadArrivePassReply10";
-            this.cb_unloadArrivePassReply10.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply10.Size = new System.Drawing.Size(437, 32);
             this.cb_unloadArrivePassReply10.TabIndex = 67;
             this.cb_unloadArrivePassReply10.Text = "Unload Arrive Reply Pass(OHT10)";
             this.cb_unloadArrivePassReply10.UseVisualStyleBackColor = true;
@@ -2708,7 +2833,7 @@
             this.cb_unloadArrivePassReply09.AutoSize = true;
             this.cb_unloadArrivePassReply09.Location = new System.Drawing.Point(10, 516);
             this.cb_unloadArrivePassReply09.Name = "cb_unloadArrivePassReply09";
-            this.cb_unloadArrivePassReply09.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply09.Size = new System.Drawing.Size(437, 32);
             this.cb_unloadArrivePassReply09.TabIndex = 66;
             this.cb_unloadArrivePassReply09.Text = "Unload Arrive Reply Pass(OHT09)";
             this.cb_unloadArrivePassReply09.UseVisualStyleBackColor = true;
@@ -2719,7 +2844,7 @@
             this.cb_unloadArrivePassReply08.AutoSize = true;
             this.cb_unloadArrivePassReply08.Location = new System.Drawing.Point(10, 484);
             this.cb_unloadArrivePassReply08.Name = "cb_unloadArrivePassReply08";
-            this.cb_unloadArrivePassReply08.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply08.Size = new System.Drawing.Size(437, 32);
             this.cb_unloadArrivePassReply08.TabIndex = 65;
             this.cb_unloadArrivePassReply08.Text = "Unload Arrive Reply Pass(OHT08)";
             this.cb_unloadArrivePassReply08.UseVisualStyleBackColor = true;
@@ -2730,7 +2855,7 @@
             this.cb_unloadArrivePassReply07.AutoSize = true;
             this.cb_unloadArrivePassReply07.Location = new System.Drawing.Point(10, 451);
             this.cb_unloadArrivePassReply07.Name = "cb_unloadArrivePassReply07";
-            this.cb_unloadArrivePassReply07.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply07.Size = new System.Drawing.Size(437, 32);
             this.cb_unloadArrivePassReply07.TabIndex = 64;
             this.cb_unloadArrivePassReply07.Text = "Unload Arrive Reply Pass(OHT07)";
             this.cb_unloadArrivePassReply07.UseVisualStyleBackColor = true;
@@ -2741,7 +2866,7 @@
             this.cb_unloadArrivePassReply06.AutoSize = true;
             this.cb_unloadArrivePassReply06.Location = new System.Drawing.Point(10, 419);
             this.cb_unloadArrivePassReply06.Name = "cb_unloadArrivePassReply06";
-            this.cb_unloadArrivePassReply06.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply06.Size = new System.Drawing.Size(437, 32);
             this.cb_unloadArrivePassReply06.TabIndex = 63;
             this.cb_unloadArrivePassReply06.Text = "Unload Arrive Reply Pass(OHT06)";
             this.cb_unloadArrivePassReply06.UseVisualStyleBackColor = true;
@@ -2752,7 +2877,7 @@
             this.cb_unloadArrivePassReply05.AutoSize = true;
             this.cb_unloadArrivePassReply05.Location = new System.Drawing.Point(10, 387);
             this.cb_unloadArrivePassReply05.Name = "cb_unloadArrivePassReply05";
-            this.cb_unloadArrivePassReply05.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply05.Size = new System.Drawing.Size(437, 32);
             this.cb_unloadArrivePassReply05.TabIndex = 62;
             this.cb_unloadArrivePassReply05.Text = "Unload Arrive Reply Pass(OHT05)";
             this.cb_unloadArrivePassReply05.UseVisualStyleBackColor = true;
@@ -2763,7 +2888,7 @@
             this.cb_unloadArrivePassReply03.AutoSize = true;
             this.cb_unloadArrivePassReply03.Location = new System.Drawing.Point(10, 355);
             this.cb_unloadArrivePassReply03.Name = "cb_unloadArrivePassReply03";
-            this.cb_unloadArrivePassReply03.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply03.Size = new System.Drawing.Size(437, 32);
             this.cb_unloadArrivePassReply03.TabIndex = 61;
             this.cb_unloadArrivePassReply03.Text = "Unload Arrive Reply Pass(OHT03)";
             this.cb_unloadArrivePassReply03.UseVisualStyleBackColor = true;
@@ -2774,7 +2899,7 @@
             this.cb_unloadArrivePassReply02.AutoSize = true;
             this.cb_unloadArrivePassReply02.Location = new System.Drawing.Point(10, 323);
             this.cb_unloadArrivePassReply02.Name = "cb_unloadArrivePassReply02";
-            this.cb_unloadArrivePassReply02.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply02.Size = new System.Drawing.Size(437, 32);
             this.cb_unloadArrivePassReply02.TabIndex = 60;
             this.cb_unloadArrivePassReply02.Text = "Unload Arrive Reply Pass(OHT02)";
             this.cb_unloadArrivePassReply02.UseVisualStyleBackColor = true;
@@ -2785,7 +2910,7 @@
             this.cb_unloadArrivePassReply01.AutoSize = true;
             this.cb_unloadArrivePassReply01.Location = new System.Drawing.Point(10, 291);
             this.cb_unloadArrivePassReply01.Name = "cb_unloadArrivePassReply01";
-            this.cb_unloadArrivePassReply01.Size = new System.Drawing.Size(339, 26);
+            this.cb_unloadArrivePassReply01.Size = new System.Drawing.Size(437, 32);
             this.cb_unloadArrivePassReply01.TabIndex = 59;
             this.cb_unloadArrivePassReply01.Text = "Unload Arrive Reply Pass(OHT01)";
             this.cb_unloadArrivePassReply01.UseVisualStyleBackColor = true;
@@ -2933,7 +3058,7 @@
             this.label79.AutoSize = true;
             this.label79.Location = new System.Drawing.Point(405, 26);
             this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(70, 22);
+            this.label79.Size = new System.Drawing.Size(90, 28);
             this.label79.TabIndex = 49;
             this.label79.Text = "CMD ID";
             // 
@@ -2941,7 +3066,7 @@
             // 
             this.txt_mcsReportTestCmdID.Location = new System.Drawing.Point(435, 51);
             this.txt_mcsReportTestCmdID.Name = "txt_mcsReportTestCmdID";
-            this.txt_mcsReportTestCmdID.Size = new System.Drawing.Size(147, 30);
+            this.txt_mcsReportTestCmdID.Size = new System.Drawing.Size(147, 35);
             this.txt_mcsReportTestCmdID.TabIndex = 48;
             this.txt_mcsReportTestCmdID.Text = "1";
             // 
@@ -2950,7 +3075,7 @@
             this.label80.AutoSize = true;
             this.label80.Location = new System.Drawing.Point(218, 26);
             this.label80.Name = "label80";
-            this.label80.Size = new System.Drawing.Size(70, 22);
+            this.label80.Size = new System.Drawing.Size(90, 28);
             this.label80.TabIndex = 47;
             this.label80.Text = "CST ID";
             // 
@@ -2958,7 +3083,7 @@
             // 
             this.txt_mcsReportTestCstID.Location = new System.Drawing.Point(256, 51);
             this.txt_mcsReportTestCstID.Name = "txt_mcsReportTestCstID";
-            this.txt_mcsReportTestCstID.Size = new System.Drawing.Size(147, 30);
+            this.txt_mcsReportTestCstID.Size = new System.Drawing.Size(147, 35);
             this.txt_mcsReportTestCstID.TabIndex = 46;
             this.txt_mcsReportTestCstID.Text = "CST001";
             // 
@@ -3099,7 +3224,7 @@
             this.label81.AutoSize = true;
             this.label81.Location = new System.Drawing.Point(6, 26);
             this.label81.Name = "label81";
-            this.label81.Size = new System.Drawing.Size(60, 22);
+            this.label81.Size = new System.Drawing.Size(77, 28);
             this.label81.TabIndex = 1;
             this.label81.Text = "Vh ID";
             // 
@@ -3108,14 +3233,14 @@
             this.cmb_mcsReportTestVHID.FormattingEnabled = true;
             this.cmb_mcsReportTestVHID.Location = new System.Drawing.Point(52, 51);
             this.cmb_mcsReportTestVHID.Name = "cmb_mcsReportTestVHID";
-            this.cmb_mcsReportTestVHID.Size = new System.Drawing.Size(176, 30);
+            this.cmb_mcsReportTestVHID.Size = new System.Drawing.Size(176, 36);
             this.cmb_mcsReportTestVHID.TabIndex = 0;
             // 
             // txt_remove_loc_id
             // 
             this.txt_remove_loc_id.Location = new System.Drawing.Point(82, 98);
             this.txt_remove_loc_id.Name = "txt_remove_loc_id";
-            this.txt_remove_loc_id.Size = new System.Drawing.Size(124, 30);
+            this.txt_remove_loc_id.Size = new System.Drawing.Size(124, 35);
             this.txt_remove_loc_id.TabIndex = 31;
             // 
             // label20
@@ -3123,7 +3248,7 @@
             this.label20.AutoSize = true;
             this.label20.Location = new System.Drawing.Point(6, 101);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(70, 22);
+            this.label20.Size = new System.Drawing.Size(90, 28);
             this.label20.TabIndex = 30;
             this.label20.Text = "Loc ID";
             // 
@@ -3131,7 +3256,7 @@
             // 
             this.txt_remove_cst_id.Location = new System.Drawing.Point(82, 51);
             this.txt_remove_cst_id.Name = "txt_remove_cst_id";
-            this.txt_remove_cst_id.Size = new System.Drawing.Size(124, 30);
+            this.txt_remove_cst_id.Size = new System.Drawing.Size(124, 35);
             this.txt_remove_cst_id.TabIndex = 29;
             // 
             // label8
@@ -3139,7 +3264,7 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(6, 54);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(70, 22);
+            this.label8.Size = new System.Drawing.Size(90, 28);
             this.label8.TabIndex = 28;
             this.label8.Text = "CST ID";
             // 
@@ -3158,7 +3283,7 @@
             this.ck_test_carrierinterface_error.AutoSize = true;
             this.ck_test_carrierinterface_error.Location = new System.Drawing.Point(6, 6);
             this.ck_test_carrierinterface_error.Name = "ck_test_carrierinterface_error";
-            this.ck_test_carrierinterface_error.Size = new System.Drawing.Size(309, 26);
+            this.ck_test_carrierinterface_error.Size = new System.Drawing.Size(398, 32);
             this.ck_test_carrierinterface_error.TabIndex = 0;
             this.ck_test_carrierinterface_error.Text = "Carrier Interface Error Test";
             this.ck_test_carrierinterface_error.UseVisualStyleBackColor = true;
@@ -3196,10 +3321,10 @@
             this.tabPage4.Controls.Add(this.btn_mtl_message_download);
             this.tabPage4.Controls.Add(this.btn_mtl_dateTimeSync);
             this.tabPage4.Controls.Add(this.uctlButton1);
-            this.tabPage4.Location = new System.Drawing.Point(4, 31);
+            this.tabPage4.Location = new System.Drawing.Point(4, 37);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1763, 936);
+            this.tabPage4.Size = new System.Drawing.Size(1763, 930);
             this.tabPage4.TabIndex = 4;
             this.tabPage4.Text = "MTL Test";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -3230,7 +3355,7 @@
             this.lbl_mtsCarOutVh.AutoSize = true;
             this.lbl_mtsCarOutVh.Location = new System.Drawing.Point(386, 173);
             this.lbl_mtsCarOutVh.Name = "lbl_mtsCarOutVh";
-            this.lbl_mtsCarOutVh.Size = new System.Drawing.Size(160, 22);
+            this.lbl_mtsCarOutVh.Size = new System.Drawing.Size(207, 28);
             this.lbl_mtsCarOutVh.TabIndex = 49;
             this.lbl_mtsCarOutVh.Text = "               ";
             // 
@@ -3239,7 +3364,7 @@
             this.lbl_mtlCarOutVh.AutoSize = true;
             this.lbl_mtlCarOutVh.Location = new System.Drawing.Point(386, 141);
             this.lbl_mtlCarOutVh.Name = "lbl_mtlCarOutVh";
-            this.lbl_mtlCarOutVh.Size = new System.Drawing.Size(160, 22);
+            this.lbl_mtlCarOutVh.Size = new System.Drawing.Size(207, 28);
             this.lbl_mtlCarOutVh.TabIndex = 48;
             this.lbl_mtlCarOutVh.Text = "               ";
             // 
@@ -3248,7 +3373,7 @@
             this.label70.AutoSize = true;
             this.label70.Location = new System.Drawing.Point(330, 173);
             this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(50, 22);
+            this.label70.Size = new System.Drawing.Size(64, 28);
             this.label70.TabIndex = 47;
             this.label70.Text = "MTS:";
             // 
@@ -3257,7 +3382,7 @@
             this.label69.AutoSize = true;
             this.label69.Location = new System.Drawing.Point(330, 141);
             this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(50, 22);
+            this.label69.Size = new System.Drawing.Size(64, 28);
             this.label69.TabIndex = 46;
             this.label69.Text = "MTL:";
             // 
@@ -3277,7 +3402,7 @@
             this.cmb_car_out_vh.Location = new System.Drawing.Point(183, 85);
             this.cmb_car_out_vh.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.cmb_car_out_vh.Name = "cmb_car_out_vh";
-            this.cmb_car_out_vh.Size = new System.Drawing.Size(197, 30);
+            this.cmb_car_out_vh.Size = new System.Drawing.Size(197, 36);
             this.cmb_car_out_vh.TabIndex = 45;
             // 
             // label68
@@ -3285,7 +3410,7 @@
             this.label68.AutoSize = true;
             this.label68.Location = new System.Drawing.Point(55, 90);
             this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(120, 22);
+            this.label68.Size = new System.Drawing.Size(155, 28);
             this.label68.TabIndex = 44;
             this.label68.Text = "Car out Vh:";
             // 
@@ -3294,7 +3419,7 @@
             this.label67.AutoSize = true;
             this.label67.Location = new System.Drawing.Point(5, 49);
             this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(170, 22);
+            this.label67.Size = new System.Drawing.Size(220, 28);
             this.label67.TabIndex = 25;
             this.label67.Text = "Maintain Device:";
             // 
@@ -3304,7 +3429,7 @@
             this.cmb_maintain_device.Location = new System.Drawing.Point(183, 46);
             this.cmb_maintain_device.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.cmb_maintain_device.Name = "cmb_maintain_device";
-            this.cmb_maintain_device.Size = new System.Drawing.Size(197, 30);
+            this.cmb_maintain_device.Size = new System.Drawing.Size(197, 36);
             this.cmb_maintain_device.TabIndex = 43;
             this.cmb_maintain_device.SelectedIndexChanged += new System.EventHandler(this.cmb_maintain_device_SelectedIndexChanged);
             // 
@@ -3359,7 +3484,7 @@
             this.lbl_mtl_current_car_id.AutoSize = true;
             this.lbl_mtl_current_car_id.Location = new System.Drawing.Point(167, 36);
             this.lbl_mtl_current_car_id.Name = "lbl_mtl_current_car_id";
-            this.lbl_mtl_current_car_id.Size = new System.Drawing.Size(120, 22);
+            this.lbl_mtl_current_car_id.Size = new System.Drawing.Size(155, 28);
             this.lbl_mtl_current_car_id.TabIndex = 24;
             this.lbl_mtl_current_car_id.Text = "           ";
             // 
@@ -3368,7 +3493,7 @@
             this.label66.AutoSize = true;
             this.label66.Location = new System.Drawing.Point(1, 36);
             this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(160, 22);
+            this.label66.Size = new System.Drawing.Size(207, 28);
             this.label66.TabIndex = 23;
             this.label66.Text = "Current Car ID:";
             // 
@@ -3387,7 +3512,7 @@
             this.lbl_mtl_in_position.AutoSize = true;
             this.lbl_mtl_in_position.Location = new System.Drawing.Point(167, 272);
             this.lbl_mtl_in_position.Name = "lbl_mtl_in_position";
-            this.lbl_mtl_in_position.Size = new System.Drawing.Size(120, 22);
+            this.lbl_mtl_in_position.Size = new System.Drawing.Size(155, 28);
             this.lbl_mtl_in_position.TabIndex = 13;
             this.lbl_mtl_in_position.Text = "           ";
             // 
@@ -3396,7 +3521,7 @@
             this.lbl_mtl_encoder.AutoSize = true;
             this.lbl_mtl_encoder.Location = new System.Drawing.Point(167, 240);
             this.lbl_mtl_encoder.Name = "lbl_mtl_encoder";
-            this.lbl_mtl_encoder.Size = new System.Drawing.Size(120, 22);
+            this.lbl_mtl_encoder.Size = new System.Drawing.Size(155, 28);
             this.lbl_mtl_encoder.TabIndex = 12;
             this.lbl_mtl_encoder.Text = "           ";
             // 
@@ -3405,7 +3530,7 @@
             this.lbl_mtl_moving_status.AutoSize = true;
             this.lbl_mtl_moving_status.Location = new System.Drawing.Point(167, 206);
             this.lbl_mtl_moving_status.Name = "lbl_mtl_moving_status";
-            this.lbl_mtl_moving_status.Size = new System.Drawing.Size(120, 22);
+            this.lbl_mtl_moving_status.Size = new System.Drawing.Size(155, 28);
             this.lbl_mtl_moving_status.TabIndex = 11;
             this.lbl_mtl_moving_status.Text = "           ";
             // 
@@ -3414,7 +3539,7 @@
             this.lbl_mtl_location.AutoSize = true;
             this.lbl_mtl_location.Location = new System.Drawing.Point(167, 173);
             this.lbl_mtl_location.Name = "lbl_mtl_location";
-            this.lbl_mtl_location.Size = new System.Drawing.Size(120, 22);
+            this.lbl_mtl_location.Size = new System.Drawing.Size(155, 28);
             this.lbl_mtl_location.TabIndex = 10;
             this.lbl_mtl_location.Text = "           ";
             // 
@@ -3423,7 +3548,7 @@
             this.lbl_mtl_mode.AutoSize = true;
             this.lbl_mtl_mode.Location = new System.Drawing.Point(167, 141);
             this.lbl_mtl_mode.Name = "lbl_mtl_mode";
-            this.lbl_mtl_mode.Size = new System.Drawing.Size(120, 22);
+            this.lbl_mtl_mode.Size = new System.Drawing.Size(155, 28);
             this.lbl_mtl_mode.TabIndex = 9;
             this.lbl_mtl_mode.Text = "           ";
             // 
@@ -3432,7 +3557,7 @@
             this.lbl_mtl_stop_single.AutoSize = true;
             this.lbl_mtl_stop_single.Location = new System.Drawing.Point(167, 105);
             this.lbl_mtl_stop_single.Name = "lbl_mtl_stop_single";
-            this.lbl_mtl_stop_single.Size = new System.Drawing.Size(120, 22);
+            this.lbl_mtl_stop_single.Size = new System.Drawing.Size(155, 28);
             this.lbl_mtl_stop_single.TabIndex = 8;
             this.lbl_mtl_stop_single.Text = "           ";
             // 
@@ -3441,7 +3566,7 @@
             this.lbl_mtl_has_vh.AutoSize = true;
             this.lbl_mtl_has_vh.Location = new System.Drawing.Point(167, 71);
             this.lbl_mtl_has_vh.Name = "lbl_mtl_has_vh";
-            this.lbl_mtl_has_vh.Size = new System.Drawing.Size(120, 22);
+            this.lbl_mtl_has_vh.Size = new System.Drawing.Size(155, 28);
             this.lbl_mtl_has_vh.TabIndex = 7;
             this.lbl_mtl_has_vh.Text = "           ";
             // 
@@ -3450,7 +3575,7 @@
             this.label65.AutoSize = true;
             this.label65.Location = new System.Drawing.Point(31, 272);
             this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(130, 22);
+            this.label65.Size = new System.Drawing.Size(168, 28);
             this.label65.TabIndex = 6;
             this.label65.Text = "In Position:";
             // 
@@ -3459,7 +3584,7 @@
             this.label64.AutoSize = true;
             this.label64.Location = new System.Drawing.Point(71, 240);
             this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(90, 22);
+            this.label64.Size = new System.Drawing.Size(116, 28);
             this.label64.TabIndex = 5;
             this.label64.Text = "Encoder:";
             // 
@@ -3468,7 +3593,7 @@
             this.label63.AutoSize = true;
             this.label63.Location = new System.Drawing.Point(11, 206);
             this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(150, 22);
+            this.label63.Size = new System.Drawing.Size(194, 28);
             this.label63.TabIndex = 4;
             this.label63.Text = "Moving Status:";
             // 
@@ -3477,7 +3602,7 @@
             this.label62.AutoSize = true;
             this.label62.Location = new System.Drawing.Point(61, 173);
             this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(100, 22);
+            this.label62.Size = new System.Drawing.Size(129, 28);
             this.label62.TabIndex = 3;
             this.label62.Text = "Location:";
             // 
@@ -3486,7 +3611,7 @@
             this.label61.AutoSize = true;
             this.label61.Location = new System.Drawing.Point(101, 141);
             this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(60, 22);
+            this.label61.Size = new System.Drawing.Size(77, 28);
             this.label61.TabIndex = 2;
             this.label61.Text = "Mode:";
             // 
@@ -3495,7 +3620,7 @@
             this.label60.AutoSize = true;
             this.label60.Location = new System.Drawing.Point(31, 105);
             this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(130, 22);
+            this.label60.Size = new System.Drawing.Size(168, 28);
             this.label60.TabIndex = 1;
             this.label60.Text = "Stop Single:";
             // 
@@ -3504,7 +3629,7 @@
             this.label59.AutoSize = true;
             this.label59.Location = new System.Drawing.Point(81, 71);
             this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(80, 22);
+            this.label59.Size = new System.Drawing.Size(103, 28);
             this.label59.TabIndex = 0;
             this.label59.Text = "Has VH:";
             // 
@@ -3513,7 +3638,7 @@
             this.lbl_hasvh_value.AutoSize = true;
             this.lbl_hasvh_value.Location = new System.Drawing.Point(140, 671);
             this.lbl_hasvh_value.Name = "lbl_hasvh_value";
-            this.lbl_hasvh_value.Size = new System.Drawing.Size(190, 22);
+            this.lbl_hasvh_value.Size = new System.Drawing.Size(246, 28);
             this.lbl_hasvh_value.TabIndex = 20;
             this.lbl_hasvh_value.Text = "                  ";
             // 
@@ -3522,7 +3647,7 @@
             this.label46.AutoSize = true;
             this.label46.Location = new System.Drawing.Point(55, 671);
             this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(80, 22);
+            this.label46.Size = new System.Drawing.Size(103, 28);
             this.label46.TabIndex = 19;
             this.label46.Text = "Has Vh:";
             // 
@@ -3531,7 +3656,7 @@
             this.lbl_mtx_mode.AutoSize = true;
             this.lbl_mtx_mode.Location = new System.Drawing.Point(149, 636);
             this.lbl_mtx_mode.Name = "lbl_mtx_mode";
-            this.lbl_mtx_mode.Size = new System.Drawing.Size(190, 22);
+            this.lbl_mtx_mode.Size = new System.Drawing.Size(246, 28);
             this.lbl_mtx_mode.TabIndex = 18;
             this.lbl_mtx_mode.Text = "                  ";
             // 
@@ -3540,7 +3665,7 @@
             this.label44.AutoSize = true;
             this.label44.Location = new System.Drawing.Point(43, 636);
             this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(100, 22);
+            this.label44.Size = new System.Drawing.Size(129, 28);
             this.label44.TabIndex = 17;
             this.label44.Text = "MTx Mode:";
             // 
@@ -3634,7 +3759,7 @@
             this.btn_mtl_m2o_u2d_move_cmp.Enabled = false;
             this.btn_mtl_m2o_u2d_move_cmp.Location = new System.Drawing.Point(3, 36);
             this.btn_mtl_m2o_u2d_move_cmp.Name = "btn_mtl_m2o_u2d_move_cmp";
-            this.btn_mtl_m2o_u2d_move_cmp.Size = new System.Drawing.Size(158, 26);
+            this.btn_mtl_m2o_u2d_move_cmp.Size = new System.Drawing.Size(202, 27);
             this.btn_mtl_m2o_u2d_move_cmp.TabIndex = 13;
             this.btn_mtl_m2o_u2d_move_cmp.TabStop = true;
             this.btn_mtl_m2o_u2d_move_cmp.Text = "Bit1_move cmp";
@@ -3766,7 +3891,7 @@
             // 
             this.txt_mtlMessage.Location = new System.Drawing.Point(59, 56);
             this.txt_mtlMessage.Name = "txt_mtlMessage";
-            this.txt_mtlMessage.Size = new System.Drawing.Size(444, 30);
+            this.txt_mtlMessage.Size = new System.Drawing.Size(444, 35);
             this.txt_mtlMessage.TabIndex = 14;
             // 
             // label36
@@ -3774,7 +3899,7 @@
             this.label36.AutoSize = true;
             this.label36.Location = new System.Drawing.Point(103, 362);
             this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(60, 22);
+            this.label36.Size = new System.Drawing.Size(77, 28);
             this.label36.TabIndex = 13;
             this.label36.Text = "Speed";
             // 
@@ -3782,7 +3907,7 @@
             // 
             this.txt_mtl_speed.Location = new System.Drawing.Point(178, 359);
             this.txt_mtl_speed.Name = "txt_mtl_speed";
-            this.txt_mtl_speed.Size = new System.Drawing.Size(100, 30);
+            this.txt_mtl_speed.Size = new System.Drawing.Size(100, 35);
             this.txt_mtl_speed.TabIndex = 12;
             this.txt_mtl_speed.Text = "60";
             // 
@@ -3791,7 +3916,7 @@
             this.label34.AutoSize = true;
             this.label34.Location = new System.Drawing.Point(13, 326);
             this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(160, 22);
+            this.label34.Size = new System.Drawing.Size(207, 28);
             this.label34.TabIndex = 11;
             this.label34.Text = "Buffer Distance";
             // 
@@ -3799,7 +3924,7 @@
             // 
             this.txt_mtl_buffer_distance.Location = new System.Drawing.Point(178, 323);
             this.txt_mtl_buffer_distance.Name = "txt_mtl_buffer_distance";
-            this.txt_mtl_buffer_distance.Size = new System.Drawing.Size(100, 30);
+            this.txt_mtl_buffer_distance.Size = new System.Drawing.Size(100, 35);
             this.txt_mtl_buffer_distance.TabIndex = 10;
             this.txt_mtl_buffer_distance.Text = "6666";
             // 
@@ -3808,7 +3933,7 @@
             this.label32.AutoSize = true;
             this.label32.Location = new System.Drawing.Point(13, 290);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(150, 22);
+            this.label32.Size = new System.Drawing.Size(194, 28);
             this.label32.TabIndex = 9;
             this.label32.Text = "Current Adr ID";
             // 
@@ -3816,7 +3941,7 @@
             // 
             this.txt_mtl_current_adr_id.Location = new System.Drawing.Point(178, 287);
             this.txt_mtl_current_adr_id.Name = "txt_mtl_current_adr_id";
-            this.txt_mtl_current_adr_id.Size = new System.Drawing.Size(100, 30);
+            this.txt_mtl_current_adr_id.Size = new System.Drawing.Size(100, 35);
             this.txt_mtl_current_adr_id.TabIndex = 8;
             this.txt_mtl_current_adr_id.Text = "1001";
             // 
@@ -3825,7 +3950,7 @@
             this.label30.AutoSize = true;
             this.label30.Location = new System.Drawing.Point(13, 254);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(150, 22);
+            this.label30.Size = new System.Drawing.Size(194, 28);
             this.label30.TabIndex = 7;
             this.label30.Text = "Current Sec ID";
             // 
@@ -3833,7 +3958,7 @@
             // 
             this.txt_mtl_current_sec_id.Location = new System.Drawing.Point(178, 251);
             this.txt_mtl_current_sec_id.Name = "txt_mtl_current_sec_id";
-            this.txt_mtl_current_sec_id.Size = new System.Drawing.Size(100, 30);
+            this.txt_mtl_current_sec_id.Size = new System.Drawing.Size(100, 35);
             this.txt_mtl_current_sec_id.TabIndex = 6;
             this.txt_mtl_current_sec_id.Text = "0001";
             // 
@@ -3842,7 +3967,7 @@
             this.label28.AutoSize = true;
             this.label28.Location = new System.Drawing.Point(63, 218);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(100, 22);
+            this.label28.Size = new System.Drawing.Size(129, 28);
             this.label28.TabIndex = 5;
             this.label28.Text = "CST Exist";
             // 
@@ -3850,7 +3975,7 @@
             // 
             this.txt_mtl_cst_exist.Location = new System.Drawing.Point(178, 215);
             this.txt_mtl_cst_exist.Name = "txt_mtl_cst_exist";
-            this.txt_mtl_cst_exist.Size = new System.Drawing.Size(100, 30);
+            this.txt_mtl_cst_exist.Size = new System.Drawing.Size(100, 35);
             this.txt_mtl_cst_exist.TabIndex = 4;
             this.txt_mtl_cst_exist.Text = "1";
             // 
@@ -3859,7 +3984,7 @@
             this.label26.AutoSize = true;
             this.label26.Location = new System.Drawing.Point(43, 181);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(120, 22);
+            this.label26.Size = new System.Drawing.Size(155, 28);
             this.label26.TabIndex = 5;
             this.label26.Text = "Action Mode";
             // 
@@ -3867,7 +3992,7 @@
             // 
             this.txt_mtl_action_mode.Location = new System.Drawing.Point(178, 178);
             this.txt_mtl_action_mode.Name = "txt_mtl_action_mode";
-            this.txt_mtl_action_mode.Size = new System.Drawing.Size(100, 30);
+            this.txt_mtl_action_mode.Size = new System.Drawing.Size(100, 35);
             this.txt_mtl_action_mode.TabIndex = 4;
             this.txt_mtl_action_mode.Text = "1";
             // 
@@ -3876,7 +4001,7 @@
             this.label38.AutoSize = true;
             this.label38.Location = new System.Drawing.Point(31, 461);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(70, 22);
+            this.label38.Size = new System.Drawing.Size(90, 28);
             this.label38.TabIndex = 3;
             this.label38.Text = "Car ID";
             // 
@@ -3885,7 +4010,7 @@
             this.label24.AutoSize = true;
             this.label24.Location = new System.Drawing.Point(93, 145);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(70, 22);
+            this.label24.Size = new System.Drawing.Size(90, 28);
             this.label24.TabIndex = 3;
             this.label24.Text = "Car ID";
             // 
@@ -3893,7 +4018,7 @@
             // 
             this.txt_mtl_car_out_notify_car_id.Location = new System.Drawing.Point(107, 458);
             this.txt_mtl_car_out_notify_car_id.Name = "txt_mtl_car_out_notify_car_id";
-            this.txt_mtl_car_out_notify_car_id.Size = new System.Drawing.Size(123, 30);
+            this.txt_mtl_car_out_notify_car_id.Size = new System.Drawing.Size(123, 35);
             this.txt_mtl_car_out_notify_car_id.TabIndex = 2;
             this.txt_mtl_car_out_notify_car_id.Text = "1";
             // 
@@ -3901,7 +4026,7 @@
             // 
             this.txt_mtl_car_id.Location = new System.Drawing.Point(178, 142);
             this.txt_mtl_car_id.Name = "txt_mtl_car_id";
-            this.txt_mtl_car_id.Size = new System.Drawing.Size(100, 30);
+            this.txt_mtl_car_id.Size = new System.Drawing.Size(100, 35);
             this.txt_mtl_car_id.TabIndex = 2;
             this.txt_mtl_car_id.Text = "1";
             // 
@@ -3945,6 +4070,16 @@
             this.btn_mtl_dateTimeSync.UseVisualStyleBackColor = true;
             this.btn_mtl_dateTimeSync.Click += new System.EventHandler(this.btn_mtl_dateTimeSync_Click);
             // 
+            // uctlButton1
+            // 
+            this.uctlButton1.Location = new System.Drawing.Point(35, 578);
+            this.uctlButton1.Name = "uctlButton1";
+            this.uctlButton1.Size = new System.Drawing.Size(203, 35);
+            this.uctlButton1.TabIndex = 16;
+            this.uctlButton1.Text = "Refresh LFT Status";
+            this.uctlButton1.UseVisualStyleBackColor = true;
+            this.uctlButton1.Click += new System.EventHandler(this.uctlButton1_Click);
+            // 
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.set_Distance_btn);
@@ -3959,10 +4094,10 @@
             this.tabPage6.Controls.Add(this.set_MTLMTS_btn);
             this.tabPage6.Controls.Add(this.MTLMTS_cb_box);
             this.tabPage6.Controls.Add(this.plc_link_btn);
-            this.tabPage6.Location = new System.Drawing.Point(4, 31);
+            this.tabPage6.Location = new System.Drawing.Point(4, 37);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(1763, 936);
+            this.tabPage6.Size = new System.Drawing.Size(1763, 930);
             this.tabPage6.TabIndex = 6;
             this.tabPage6.Text = "MTL/MTS Simulator";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -3981,7 +4116,7 @@
             // 
             this.numericUpDown_distance.Location = new System.Drawing.Point(65, 428);
             this.numericUpDown_distance.Name = "numericUpDown_distance";
-            this.numericUpDown_distance.Size = new System.Drawing.Size(167, 30);
+            this.numericUpDown_distance.Size = new System.Drawing.Size(167, 35);
             this.numericUpDown_distance.TabIndex = 11;
             // 
             // set_Lifterposition_btn
@@ -4003,7 +4138,7 @@
             "NONE"});
             this.LifterPosition_cb.Location = new System.Drawing.Point(65, 362);
             this.LifterPosition_cb.Name = "LifterPosition_cb";
-            this.LifterPosition_cb.Size = new System.Drawing.Size(167, 30);
+            this.LifterPosition_cb.Size = new System.Drawing.Size(167, 36);
             this.LifterPosition_cb.TabIndex = 9;
             this.LifterPosition_cb.SelectedIndexChanged += new System.EventHandler(this.LifterPosition_cb_SelectedIndexChanged);
             // 
@@ -4021,7 +4156,7 @@
             // 
             this.vehicleID_textbox.Location = new System.Drawing.Point(65, 310);
             this.vehicleID_textbox.Name = "vehicleID_textbox";
-            this.vehicleID_textbox.Size = new System.Drawing.Size(167, 30);
+            this.vehicleID_textbox.Size = new System.Drawing.Size(167, 35);
             this.vehicleID_textbox.TabIndex = 7;
             // 
             // mode_change_btn
@@ -4048,7 +4183,7 @@
             // 
             this.alive_numeric.Location = new System.Drawing.Point(65, 177);
             this.alive_numeric.Name = "alive_numeric";
-            this.alive_numeric.Size = new System.Drawing.Size(167, 30);
+            this.alive_numeric.Size = new System.Drawing.Size(167, 35);
             this.alive_numeric.TabIndex = 3;
             // 
             // set_MTLMTS_btn
@@ -4070,7 +4205,7 @@
             "MTS2"});
             this.MTLMTS_cb_box.Location = new System.Drawing.Point(65, 43);
             this.MTLMTS_cb_box.Name = "MTLMTS_cb_box";
-            this.MTLMTS_cb_box.Size = new System.Drawing.Size(167, 30);
+            this.MTLMTS_cb_box.Size = new System.Drawing.Size(167, 36);
             this.MTLMTS_cb_box.TabIndex = 1;
             // 
             // plc_link_btn
@@ -4120,9 +4255,9 @@
             this.tabPage5.Controls.Add(this.btn_hid_info);
             this.tabPage5.Controls.Add(this.comboBox_HID_control);
             this.tabPage5.Controls.Add(this.btn_SendHIDControl);
-            this.tabPage5.Location = new System.Drawing.Point(4, 31);
+            this.tabPage5.Location = new System.Drawing.Point(4, 37);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1763, 936);
+            this.tabPage5.Size = new System.Drawing.Size(1763, 930);
             this.tabPage5.TabIndex = 5;
             this.tabPage5.Text = "HID Test";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -4132,7 +4267,7 @@
             this.label71.AutoSize = true;
             this.label71.Location = new System.Drawing.Point(8, 513);
             this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(167, 22);
+            this.label71.Size = new System.Drawing.Size(214, 28);
             this.label71.TabIndex = 84;
             this.label71.Text = "指定測試的車子:";
             // 
@@ -4142,7 +4277,7 @@
             this.cb_testHIDAbnormalVh.Location = new System.Drawing.Point(184, 510);
             this.cb_testHIDAbnormalVh.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.cb_testHIDAbnormalVh.Name = "cb_testHIDAbnormalVh";
-            this.cb_testHIDAbnormalVh.Size = new System.Drawing.Size(197, 30);
+            this.cb_testHIDAbnormalVh.Size = new System.Drawing.Size(197, 36);
             this.cb_testHIDAbnormalVh.TabIndex = 83;
             this.cb_testHIDAbnormalVh.SelectionChangeCommitted += new System.EventHandler(this.cb_testHIDAbnormalVh_SelectionChangeCommitted);
             // 
@@ -4152,7 +4287,7 @@
             this.lbl_isHID5Normal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_isHID5Normal.Location = new System.Drawing.Point(209, 330);
             this.lbl_isHID5Normal.Name = "lbl_isHID5Normal";
-            this.lbl_isHID5Normal.Size = new System.Drawing.Size(212, 24);
+            this.lbl_isHID5Normal.Size = new System.Drawing.Size(274, 30);
             this.lbl_isHID5Normal.TabIndex = 82;
             this.lbl_isHID5Normal.Text = "                    ";
             // 
@@ -4161,7 +4296,7 @@
             this.label88.AutoSize = true;
             this.label88.Location = new System.Drawing.Point(43, 330);
             this.label88.Name = "label88";
-            this.label88.Size = new System.Drawing.Size(160, 22);
+            this.label88.Size = new System.Drawing.Size(207, 28);
             this.label88.TabIndex = 81;
             this.label88.Text = "HID5 Is Normal:";
             // 
@@ -4171,7 +4306,7 @@
             this.lbl_isHID4Normal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_isHID4Normal.Location = new System.Drawing.Point(209, 283);
             this.lbl_isHID4Normal.Name = "lbl_isHID4Normal";
-            this.lbl_isHID4Normal.Size = new System.Drawing.Size(212, 24);
+            this.lbl_isHID4Normal.Size = new System.Drawing.Size(274, 30);
             this.lbl_isHID4Normal.TabIndex = 80;
             this.lbl_isHID4Normal.Text = "                    ";
             // 
@@ -4180,7 +4315,7 @@
             this.label86.AutoSize = true;
             this.label86.Location = new System.Drawing.Point(43, 283);
             this.label86.Name = "label86";
-            this.label86.Size = new System.Drawing.Size(160, 22);
+            this.label86.Size = new System.Drawing.Size(207, 28);
             this.label86.TabIndex = 79;
             this.label86.Text = "HID4 Is Normal:";
             // 
@@ -4190,7 +4325,7 @@
             this.lbl_isHID3Normal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_isHID3Normal.Location = new System.Drawing.Point(209, 239);
             this.lbl_isHID3Normal.Name = "lbl_isHID3Normal";
-            this.lbl_isHID3Normal.Size = new System.Drawing.Size(212, 24);
+            this.lbl_isHID3Normal.Size = new System.Drawing.Size(274, 30);
             this.lbl_isHID3Normal.TabIndex = 78;
             this.lbl_isHID3Normal.Text = "                    ";
             // 
@@ -4199,7 +4334,7 @@
             this.label84.AutoSize = true;
             this.label84.Location = new System.Drawing.Point(43, 239);
             this.label84.Name = "label84";
-            this.label84.Size = new System.Drawing.Size(160, 22);
+            this.label84.Size = new System.Drawing.Size(207, 28);
             this.label84.TabIndex = 77;
             this.label84.Text = "HID3 Is Normal:";
             // 
@@ -4209,7 +4344,7 @@
             this.lbl_isHID2Normal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_isHID2Normal.Location = new System.Drawing.Point(209, 198);
             this.lbl_isHID2Normal.Name = "lbl_isHID2Normal";
-            this.lbl_isHID2Normal.Size = new System.Drawing.Size(212, 24);
+            this.lbl_isHID2Normal.Size = new System.Drawing.Size(274, 30);
             this.lbl_isHID2Normal.TabIndex = 76;
             this.lbl_isHID2Normal.Text = "                    ";
             // 
@@ -4218,7 +4353,7 @@
             this.label72.AutoSize = true;
             this.label72.Location = new System.Drawing.Point(43, 198);
             this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(160, 22);
+            this.label72.Size = new System.Drawing.Size(207, 28);
             this.label72.TabIndex = 75;
             this.label72.Text = "HID2 Is Normal:";
             // 
@@ -4238,7 +4373,7 @@
             this.lbl_isHID1Normal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_isHID1Normal.Location = new System.Drawing.Point(209, 153);
             this.lbl_isHID1Normal.Name = "lbl_isHID1Normal";
-            this.lbl_isHID1Normal.Size = new System.Drawing.Size(212, 24);
+            this.lbl_isHID1Normal.Size = new System.Drawing.Size(274, 30);
             this.lbl_isHID1Normal.TabIndex = 73;
             this.lbl_isHID1Normal.Text = "                    ";
             // 
@@ -4247,7 +4382,7 @@
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(43, 153);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(160, 22);
+            this.label18.Size = new System.Drawing.Size(207, 28);
             this.label18.TabIndex = 72;
             this.label18.Text = "HID1 Is Normal:";
             // 
@@ -4256,7 +4391,7 @@
             this.cb_isCheckHIDStatus.AutoSize = true;
             this.cb_isCheckHIDStatus.Location = new System.Drawing.Point(38, 394);
             this.cb_isCheckHIDStatus.Name = "cb_isCheckHIDStatus";
-            this.cb_isCheckHIDStatus.Size = new System.Drawing.Size(227, 26);
+            this.cb_isCheckHIDStatus.Size = new System.Drawing.Size(289, 32);
             this.cb_isCheckHIDStatus.TabIndex = 71;
             this.cb_isCheckHIDStatus.Text = "檢查HID狀態功能開啟";
             this.cb_isCheckHIDStatus.UseVisualStyleBackColor = true;
@@ -4290,7 +4425,7 @@
             this.lbl_sigma_w_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_sigma_w_value.Location = new System.Drawing.Point(677, 425);
             this.lbl_sigma_w_value.Name = "lbl_sigma_w_value";
-            this.lbl_sigma_w_value.Size = new System.Drawing.Size(212, 24);
+            this.lbl_sigma_w_value.Size = new System.Drawing.Size(274, 30);
             this.lbl_sigma_w_value.TabIndex = 19;
             this.lbl_sigma_w_value.Text = "                    ";
             this.lbl_sigma_w_value.Visible = false;
@@ -4301,7 +4436,7 @@
             this.lbl_at_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_at_value.Location = new System.Drawing.Point(677, 386);
             this.lbl_at_value.Name = "lbl_at_value";
-            this.lbl_at_value.Size = new System.Drawing.Size(212, 24);
+            this.lbl_at_value.Size = new System.Drawing.Size(274, 30);
             this.lbl_at_value.TabIndex = 18;
             this.lbl_at_value.Text = "                    ";
             this.lbl_at_value.Visible = false;
@@ -4312,7 +4447,7 @@
             this.lbl_as_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_as_value.Location = new System.Drawing.Point(677, 358);
             this.lbl_as_value.Name = "lbl_as_value";
-            this.lbl_as_value.Size = new System.Drawing.Size(212, 24);
+            this.lbl_as_value.Size = new System.Drawing.Size(274, 30);
             this.lbl_as_value.TabIndex = 17;
             this.lbl_as_value.Text = "                    ";
             this.lbl_as_value.Visible = false;
@@ -4323,7 +4458,7 @@
             this.lbl_ar_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_ar_value.Location = new System.Drawing.Point(677, 330);
             this.lbl_ar_value.Name = "lbl_ar_value";
-            this.lbl_ar_value.Size = new System.Drawing.Size(212, 24);
+            this.lbl_ar_value.Size = new System.Drawing.Size(274, 30);
             this.lbl_ar_value.TabIndex = 16;
             this.lbl_ar_value.Text = "                    ";
             this.lbl_ar_value.Visible = false;
@@ -4334,7 +4469,7 @@
             this.lbl_vt_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_vt_value.Location = new System.Drawing.Point(677, 298);
             this.lbl_vt_value.Name = "lbl_vt_value";
-            this.lbl_vt_value.Size = new System.Drawing.Size(212, 24);
+            this.lbl_vt_value.Size = new System.Drawing.Size(274, 30);
             this.lbl_vt_value.TabIndex = 15;
             this.lbl_vt_value.Text = "                    ";
             this.lbl_vt_value.Visible = false;
@@ -4345,7 +4480,7 @@
             this.lbl_vs_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_vs_value.Location = new System.Drawing.Point(677, 272);
             this.lbl_vs_value.Name = "lbl_vs_value";
-            this.lbl_vs_value.Size = new System.Drawing.Size(212, 24);
+            this.lbl_vs_value.Size = new System.Drawing.Size(274, 30);
             this.lbl_vs_value.TabIndex = 14;
             this.lbl_vs_value.Text = "                    ";
             this.lbl_vs_value.Visible = false;
@@ -4356,7 +4491,7 @@
             this.lbl_vr_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_vr_value.Location = new System.Drawing.Point(677, 245);
             this.lbl_vr_value.Name = "lbl_vr_value";
-            this.lbl_vr_value.Size = new System.Drawing.Size(212, 24);
+            this.lbl_vr_value.Size = new System.Drawing.Size(274, 30);
             this.lbl_vr_value.TabIndex = 13;
             this.lbl_vr_value.Text = "                    ";
             this.lbl_vr_value.Visible = false;
@@ -4367,7 +4502,7 @@
             this.lbl_hour_sigma_word_value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_hour_sigma_word_value.Location = new System.Drawing.Point(677, 210);
             this.lbl_hour_sigma_word_value.Name = "lbl_hour_sigma_word_value";
-            this.lbl_hour_sigma_word_value.Size = new System.Drawing.Size(212, 24);
+            this.lbl_hour_sigma_word_value.Size = new System.Drawing.Size(274, 30);
             this.lbl_hour_sigma_word_value.TabIndex = 12;
             this.lbl_hour_sigma_word_value.Text = "                    ";
             this.lbl_hour_sigma_word_value.Visible = false;
@@ -4377,7 +4512,7 @@
             this.label58.AutoSize = true;
             this.label58.Location = new System.Drawing.Point(631, 427);
             this.label58.Name = "label58";
-            this.label58.Size = new System.Drawing.Size(40, 22);
+            this.label58.Size = new System.Drawing.Size(51, 28);
             this.label58.TabIndex = 11;
             this.label58.Text = "ΣW:";
             this.label58.Visible = false;
@@ -4387,7 +4522,7 @@
             this.label57.AutoSize = true;
             this.label57.Location = new System.Drawing.Point(631, 386);
             this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(40, 22);
+            this.label57.Size = new System.Drawing.Size(51, 28);
             this.label57.TabIndex = 10;
             this.label57.Text = "AT:";
             this.label57.Visible = false;
@@ -4397,7 +4532,7 @@
             this.label56.AutoSize = true;
             this.label56.Location = new System.Drawing.Point(631, 360);
             this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(40, 22);
+            this.label56.Size = new System.Drawing.Size(51, 28);
             this.label56.TabIndex = 9;
             this.label56.Text = "AS:";
             this.label56.Visible = false;
@@ -4407,7 +4542,7 @@
             this.label55.AutoSize = true;
             this.label55.Location = new System.Drawing.Point(631, 334);
             this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(40, 22);
+            this.label55.Size = new System.Drawing.Size(51, 28);
             this.label55.TabIndex = 8;
             this.label55.Text = "AR:";
             this.label55.Visible = false;
@@ -4417,7 +4552,7 @@
             this.label54.AutoSize = true;
             this.label54.Location = new System.Drawing.Point(631, 298);
             this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(40, 22);
+            this.label54.Size = new System.Drawing.Size(51, 28);
             this.label54.TabIndex = 7;
             this.label54.Text = "VT:";
             this.label54.Visible = false;
@@ -4427,7 +4562,7 @@
             this.label52.AutoSize = true;
             this.label52.Location = new System.Drawing.Point(631, 274);
             this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(40, 22);
+            this.label52.Size = new System.Drawing.Size(51, 28);
             this.label52.TabIndex = 6;
             this.label52.Text = "VS:";
             this.label52.Visible = false;
@@ -4437,7 +4572,7 @@
             this.label50.AutoSize = true;
             this.label50.Location = new System.Drawing.Point(631, 249);
             this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(40, 22);
+            this.label50.Size = new System.Drawing.Size(51, 28);
             this.label50.TabIndex = 5;
             this.label50.Text = "VR:";
             this.label50.Visible = false;
@@ -4447,7 +4582,7 @@
             this.label48.AutoSize = true;
             this.label48.Location = new System.Drawing.Point(501, 210);
             this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(170, 22);
+            this.label48.Size = new System.Drawing.Size(220, 28);
             this.label48.TabIndex = 4;
             this.label48.Text = "Hour(Σ) Hi word:";
             this.label48.Visible = false;
@@ -4470,7 +4605,7 @@
             "OFF"});
             this.comboBox_HID_control.Location = new System.Drawing.Point(38, 39);
             this.comboBox_HID_control.Name = "comboBox_HID_control";
-            this.comboBox_HID_control.Size = new System.Drawing.Size(121, 30);
+            this.comboBox_HID_control.Size = new System.Drawing.Size(121, 36);
             this.comboBox_HID_control.TabIndex = 2;
             // 
             // btn_SendHIDControl
@@ -4492,10 +4627,10 @@
             this.tabPage7.Controls.Add(this.cb_cv_ids);
             this.tabPage7.Controls.Add(this.groupBox13);
             this.tabPage7.Controls.Add(this.groupBox10);
-            this.tabPage7.Location = new System.Drawing.Point(4, 31);
+            this.tabPage7.Location = new System.Drawing.Point(4, 37);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(1763, 936);
+            this.tabPage7.Size = new System.Drawing.Size(1763, 930);
             this.tabPage7.TabIndex = 7;
             this.tabPage7.Text = "CV Test";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -4540,7 +4675,7 @@
             this.radioButton1.Enabled = false;
             this.radioButton1.Location = new System.Drawing.Point(3, 168);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(118, 26);
+            this.radioButton1.Size = new System.Drawing.Size(150, 27);
             this.radioButton1.TabIndex = 54;
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "DI5_Alive";
@@ -4553,7 +4688,7 @@
             this.radioButton2.Enabled = false;
             this.radioButton2.Location = new System.Drawing.Point(3, 102);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(408, 26);
+            this.radioButton2.Size = new System.Drawing.Size(441, 27);
             this.radioButton2.TabIndex = 54;
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "DI3_Reply Road Control Complete Notify";
@@ -4594,7 +4729,7 @@
             this.radioButton11.Enabled = false;
             this.radioButton11.Location = new System.Drawing.Point(3, 36);
             this.radioButton11.Name = "radioButton11";
-            this.radioButton11.Size = new System.Drawing.Size(258, 26);
+            this.radioButton11.Size = new System.Drawing.Size(332, 27);
             this.radioButton11.TabIndex = 13;
             this.radioButton11.TabStop = true;
             this.radioButton11.Text = "OI1_Safty Check Request";
@@ -4607,7 +4742,7 @@
             this.radioButton12.Enabled = false;
             this.radioButton12.Location = new System.Drawing.Point(3, 69);
             this.radioButton12.Name = "radioButton12";
-            this.radioButton12.Size = new System.Drawing.Size(398, 26);
+            this.radioButton12.Size = new System.Drawing.Size(441, 27);
             this.radioButton12.TabIndex = 13;
             this.radioButton12.TabStop = true;
             this.radioButton12.Text = "DI2_Reply Road Control Initial Notify";
@@ -4653,7 +4788,7 @@
             this.raoid_cv_a_di5.Enabled = false;
             this.raoid_cv_a_di5.Location = new System.Drawing.Point(3, 168);
             this.raoid_cv_a_di5.Name = "raoid_cv_a_di5";
-            this.raoid_cv_a_di5.Size = new System.Drawing.Size(118, 26);
+            this.raoid_cv_a_di5.Size = new System.Drawing.Size(150, 27);
             this.raoid_cv_a_di5.TabIndex = 54;
             this.raoid_cv_a_di5.TabStop = true;
             this.raoid_cv_a_di5.Text = "DI5_Alive";
@@ -4666,7 +4801,7 @@
             this.raoid_cv_a_di3.Enabled = false;
             this.raoid_cv_a_di3.Location = new System.Drawing.Point(3, 102);
             this.raoid_cv_a_di3.Name = "raoid_cv_a_di3";
-            this.raoid_cv_a_di3.Size = new System.Drawing.Size(408, 26);
+            this.raoid_cv_a_di3.Size = new System.Drawing.Size(441, 27);
             this.raoid_cv_a_di3.TabIndex = 54;
             this.raoid_cv_a_di3.TabStop = true;
             this.raoid_cv_a_di3.Text = "DI3_Reply Road Control Complete Notify";
@@ -4707,7 +4842,7 @@
             this.raoid_cv_a_di1.Enabled = false;
             this.raoid_cv_a_di1.Location = new System.Drawing.Point(3, 36);
             this.raoid_cv_a_di1.Name = "raoid_cv_a_di1";
-            this.raoid_cv_a_di1.Size = new System.Drawing.Size(258, 26);
+            this.raoid_cv_a_di1.Size = new System.Drawing.Size(332, 27);
             this.raoid_cv_a_di1.TabIndex = 13;
             this.raoid_cv_a_di1.TabStop = true;
             this.raoid_cv_a_di1.Text = "OI1_Safty Check Request";
@@ -4720,7 +4855,7 @@
             this.raoid_cv_a_di2.Enabled = false;
             this.raoid_cv_a_di2.Location = new System.Drawing.Point(3, 69);
             this.raoid_cv_a_di2.Name = "raoid_cv_a_di2";
-            this.raoid_cv_a_di2.Size = new System.Drawing.Size(398, 26);
+            this.raoid_cv_a_di2.Size = new System.Drawing.Size(441, 27);
             this.raoid_cv_a_di2.TabIndex = 13;
             this.raoid_cv_a_di2.TabStop = true;
             this.raoid_cv_a_di2.Text = "DI2_Reply Road Control Initial Notify";
@@ -4731,7 +4866,7 @@
             this.label74.AutoSize = true;
             this.label74.Location = new System.Drawing.Point(8, 21);
             this.label74.Name = "label74";
-            this.label74.Size = new System.Drawing.Size(70, 22);
+            this.label74.Size = new System.Drawing.Size(90, 28);
             this.label74.TabIndex = 50;
             this.label74.Text = "CV ID:";
             this.label74.Visible = false;
@@ -4741,7 +4876,7 @@
             this.cb_cv_ids.FormattingEnabled = true;
             this.cb_cv_ids.Location = new System.Drawing.Point(39, 46);
             this.cb_cv_ids.Name = "cb_cv_ids";
-            this.cb_cv_ids.Size = new System.Drawing.Size(121, 30);
+            this.cb_cv_ids.Size = new System.Drawing.Size(121, 36);
             this.cb_cv_ids.TabIndex = 49;
             this.cb_cv_ids.Visible = false;
             this.cb_cv_ids.SelectedIndexChanged += new System.EventHandler(this.cb_cv_ids_SelectedIndexChanged);
@@ -4764,7 +4899,7 @@
             this.ck_DoorClosed_B.AutoSize = true;
             this.ck_DoorClosed_B.Location = new System.Drawing.Point(25, 29);
             this.ck_DoorClosed_B.Name = "ck_DoorClosed_B";
-            this.ck_DoorClosed_B.Size = new System.Drawing.Size(149, 26);
+            this.ck_DoorClosed_B.Size = new System.Drawing.Size(190, 32);
             this.ck_DoorClosed_B.TabIndex = 44;
             this.ck_DoorClosed_B.Text = "Door Closed ";
             this.ck_DoorClosed_B.UseVisualStyleBackColor = true;
@@ -4775,7 +4910,7 @@
             this.ck_SaftyCheckComplete_B.AutoSize = true;
             this.ck_SaftyCheckComplete_B.Location = new System.Drawing.Point(25, 93);
             this.ck_SaftyCheckComplete_B.Name = "ck_SaftyCheckComplete_B";
-            this.ck_SaftyCheckComplete_B.Size = new System.Drawing.Size(229, 26);
+            this.ck_SaftyCheckComplete_B.Size = new System.Drawing.Size(294, 32);
             this.ck_SaftyCheckComplete_B.TabIndex = 43;
             this.ck_SaftyCheckComplete_B.Text = "Safty Check Complete";
             this.ck_SaftyCheckComplete_B.UseVisualStyleBackColor = true;
@@ -4786,7 +4921,7 @@
             this.ck_Alive_B.AutoSize = true;
             this.ck_Alive_B.Location = new System.Drawing.Point(25, 125);
             this.ck_Alive_B.Name = "ck_Alive_B";
-            this.ck_Alive_B.Size = new System.Drawing.Size(79, 26);
+            this.ck_Alive_B.Size = new System.Drawing.Size(99, 32);
             this.ck_Alive_B.TabIndex = 46;
             this.ck_Alive_B.Text = "Alive";
             this.ck_Alive_B.UseVisualStyleBackColor = true;
@@ -4797,7 +4932,7 @@
             this.ck_SaftyCheckRequest_B.AutoSize = true;
             this.ck_SaftyCheckRequest_B.Location = new System.Drawing.Point(25, 61);
             this.ck_SaftyCheckRequest_B.Name = "ck_SaftyCheckRequest_B";
-            this.ck_SaftyCheckRequest_B.Size = new System.Drawing.Size(219, 26);
+            this.ck_SaftyCheckRequest_B.Size = new System.Drawing.Size(281, 32);
             this.ck_SaftyCheckRequest_B.TabIndex = 45;
             this.ck_SaftyCheckRequest_B.Text = "Safty Check Request";
             this.ck_SaftyCheckRequest_B.UseVisualStyleBackColor = true;
@@ -4821,7 +4956,7 @@
             this.ck_DoorClosed.AutoSize = true;
             this.ck_DoorClosed.Location = new System.Drawing.Point(24, 29);
             this.ck_DoorClosed.Name = "ck_DoorClosed";
-            this.ck_DoorClosed.Size = new System.Drawing.Size(149, 26);
+            this.ck_DoorClosed.Size = new System.Drawing.Size(190, 32);
             this.ck_DoorClosed.TabIndex = 40;
             this.ck_DoorClosed.Text = "Door Closed ";
             this.ck_DoorClosed.UseVisualStyleBackColor = true;
@@ -4832,7 +4967,7 @@
             this.ck_SaftyCheckComplete.AutoSize = true;
             this.ck_SaftyCheckComplete.Location = new System.Drawing.Point(24, 93);
             this.ck_SaftyCheckComplete.Name = "ck_SaftyCheckComplete";
-            this.ck_SaftyCheckComplete.Size = new System.Drawing.Size(229, 26);
+            this.ck_SaftyCheckComplete.Size = new System.Drawing.Size(294, 32);
             this.ck_SaftyCheckComplete.TabIndex = 39;
             this.ck_SaftyCheckComplete.Text = "Safty Check Complete";
             this.ck_SaftyCheckComplete.UseVisualStyleBackColor = true;
@@ -4843,7 +4978,7 @@
             this.ck_SaftyCheckRequest.AutoSize = true;
             this.ck_SaftyCheckRequest.Location = new System.Drawing.Point(24, 61);
             this.ck_SaftyCheckRequest.Name = "ck_SaftyCheckRequest";
-            this.ck_SaftyCheckRequest.Size = new System.Drawing.Size(219, 26);
+            this.ck_SaftyCheckRequest.Size = new System.Drawing.Size(281, 32);
             this.ck_SaftyCheckRequest.TabIndex = 41;
             this.ck_SaftyCheckRequest.Text = "Safty Check Request";
             this.ck_SaftyCheckRequest.UseVisualStyleBackColor = true;
@@ -4854,150 +4989,15 @@
             this.ck_Alive.AutoSize = true;
             this.ck_Alive.Location = new System.Drawing.Point(24, 125);
             this.ck_Alive.Name = "ck_Alive";
-            this.ck_Alive.Size = new System.Drawing.Size(79, 26);
+            this.ck_Alive.Size = new System.Drawing.Size(99, 32);
             this.ck_Alive.TabIndex = 42;
             this.ck_Alive.Text = "Alive";
             this.ck_Alive.UseVisualStyleBackColor = true;
             this.ck_Alive.CheckedChanged += new System.EventHandler(this.ck_Alive_CheckedChanged);
             // 
-            // uctlButton2
-            // 
-            this.uctlButton2.Location = new System.Drawing.Point(869, 826);
-            this.uctlButton2.Name = "uctlButton2";
-            this.uctlButton2.Size = new System.Drawing.Size(166, 45);
-            this.uctlButton2.TabIndex = 62;
-            this.uctlButton2.Text = "停車位功能測試";
-            this.uctlButton2.UseVisualStyleBackColor = true;
-            this.uctlButton2.Visible = false;
-            this.uctlButton2.Click += new System.EventHandler(this.uctlButton2_Click);
-            // 
-            // btnVhTypeUpdate
-            // 
-            this.btnVhTypeUpdate.Location = new System.Drawing.Point(8, 132);
-            this.btnVhTypeUpdate.Name = "btnVhTypeUpdate";
-            this.btnVhTypeUpdate.Size = new System.Drawing.Size(141, 30);
-            this.btnVhTypeUpdate.TabIndex = 61;
-            this.btnVhTypeUpdate.Text = "Update";
-            this.btnVhTypeUpdate.UseVisualStyleBackColor = true;
-            this.btnVhTypeUpdate.Click += new System.EventHandler(this.btnVhTypeUpdate_Click);
-            // 
-            // btn_close_tcp_port
-            // 
-            this.btn_close_tcp_port.Location = new System.Drawing.Point(664, 751);
-            this.btn_close_tcp_port.Name = "btn_close_tcp_port";
-            this.btn_close_tcp_port.Size = new System.Drawing.Size(166, 45);
-            this.btn_close_tcp_port.TabIndex = 51;
-            this.btn_close_tcp_port.Text = "Close Tcp Port";
-            this.btn_close_tcp_port.UseVisualStyleBackColor = true;
-            this.btn_close_tcp_port.Visible = false;
-            this.btn_close_tcp_port.Click += new System.EventHandler(this.btn_close_tcp_port_Click);
-            // 
-            // btn_open_tcp_port
-            // 
-            this.btn_open_tcp_port.Location = new System.Drawing.Point(492, 751);
-            this.btn_open_tcp_port.Name = "btn_open_tcp_port";
-            this.btn_open_tcp_port.Size = new System.Drawing.Size(166, 45);
-            this.btn_open_tcp_port.TabIndex = 50;
-            this.btn_open_tcp_port.Text = "Open Tcp Port";
-            this.btn_open_tcp_port.UseVisualStyleBackColor = true;
-            this.btn_open_tcp_port.Visible = false;
-            this.btn_open_tcp_port.Click += new System.EventHandler(this.btn_open_tcp_port_Click);
-            // 
-            // btn_changeToRemove
-            // 
-            this.btn_changeToRemove.Location = new System.Drawing.Point(813, 189);
-            this.btn_changeToRemove.Name = "btn_changeToRemove";
-            this.btn_changeToRemove.Size = new System.Drawing.Size(169, 43);
-            this.btn_changeToRemove.TabIndex = 46;
-            this.btn_changeToRemove.Text = "Remove";
-            this.btn_changeToRemove.UseVisualStyleBackColor = true;
-            this.btn_changeToRemove.Click += new System.EventHandler(this.btn_changeToRemove_Click);
-            // 
-            // btn_changeToInstall
-            // 
-            this.btn_changeToInstall.Location = new System.Drawing.Point(816, 240);
-            this.btn_changeToInstall.Name = "btn_changeToInstall";
-            this.btn_changeToInstall.Size = new System.Drawing.Size(169, 43);
-            this.btn_changeToInstall.TabIndex = 45;
-            this.btn_changeToInstall.Text = "Install";
-            this.btn_changeToInstall.UseVisualStyleBackColor = true;
-            this.btn_changeToInstall.Click += new System.EventHandler(this.btn_changeToInstall_Click);
-            // 
-            // btn_changeToAutoLocal
-            // 
-            this.btn_changeToAutoLocal.Location = new System.Drawing.Point(819, 364);
-            this.btn_changeToAutoLocal.Name = "btn_changeToAutoLocal";
-            this.btn_changeToAutoLocal.Size = new System.Drawing.Size(166, 45);
-            this.btn_changeToAutoLocal.TabIndex = 44;
-            this.btn_changeToAutoLocal.Text = "Auto Local";
-            this.btn_changeToAutoLocal.UseVisualStyleBackColor = true;
-            this.btn_changeToAutoLocal.Click += new System.EventHandler(this.btn_changeToAutoLocal_Click_1);
-            // 
-            // btn_changeToAutoMTL
-            // 
-            this.btn_changeToAutoMTL.Location = new System.Drawing.Point(819, 464);
-            this.btn_changeToAutoMTL.Name = "btn_changeToAutoMTL";
-            this.btn_changeToAutoMTL.Size = new System.Drawing.Size(166, 45);
-            this.btn_changeToAutoMTL.TabIndex = 43;
-            this.btn_changeToAutoMTL.Text = "Auto MTL";
-            this.btn_changeToAutoMTL.UseVisualStyleBackColor = true;
-            this.btn_changeToAutoMTL.Click += new System.EventHandler(this.btn_changeToAutoMTL_Click);
-            // 
-            // btn_changeToAutoMTS
-            // 
-            this.btn_changeToAutoMTS.Location = new System.Drawing.Point(819, 413);
-            this.btn_changeToAutoMTS.Name = "btn_changeToAutoMTS";
-            this.btn_changeToAutoMTS.Size = new System.Drawing.Size(166, 45);
-            this.btn_changeToAutoMTS.TabIndex = 42;
-            this.btn_changeToAutoMTS.Text = "Auto MTS";
-            this.btn_changeToAutoMTS.UseVisualStyleBackColor = true;
-            this.btn_changeToAutoMTS.Click += new System.EventHandler(this.btn_changeToAutoLocal_Click);
-            // 
-            // btn_changeToAutoRemote
-            // 
-            this.btn_changeToAutoRemote.Location = new System.Drawing.Point(819, 313);
-            this.btn_changeToAutoRemote.Name = "btn_changeToAutoRemote";
-            this.btn_changeToAutoRemote.Size = new System.Drawing.Size(166, 45);
-            this.btn_changeToAutoRemote.TabIndex = 41;
-            this.btn_changeToAutoRemote.Text = "Auto Remote";
-            this.btn_changeToAutoRemote.UseVisualStyleBackColor = true;
-            this.btn_changeToAutoRemote.Click += new System.EventHandler(this.btn_changeToAutoRemote_Click);
-            // 
-            // btn_pause
-            // 
-            this.btn_pause.Location = new System.Drawing.Point(8, 171);
-            this.btn_pause.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.btn_pause.Name = "btn_pause";
-            this.btn_pause.Size = new System.Drawing.Size(138, 42);
-            this.btn_pause.TabIndex = 13;
-            this.btn_pause.Text = "Send Func 39";
-            this.btn_pause.UseVisualStyleBackColor = true;
-            this.btn_pause.Click += new System.EventHandler(this.btn_pause_Click);
-            // 
-            // uctl_Send_Fun_71
-            // 
-            this.uctl_Send_Fun_71.Location = new System.Drawing.Point(10, 191);
-            this.uctl_Send_Fun_71.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.uctl_Send_Fun_71.Name = "uctl_Send_Fun_71";
-            this.uctl_Send_Fun_71.Size = new System.Drawing.Size(138, 42);
-            this.uctl_Send_Fun_71.TabIndex = 13;
-            this.uctl_Send_Fun_71.Text = "Send Func 71";
-            this.uctl_Send_Fun_71.UseVisualStyleBackColor = true;
-            this.uctl_Send_Fun_71.Click += new System.EventHandler(this.uctl_Send_Fun_71_Click);
-            // 
-            // uctlButton1
-            // 
-            this.uctlButton1.Location = new System.Drawing.Point(35, 578);
-            this.uctlButton1.Name = "uctlButton1";
-            this.uctlButton1.Size = new System.Drawing.Size(203, 35);
-            this.uctlButton1.TabIndex = 16;
-            this.uctlButton1.Text = "Refresh LFT Status";
-            this.uctlButton1.UseVisualStyleBackColor = true;
-            this.uctlButton1.Click += new System.EventHandler(this.uctlButton1_Click);
-            // 
             // DebugForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 28F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1771, 971);
             this.Controls.Add(this.tabControl1);
