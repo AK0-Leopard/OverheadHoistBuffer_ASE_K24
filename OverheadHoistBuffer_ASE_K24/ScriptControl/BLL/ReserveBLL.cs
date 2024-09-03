@@ -107,7 +107,7 @@ namespace com.mirle.ibg3k0.sc.BLL
 
             //20200508 暫時不要用小精靈方式釋放路徑
             //var hlt_vh = new HltVehicle(vhID, vehicleX, vehicleY, vehicleAngle, speedMmPerSecond, sensorDirection: sensorDir, forkDirection: forkDir, currentSectionID: currentSectionID);
-            var hlt_vh = new HltVehicle(vhID, vehicleX, vehicleY, vehicleAngle, speedMmPerSecond, sensorDirection: sensorDir, forkDirection: forkDir);
+            var hlt_vh = new HltVehicle(vhID, vehicleX, vehicleY, vehicleAngle, (int)speedMmPerSecond, sensorDirection: sensorDir, forkDirection: forkDir);
             HltResult result = mapAPI.TryAddOrUpdateVehicle(hlt_vh);
             mapAPI.KeepRestSection(hlt_vh);
             onReserveStatusChange();
@@ -236,7 +236,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 mapAPI.RemoveAllReservedSectionsByVehicleID(vhID);
                 onReserveStatusChange();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Error(ex, "Exception");
             }

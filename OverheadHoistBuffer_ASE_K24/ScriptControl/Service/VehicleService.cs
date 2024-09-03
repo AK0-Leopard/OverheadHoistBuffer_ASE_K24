@@ -2227,7 +2227,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                     foreach (var sec in sections)
                                     {
                                         var result = scApp.ReserveBLL.TryAddReservedSection(vh.VEHICLE_ID, sec.SEC_ID,
-                                                         sensorDir: HltDirection.ForwardReverse,
+                                                         sensorDir: HltDirection.ForwardBackword,
                                                          isAsk: true);
 
                                         if (!result.OK)
@@ -2252,7 +2252,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                 foreach (var sec in sections_from)
                                 {
                                     var result = scApp.ReserveBLL.TryAddReservedSection(vh.VEHICLE_ID, sec.SEC_ID,
-                                                     sensorDir: HltDirection.ForwardReverse,
+                                                     sensorDir: HltDirection.ForwardBackword,
                                                      isAsk: true);
 
                                     if (!result.OK)
@@ -2303,7 +2303,7 @@ namespace com.mirle.ibg3k0.sc.Service
                                     foreach (string sec in current_guide_sections)
                                     {
                                         var result = scApp.ReserveBLL.TryAddReservedSection(vh.VEHICLE_ID, sec,
-                                                         sensorDir: HltDirection.ForwardReverse,
+                                                         sensorDir: HltDirection.ForwardBackword,
                                                          isAsk: true);
 
                                         if (!result.OK)
@@ -3731,6 +3731,10 @@ namespace com.mirle.ibg3k0.sc.Service
                 foreach (var detail in block_detail_section)
                 {
                     HltDirection hltDirection = HltDirection.None;
+                    if (SCUtility.isMatche(detail, "30101"))
+                    {
+                        hltDirection = HltDirection.Forward;
+                    }
                     LogHelper.Log(logger: logger, LogLevel: LogLevel.Info, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
                        Data: $"vh:{vhID} Try add reserve section:{detail} ,hlt dir:{hltDirection}...",
                        VehicleID: vhID);
@@ -3806,6 +3810,11 @@ namespace com.mirle.ibg3k0.sc.Service
                 foreach (var detail in block_detail_section)
                 {
                     HltDirection hltDirection = HltDirection.None;
+                    if (SCUtility.isMatche(detail, "30101"))
+                    {
+                        hltDirection = HltDirection.Forward;
+                    }
+
                     var result = scApp.ReserveBLL.TryAddReservedSection(vhID, detail,
                                                                         sensorDir: hltDirection,
                                                                         isAsk: false);

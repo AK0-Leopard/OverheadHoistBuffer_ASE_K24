@@ -1615,5 +1615,22 @@ namespace com.mirle.ibg3k0.bc.winform.UI
         {
 
         }
+
+        private void btn_blockTest_Click(object sender, EventArgs e)
+        {
+            AVEHICLE test_report_vh = bcApp.SCApplication.VehicleBLL.cache.getVhByID(cmb_mcsReportTestVHID.Text);
+            var id_136 = new sc.ProtocolFormat.OHTMessage.ID_136_TRANS_EVENT_REP()
+            {
+                EventType =  sc.ProtocolFormat.OHTMessage.EventType.BlockReq,
+                RequestBlockID = "30101N",
+            };
+            var bcfApp = bcApp.SCApplication.getBCFApplication();
+            Task.Run(() =>
+            {
+                dynamic recive_processor = bcApp.SCApplication.VehicleService;
+                //bcApp.SCApplication.VehicleService.Receive.TranEventReport(bcfApp, test_report_vh, id_136, 0);
+                recive_processor.TranEventReport(bcfApp, test_report_vh, id_136, 0);
+            });
+        }
     }
 }
