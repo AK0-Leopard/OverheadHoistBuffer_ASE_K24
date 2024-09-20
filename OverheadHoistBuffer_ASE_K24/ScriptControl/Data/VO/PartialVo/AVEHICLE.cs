@@ -242,6 +242,9 @@ namespace com.mirle.ibg3k0.sc
         [JsonIgnore]
         public virtual List<string> WillPassSectionID { get; set; }
 
+        [JsonIgnore]
+        public virtual List<string> ReservedSectionID { get; set; }
+
 
         [JsonIgnore]
         public virtual ReserveUnsuccessInfo CanNotReserveInfo { get; set; }

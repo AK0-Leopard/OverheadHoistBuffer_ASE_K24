@@ -35,6 +35,9 @@ namespace com.mirle.ibg3k0.sc.Service
             reportBLL = _app.ReportBLL;
             lineBLL = _app.LineBLL;
             line = scApp.getEQObjCacheManager().getLine();
+            scApp.getNatsManager().ConectionStateChange += LineService_ConectionStateChange;
+
+            line.addEventHandler(nameof(LineService), nameof(line.Redis_Link_Stat), RedisLinkStateChange);
 
             //line.addEventHandler(nameof(LineService), nameof(line.Host_Control_State), PublishLineInfo);
             //line.addEventHandler(nameof(LineService), nameof(line.SCStats), PublishLineInfo);
@@ -47,7 +50,49 @@ namespace com.mirle.ibg3k0.sc.Service
             //line.addEventHandler(nameof(LineService), nameof(line.IsAlarmHappened), PublishLineInfo);
             //line.LineStatusChange += Line_LineStatusChange;
         }
-
+        public void RedisLinkStateChange(object sender, PropertyChangedEventArgs e)
+        {
+            Task.Run(() => 
+            {
+                try
+                {
+                    if (line.Redis_Link_Stat == SCAppConstants.LinkStatus.LinkOK)
+                    {
+                        scApp.TransferService.TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"Redis service disconnection alarm clear");
+                        scApp.TransferService.OHBC_AlarmCleared(line.LINE_ID, ((int)AlarmLst.ServiceWatchDog_RedisDisConnection).ToString());
+                    }
+                    else
+                    {
+                        scApp.TransferService.TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"Redis service disconnection alarm set");
+                        scApp.TransferService.OHBC_AlarmSet(line.LINE_ID, ((int)AlarmLst.ServiceWatchDog_RedisDisConnection).ToString());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Warn(ex, "Exception:");
+                }
+            });
+        }
+        private void LineService_ConectionStateChange(object sender, bool connectionState)
+        {
+            try
+            {
+                if (connectionState)
+                {
+                    scApp.TransferService.TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"Nats service disconnection alarm clear");
+                    scApp.TransferService.OHBC_AlarmCleared(line.LINE_ID, ((int)AlarmLst.ServiceWatchDog_NatsDisConnection).ToString());
+                }
+                else
+                {
+                    scApp.TransferService.TransferServiceLogger.Info(DateTime.Now.ToString("HH:mm:ss.fff ") + $"Nats service disconnection alarm set");
+                    scApp.TransferService.OHBC_AlarmSet(line.LINE_ID, ((int)AlarmLst.ServiceWatchDog_NatsDisConnection).ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex, "Exception:");
+            }
+        }
 
         public void LineStatusChangeCheck()
         {

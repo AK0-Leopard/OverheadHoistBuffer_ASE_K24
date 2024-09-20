@@ -5,6 +5,9 @@ using System;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {
@@ -13,6 +16,7 @@ namespace com.mirle.ibg3k0.sc.BLL
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private Mirle.Hlts.ReserveSection.Map.ViewModels.HltMapViewModel mapAPI { get; set; }
         private sc.Common.CommObjCacheManager commObjCacheManager { get; set; }
+        private SCApplication scApp;
 
 
         private EventHandler reserveStatusChange;
@@ -46,10 +50,38 @@ namespace com.mirle.ibg3k0.sc.BLL
         }
         public void start(SCApplication _app)
         {
+            scApp = _app;
             mapAPI = _app.getReserveSectionAPI();
             commObjCacheManager = _app.getCommObjCacheManager();
-        }
+            mapAPI.HltReservedSections.CollectionChanged += onReserveStatusChangedEvent;
+            //mapAPI.HltVehicles.CollectionChanged += onReserveStatusChangedEvent;
 
+        }
+        protected void onReserveStatusChangedEvent(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            try
+            {
+                var new_item = e.NewItems as ObservableCollection<HltReservedSection>;
+                var vhs = scApp.VehicleBLL.cache.loadVhs();
+                foreach (var vh in vhs)
+                {
+                    vh.ReservedSectionID = loadCurrentReserveSections(vh.VEHICLE_ID);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex, "Exception:");
+            }
+        }
+        public List<string> loadCurrentReserveSections(IList<HltReservedSection> hltReservedSections, string vhID)
+        {
+            StringBuilder sb = new StringBuilder();
+            var vh_of_current_reserve_sections = hltReservedSections.
+                                                 Where(reserve_info => SCUtility.isMatche(reserve_info.RSVehicleID, vhID)).
+                                                 Select(reserve_info => reserve_info.RSMapSectionID).
+                                                 ToList();
+            return vh_of_current_reserve_sections;
+        }
         public bool DrawAllReserveSectionInfo()
         {
             bool is_success = false;

@@ -377,6 +377,8 @@ LINE,100031,1,OHT_CommandNotFinishedInTime
 LINE,100016,1,Queue command time out
 LINE,100034,2,OHBC has trnasfer command finish time out
 LINE,100035,2,OHBC Unknown CST data has occurred
+LINE,100036,2,Nats service disconnection
+LINE,100037,2,Redis service disconnection
 TRACK,1,2,TrackAlarm_EMO_Error
 TRACK,2,2,TrackAlarm_Servo_No_On
 TRACK,3,2,TrackAlarm_Servo_NotGoHome

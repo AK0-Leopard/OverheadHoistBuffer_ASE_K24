@@ -2142,8 +2142,10 @@ namespace com.mirle.ibg3k0.sc.BLL
             };
             if (vh.PredictPath != null)
                 vh_gpp.PredictPath.AddRange(vh.PredictPath);
-            if (vh.CyclingPath != null)
-                vh_gpp.CyclingPath.AddRange(vh.CyclingPath);
+            //if (vh.CyclingPath != null)
+            //    vh_gpp.CyclingPath.AddRange(vh.CyclingPath);
+            if (vh.ReservedSectionID != null && vh.ReservedSectionID.Any())
+                vh_gpp.CyclingPath.AddRange(vh.ReservedSectionID);
             if (vh.WillPassSectionID != null)
                 vh_gpp.WillPassSectionID.AddRange(vh.WillPassSectionID);
             if (vh.Alarms != null)
