@@ -3702,6 +3702,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             result = "";
             try
             {
+                var vh = scApp.getEQObjCacheManager().getVehicletByVHID(vh_id);
                 bool is_walk_able = true;
                 switch (cmd_type)
                 {
@@ -3723,7 +3724,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                     case E_CMD_TYPE.Move:
                     case E_CMD_TYPE.Unload:
                     case E_CMD_TYPE.Move_Park:
-                        if (!scApp.GuideBLL.IsRoadWalkable(vh_current_adr, destination).isSuccess)
+                        //if (!scApp.GuideBLL.IsRoadWalkable(vh_current_adr, destination).isSuccess)
+                        if (!scApp.GuideBLL.IsRoadWalkable(vh, destination).isSuccess)
                         {
                             result = $" vh:{vh_id},want excute cmd type:{cmd_type}, current address:[{vh_current_adr}] to destination address:[{destination}] no find path";
                             is_walk_able = false;
@@ -3736,7 +3738,8 @@ namespace com.mirle.ibg3k0.sc.BLL
 
                     case E_CMD_TYPE.Scan:
                     case E_CMD_TYPE.Load:
-                        if (!scApp.GuideBLL.IsRoadWalkable(vh_current_adr, source).isSuccess)
+                        //if (!scApp.GuideBLL.IsRoadWalkable(vh_current_adr, source).isSuccess)
+                        if (!scApp.GuideBLL.IsRoadWalkable(vh, source).isSuccess)
                         {
                             result = $" vh:{vh_id},want excute cmd type:{cmd_type}, current address:[{vh_current_adr}] to destination address:[{source}] no find path";
                             is_walk_able = false;
@@ -3748,7 +3751,8 @@ namespace com.mirle.ibg3k0.sc.BLL
                         break;
 
                     case E_CMD_TYPE.LoadUnload:
-                        if (!scApp.GuideBLL.IsRoadWalkable(vh_current_adr, source).isSuccess)
+                        //if (!scApp.GuideBLL.IsRoadWalkable(vh_current_adr, source).isSuccess)
+                        if (!scApp.GuideBLL.IsRoadWalkable(vh, source).isSuccess)
                         {
                             result = $" vh:{vh_id},want excute cmd type:{cmd_type}, current address:{vh_current_adr} to source address:{source} no find path";
                             is_walk_able = false;
@@ -5555,7 +5559,7 @@ namespace com.mirle.ibg3k0.sc.BLL
             }
         }
 
-        private (bool isSuccess, List<string> startToFromSegIDs, List<string> startToFromSecIDs, List<string> startToFromAdrID, int total_cost)
+        public (bool isSuccess, List<string> startToFromSegIDs, List<string> startToFromSecIDs, List<string> startToFromAdrID, int total_cost)
             tryGetGuideInfoWhenVhAdrIsMatchTarget(string currentAdrID, string currentSecID, string targetAdr)
         {
             if (DebugParameter.IsCloseCorrectGuideInfoWhenSameLoadAdr)

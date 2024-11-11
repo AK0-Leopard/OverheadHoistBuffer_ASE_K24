@@ -130,6 +130,39 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return (false, int.MaxValue);
             }
         }
+        public (bool isSuccess, int distance) IsRoadWalkable(AVEHICLE vh, string targetAddress, List<string> byPassSectionIDs = null)
+        {
+            try
+            {
+                string vh_current_address = vh.CUR_ADR_ID;
+                string vh_current_section = vh.CUR_SEC_ID;
+                var guide_info = default((bool isSuccess, List<string> guideSegmentIds, List<string> guideSectionIds, List<string> guideAddressIds, int totalCost));
+
+                if (!SCUtility.isMatche(vh_current_address, targetAddress))
+                {
+                    guide_info = scApp.GuideBLL.getGuideInfo(vh_current_address, targetAddress);
+                }
+                else
+                {
+                    //isSuccess = true; //如果相同 代表是在同一個點上
+                    guide_info = scApp.CMDBLL.tryGetGuideInfoWhenVhAdrIsMatchTarget(vh_current_address, vh_current_section, targetAddress);
+                    //= tryGetGuideInfoWhenVhAdrIsMatchTarget(vh_current_address, vhCurrentSec, source_adr);
+                }
+                
+                if (guide_info.isSuccess)
+                {
+                    return (true, guide_info.totalCost);
+                }
+                else
+                {
+                    return (false, int.MaxValue);
+                }
+            }
+            catch
+            {
+                return (false, int.MaxValue);
+            }
+        }
         public int GetDistance(string startAddress, string targetAddress)
         {
             try
