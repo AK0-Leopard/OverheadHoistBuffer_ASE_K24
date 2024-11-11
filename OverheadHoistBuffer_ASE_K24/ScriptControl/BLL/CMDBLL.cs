@@ -4551,8 +4551,15 @@ namespace com.mirle.ibg3k0.sc.BLL
                 {
                     cmd_ohtc = cmd_ohtcDAO.getByID(con, cmdID);
                 }
-                return cmd_ohtc != null &&
-                       cmd_ohtc.CMD_STAUS >= E_CMD_STATUS.NormalEnd;
+                if (cmd_ohtc == null)
+                {
+                    //如果是空的代表可能已被移到history table
+                    return true;
+                }
+                //如果不是空則判斷狀態是否已經結束
+                return cmd_ohtc.CMD_STAUS >= E_CMD_STATUS.NormalEnd;
+                //return cmd_ohtc != null &&
+                //       cmd_ohtc.CMD_STAUS >= E_CMD_STATUS.NormalEnd;
             }
             catch (Exception ex)
             {

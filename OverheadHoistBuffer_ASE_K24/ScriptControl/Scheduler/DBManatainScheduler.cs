@@ -88,9 +88,14 @@ namespace com.mirle.ibg3k0.sc.Scheduler
                 scApp.CMDBLL.CreatHCMD_MCSs(hcmd_mcs_list);
             }
         }
+
+        const int END_COMMAND_KEEP_DURATION_TIME_MINUTE = 2;
         private void MoveACMD_OHTCToHCMD_OHTC()
         {
             var finish_cmd_ohtc_list = scApp.CMDBLL.loadFinishCMD_OHTC();
+            DateTime duration_datetime = DateTime.Now.AddMinutes(-END_COMMAND_KEEP_DURATION_TIME_MINUTE);//12:05
+            finish_cmd_ohtc_list = finish_cmd_ohtc_list.Where(cmd => cmd.CMD_END_TIME.HasValue && cmd.CMD_END_TIME.Value < duration_datetime).ToList();
+
             if (finish_cmd_ohtc_list != null && finish_cmd_ohtc_list.Count > 0)
             {
                 scApp.CMDBLL.remoteCMD_OHTCByBatch(finish_cmd_ohtc_list);
