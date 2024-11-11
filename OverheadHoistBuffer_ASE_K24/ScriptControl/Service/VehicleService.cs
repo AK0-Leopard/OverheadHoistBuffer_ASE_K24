@@ -30,7 +30,6 @@ using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data;
 using com.mirle.ibg3k0.sc.Data.Enum;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions;
-using com.mirle.ibg3k0.sc.Data.SECS.ASE;
 using com.mirle.ibg3k0.sc.Data.VO;
 using com.mirle.ibg3k0.sc.ProtocolFormat.OHTMessage;
 using Google.Protobuf.Collections;
@@ -3820,6 +3819,15 @@ namespace com.mirle.ibg3k0.sc.Service
                     var result = scApp.ReserveBLL.TryAddReservedSection(vhID, detail,
                                                                         sensorDir: hltDirection,
                                                                         isAsk: false);
+                    if (!result.OK)
+                    {
+                        LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                           Data: $"Because interference occurred on sec id:{detail}(reason:{result.Description}), other access rights have been revoked.({string.Join(",", block_detail_section)})",
+                           VehicleID: eqpt.VEHICLE_ID,
+                           CarrierID: eqpt.CST_ID);
+                        RemoveSectionReserve(eqpt, block_detail_section);
+                        return (false, TrackDir.None);
+                    }
                 }
 
                 TrackDir track_dir = TrackDir.None;
@@ -3845,6 +3853,18 @@ namespace com.mirle.ibg3k0.sc.Service
                     track_dir = is_all_track_ready_straight ? TrackDir.Straight : TrackDir.None;
                 }
                 return (true, track_dir);
+            }
+        }
+
+        private void RemoveSectionReserve(AVEHICLE vh, List<string> block_detail_section)
+        {
+            foreach (var reserve_sec in block_detail_section)
+            {
+                scApp.ReserveBLL.RemoveManyReservedSectionsByVIDSID(vh.VEHICLE_ID, reserve_sec);
+                LogHelper.Log(logger: logger, LogLevel: LogLevel.Debug, Class: nameof(VehicleService), Device: DEVICE_NAME_OHx,
+                   Data: $"section revoked,sec id:{reserve_sec}",
+                   VehicleID: vh.VEHICLE_ID,
+                   CarrierID: vh.CST_ID);
             }
         }
 

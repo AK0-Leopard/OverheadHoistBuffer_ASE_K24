@@ -130,7 +130,7 @@ namespace com.mirle.ibg3k0.sc.BLL
                 return (false, int.MaxValue);
             }
         }
-        public (bool isSuccess, int distance) IsRoadWalkable(AVEHICLE vh, string targetAddress, List<string> byPassSectionIDs = null)
+        public (bool isSuccess, int distance) IsRoadWalkable(AVEHICLE vh, string targetAddress)
         {
             try
             {
