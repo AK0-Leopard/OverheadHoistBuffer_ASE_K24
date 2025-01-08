@@ -10,6 +10,7 @@ using NLog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using static com.mirle.ibg3k0.sc.ACMD_MCS;
@@ -464,7 +465,7 @@ namespace com.mirle.ibg3k0.sc.Service
             ReportWaitIn(logTitle, cassetteData2);
         }
 
-        const int MAX_WAITTING_CANCEL_TIME_WHEN_DUPLICATE_HAPPEND_MS = 30_000;
+        const int MAX_WAITTING_CANCEL_TIME_WHEN_DUPLICATE_HAPPEND_MS = 180_000;
         private bool IsExcuteNormalDuplicateProcess(string logTitle, CassetteData duplicateCarrierData, ACMD_MCS command)
         {
             WriteEventLog($"{logTitle} cst: [{duplicateCarrierData.BOXID}] is duplicate .");
@@ -479,38 +480,41 @@ namespace com.mirle.ibg3k0.sc.Service
             }
             else
             {
-                if (!command.IsLoadArriveBefore)
-                {
-                    WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, 但狀態已經在load arrive 之後,不進行處理");
-                    return false;
-                }
                 WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,準備將其結束命令...");
-
-                bool is_sned_cancel_success = transferService.tryCancelMCSCmd(command);
-                if (is_sned_cancel_success)
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                bool is_sned_cancel_success = false;
+                do
                 {
-                    //開始等待命令結束...
-                    bool is_cmd_cancel_complete = SpinWait.SpinUntil(() => isCancelSuccess(command.CMD_ID),
-                                                                           MAX_WAITTING_CANCEL_TIME_WHEN_DUPLICATE_HAPPEND_MS);
-                    if (is_cmd_cancel_complete)
+                    if (!is_sned_cancel_success)
+                    {
+                        is_sned_cancel_success = transferService.tryCancelMCSCmd(command);
+                        WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,嘗試取消命令結果:{is_sned_cancel_success}");
+                    }
+
+                    WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, 開始等待命令結束...");
+                    bool is_tran_finish = isTrnasferFinish(command.CMD_ID);
+                    if (is_tran_finish)
                     {
                         WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,等待結束命令完成。");
                         return true;
                     }
                     else
                     {
-                        WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,等待結束命令超時。");
-                        return false;
+                        if (sw.ElapsedMilliseconds > MAX_WAITTING_CANCEL_TIME_WHEN_DUPLICATE_HAPPEND_MS)
+                        {
+                            WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,等待結束命令超時。");
+                            return false;
+                        }
                     }
+                    Thread.Sleep(1_000);
                 }
-                else
-                {
-                    WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,結束命令失敗");
-                    return false;
-                }
+                while (true);
             }
         }
-        private bool isCancelSuccess(string cmdMCSID)
+
+
+        private bool isTrnasferFinish(string cmdMCSID)
         {
             string cmd_mcs_id = sc.Common.SCUtility.Trim(cmdMCSID, true);
             bool try_get_success = ACMD_MCS.MCS_CMD_InfoList.TryGetValue(cmd_mcs_id, out var waittingCancelCmd);
@@ -522,7 +526,6 @@ namespace com.mirle.ibg3k0.sc.Service
                 }
                 else
                 {
-                    SpinWait.SpinUntil(() => false, 1_000);
                     return false;
                 }
             }
