@@ -185,7 +185,7 @@ namespace com.mirle.ibg3k0.sc.Service
         #region Wait In
         public void WaitInTest()
         {
-            //ManualPortEventArgs args = new ManualPortEventArgs(new ManualPortPLCInfo() { CarrierIdOfStage1 = "12BEAA", EQ_ID = "B6_OHB01_M06" });
+            //ManualPortEventArgs args = new ManualPortEventArgs(new ManualPortPLCInfo() { CarrierIdOfStage1 = "12LC0555", EQ_ID = "B6_OHB01_M06", CstTypes = 1 });
             //Port_OnWaitIn(null, args);
         }
         private void Port_OnWaitIn(object sender, ManualPortEventArgs args)
@@ -483,13 +483,13 @@ namespace com.mirle.ibg3k0.sc.Service
                 WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,準備將其結束命令...");
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                bool is_sned_cancel_success = false;
+                bool is_send_cancel_success = false;
                 do
                 {
-                    if (!is_sned_cancel_success)
+                    if (!is_send_cancel_success)
                     {
-                        is_sned_cancel_success = transferService.tryCancelMCSCmd(command);
-                        WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,嘗試取消命令結果:{is_sned_cancel_success}");
+                        is_send_cancel_success = transferService.tryCancelMCSCmd(command);
+                        WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,嘗試取消命令結果:{is_send_cancel_success}");
                     }
 
                     WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, 開始等待命令結束...");
@@ -499,18 +499,13 @@ namespace com.mirle.ibg3k0.sc.Service
                         WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,等待結束命令完成。");
                         return true;
                     }
-                    else
-                    {
-                        if (sw.ElapsedMilliseconds > MAX_WAITTING_CANCEL_TIME_WHEN_DUPLICATE_HAPPEND_MS)
-                        {
-                            WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,等待結束命令超時。");
-                            return false;
-                        }
-                    }
                     Thread.Sleep(1_000);
                 }
-                while (true);
+                while (sw.ElapsedMilliseconds < MAX_WAITTING_CANCEL_TIME_WHEN_DUPLICATE_HAPPEND_MS);
             }
+            WriteEventLog($"{logTitle} has transfer command :{sc.Common.SCUtility.Trim(command.CMD_ID, true)}, OHT:{command.CRANE}前往搬送中,等待結束命令超時。");
+            return false;
+
         }
 
 
