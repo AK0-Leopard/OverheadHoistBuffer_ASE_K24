@@ -101,7 +101,7 @@
             this.label1.Location = new System.Drawing.Point(17, 24);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(103, 20);
+            this.label1.Size = new System.Drawing.Size(128, 25);
             this.label1.TabIndex = 3;
             this.label1.Text = "PortName：";
             // 
@@ -113,7 +113,7 @@
             this.comboBox1.Location = new System.Drawing.Point(163, 19);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(268, 24);
+            this.comboBox1.Size = new System.Drawing.Size(268, 28);
             this.comboBox1.TabIndex = 5;
             // 
             // timer1
@@ -128,7 +128,7 @@
             this.label2.Location = new System.Drawing.Point(115, 10);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(93, 20);
+            this.label2.Size = new System.Drawing.Size(116, 25);
             this.label2.TabIndex = 3;
             this.label2.Text = "Port 狀態：";
             // 
@@ -189,7 +189,7 @@
             this.comboBox2.Location = new System.Drawing.Point(440, 114);
             this.comboBox2.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(129, 28);
+            this.comboBox2.Size = new System.Drawing.Size(129, 33);
             this.comboBox2.TabIndex = 5;
             // 
             // button5
@@ -212,7 +212,7 @@
             this.label3.Location = new System.Drawing.Point(556, 10);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(89, 20);
+            this.label3.Size = new System.Drawing.Size(112, 25);
             this.label3.TabIndex = 3;
             this.label3.Text = "帳料資訊：";
             // 
@@ -446,7 +446,7 @@
             this.cmb_moveBackReason.Location = new System.Drawing.Point(19, 34);
             this.cmb_moveBackReason.Margin = new System.Windows.Forms.Padding(4);
             this.cmb_moveBackReason.Name = "cmb_moveBackReason";
-            this.cmb_moveBackReason.Size = new System.Drawing.Size(185, 24);
+            this.cmb_moveBackReason.Size = new System.Drawing.Size(185, 28);
             this.cmb_moveBackReason.TabIndex = 38;
             // 
             // groupBox1
@@ -484,7 +484,7 @@
             this.textBox_ComingOutCarrierID.Location = new System.Drawing.Point(16, 200);
             this.textBox_ComingOutCarrierID.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_ComingOutCarrierID.Name = "textBox_ComingOutCarrierID";
-            this.textBox_ComingOutCarrierID.Size = new System.Drawing.Size(147, 25);
+            this.textBox_ComingOutCarrierID.Size = new System.Drawing.Size(147, 30);
             this.textBox_ComingOutCarrierID.TabIndex = 47;
             // 
             // label6
@@ -494,7 +494,7 @@
             this.label6.Location = new System.Drawing.Point(12, 84);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(114, 16);
+            this.label6.Size = new System.Drawing.Size(142, 19);
             this.label6.TabIndex = 44;
             this.label6.Text = "準備出庫的 Foup ID";
             // 
@@ -505,7 +505,7 @@
             this.label7.Location = new System.Drawing.Point(12, 176);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(114, 16);
+            this.label7.Size = new System.Drawing.Size(142, 19);
             this.label7.TabIndex = 46;
             this.label7.Text = "正要出庫的 Foup ID";
             // 
@@ -514,7 +514,7 @@
             this.textBox_ReadyToWaitOutCarrierID1.Location = new System.Drawing.Point(16, 108);
             this.textBox_ReadyToWaitOutCarrierID1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_ReadyToWaitOutCarrierID1.Name = "textBox_ReadyToWaitOutCarrierID1";
-            this.textBox_ReadyToWaitOutCarrierID1.Size = new System.Drawing.Size(147, 25);
+            this.textBox_ReadyToWaitOutCarrierID1.Size = new System.Drawing.Size(147, 30);
             this.textBox_ReadyToWaitOutCarrierID1.TabIndex = 43;
             // 
             // textBox_ReadyToWaitOutCarrierID2
@@ -522,7 +522,7 @@
             this.textBox_ReadyToWaitOutCarrierID2.Location = new System.Drawing.Point(16, 140);
             this.textBox_ReadyToWaitOutCarrierID2.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_ReadyToWaitOutCarrierID2.Name = "textBox_ReadyToWaitOutCarrierID2";
-            this.textBox_ReadyToWaitOutCarrierID2.Size = new System.Drawing.Size(147, 25);
+            this.textBox_ReadyToWaitOutCarrierID2.Size = new System.Drawing.Size(147, 30);
             this.textBox_ReadyToWaitOutCarrierID2.TabIndex = 45;
             // 
             // dataGridView3
@@ -548,7 +548,7 @@
             this.label4.Location = new System.Drawing.Point(1120, 10);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(186, 20);
+            this.label4.Size = new System.Drawing.Size(231, 25);
             this.label4.TabIndex = 3;
             this.label4.Text = "Manual Port 專有訊號：";
             // 
@@ -641,7 +641,7 @@
             this.label14.Location = new System.Drawing.Point(17, 989);
             this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(246, 21);
+            this.label14.Size = new System.Drawing.Size(310, 27);
             this.label14.TabIndex = 36;
             this.label14.Text = "AVEHICLE.Cache_DATA";
             // 
@@ -657,7 +657,7 @@
             this.dataGridView5.ReadOnly = true;
             this.dataGridView5.RowHeadersWidth = 51;
             this.dataGridView5.RowTemplate.Height = 24;
-            this.dataGridView5.Size = new System.Drawing.Size(132, 149);
+            this.dataGridView5.Size = new System.Drawing.Size(116, 149);
             this.dataGridView5.TabIndex = 35;
             // 
             // button25
@@ -704,7 +704,7 @@
             this.numericUpDown1.Location = new System.Drawing.Point(719, 119);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(131, 23);
+            this.numericUpDown1.Size = new System.Drawing.Size(131, 27);
             this.numericUpDown1.TabIndex = 37;
             this.numericUpDown1.Visible = false;
             // 
