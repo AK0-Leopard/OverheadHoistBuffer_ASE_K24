@@ -45,6 +45,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CarrierTypeHelperAdvancedTests.cs" />
+    <Compile Include="CarrierTypeHelperTests.cs" />
+    <Compile Include="ExtendedCarrierTypeTests.cs" />
     <Compile Include="StubObjects\MockCassetteDataBLL.cs" />
     <Compile Include="StubObjects\MockReportBLL.cs" />
     <Compile Include="StubObjects\NStubObject.cs" />
