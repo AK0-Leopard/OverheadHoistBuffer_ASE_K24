@@ -1,5 +1,6 @@
 ﻿using com.mirle.ibg3k0.sc.BLL._191204Test.Extensions;
 using com.mirle.ibg3k0.sc.BLL.Interface;
+using com.mirle.ibg3k0.sc.Common;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Extension;
@@ -33,8 +34,6 @@ namespace com.mirle.ibg3k0.sc.Service
         private IManualPortCassetteDataBLL cassetteDataBLL;
         private IManualPortTransferService transferService;
 
-        private const string LITE_CASSETTE = "LC";
-        private const string FOUP = "BE";
 
         public ManualPortEventService()
         {
@@ -185,8 +184,8 @@ namespace com.mirle.ibg3k0.sc.Service
         #region Wait In
         public void WaitInTest()
         {
-            //ManualPortEventArgs args = new ManualPortEventArgs(new ManualPortPLCInfo() { CarrierIdOfStage1 = "12LC0555", EQ_ID = "B6_OHB01_M06", CstTypes = 1 });
-            //Port_OnWaitIn(null, args);
+            ManualPortEventArgs args = new ManualPortEventArgs(new ManualPortPLCInfo() { CarrierIdOfStage1 = "12BE0888", EQ_ID = "B6_OHB01_M06", CstTypes = 1 });
+            Port_OnWaitIn(null, args);
         }
         private void Port_OnWaitIn(object sender, ManualPortEventArgs args)
         {
@@ -249,18 +248,7 @@ namespace com.mirle.ibg3k0.sc.Service
             }
         }
 
-        private bool IsFOUPTypeCSTWaitIn(string logTitle, ManualPortPLCInfo info)
-        {
-            var stage1CarrierId = info.CarrierIdOfStage1 == null ? string.Empty : info.CarrierIdOfStage1.Trim();
-            var subCarrierID = stage1CarrierId.Substring(2, 2);
-            var plcType = info.CarrierType;
-            if (subCarrierID == FOUP || plcType == CstType.A)
-            {
-                WriteEventLog($"{logTitle} 判斷到 Foup CST Wait in CST ID:{stage1CarrierId}, subCarrierID:{subCarrierID},PLC type:{plcType}.");
-                return true;
-            }
-            return false;
-        }
+
 
         public bool HasCstTypeMismatch(string logTitle, ManualPortPLCInfo info)
         {
@@ -280,35 +268,37 @@ namespace com.mirle.ibg3k0.sc.Service
             var subCarrierID = stage1CarrierId.Substring(2, 2);
             var plcType = info.CarrierType;
 
-            if (subCarrierID == LITE_CASSETTE)
+            //if (subCarrierID == LITE_CASSETTE)
+            if (CarrierTypeHelper.IsLiteCassetteCarrier(stage1CarrierId))
             {
                 if (plcType == CstType.B)
                 {
-                    WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{LITE_CASSETTE}], which means it is a (Lite cassette). PLC Sensor is (Lite cassette) too.");
+                    WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{subCarrierID}], which means it is a (Lite cassette). PLC Sensor is (Lite cassette) too.");
                     return false;
                 }
                 else
                 {
-                    WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{LITE_CASSETTE}], which means it is a (Lite cassette). PLC Sensor is ({plcType}). Type mismtach.  Execute Moveback ! ");
+                    WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{subCarrierID}], which means it is a (Lite cassette). PLC Sensor is ({plcType}). Type mismtach.  Execute Moveback ! ");
                     return true;
                 }
             }
-            else if (subCarrierID == FOUP)
+            //else if (subCarrierID == FOUP)
+            else if (CarrierTypeHelper.IsFoupCarrier(stage1CarrierId))
             {
                 if (plcType == CstType.A)
                 {
-                    WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{FOUP}], which means it is a (Foup). PLC Sensor is (Foup) too.");
+                    WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{subCarrierID}], which means it is a (Foup). PLC Sensor is (Foup) too.");
                     return false;
                 }
                 else
                 {
-                    WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{FOUP}], which means it is a (Foup). PLC Sensor is ({plcType}). Type mismtach.  Execute Moveback ! ");
+                    WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are [{subCarrierID}], which means it is a (Foup). PLC Sensor is ({plcType}). Type mismtach.  Execute Moveback ! ");
                     return true;
                 }
             }
             else
             {
-                WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are neither [{LITE_CASSETTE}] nor [{FOUP}]. ");
+                WriteEventLog($"{logTitle} stage 1 carrier ID is [{stage1CarrierId}]. The third and fourth characters are illegal. ");
                 return true;
             }
         }

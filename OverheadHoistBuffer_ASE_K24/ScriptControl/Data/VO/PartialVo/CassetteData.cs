@@ -1,4 +1,5 @@
-﻿using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
+﻿using com.mirle.ibg3k0.sc.Common;
+using com.mirle.ibg3k0.sc.Data.PLC_Functions.MGV.Enums;
 using com.mirle.ibg3k0.sc.Service;
 using System;
 using System.Collections.Concurrent;
@@ -77,32 +78,34 @@ namespace com.mirle.ibg3k0.sc
         {
             get
             {
-                if (BOXID.Length < 4)
-                {
-                    return false;
-                }
-                var sub_crrierID = BOXID.Substring(2, 2);
-                if (sc.Common.SCUtility.isMatche(sub_crrierID, SYMBLE_FOUP))
-                {
-                    return true;
-                }
-                return false;
+                return CarrierTypeHelper.IsFoupCarrier(BOXID);
+                //if (BOXID.Length < 4)
+                //{
+                //    return false;
+                //}
+                //var sub_crrierID = BOXID.Substring(2, 2);
+                //if (sc.Common.SCUtility.isMatche(sub_crrierID, SYMBLE_FOUP))
+                //{
+                //    return true;
+                //}
+                //return false;
             }
         }
         public bool IsLightCST
         {
             get
             {
-                if (BOXID.Length < 4)
-                {
-                    return false;
-                }
-                var sub_crrierID = BOXID.Substring(2, 2);
-                if (sc.Common.SCUtility.isMatche(sub_crrierID, SYMBLE_LITE_CASSETTE))
-                {
-                    return true;
-                }
-                return false;
+                return CarrierTypeHelper.IsLiteCassetteCarrier(BOXID);
+                //if (BOXID.Length < 4)
+                //{
+                //    return false;
+                //}
+                //var sub_crrierID = BOXID.Substring(2, 2);
+                //if (sc.Common.SCUtility.isMatche(sub_crrierID, SYMBLE_LITE_CASSETTE))
+                //{
+                //    return true;
+                //}
+                //return false;
             }
         }
 
@@ -161,18 +164,20 @@ namespace com.mirle.ibg3k0.sc
                 return Data.PLC_Functions.MGV.Enums.CstType.Undefined;
             }
             var sub_crrierID = BOXID.Substring(4, 2);
-            if (sc.Common.SCUtility.isMatche(sub_crrierID, SYMBLE_FOUP))
-            {
-                return Data.PLC_Functions.MGV.Enums.CstType.A;
-            }
-            else if (sc.Common.SCUtility.isMatche(sub_crrierID, SYMBLE_LITE_CASSETTE))
-            {
-                return Data.PLC_Functions.MGV.Enums.CstType.B;
-            }
-            else
-            {
-                return Data.PLC_Functions.MGV.Enums.CstType.Undefined;
-            }
+            return CarrierTypeHelper.GetCstTypeFromSymbol(sub_crrierID);
+
+            //if (sc.Common.SCUtility.isMatche(sub_crrierID, SYMBLE_FOUP))
+            //{
+            //    return Data.PLC_Functions.MGV.Enums.CstType.A;
+            //}
+            //else if (sc.Common.SCUtility.isMatche(sub_crrierID, SYMBLE_LITE_CASSETTE))
+            //{
+            //    return Data.PLC_Functions.MGV.Enums.CstType.B;
+            //}
+            //else
+            //{
+            //    return Data.PLC_Functions.MGV.Enums.CstType.Undefined;
+            //}
         }
     }
 }

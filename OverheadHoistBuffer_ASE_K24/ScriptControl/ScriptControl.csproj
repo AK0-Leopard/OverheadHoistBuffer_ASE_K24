@@ -568,6 +568,8 @@
     <Compile Include="CassetteData.cs">
       <DependentUpon>OHTCContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Common\CarrierTypeHelper.cs" />
+    <Compile Include="Common\CarrierTypeUsageExample.cs" />
     <Compile Include="Common\CheckSystemEventHandler.cs" />
     <Compile Include="Common\ClassAOPAspect.cs" />
     <Compile Include="Common\CommObjCacheManager.cs" />

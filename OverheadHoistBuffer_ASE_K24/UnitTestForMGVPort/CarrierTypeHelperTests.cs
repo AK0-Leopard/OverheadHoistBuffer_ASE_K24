@@ -295,5 +295,265 @@ namespace UnitTestForMGVPort
             Assert.AreEqual("Unknown", CarrierTypeHelper.GetCarrierTypeString(null));
             Assert.AreEqual("Unknown", CarrierTypeHelper.GetCarrierTypeString(""));
         }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        public void GetSymbolFromPLCString_ValidPLCStrings_ReturnsCorrectSymbols()
+        {
+            // Arrange & Act & Assert
+            Assert.AreEqual("BE", CarrierTypeHelper.GetSymbolFromPLCString("A"));
+            Assert.AreEqual("LC", CarrierTypeHelper.GetSymbolFromPLCString("B"));
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        public void GetSymbolFromPLCString_InvalidPLCStrings_ReturnsEmpty()
+        {
+            // Arrange & Act & Assert
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetSymbolFromPLCString("C"));
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetSymbolFromPLCString("X"));
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetSymbolFromPLCString(""));
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetSymbolFromPLCString(null));
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetSymbolFromPLCString("  "));
+        }
+
+        #region Symbol-based Methods Tests
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 GetCstTypeFromSymbol 方法：BE symbol 轉換為 CstType.A")]
+        public void GetCstTypeFromSymbol_BeSymbol_ReturnsA()
+        {
+            // Arrange
+            string symbol = "BE";
+
+            // Act
+            var result = CarrierTypeHelper.GetCstTypeFromSymbol(symbol);
+
+            // Assert
+            Assert.AreEqual(CstType.A, result);
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 GetCstTypeFromSymbol 方法：LC symbol 轉換為 CstType.B")]
+        public void GetCstTypeFromSymbol_LcSymbol_ReturnsB()
+        {
+            // Arrange
+            string symbol = "LC";
+
+            // Act
+            var result = CarrierTypeHelper.GetCstTypeFromSymbol(symbol);
+
+            // Assert
+            Assert.AreEqual(CstType.B, result);
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 GetCstTypeFromSymbol 方法：EC symbol 轉換為 CstType.B")]
+        public void GetCstTypeFromSymbol_EcSymbol_ReturnsB()
+        {
+            // Arrange
+            string symbol = "EC";
+
+            // Act
+            var result = CarrierTypeHelper.GetCstTypeFromSymbol(symbol);
+
+            // Assert
+            Assert.AreEqual(CstType.B, result);
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 GetCstTypeFromSymbol 方法：小寫輸入應該正常轉換")]
+        public void GetCstTypeFromSymbol_LowerCaseSymbols_ReturnsCorrectTypes()
+        {
+            // Arrange & Act & Assert
+            Assert.AreEqual(CstType.A, CarrierTypeHelper.GetCstTypeFromSymbol("be"));
+            Assert.AreEqual(CstType.B, CarrierTypeHelper.GetCstTypeFromSymbol("lc"));
+            Assert.AreEqual(CstType.B, CarrierTypeHelper.GetCstTypeFromSymbol("ec"));
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 GetCstTypeFromSymbol 方法：未知 symbol 回傳 CstType.Undefined")]
+        public void GetCstTypeFromSymbol_UnknownSymbol_ReturnsUndefined()
+        {
+            // Arrange & Act & Assert
+            Assert.AreEqual(CstType.Undefined, CarrierTypeHelper.GetCstTypeFromSymbol("XX"));
+            Assert.AreEqual(CstType.Undefined, CarrierTypeHelper.GetCstTypeFromSymbol("YZ"));
+            Assert.AreEqual(CstType.Undefined, CarrierTypeHelper.GetCstTypeFromSymbol("UNKNOWN"));
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 GetCstTypeFromSymbol 方法：無效輸入回傳 CstType.Undefined")]
+        public void GetCstTypeFromSymbol_InvalidInput_ReturnsUndefined()
+        {
+            // Arrange & Act & Assert
+            Assert.AreEqual(CstType.Undefined, CarrierTypeHelper.GetCstTypeFromSymbol(null));
+            Assert.AreEqual(CstType.Undefined, CarrierTypeHelper.GetCstTypeFromSymbol(""));
+            Assert.AreEqual(CstType.Undefined, CarrierTypeHelper.GetCstTypeFromSymbol("  "));
+            Assert.AreEqual(CstType.Undefined, CarrierTypeHelper.GetCstTypeFromSymbol("\t"));
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 GetPLCStringFromSymbol 方法：BE symbol 轉換為 'A'")]
+        public void GetPLCStringFromSymbol_BeSymbol_ReturnsA()
+        {
+            // Arrange
+            string symbol = "BE";
+
+            // Act
+            var result = CarrierTypeHelper.GetPLCStringFromSymbol(symbol);
+
+            // Assert
+            Assert.AreEqual("A", result);
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 GetPLCStringFromSymbol 方法：LC symbol 轉換為 'B'")]
+        public void GetPLCStringFromSymbol_LcSymbol_ReturnsB()
+        {
+            // Arrange
+            string symbol = "LC";
+
+            // Act
+            var result = CarrierTypeHelper.GetPLCStringFromSymbol(symbol);
+
+            // Assert
+            Assert.AreEqual("B", result);
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 GetPLCStringFromSymbol 方法：EC symbol 轉換為 'B'")]
+        public void GetPLCStringFromSymbol_EcSymbol_ReturnsB()
+        {
+            // Arrange
+            string symbol = "EC";
+
+            // Act
+            var result = CarrierTypeHelper.GetPLCStringFromSymbol(symbol);
+
+            // Assert
+            Assert.AreEqual("B", result);
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 GetPLCStringFromSymbol 方法：小寫輸入應該正常轉換")]
+        public void GetPLCStringFromSymbol_LowerCaseSymbols_ReturnsCorrectStrings()
+        {
+            // Arrange & Act & Assert
+            Assert.AreEqual("A", CarrierTypeHelper.GetPLCStringFromSymbol("be"));
+            Assert.AreEqual("B", CarrierTypeHelper.GetPLCStringFromSymbol("lc"));
+            Assert.AreEqual("B", CarrierTypeHelper.GetPLCStringFromSymbol("ec"));
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 GetPLCStringFromSymbol 方法：未知 symbol 回傳空字串")]
+        public void GetPLCStringFromSymbol_UnknownSymbol_ReturnsEmpty()
+        {
+            // Arrange & Act & Assert
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetPLCStringFromSymbol("XX"));
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetPLCStringFromSymbol("YZ"));
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetPLCStringFromSymbol("UNKNOWN"));
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 GetPLCStringFromSymbol 方法：無效輸入回傳空字串")]
+        public void GetPLCStringFromSymbol_InvalidInput_ReturnsEmpty()
+        {
+            // Arrange & Act & Assert
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetPLCStringFromSymbol(null));
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetPLCStringFromSymbol(""));
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetPLCStringFromSymbol("  "));
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetPLCStringFromSymbol("\t"));
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 Symbol 方法之間的一致性：GetCstTypeFromSymbol 和 GetPLCStringFromSymbol 應該回傳一致的結果")]
+        public void SymbolMethods_Consistency_ShouldReturnConsistentResults()
+        {
+            // Arrange
+            string[] testSymbols = { "BE", "LC", "EC", "be", "lc", "ec" };
+
+            foreach (string symbol in testSymbols)
+            {
+                // Act
+                var cstType = CarrierTypeHelper.GetCstTypeFromSymbol(symbol);
+                var plcString = CarrierTypeHelper.GetPLCStringFromSymbol(symbol);
+
+                // Assert: 檢查一致性
+                if (cstType == CstType.A)
+                {
+                    Assert.AreEqual("A", plcString, $"Symbol '{symbol}' should return 'A' for both methods");
+                }
+                else if (cstType == CstType.B)
+                {
+                    Assert.AreEqual("B", plcString, $"Symbol '{symbol}' should return 'B' for both methods");
+                }
+                else if (cstType == CstType.Undefined)
+                {
+                    Assert.AreEqual(string.Empty, plcString, $"Symbol '{symbol}' should return empty string when CstType is Undefined");
+                }
+            }
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試 Symbol 方法與 CarrierId 方法的一致性")]
+        public void SymbolMethods_ConsistencyWithCarrierId_ShouldReturnSameResults()
+        {
+            // Arrange: 建立測試資料 (CarrierId, 對應的 Symbol)
+            var testData = new[]
+            {
+                new { CarrierId = "01BE001", Symbol = "BE" },
+                new { CarrierId = "02LC002", Symbol = "LC" },
+                new { CarrierId = "03EC003", Symbol = "EC" }
+            };
+
+            foreach (var data in testData)
+            {
+                // Act: 分別使用 CarrierId 和 Symbol 取得結果
+                var cstTypeFromCarrierId = CarrierTypeHelper.GetPLCCstType(data.CarrierId);
+                var cstTypeFromSymbol = CarrierTypeHelper.GetCstTypeFromSymbol(data.Symbol);
+                
+                var plcStringFromCarrierId = CarrierTypeHelper.GetPLCCstTypeString(data.CarrierId);
+                var plcStringFromSymbol = CarrierTypeHelper.GetPLCStringFromSymbol(data.Symbol);
+
+                // Assert: 兩種方法應該回傳相同結果
+                Assert.AreEqual(cstTypeFromCarrierId, cstTypeFromSymbol, 
+                    $"CstType should be consistent for CarrierId '{data.CarrierId}' and Symbol '{data.Symbol}'");
+                Assert.AreEqual(plcStringFromCarrierId, plcStringFromSymbol,
+                    $"PLC String should be consistent for CarrierId '{data.CarrierId}' and Symbol '{data.Symbol}'");
+            }
+        }
+
+        [Test]
+        [Category("CarrierTypeHelper")]
+        [Description("測試邊界條件：混合大小寫和空白字元")]
+        public void SymbolMethods_EdgeCases_ShouldHandleCorrectly()
+        {
+            // 測試混合大小寫
+            Assert.AreEqual(CstType.A, CarrierTypeHelper.GetCstTypeFromSymbol("Be"));
+            Assert.AreEqual(CstType.A, CarrierTypeHelper.GetCstTypeFromSymbol("bE"));
+            Assert.AreEqual("A", CarrierTypeHelper.GetPLCStringFromSymbol("Be"));
+            Assert.AreEqual("A", CarrierTypeHelper.GetPLCStringFromSymbol("bE"));
+
+            // 測試前後空白（應該回傳 Undefined/Empty，因為 "  BE  " != "BE"）
+            Assert.AreEqual(CstType.Undefined, CarrierTypeHelper.GetCstTypeFromSymbol("  BE  "));
+            Assert.AreEqual(string.Empty, CarrierTypeHelper.GetPLCStringFromSymbol("  BE  "));
+        }
+
+        #endregion
+
     }
 }

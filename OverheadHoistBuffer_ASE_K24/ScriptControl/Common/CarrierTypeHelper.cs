@@ -70,6 +70,15 @@ namespace com.mirle.ibg3k0.sc.Common
             { CarrierType.LITE_CASSETTE, CST_TYPE_FOR_PLC_LITE_CASSETTE }
         };
 
+        /// <summary>
+        /// PLC CstType 字串到主要 Carrier Symbol 的反向映射表
+        /// </summary>
+        private static readonly Dictionary<string, string> _plcStringToSymbolMap = new Dictionary<string, string>
+        {
+            { CST_TYPE_FOR_PLC_FOUP, FOUP_SYMBOL },           // "A" -> "BE"
+            { CST_TYPE_FOR_PLC_LITE_CASSETTE, LITE_CASSETTE_SYMBOL }  // "B" -> "LC"
+        };
+
         #endregion
 
         #region 公開 API
@@ -180,6 +189,83 @@ namespace com.mirle.ibg3k0.sc.Common
             CarrierType carrierType = GetCarrierType(carrierId);
             return GetCarrierTypeString(carrierType);
         }
+
+        /// <summary>
+        /// 根據 PLC CstType 字串取得對應的主要 Carrier Symbol
+        /// </summary>
+        /// <param name="plcCstTypeString">PLC CstType 字串 (A/B)</param>
+        /// <returns>對應的 Carrier Symbol (BE/LC)，如果找不到則返回空字串</returns>
+        public static string GetSymbolFromPLCString(string plcCstTypeString)
+        {
+            if (string.IsNullOrWhiteSpace(plcCstTypeString))
+                return string.Empty;
+
+            return _plcStringToSymbolMap.TryGetValue(plcCstTypeString, out string symbol) 
+                ? symbol 
+                : string.Empty;
+        }
+
+
+        /// <summary>
+        /// 根據 Carrier Symbol 直接取得對應的 PLC CstType
+        /// "BE" -> CstType.A
+        /// "LC", "EC" -> CstType.B
+        /// </summary>
+        /// <param name="symbol">Carrier Symbol (例如："BE", "LC", "EC")</param>
+        /// <returns>PLC CstType，未知 Symbol 回傳 CstType.Undefined</returns>
+        public static CstType GetCstTypeFromSymbol(string symbol)
+        {
+            if (string.IsNullOrWhiteSpace(symbol))
+                return CstType.Undefined;
+
+            // 直接從 symbol 映射表查詢 CarrierType，然後轉換為 CstType
+            if (_symbolToCarrierTypeMap.TryGetValue(symbol.ToUpper(), out CarrierType carrierType))
+            {
+                return GetPLCCstType(carrierType);
+            }
+
+            return CstType.Undefined;
+        }
+
+        /// <summary>
+        /// 根據 Carrier Symbol 直接取得對應的 PLC CstType 字串
+        /// "BE" -> "A"
+        /// "LC", "EC" -> "B"
+        /// </summary>
+        /// <param name="symbol">Carrier Symbol (例如："BE", "LC", "EC")</param>
+        /// <returns>PLC CstType 字串 ("A" 或 "B")，未知 Symbol 回傳空字串</returns>
+        public static string GetPLCStringFromSymbol(string symbol)
+        {
+            if (string.IsNullOrWhiteSpace(symbol))
+                return string.Empty;
+
+            // 直接從 symbol 映射表查詢 CarrierType，而不是使用 GetCarrierType (它是用於完整 Carrier ID)
+            if (_symbolToCarrierTypeMap.TryGetValue(symbol.ToUpper(), out CarrierType carrierType))
+            {
+                return GetPLCCstTypeString(carrierType);
+            }
+
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// 根據 PLC CstType 枚舉取得對應的字串表示 (內部輔助方法)
+        /// </summary>
+        /// <param name="cstType">PLC CstType 枚舉</param>
+        /// <returns>PLC CstType 字串表示</returns>
+        private static string GetPLCStringFromCstType(CstType cstType)
+        {
+            switch (cstType)
+            {
+                case CstType.A:
+                    return CST_TYPE_FOR_PLC_FOUP;
+                case CstType.B:
+                    return CST_TYPE_FOR_PLC_LITE_CASSETTE;
+                default:
+                    return string.Empty;
+            }
+        }
+
 
         /// <summary>
         /// 取得所有支援的 Carrier Symbol

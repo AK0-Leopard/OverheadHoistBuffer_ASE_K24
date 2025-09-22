@@ -26,8 +26,6 @@ namespace com.mirle.ibg3k0.sc
         }
 
 
-        const string LIGHT_CST_SIGN = "LC";
-        const string FOUP_SIGN = "BE";
 
         public (bool isDefine, string cstType) tryGetCSTType(BLL.PortStationBLL portStationBLL, BLL.EquipmentBLL equipmentBLL, Service.TransferService transferService)
         {
@@ -118,14 +116,16 @@ namespace com.mirle.ibg3k0.sc
             {
                 if (!Common.SCUtility.isEmpty(SOURCE))
                 {
-                    if (BOX_ID.Contains(FOUP_SIGN))
-                        return Data.PLC_Functions.MGV.Enums.CstType.A.ToString();
-                    else if (BOX_ID.Contains(LIGHT_CST_SIGN))
-                        return Data.PLC_Functions.MGV.Enums.CstType.B.ToString();
-                    else
-                    {
-                        return "";
-                    }
+                    return CarrierTypeHelper.GetPLCCstTypeString(BOX_ID);
+
+                    //if (BOX_ID.Contains(FOUP_SIGN))
+                    //    return Data.PLC_Functions.MGV.Enums.CstType.A.ToString();
+                    //else if (BOX_ID.Contains(LIGHT_CST_SIGN))
+                    //    return Data.PLC_Functions.MGV.Enums.CstType.B.ToString();
+                    //else
+                    //{
+                    //    return "";
+                    //}
                 }
                 else
                 {

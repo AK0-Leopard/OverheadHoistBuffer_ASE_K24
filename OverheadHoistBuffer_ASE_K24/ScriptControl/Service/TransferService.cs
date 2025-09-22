@@ -1406,7 +1406,8 @@ namespace com.mirle.ibg3k0.sc.Service
                 //確認確認命令是否可以順途搬送
                 foreach (var transfer_cmd in same_segment_tran_cmds.ToList())
                 {
-                    if (!SCUtility.isMatche(queueCmd.getCSTType(), transfer_cmd.getCSTType()))
+                    //if (!SCUtility.isMatche(queueCmd.getCSTType(), transfer_cmd.getCSTType()))
+                    if (queueCmd.getCSTType() != transfer_cmd.getCSTType())
                     {
                         same_segment_tran_cmds.Remove(transfer_cmd);
                         continue;
@@ -6597,15 +6598,17 @@ namespace com.mirle.ibg3k0.sc.Service
         }
         public string convertCSTTypeSymbol(string scstType)
         {
-            switch (scstType)
-            {
-                case "A":
-                    return CassetteData.SYMBLE_FOUP;
-                case "B":
-                    return CassetteData.SYMBLE_LITE_CASSETTE;
-                default:
-                    return "";
-            }
+            return CarrierTypeHelper.GetSymbolFromPLCString(scstType);
+
+            //switch (scstType)
+            //{
+            //    case "A":
+            //        return CassetteData.SYMBLE_FOUP;
+            //    case "B":
+            //        return CassetteData.SYMBLE_LITE_CASSETTE;
+            //    default:
+            //        return "";
+            //}
         }
 
         public string CarrierReadFail(string vhID, string loc)   //卡匣讀不到

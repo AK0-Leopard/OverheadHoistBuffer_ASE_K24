@@ -165,6 +165,34 @@ namespace com.mirle.ibg3k0.sc.Common
         }
 
         /// <summary>
+        /// 展示反向查詢功能 - 從 PLC 類型反推 Carrier Symbol
+        /// </summary>
+        public static void ReverseLookupExample()
+        {
+            Console.WriteLine("\n=== 反向查詢範例 ===");
+            
+            // 從 PLC 字串反推 Carrier Symbol
+            Console.WriteLine("1. 從 PLC 字串反推 Carrier Symbol:");
+            string[] plcStrings = { "A", "B", "C", "", null };
+            foreach (var plcString in plcStrings)
+            {
+                var symbol = CarrierTypeHelper.GetSymbolFromPLCString(plcString);
+                Console.WriteLine($"   PLC '{plcString}' -> Symbol '{symbol}'");
+            }
+            
+
+            
+            // 實際應用場景範例
+            Console.WriteLine("\n3. 實際應用場景:");
+            Console.WriteLine("   假設從 PLC 收到類型碼 'A'，需要知道對應的 Carrier Symbol:");
+            string receivedFromPLC = "A";
+            string correspondingSymbol = CarrierTypeHelper.GetSymbolFromPLCString(receivedFromPLC);
+            Console.WriteLine($"   收到 PLC 類型碼: '{receivedFromPLC}'");
+            Console.WriteLine($"   對應的 Carrier Symbol: '{correspondingSymbol}'");
+            Console.WriteLine($"   可以用來構建範例 Carrier ID: '01{correspondingSymbol}001'");
+        }
+
+        /// <summary>
         /// 完整的整合範例 - 展示如何在現有系統中整合使用
         /// </summary>
         public static void IntegrationExample()
@@ -218,6 +246,7 @@ namespace com.mirle.ibg3k0.sc.Common
                 ReplaceExistingLogicExample();
                 ExtensionExample();
                 DynamicExtensionExample();
+                ReverseLookupExample();
                 IntegrationExample();
                 
                 Console.WriteLine("\n=== 所有範例執行完成 ===");

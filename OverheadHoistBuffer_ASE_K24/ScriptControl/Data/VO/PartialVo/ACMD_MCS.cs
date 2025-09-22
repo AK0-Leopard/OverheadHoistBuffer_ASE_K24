@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static com.mirle.ibg3k0.sc.Data.SECS.ASE.S2F49_TRANSFEREXT.REPITEM.TRAN.CARR;
 
 namespace com.mirle.ibg3k0.sc
 {
@@ -118,34 +119,34 @@ namespace com.mirle.ibg3k0.sc
             }
         }
 
-        public string getCSTType()
+        public CarrierType getCSTType()
         {
             try
             {
-
-                if (sc.Common.SCUtility.isEmpty(BOX_ID)) return "";
-                if (BOX_ID.Length < 4)
-                {
-                    return "";
-                }
-                var sub_crrierID = BOX_ID.Substring(2, 2);
-                if (sc.Common.SCUtility.isMatche(sub_crrierID, CassetteData.SYMBLE_LITE_CASSETTE))
-                {
-                    return CassetteData.SYMBLE_LITE_CASSETTE;
-                }
-                else if (sc.Common.SCUtility.isMatche(sub_crrierID, CassetteData.SYMBLE_FOUP))
-                {
-                    return CassetteData.SYMBLE_FOUP;
-                }
-                else
-                {
-                    return "";
-                }
+                return CarrierTypeHelper.GetCarrierType(BOX_ID);
+                //if (sc.Common.SCUtility.isEmpty(BOX_ID)) return "";
+                //if (BOX_ID.Length < 4)
+                //{
+                //    return "";
+                //}
+                //var sub_crrierID = BOX_ID.Substring(2, 2);
+                //if (sc.Common.SCUtility.isMatche(sub_crrierID, CassetteData.SYMBLE_LITE_CASSETTE))
+                //{
+                //    return CassetteData.SYMBLE_LITE_CASSETTE;
+                //}
+                //else if (sc.Common.SCUtility.isMatche(sub_crrierID, CassetteData.SYMBLE_FOUP))
+                //{
+                //    return CassetteData.SYMBLE_FOUP;
+                //}
+                //else
+                //{
+                //    return "";
+                //}
             }
             catch (Exception e)
             {
                 NLog.LogManager.GetCurrentClassLogger().Error(e, "Exception:");
-                return "";
+                return CarrierType.Unknown;
             }
         }
 
@@ -153,34 +154,36 @@ namespace com.mirle.ibg3k0.sc
         {
             get
             {
-                if (sc.Common.SCUtility.isEmpty(BOX_ID)) return false;
-                if (BOX_ID.Length < 4)
-                {
-                    return false;
-                }
-                var sub_crrierID = BOX_ID.Substring(2, 2);
-                if (sc.Common.SCUtility.isMatche(sub_crrierID, CassetteData.SYMBLE_LITE_CASSETTE))
-                {
-                    return true;
-                }
-                return false;
+                return CarrierTypeHelper.IsLiteCassetteCarrier(BOX_ID);
+                //if (sc.Common.SCUtility.isEmpty(BOX_ID)) return false;
+                //if (BOX_ID.Length < 4)
+                //{
+                //    return false;
+                //}
+                //var sub_crrierID = BOX_ID.Substring(2, 2);
+                //if (sc.Common.SCUtility.isMatche(sub_crrierID, CassetteData.SYMBLE_LITE_CASSETTE))
+                //{
+                //    return true;
+                //}
+                //return false;
             }
         }
         public bool isCarrierFoupCST
         {
             get
             {
-                if (sc.Common.SCUtility.isEmpty(BOX_ID)) return false;
-                if (BOX_ID.Length < 4)
-                {
-                    return false;
-                }
-                var sub_crrierID = BOX_ID.Substring(2, 2);
-                if (sc.Common.SCUtility.isMatche(sub_crrierID, CassetteData.SYMBLE_FOUP))
-                {
-                    return true;
-                }
-                return false;
+                return CarrierTypeHelper.IsFoupCarrier(BOX_ID);
+                //if (sc.Common.SCUtility.isEmpty(BOX_ID)) return false;
+                //if (BOX_ID.Length < 4)
+                //{
+                //    return false;
+                //}
+                //var sub_crrierID = BOX_ID.Substring(2, 2);
+                //if (sc.Common.SCUtility.isMatche(sub_crrierID, CassetteData.SYMBLE_FOUP))
+                //{
+                //    return true;
+                //}
+                //return false;
             }
         }
 
