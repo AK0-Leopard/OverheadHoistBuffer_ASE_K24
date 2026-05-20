@@ -11,6 +11,7 @@ using com.mirle.ibg3k0.sc.App;
 using System.Transactions;
 using com.mirle.ibg3k0.sc.Service;
 using com.mirle.ibg3k0.sc.BLL.Interface;
+using NLog.LayoutRenderers;
 
 namespace com.mirle.ibg3k0.sc.BLL
 {

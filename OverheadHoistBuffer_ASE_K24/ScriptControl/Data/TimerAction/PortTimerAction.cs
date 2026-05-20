@@ -31,7 +31,7 @@ namespace com.mirle.ibg3k0.sc.Data.TimerAction
                     Task.Run(() => scApp.ReelNTBEventService.RefreshReelNTBPortSignal());
                 scApp.ManualPortControlService?.ReflashState();
                 scApp.EFEMService?.ReflashState();
-
+                scApp.ShelfService.doCheckShelfWhenUNKE(); //檢查一下系統內有沒有UNKE的帳料需要處理
                 //EFEM_PORT_HEARBEAT_PULSE();
                 //scApp.EFEMService.checkIsNeedToNotifyEFEMEqHasCSTWillIn();
             }

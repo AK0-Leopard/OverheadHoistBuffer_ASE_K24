@@ -3343,6 +3343,15 @@ namespace com.mirle.ibg3k0.sc.Service
                         //A21.03.31.1 reportBLL.ReportCarrierRemovedCompleted(emptyData.CSTID, emptyData.BOXID);
 
                         cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
+
+                        if(SystemParameter.IsEmptyNeedKeepUnknowCst)
+                        {
+                            string boxID_UNKE = CarrierEmpty(ohtCmd.DESTINATION.Trim(), cstType);
+                            string loc_UNKE = ohtCmd.SOURCE;
+                            OHBC_InsertCassette(boxID_UNKE, loc_UNKE, "空儲位異常");
+                            //建帳完要把它disable掉
+                            Manual_ShelfEnable(loc_UNKE, false, "空儲位異常");
+                        }
                         break;
 
                     case COMMAND_STATUS_BIT_INDEX_InterlockError:
@@ -6591,6 +6600,10 @@ namespace com.mirle.ibg3k0.sc.Service
             //return "UNKS" + loc + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
             string cst_type_symbol = convertCSTTypeSymbol(cstType);
             return $"{SYMBOL_UNKNOW_CST_ID}S{cst_type_symbol}" + loc + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
+        }
+        public string CarrierEmpty(string loc, string old_cst_id) //空儲位的地方原本應該要有的cst的id
+        {
+            return $"{SYMBOL_UNKNOW_CST_ID}E" + old_cst_id + GetStDate() + "01";
         }
         public string CarrierTypeMismatch(string loc)   //CST Type Mismatch
         {

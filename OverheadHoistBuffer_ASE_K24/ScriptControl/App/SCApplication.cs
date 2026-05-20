@@ -989,6 +989,7 @@ namespace com.mirle.ibg3k0.sc.App
             }
 
             SystemParameter.setTranferringCmdFinishTimeOut_Second(getUInt("TranferringCmdFinishTimeOutSecond", 1800));
+            SystemParameter.setIsEmptyNeedKeepUnknowCst(getBoolean("IsEmptyNeedKeepUnknowCst", false));
         }
 
         //A0.01
@@ -2437,6 +2438,7 @@ namespace com.mirle.ibg3k0.sc.App
         public static bool IsOpenReelNTBPortStatusAsk { get; private set; } = false;
         public static uint TranferringCmdFinishTimeOut_Second = 1800;  //秒鐘
 
+        public static bool IsEmptyNeedKeepUnknowCst = true; //在車輛上報Empty的時候要不要在該處保持未知帳料
         /// <summary>
         /// Sets the secs conversaction timeout.
         /// </summary>
@@ -2507,6 +2509,11 @@ namespace com.mirle.ibg3k0.sc.App
         public static void setTranferringCmdFinishTimeOut_Second(uint tranferringCmdFinishTimeOut)
         {
             TranferringCmdFinishTimeOut_Second = tranferringCmdFinishTimeOut;
+        }
+
+        public static void setIsEmptyNeedKeepUnknowCst(bool need)
+        {
+            IsEmptyNeedKeepUnknowCst = need;
         }
 
     }
