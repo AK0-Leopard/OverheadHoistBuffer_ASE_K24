@@ -2884,6 +2884,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 case EventType.EmptyRetrieval:
                     PositionReport_EmptyRetrieval(bcfApp, vh, seq_num, recive_str.EventType, recive_str.CurrentAdrID, recive_str.CurrentSecID, carrier_id);
+                    vh.UpdateEmptyRetrivalCount(true);
                     break;
 
                 case EventType.CsttypeMismatch:
@@ -4201,6 +4202,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
                 case EventType.LoadComplete:
                     scApp.CMDBLL.setWillPassSectionInfo(eqpt.VEHICLE_ID, eqpt.PredictSectionsToDesination);
+                    eqpt.UpdateEmptyRetrivalCount(false);
                     break;
 
                 case EventType.UnloadComplete:
