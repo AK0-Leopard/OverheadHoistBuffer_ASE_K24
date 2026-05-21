@@ -3330,6 +3330,12 @@ namespace com.mirle.ibg3k0.sc.Service
                         OHBC_AlarmSet(ohtName, SCAppConstants.SystemAlarmCode.OHT_Issue.EmptyRetrieval);
                         OHBC_AlarmCleared(ohtName, SCAppConstants.SystemAlarmCode.OHT_Issue.EmptyRetrieval);
 
+                        string loc_UNKE = ohtCmd.SOURCE;
+                        if (SystemParameter.IsOpenEmptyRetrievalAlarmProcess)
+                        {
+                            //要先將儲位Disable避免又被放貨物
+                            Manual_ShelfEnable(loc_UNKE, false, "空取異常發生");
+                        }
                         //A21.03.31.1 add start
                         CassetteData emptyData = cassette_dataBLL.loadCassetteDataByLoc(ohtCmd.SOURCE.Trim()); //A21.03.31.1
                         reportBLL.ReportCarrierRemovedCompleted(emptyData.CSTID, emptyData.BOXID);             //A21.03.31.1
@@ -3344,13 +3350,10 @@ namespace com.mirle.ibg3k0.sc.Service
 
                         cmdBLL.updateCMD_MCS_TranStatus(cmd.CMD_ID, E_TRAN_STATUS.TransferCompleted);
 
-                        if(SystemParameter.IsEmptyNeedKeepUnknowCst)
+                        if (SystemParameter.IsOpenEmptyRetrievalAlarmProcess)
                         {
-                            string boxID_UNKE = CarrierEmpty(ohtCmd.DESTINATION.Trim(), cstType);
-                            string loc_UNKE = ohtCmd.SOURCE;
+                            string boxID_UNKE = CarrierEmpty(ohtCmd.DESTINATION.Trim(), SCUtility.Trim(emptyData.BOXID));
                             OHBC_InsertCassette(boxID_UNKE, loc_UNKE, "空儲位異常");
-                            //建帳完要把它disable掉
-                            Manual_ShelfEnable(loc_UNKE, false, "空儲位異常");
                         }
                         break;
 
@@ -6593,6 +6596,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         #region 命名規則
         public const string SYMBOL_UNKNOW_CST_ID = "UNK";
+        public const string SYMBOL_UNKE_CST_ID = "UNKE";
 
         //public string CarrierDouble(string loc)   //二重格
         public string CarrierDouble(string loc, string cstType)   //二重格
@@ -6603,7 +6607,7 @@ namespace com.mirle.ibg3k0.sc.Service
         }
         public string CarrierEmpty(string loc, string old_cst_id) //空儲位的地方原本應該要有的cst的id
         {
-            return $"{SYMBOL_UNKNOW_CST_ID}E" + old_cst_id + GetStDate() + "01";
+            return $"{SYMBOL_UNKNOW_CST_ID}E" + old_cst_id + GetStDate() + string.Format("{0:00}", DateTime.Now.Second);
         }
         public string CarrierTypeMismatch(string loc)   //CST Type Mismatch
         {
@@ -11442,6 +11446,7 @@ namespace com.mirle.ibg3k0.sc.Service
 
         private long syncCheckHasUnknowDataHappend = 0;
         private bool HasUnknowCstDataHappend = false;
+        private bool HasUnkeCstDataHappend = false;
         internal void CheckHasUnknowDataHappend()
         {
             if (Interlocked.Exchange(ref syncCheckHasUnknowDataHappend, 1) == 0)
@@ -11463,6 +11468,19 @@ namespace com.mirle.ibg3k0.sc.Service
                         }
                     }
 
+                    bool has_unke_cst_data_happend = cst_list.Where(cst => cst.BOXID.StartsWith(SYMBOL_UNKE_CST_ID)).Any();
+                    if (HasUnkeCstDataHappend != has_unke_cst_data_happend)
+                    {
+                        HasUnkeCstDataHappend = has_unke_cst_data_happend;
+                        if (HasUnkeCstDataHappend)
+                        {
+                            OHBC_AlarmSet(line.LINE_ID, ((int)AlarmLst.ShelfWatchDog_EmptyHappned).ToString());
+                        }
+                        else
+                        {
+                            OHBC_AlarmCleared(line.LINE_ID, ((int)AlarmLst.ShelfWatchDog_EmptyHappned).ToString());
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
