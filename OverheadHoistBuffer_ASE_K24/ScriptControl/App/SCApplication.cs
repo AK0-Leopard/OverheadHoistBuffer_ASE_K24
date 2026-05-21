@@ -989,7 +989,8 @@ namespace com.mirle.ibg3k0.sc.App
             }
 
             SystemParameter.setTranferringCmdFinishTimeOut_Second(getUInt("TranferringCmdFinishTimeOutSecond", 1800));
-            SystemParameter.setIsEmptyNeedKeepUnknowCst(getBoolean("IsEmptyNeedKeepUnknowCst", false));
+            SystemParameter.setIsOpenEmptyRetrievalAlarmProcess(getBoolean("IsOpenEmptyRetrievalAlarmProcess", false));
+            SystemParameter.setOHTEmptyRetrievalAlarmHappendCount(getUInt("OHTEmptyRetrievalAlarmHappendCount", 2));
         }
 
         //A0.01
@@ -1025,7 +1026,7 @@ namespace com.mirle.ibg3k0.sc.App
                 reserveSectionAPI.MapBitmapBackgroundColor = new HltScalar(255, 255, 255);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -2438,7 +2439,8 @@ namespace com.mirle.ibg3k0.sc.App
         public static bool IsOpenReelNTBPortStatusAsk { get; private set; } = false;
         public static uint TranferringCmdFinishTimeOut_Second = 1800;  //秒鐘
 
-        public static bool IsEmptyNeedKeepUnknowCst = true; //在車輛上報Empty的時候要不要在該處保持未知帳料
+        public static bool IsOpenEmptyRetrievalAlarmProcess = true; //在車輛上報Empty的時候要不要在該處保持未知帳料
+        public static uint OHTEmptyRetrievalAlarmHappendCount = 2; //用於設定當同一台車發生N次空取時，就要將其Remove
         /// <summary>
         /// Sets the secs conversaction timeout.
         /// </summary>
@@ -2511,9 +2513,13 @@ namespace com.mirle.ibg3k0.sc.App
             TranferringCmdFinishTimeOut_Second = tranferringCmdFinishTimeOut;
         }
 
-        public static void setIsEmptyNeedKeepUnknowCst(bool need)
+        public static void setIsOpenEmptyRetrievalAlarmProcess(bool need)
         {
-            IsEmptyNeedKeepUnknowCst = need;
+            IsOpenEmptyRetrievalAlarmProcess = need;
+        }
+        public static void setOHTEmptyRetrievalAlarmHappendCount(uint value)
+        {
+            OHTEmptyRetrievalAlarmHappendCount = value;
         }
 
     }
