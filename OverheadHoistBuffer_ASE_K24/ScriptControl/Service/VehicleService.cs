@@ -49,6 +49,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 using static com.mirle.ibg3k0.sc.App.SCAppConstants;
+using static com.mirle.ibg3k0.sc.Data.SECS.ASE.S2F49_TRANSFEREXT.REPITEM.CST.CARR;
 
 namespace com.mirle.ibg3k0.sc.Service
 {
@@ -82,6 +83,8 @@ namespace com.mirle.ibg3k0.sc.Service
         OHT_HasUnknowCstDataHappend = 100035,
         ServiceWatchDog_NatsDisConnection = 100036,
         ServiceWatchDog_RedisDisConnection = 100037,
+        ShelfWatchDog_EmptyHappned = 100038,
+        OHT_EmptyHappnedOverTimes = 100039,
     }
 
     public class VehicleService : IDynamicMetaObjectProvider
@@ -127,6 +130,7 @@ namespace com.mirle.ibg3k0.sc.Service
                 vh.ErrorStatusChange += (s1, e1) => Vh_ErrorStatusChange(s1, e1);
 
                 vh.OHTCCommandResidualHappend += Vh_OHTCCommandResidualHappend;
+                vh.OverEmprtRetrivalLimitCount += Vh_OverEmprtRetrivalLimitCount; ;
                 vh.TimerActionStart();
             }
 
@@ -136,6 +140,37 @@ namespace com.mirle.ibg3k0.sc.Service
             foreach (Track t in scApp.UnitBLL.cache.GetALLTracks())
             {
                 t.alarmCodeChange += trackAlarmHappend;
+            }
+        }
+
+        private void Vh_OverEmprtRetrivalLimitCount(object sender, bool is_over)
+        {
+            try
+            {
+                AVEHICLE vh = (AVEHICLE)sender;
+                if (is_over)
+                {
+                    LogHelper.Log(logger: NLog.LogManager.GetCurrentClassLogger(), LogLevel: NLog.LogLevel.Debug, Class: nameof(AVEHICLE), Device: DEVICE_NAME_OHx,
+                       Data: $"Vh:{vh.VEHICLE_ID} already happend empty retrival:{SystemParameter.OHTEmptyRetrievalAlarmHappendCount}, it will be remove!",
+                       VehicleID: vh.VEHICLE_ID,
+                       CarrierID: vh.BOX_ID);
+
+                    scApp.VehicleService.Remove(vh.VEHICLE_ID); //如果超過達到兩次，把自己Remove掉
+                    scApp.TransferService.OHBC_AlarmSet(vh.VEHICLE_ID, ((int)AlarmLst.OHT_EmptyHappnedOverTimes).ToString());
+                }
+                else
+                {
+                    LogHelper.Log(logger: NLog.LogManager.GetCurrentClassLogger(), LogLevel: NLog.LogLevel.Debug, Class: nameof(AVEHICLE), Device: DEVICE_NAME_OHx,
+                       Data: $"Vh:{vh.VEHICLE_ID} empty retrieval alarm has been cleared",
+                       VehicleID: vh.VEHICLE_ID,
+                       CarrierID: vh.BOX_ID);
+
+                    scApp.TransferService.OHBC_AlarmCleared(vh.VEHICLE_ID, ((int)AlarmLst.OHT_EmptyHappnedOverTimes).ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "");
             }
         }
 

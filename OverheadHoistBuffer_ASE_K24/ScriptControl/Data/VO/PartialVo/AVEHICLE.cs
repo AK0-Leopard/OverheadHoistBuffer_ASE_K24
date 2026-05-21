@@ -71,6 +71,19 @@ namespace com.mirle.ibg3k0.sc
 
         public int EmptyRetrivalCount = 0;
 
+        private bool isOverEmprtRetrivalLimitCount = false;
+        public bool IsOverEmprtRetrivalLimitCount
+        {
+            set
+            {
+                if (isOverEmprtRetrivalLimitCount != value)
+                {
+                    isOverEmprtRetrivalLimitCount = value;
+                    OverEmprtRetrivalLimitCount?.Invoke(this, isOverEmprtRetrivalLimitCount);
+                }
+            }
+        }
+
         public event EventHandler<LocationChangeEventArgs> LocationChange;
         public event EventHandler<SegmentChangeEventArgs> SegmentChange;
         public event EventHandler<CompleteStatus> CommandComplete;
@@ -86,6 +99,7 @@ namespace com.mirle.ibg3k0.sc
         public event EventHandler LongTimeObstacleFinish;
         public event EventHandler<VhStopSingle> ErrorStatusChange;
         public event EventHandler OHTCCommandResidualHappend;
+        public event EventHandler<bool> OverEmprtRetrivalLimitCount;
 
 
         VehicleTimerAction vehicleTimer = null;
@@ -1523,27 +1537,36 @@ namespace com.mirle.ibg3k0.sc
 
         #endregion Vehicle state machine
 
+
         public void UpdateEmptyRetrivalCount(bool isEmptyRetrivalEnd)
         {
-            if (isEmptyRetrivalEnd)
+            try
             {
-                this.EmptyRetrivalCount++;
-                LogHelper.Log(logger: NLog.LogManager.GetCurrentClassLogger(), LogLevel: NLog.LogLevel.Debug, Class: nameof(AVEHICLE), Device: DEVICE_NAME_OHx,
-                               Data: $"Vh:{VEHICLE_ID} empty retrival has +1.",
-                               VehicleID: VEHICLE_ID,
-                               CarrierID: CST_ID);
-                if (EmptyRetrivalCount >= 2)
+                if (!SystemParameter.IsOpenEmptyRetrievalAlarmProcess)
+                    return;
+
+                if (isEmptyRetrivalEnd)
                 {
-                    SCApplication.getInstance().VehicleService.Remove(this.VEHICLE_ID); //如果超過達到兩次，把自己Remove掉
-                    LogHelper.Log(logger: NLog.LogManager.GetCurrentClassLogger(), LogLevel: NLog.LogLevel.Debug, Class: nameof(AVEHICLE), Device: DEVICE_NAME_OHx,
-                               Data: $"Vh:{VEHICLE_ID} already happend empty retrival:{EmptyRetrivalCount}, it will be remove!",
-                               VehicleID: VEHICLE_ID,
-                               CarrierID: CST_ID);
+                    this.EmptyRetrivalCount++;
                 }
+                else
+                {
+                    this.EmptyRetrivalCount = 0;
+                }
+
+                if (EmptyRetrivalCount >= SystemParameter.OHTEmptyRetrievalAlarmHappendCount)
+                {
+                    IsOverEmprtRetrivalLimitCount = true;
+                }
+                else
+                {
+                    IsOverEmprtRetrivalLimitCount = false;
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                this.EmptyRetrivalCount = 0;
+                LogManager.GetCurrentClassLogger().Error(ex, "Exception:");
             }
         }
 
@@ -1744,7 +1767,7 @@ namespace com.mirle.ibg3k0.sc
                     }
                 }
             }
-            
+
         }
 
     }
