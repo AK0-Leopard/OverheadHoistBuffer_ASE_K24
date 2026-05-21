@@ -543,5 +543,17 @@ namespace com.mirle.ibg3k0.bc.winform
             BCApp.SCApplication.TransferService.setForMoreOut = false;
             label21.Text = "多出狀態:" + BCApp.SCApplication.TransferService.setForMoreOut.ToString();
         }
+
+        private void button44_Click_1(object sender, EventArgs e)
+        {
+            AVEHICLE v = BCApp.SCApplication.VehicleBLL.cache.getVhByID(comboBox12.Text.Trim());
+            ID_136_TRANS_EVENT_REP id_136 = new ID_136_TRANS_EVENT_REP()
+            {
+                EventType = EventType.EmptyRetrieval,
+
+            };
+
+            Task.Run(() => BCApp.SCApplication.VehicleService.TranEventReport(BCApp.SCApplication.getBCFApplication(), v, id_136, 111));
+        }
     }
 }

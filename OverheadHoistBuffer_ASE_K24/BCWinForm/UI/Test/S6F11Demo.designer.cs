@@ -122,6 +122,7 @@
             this.button39 = new System.Windows.Forms.Button();
             this.button43 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button44 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -591,6 +592,7 @@
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.button44);
             this.groupBox2.Controls.Add(this.button30);
             this.groupBox2.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.groupBox2.Location = new System.Drawing.Point(363, 12);
@@ -1200,6 +1202,17 @@
             this.comboBox1.Size = new System.Drawing.Size(152, 21);
             this.comboBox1.TabIndex = 21;
             // 
+            // button44
+            // 
+            this.button44.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button44.Location = new System.Drawing.Point(246, 20);
+            this.button44.Name = "button44";
+            this.button44.Size = new System.Drawing.Size(110, 23);
+            this.button44.TabIndex = 8;
+            this.button44.Text = "Empty";
+            this.button44.UseVisualStyleBackColor = true;
+            this.button44.Click += new System.EventHandler(this.button44_Click_1);
+            // 
             // S6F11Demo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1340,5 +1353,6 @@
         private System.Windows.Forms.Button CloseSwapMoreOut;
         private System.Windows.Forms.Button OpenSwapMoreOut;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Button button44;
     }
 }
